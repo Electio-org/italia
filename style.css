@@ -1697,10 +1697,12 @@ kbd {
 .panel-collapse-btn {
   margin-left:auto;
 }
-.panel.is-collapsed > :not(.panel-header) {
+.panel.is-collapsed > :not(.panel-header),
+.panel.collapsed > :not(.panel-header) {
   display:none !important;
 }
-.panel.is-collapsed .panel-header {
+.panel.is-collapsed .panel-header,
+.panel.collapsed .panel-header {
   margin-bottom:0;
 }
 .selection-dock {

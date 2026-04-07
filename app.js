@@ -126,6 +126,10 @@ const state = {
   uiLevel: 'basic',
   audienceMode: 'public',
   renderQueued: false,
+  renderCycle: 0,
+  deferredRenderHandle: null,
+  deferredRenderKind: null,
+  lastMapRenderKey: null,
   summaryDeclaredRows: 0,
   summaryHydrationStarted: false,
   summaryHydrationComplete: false,
@@ -1469,7 +1473,11 @@ function initCollapsiblePanels() {
     const btn = panel.querySelector('[data-collapse-toggle]');
     const body = panel.querySelector('[data-collapse-body]');
     if (!btn || !body) return;
-    const apply = () => panel.classList.toggle('collapsed', !!state.collapsedPanels[key]);
+    const apply = () => {
+      const collapsed = !!state.collapsedPanels[key];
+      panel.classList.toggle('collapsed', collapsed);
+      panel.classList.toggle('is-collapsed', collapsed);
+    };
     apply();
     btn.onclick = () => { state.collapsedPanels[key] = !state.collapsedPanels[key]; apply(); saveLocalState(); };
   });
@@ -1719,6 +1727,61 @@ function safeRender(scope, fn) {
   } catch (error) {
     registerIssue(scope, error);
   }
+}
+
+function resolveRenderTarget(target) {
+  if (!target) return null;
+  if (typeof target === 'function') return target() || null;
+  if (typeof target === 'string') return document.querySelector(target);
+  return target;
+}
+
+function isRenderTargetVisible(target) {
+  const node = resolveRenderTarget(target);
+  if (!node || !document.body.contains(node)) return false;
+  if (node.hidden) return false;
+  if (node.closest('.hidden, .hidden-by-view')) return false;
+  if (node.closest('.panel.collapsed, .panel.is-collapsed')) return false;
+  const style = window.getComputedStyle(node);
+  if (style.display === 'none' || style.visibility === 'hidden') return false;
+  return node.getClientRects().length > 0;
+}
+
+function shouldRunRenderTask(task) {
+  if (typeof task.when === 'function' && !task.when()) return false;
+  if (task.always) return true;
+  return isRenderTargetVisible(task.target);
+}
+
+function cancelDeferredRender() {
+  if (!state.deferredRenderHandle) return;
+  if (state.deferredRenderKind === 'idle' && typeof window.cancelIdleCallback === 'function') {
+    window.cancelIdleCallback(state.deferredRenderHandle);
+  } else {
+    window.clearTimeout(state.deferredRenderHandle);
+  }
+  state.deferredRenderHandle = null;
+  state.deferredRenderKind = null;
+}
+
+function scheduleDeferredRender(tasks, token) {
+  if (!tasks.length) return;
+  cancelDeferredRender();
+  const run = () => {
+    state.deferredRenderHandle = null;
+    state.deferredRenderKind = null;
+    if (token !== state.renderCycle) return;
+    tasks.forEach(task => {
+      if (shouldRunRenderTask(task)) safeRender(task.scope, task.fn);
+    });
+  };
+  if (typeof window.requestIdleCallback === 'function') {
+    state.deferredRenderKind = 'idle';
+    state.deferredRenderHandle = window.requestIdleCallback(run, { timeout: 180 });
+    return;
+  }
+  state.deferredRenderKind = 'timeout';
+  state.deferredRenderHandle = window.setTimeout(run, 90);
 }
 
 function provinceValuesForPreset(presetValue, available) {
@@ -2110,7 +2173,35 @@ function renderWarnings(rows) {
   els.warningStrip.innerHTML = messages.map(m => `<div>${escapeHtml(m)}</div>`).join('');
 }
 
+function currentMapRenderKey() {
+  return JSON.stringify({
+    selectedElection: state.selectedElection,
+    compareElection: state.compareElection,
+    selectedMetric: state.selectedMetric,
+    selectedPartyMode: state.selectedPartyMode,
+    selectedParty: state.selectedParty,
+    selectedCustomIndicator: state.selectedCustomIndicator,
+    territorialMode: state.territorialMode,
+    geometryReferenceYear: state.geometryReferenceYear,
+    selectedCompleteness: state.selectedCompleteness,
+    selectedTerritorialStatus: state.selectedTerritorialStatus,
+    selectedPalette: state.selectedPalette,
+    sameScaleAcrossYears: state.sameScaleAcrossYears,
+    minSharePct: state.minSharePct,
+    selectedProvinceSet: [...state.selectedProvinceSet].sort(),
+    selectedMunicipalityId: state.selectedMunicipalityId,
+    compareMunicipalityIds: [...state.compareMunicipalityIds],
+    summaryRows: state.summary.length,
+    resultsRows: state.resultsLong.length,
+    geometryFeatures: state.geometry?.features?.length || 0,
+    provinceGeometryFeatures: state.provinceGeometry?.features?.length || 0,
+    showNotes: state.showNotes
+  });
+}
+
 function renderMap() {
+  const renderKey = currentMapRenderKey();
+  if (state.lastMapRenderKey === renderKey) return;
   const svg = d3.select('#map-svg');
   svg.selectAll('*').remove();
 
@@ -2123,6 +2214,7 @@ function renderMap() {
   if (!state.geometry || !Array.isArray(state.geometry.features) || !state.geometry.features.length) {
     showMapMessage('Geografia non disponibile. Inserisci un <code>GeoJSON</code> o <code>TopoJSON</code> reale e aggiorna il percorso nel <code>manifest.json</code>.');
     renderLegend(null);
+    state.lastMapRenderKey = renderKey;
     return;
   }
   hideMapMessage();
@@ -2199,6 +2291,7 @@ function renderMap() {
 
   enableMapZoom();
   if (state.selectedMunicipalityId) zoomToSelectedMunicipality();
+  state.lastMapRenderKey = renderKey;
 }
 
 function getProvinceMetricAverage(row) {
@@ -4511,51 +4604,60 @@ function renderViewTrustPill() {
 function renderAll() {
   ensureVisibleSummary({ silent: true });
   ensureVisibleResults({ silent: true });
+  cancelDeferredRender();
+  state.renderCycle += 1;
+  const renderToken = state.renderCycle;
   clearIssues();
-  [
-    ['hero', renderHeroPanel],
-    ['signature', renderSignaturePanel],
-    ['site-layers', renderSiteLayersPanel],
-    ['pathways', renderPathwayPanel],
-    ['method-explainers', renderMethodExplainersPanel],
-    ['faq', renderFaqPanel],
-    ['analysis-modes', renderAnalysisModePanel],
-    ['audience-panel', renderAudiencePanel],
-    ['saved-views', renderSavedViewsPanel],
-    ['custom-indicators', renderCustomIndicatorSummary],
-    ['quickstart', renderQuickstart],
-    ['question-workbench', renderQuestionWorkbench],
-    ['reading-guide', renderReadingGuide],
-    ['briefing', renderBriefingPanel],
-    ['evidence-panel', renderEvidencePanel],
-    ['insight-feed', renderInsightFeed],
-    ['status-panel', renderStatusPanel],
-    ['release-studio', renderReleaseStudioPanel],
-    ['data-package', renderDataPackagePanel],
-    ['methodology', renderMethodologyPanels],
-    ['map', renderMap],
-    ['filter-chips', renderActiveFilterChips],
-    ['detail', renderDetail],
-    ['comparison-maps', renderComparisonMaps],
-    ['swipe-map', renderSwipeMap],
-    ['comparison-panel', renderComparisonPanel],
-    ['rankings', renderRankingsPanel],
-    ['multi-compare', renderMultiCompareChart],
-    ['province-insights', renderProvinceInsights],
-    ['heatmap', renderHeatmap],
-    ['similarity', renderSimilarityPanel],
-    ['province-multiples', renderProvinceSmallMultiples],
-    ['archetypes', renderArchetypePanel],
-    ['group-compare', renderGroupComparePanel],
-    ['transitions', renderTransitionMatrix],
-    ['recent', renderRecentMunicipalityPanel],
-    ['diagnostics', renderDiagnostics],
-    ['table', renderTable],
-    ['readiness', renderReadinessAudit],
-    ['selection-dock', renderSelectionDock],
-    ['view-health', renderViewHealthPill],
-    ['view-trust', renderViewTrustPill]
-  ].forEach(([scope, fn]) => safeRender(scope, fn));
+  const immediateTasks = [
+    { scope: 'hero', fn: renderHeroPanel, target: () => els.heroTitle },
+    { scope: 'signature', fn: renderSignaturePanel, target: () => els.signatureTitle },
+    { scope: 'site-layers', fn: renderSiteLayersPanel, target: () => els.siteLayersGrid },
+    { scope: 'pathways', fn: renderPathwayPanel, target: () => els.pathwayGrid },
+    { scope: 'method-explainers', fn: renderMethodExplainersPanel, target: () => els.methodExplainersGrid },
+    { scope: 'faq', fn: renderFaqPanel, target: () => els.faqAccordion },
+    { scope: 'analysis-modes', fn: renderAnalysisModePanel, target: () => els.analysisModeButtons },
+    { scope: 'audience-panel', fn: renderAudiencePanel, target: () => els.audienceModeButtons },
+    { scope: 'saved-views', fn: renderSavedViewsPanel, target: () => els.savedViewsPanel },
+    { scope: 'custom-indicators', fn: renderCustomIndicatorSummary, target: () => els.customIndicatorSummary },
+    { scope: 'quickstart', fn: renderQuickstart, target: () => els.quickstartCards },
+    { scope: 'question-workbench', fn: renderQuestionWorkbench, target: () => els.guidedQuestionGrid },
+    { scope: 'reading-guide', fn: renderReadingGuide, target: () => els.readingGuide },
+    { scope: 'briefing', fn: renderBriefingPanel, target: '.briefing-panel' },
+    { scope: 'evidence-panel', fn: renderEvidencePanel, target: '#evidence-panel' },
+    { scope: 'insight-feed', fn: renderInsightFeed, target: () => els.insightFeed },
+    { scope: 'status-panel', fn: renderStatusPanel, target: () => els.datasetStatus },
+    { scope: 'release-studio', fn: renderReleaseStudioPanel, target: '#release-studio-panel' },
+    { scope: 'data-package', fn: renderDataPackagePanel, target: '.data-package-panel' },
+    { scope: 'methodology', fn: renderMethodologyPanels, target: '#usage-notes-panel' },
+    { scope: 'map', fn: renderMap, target: '#map-svg' },
+    { scope: 'filter-chips', fn: renderActiveFilterChips, target: () => els.activeFilterChips },
+    { scope: 'detail', fn: renderDetail, target: () => els.municipalityProfile },
+    { scope: 'comparison-panel', fn: renderComparisonPanel, target: () => els.comparisonPanelContent },
+    { scope: 'recent', fn: renderRecentMunicipalityPanel, target: () => els.recentMunicipalityPanel },
+    { scope: 'diagnostics', fn: renderDiagnostics, target: () => els.diagnosticsPanel },
+    { scope: 'table', fn: renderTable, target: '#results-table' },
+    { scope: 'readiness', fn: renderReadinessAudit, target: () => els.readinessAudit },
+    { scope: 'selection-dock', fn: renderSelectionDock, target: () => els.selectionDock, always: true },
+    { scope: 'view-health', fn: renderViewHealthPill, target: () => els.viewHealthPill },
+    { scope: 'view-trust', fn: renderViewTrustPill, target: () => els.viewTrustPill }
+  ];
+  const deferredTasks = [
+    { scope: 'comparison-maps', fn: renderComparisonMaps, target: () => els.compareMapSummary },
+    { scope: 'swipe-map', fn: renderSwipeMap, target: '#swipe-map-svg' },
+    { scope: 'rankings', fn: renderRankingsPanel, target: () => els.rankingsPanelContent },
+    { scope: 'multi-compare', fn: renderMultiCompareChart, target: '#multi-compare-chart' },
+    { scope: 'province-insights', fn: renderProvinceInsights, target: () => els.provinceInsights },
+    { scope: 'heatmap', fn: renderHeatmap, target: '#heatmap-chart' },
+    { scope: 'similarity', fn: renderSimilarityPanel, target: () => els.similarityPanelContent },
+    { scope: 'province-multiples', fn: renderProvinceSmallMultiples, target: () => els.provinceSmallMultiples },
+    { scope: 'archetypes', fn: renderArchetypePanel, target: () => els.archetypePanelContent },
+    { scope: 'group-compare', fn: renderGroupComparePanel, target: '#group-compare-chart' },
+    { scope: 'transitions', fn: renderTransitionMatrix, target: () => els.transitionMatrixContent }
+  ];
+  immediateTasks.forEach(task => {
+    if (shouldRunRenderTask(task)) safeRender(task.scope, task.fn);
+  });
+  scheduleDeferredRender(deferredTasks, renderToken);
   checkpointHistory();
 }
 
