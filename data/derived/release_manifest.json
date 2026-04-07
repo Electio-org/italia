@@ -2,7 +2,7 @@
   "generated_by": "build_result_shards.py",
   "project": {
     "title": "Lombardia Camera Explorer",
-    "version": "0.19.0",
+    "version": "0.20.0",
     "ready_for_real_data": true,
     "notes": [
       "Vote shares are recomputed from votes whenever a plausible denominator is available.",
@@ -19,7 +19,8 @@
       "Municipality summary rows can also be delivered as per-election shards to reduce initial browser load.",
       "Products are also published through a product catalog plus per-product manifests, not only through the bundle-wide manifest.",
       "Every declared product also exposes a product-level inventory so users can see what is inside before loading the data.",
-      "The public app now reads a web-optimized geometry pack, while the full-resolution boundaries remain published as a separate product."
+      "The public app now reads a web-optimized geometry pack, while the full-resolution boundaries remain published as a separate product.",
+      "Critical browser libraries are now vendored locally and the public documentation pages load only the metadata they actually need."
     ]
   },
   "bundle_root": ".",
@@ -243,9 +244,9 @@
     "updateLog": {
       "path": "data/derived/update_log.json",
       "kind": "json",
-      "size_bytes": 12788,
-      "sha256": "a9361ef8ba522330ce6f5387027a8feb9f543cbd3bb8916aafdd33b2045d7add",
-      "entry_count": 17
+      "size_bytes": 14535,
+      "sha256": "ac58203eba6dcf07f617307579fc7230c2f60d06cca262c4376d385185105450",
+      "entry_count": 18
     },
     "dataProducts": {
       "path": "data/derived/data_products.json",
@@ -295,7 +296,7 @@
       "path": "data/products/product_catalog.json",
       "kind": "json",
       "size_bytes": 4686,
-      "sha256": "ef4ee3d81711babd6768a9a6a6357513923b35b1ecab3896c4a7efb661e00dea",
+      "sha256": "cde79a3fcad2799c8f98f46c9a44d113eb6279eeec42a9dbc908be760e6de387",
       "product_count": 4
     },
     "geometryPackFull": {
@@ -328,28 +329,28 @@
       "path": "data/products/camera_muni_historical/manifest.json",
       "kind": "json",
       "size_bytes": 12651,
-      "sha256": "144e8f0d3193fb53fe551b210c477393d0908b06539840fabc24b9ea1943145b",
+      "sha256": "bbaaaadf7847dd50fafe5c8a016413a0d1db6ea8998d23e7d2cb3766a43cb032",
       "dataset_count": 2
     },
     "productManifest:geometry_pack_lombardia": {
       "path": "data/products/geometry_pack_lombardia/manifest.json",
       "kind": "json",
       "size_bytes": 3577,
-      "sha256": "b1059bee33d7c3dcf87fdc1f36e9a88df53840e10b1f87732feb2028b807a025",
+      "sha256": "6b67f51619de2522a292224779be7e336c373b3893e66973b492cc866de9f84a",
       "dataset_count": 2
     },
     "productManifest:geometry_pack_lombardia_full": {
       "path": "data/products/geometry_pack_lombardia_full/manifest.json",
       "kind": "json",
       "size_bytes": 3670,
-      "sha256": "a49174f48a702e15562cd27737951dd60678c940442a226ba5e6b7abbba130b5",
+      "sha256": "6d77cc85e3a6550f2eab9a9d94a4734ead98e79533a0c82d18e64afe36223fa2",
       "dataset_count": 2
     },
     "productManifest:metadata_layer": {
       "path": "data/products/metadata_layer/manifest.json",
       "kind": "json",
       "size_bytes": 4806,
-      "sha256": "f68908253f63db0c6a7f710deb8f08b9a8f05fcfaccb7753a040c8c514721e25",
+      "sha256": "db6d44a4277151d8788533be2d8f6ac1a756fd5d721c8fae173b247c428fb669",
       "dataset_count": 6
     }
   },

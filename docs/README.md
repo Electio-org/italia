@@ -20,6 +20,7 @@ Oggi espone:
 - un bundle dichiarato in `data/derived/manifest.json`
 - un catalogo prodotti in `data/products/product_catalog.json`
 - manifest dedicati per ciascun prodotto in `data/products/*/manifest.json`
+- librerie browser critiche vendorizzate localmente, senza dipendere da CDN pubbliche per il dashboard
 
 ## Prodotti attuali
 

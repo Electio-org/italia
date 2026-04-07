@@ -18,7 +18,8 @@ CANONICAL_REBUILD_NOTE = "Municipality coverage is rebuilt from official Eligend
 PRODUCT_SYSTEM_NOTE = "Products are also published through a product catalog plus per-product manifests, not only through the bundle-wide manifest."
 PRODUCT_INVENTORY_NOTE = "Every declared product also exposes a product-level inventory so users can see what is inside before loading the data."
 WEB_GEOMETRY_NOTE = "The public app now reads a web-optimized geometry pack, while the full-resolution boundaries remain published as a separate product."
-CURRENT_VERSION = "0.19.0"
+LOCAL_ASSET_NOTE = "Critical browser libraries are now vendored locally and the public documentation pages load only the metadata they actually need."
+CURRENT_VERSION = "0.20.0"
 
 
 def sha256_file(path: Path) -> str:
@@ -67,7 +68,7 @@ def ensure_update_log_entry(entries: List[Dict[str, object]]) -> List[Dict[str, 
     return [{
         "version": CURRENT_VERSION,
         "date": "2026-04-07",
-        "title": "Official open-data rebuild with shards, product catalogs, and web/full geometry packs",
+        "title": "Web/full geometry split, local asset delivery, and lighter public metadata loading",
         "changes": [
             "Rebuilt 1946-2022 municipality summary and party results from the official Eligendo open-data zip archives for Assemblea Costituente and Camera.",
             "Shifted the primary source from HTML archive navigation to the national open-data bundles, keeping HTML only as QA and fallback.",
@@ -77,6 +78,8 @@ def ensure_update_log_entry(entries: List[Dict[str, object]]) -> List[Dict[str, 
             "Added a product catalog plus per-product manifests so the bundle can be navigated as product families, not only as a flat file list.",
             "Added product-level inventories that declare which election datasets, geometry years, or metadata objects are inside each product.",
             "Split Lombardia boundary delivery into a web-optimized geometry pack for the public app plus a full-resolution geometry product for heavier downstream use.",
+            "Vendored the critical browser libraries locally so the dashboard no longer depends on public CDNs at runtime.",
+            "Trimmed the documentation pages so each route fetches only the metadata layer it actually needs.",
             "Added an official-source-vs-bundle gap report to make residual coverage and geometry-join gaps explicit in the public bundle.",
             "Release manifest paths are now web-relative, so declared downloads stay usable inside the static site."
         ]
@@ -112,6 +115,8 @@ def main() -> None:
         notes.append(PRODUCT_INVENTORY_NOTE)
     if WEB_GEOMETRY_NOTE not in notes:
         notes.append(WEB_GEOMETRY_NOTE)
+    if LOCAL_ASSET_NOTE not in notes:
+        notes.append(LOCAL_ASSET_NOTE)
     project["notes"] = notes
 
     files = manifest.setdefault("files", {})

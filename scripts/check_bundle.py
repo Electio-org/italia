@@ -65,6 +65,10 @@ def main() -> int:
         'style.css',
         'app.js',
         'site-pages.js',
+        'modules/app-shell.js',
+        'vendor/d3/d3.min.js',
+        'vendor/papaparse/papaparse.min.js',
+        'vendor/topojson-client/topojson-client.min.js',
         'scripts/preprocess.py',
         'scripts/build_web_geometry_pack.py',
         'scripts/import_archive_gap_report.py',
@@ -102,6 +106,17 @@ def main() -> int:
                 issues.append(f'js_syntax:{js_file}:{node.stderr.strip() or node.stdout.strip()}')
     else:
         warnings.append('js_syntax:skipped_node_not_found')
+
+    external_asset_hits = 0
+    for rel in ['index.html', 'products.html', 'data-download.html', 'programmatic-access.html', 'usage-notes.html', 'update-log.html']:
+        path = root / rel
+        if not path.exists():
+            continue
+        text = path.read_text(encoding='utf-8')
+        if 'https://cdn.jsdelivr.net' in text or 'https://d3js.org' in text or 'https://unpkg.com' in text:
+            external_asset_hits += 1
+    if external_asset_hits:
+        issues.append(f'external_asset_references:{external_asset_hits}')
 
     loader_summary = subprocess.run(['python', str(root / 'clients' / 'python' / 'lce_loader.py'), '--root', str(root), '--summary'], capture_output=True, text=True)
     if loader_summary.returncode != 0:

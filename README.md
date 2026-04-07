@@ -35,6 +35,8 @@ Requirements:
 - Python 3
 - Node.js (used for JS syntax checks)
 
+The dashboard vendors its critical browser libraries locally (`d3`, `PapaParse`, `topojson-client`) instead of loading them from public CDNs at runtime.
+
 From the repository root:
 
 ```powershell
