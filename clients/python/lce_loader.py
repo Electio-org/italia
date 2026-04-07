@@ -59,6 +59,22 @@ class LombardiaCameraBundle:
             return []
         return list((self.read_json(rel).get('products') or []))
 
+    def product_catalog(self) -> Dict[str, Any]:
+        rel = self.files.get('productCatalog')
+        if not rel:
+            return {'products': []}
+        return self.read_json(rel)
+
+    def product_manifest(self, product_key: str) -> Dict[str, Any]:
+        catalog = self.product_catalog()
+        record = next((item for item in (catalog.get('products') or []) if item.get('product_key') == product_key), None)
+        if not record:
+            raise KeyError(f"Prodotto non dichiarato nel catalogo: {product_key}")
+        rel = record.get('manifest_path')
+        if not rel:
+            raise KeyError(f"Manifest non dichiarato per il prodotto: {product_key}")
+        return self.read_json(rel)
+
     def release_manifest(self) -> Dict[str, Any]:
         rel = self.files.get('releaseManifest')
         if not rel:
@@ -123,6 +139,13 @@ class LombardiaCameraBundle:
         df = self.load_dataset('municipalitySummary', **kwargs)
         return df[df['election_key'] == election_key].reset_index(drop=True)
 
+    def load_product_dataset(self, product_key: str, role: str = 'primary', **kwargs):
+        manifest = self.product_manifest(product_key)
+        dataset = next((entry for entry in (manifest.get('datasets') or []) if entry.get('role') == role or entry.get('dataset_key') == role), None)
+        if not dataset:
+            raise KeyError(f"Dataset role non trovato nel prodotto {product_key}: {role}")
+        return self.load_dataset(str(dataset['dataset_key']), **kwargs)
+
     def filter_summary(self, election_key: Optional[str] = None, province: Optional[str] = None, municipality_id: Optional[str] = None) -> pd.DataFrame:
         df = self.load_summary_for_election(election_key) if election_key is not None else self.load_dataset('municipalitySummary')
         if election_key is not None:
@@ -175,6 +198,7 @@ class LombardiaCameraBundle:
             'version': self.version,
             'declared_files': sorted(products),
             'data_products': len(self.list_products()),
+            'product_catalog_products': len((self.product_catalog().get('products') or [])),
             'has_release_manifest': bool(self.files.get('releaseManifest')),
             'summary_shards': len((self.summary_shards().get('shards') or {})),
             'result_shards': len((self.result_shards().get('shards') or {})),
@@ -212,6 +236,8 @@ def main() -> int:
     parser.add_argument('--recipes', action='store_true', help='Stampa le research recipes dichiarate')
     parser.add_argument('--guides', action='store_true', help='Stampa i site guides machine-readable dichiarati')
     parser.add_argument('--citation', action='store_true', help='Stampa la citazione del progetto / bundle')
+    parser.add_argument('--product-catalog', action='store_true', help='Stampa il catalogo prodotti dichiarato')
+    parser.add_argument('--product-manifest', help='Stampa il manifest del prodotto indicato')
     args = parser.parse_args()
 
     bundle = load_bundle(args.root)
@@ -228,6 +254,12 @@ def main() -> int:
         did_something = True
     if args.guides:
         print(json.dumps(bundle.site_guides(), ensure_ascii=False, indent=2))
+        did_something = True
+    if args.product_catalog:
+        print(json.dumps(bundle.product_catalog(), ensure_ascii=False, indent=2))
+        did_something = True
+    if args.product_manifest:
+        print(json.dumps(bundle.product_manifest(args.product_manifest), ensure_ascii=False, indent=2))
         did_something = True
     if args.citation:
         print(bundle.citation())

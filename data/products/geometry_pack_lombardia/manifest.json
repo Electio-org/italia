@@ -1,0 +1,62 @@
+{
+  "generated_by": "build_result_shards.py",
+  "release_version": "0.17.0",
+  "release_date": "2026-04-07",
+  "product": {
+    "product_key": "geometry_pack_lombardia",
+    "title": "Pacchetto geometrie Lombardia",
+    "kind": "boundary_pack",
+    "territorial_mode": null,
+    "granularity": "municipality/province boundary by year",
+    "delivery_strategy": null,
+    "primary_dataset_key": "geometryPack",
+    "companion_dataset_key": "provinceGeometry",
+    "extra_dataset_keys": [],
+    "join_keys": [
+      "geometry_id",
+      "municipality_id"
+    ],
+    "guardrails": [],
+    "intended_use": [
+      "cartografia web e ricerca territoriale con basi annuali dichiarate",
+      "join geografico esplicito via geometry_id e municipality_id"
+    ]
+  },
+  "datasets": [
+    {
+      "role": "primary",
+      "dataset_key": "geometryPack",
+      "path": "data/derived/geometry_pack.json",
+      "kind": "json",
+      "size_bytes": 946,
+      "row_count": null,
+      "feature_count": null,
+      "sha256": "f606facba83019a521710b0c62423aca8d50d71dc8231daf3c68c2bcba50b11f"
+    },
+    {
+      "role": "companion",
+      "dataset_key": "provinceGeometry",
+      "path": "data/derived/geometries/provinces_2026.geojson",
+      "kind": "geojson",
+      "size_bytes": 1692077,
+      "row_count": null,
+      "feature_count": 12,
+      "sha256": "03aa143bfcf068f56f6dbefcfc67b08feba5e105c14f5a88b2414940ca3d5b8b"
+    }
+  ],
+  "clients": [
+    {
+      "client_key": "python_loader",
+      "language": "python",
+      "entrypoint": "clients/python/lce_loader.py",
+      "example": "from clients.python.lce_loader import load_bundle\nbundle = load_bundle('.')\nsummary = bundle.load_dataset('municipalitySummary')"
+    },
+    {
+      "client_key": "r_loader",
+      "language": "r",
+      "entrypoint": "clients/r/lce_loader.R",
+      "example": "source('clients/r/lce_loader.R')\nbundle <- load_lce_bundle('.')\nsummary <- lce_read(bundle, 'municipalitySummary')"
+    }
+  ],
+  "bundle_manifest": "data/derived/manifest.json"
+}

@@ -2,6 +2,20 @@
   "generated_by": "preprocess.py",
   "entries": [
     {
+      "version": "0.17.0",
+      "date": "2026-04-07",
+      "title": "Official open-data zip rebuild with summary/result shards and Assemblea Costituente 1946",
+      "changes": [
+        "Rebuilt 1946-2022 municipality summary and party results from the official Eligendo open-data zip archives for Assemblea Costituente and Camera.",
+        "Shifted the primary source from HTML archive navigation to the national open-data bundles, keeping HTML only as QA and fallback.",
+        "Added by-election shards for municipality_summary.csv and municipality_results_long.csv.",
+        "Declared deferred loading for municipality summary and party results in manifest.json.",
+        "Aligned dataset registry, provenance, and release metadata to the shard-based delivery layout.",
+        "Added an official-source-vs-bundle gap report to make residual coverage and geometry-join gaps explicit in the public bundle.",
+        "Release manifest paths are now web-relative, so declared downloads stay usable inside the static site."
+      ]
+    },
+    {
       "version": "0.16.0",
       "date": "2026-04-07",
       "title": "Official open-data zip rebuild with summary/result shards and Assemblea Costituente 1946",

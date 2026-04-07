@@ -97,6 +97,7 @@ async function loadBundle() {
   const jsonTargets = {
     releaseManifest: 'releaseManifest',
     dataProducts: 'dataProducts',
+    productCatalog: 'productCatalog',
     datasetRegistry: 'datasetRegistry',
     usageNotes: 'usageNotes',
     codebook: 'codebook',
@@ -176,7 +177,7 @@ function wireCopyButtons() {
 function renderDownloadPage(bundle) {
   const registryDatasets = bundle.datasetRegistry?.datasets || [];
   const releaseEntries = bundle.releaseManifest?.file_entries || {};
-  const products = bundle.dataProducts?.products || [];
+  const products = bundle.productCatalog?.products || bundle.dataProducts?.products || [];
   const recipes = bundle.researchRecipes?.recipes || [];
   const notes = bundle.usageNotes?.notes || [];
   const quality = bundle.dataQualityReport?.derived_validations || {};
@@ -218,8 +219,10 @@ function renderDownloadPage(bundle) {
             <div class="doc-meta-list">
               <span><strong>Granularita</strong> ${escapeHtml(product.granularity || 'n.d.')}</span>
               <span><strong>Modo</strong> ${escapeHtml(product.territorial_mode || 'n.d.')}</span>
+              <span><strong>Manifest</strong> ${product.manifest_path ? `<a href="${escapeHtml(product.manifest_path)}" download>manifest.json</a>` : 'n.d.'}</span>
               <span><strong>Primario</strong> ${primaryPath ? `<a href="${escapeHtml(primaryPath)}" download>${escapeHtml(product.primary_dataset_key)}</a>` : 'n.d.'}</span>
               <span><strong>Companion</strong> ${companionPath ? `<a href="${escapeHtml(companionPath)}" download>${escapeHtml(product.companion_dataset_key)}</a>` : 'n.d.'}</span>
+              <span><strong>Dataset</strong> ${escapeHtml(String(product.dataset_count ?? 'n.d.'))}</span>
             </div>
             <ul class="doc-list">
               ${(product.guardrails || []).map((item) => `<li>${escapeHtml(item)}</li>`).join('')}
@@ -336,20 +339,22 @@ function renderProgrammaticPage(bundle) {
   const releaseEntries = bundle.releaseManifest?.file_entries || {};
   const clients = bundle.dataProducts?.clients || [];
   const recipes = bundle.researchRecipes?.recipes || [];
-  const products = bundle.dataProducts?.products || [];
+  const products = bundle.productCatalog?.products || bundle.dataProducts?.products || [];
   const pythonClient = clients.find((client) => String(client.language).toLowerCase() === 'python');
   const rClient = clients.find((client) => String(client.language).toLowerCase() === 'r');
   const cliSnippet = [
     'python clients/python/lce_loader.py --root . --summary',
     'python clients/python/lce_loader.py --root . --products',
+    'python clients/python/lce_loader.py --root . --product-catalog',
+    'python clients/python/lce_loader.py --root . --product-manifest camera_muni_historical',
     'python clients/python/lce_loader.py --root . --verify',
     'python clients/python/lce_loader.py --root . --dataset municipalitySummary --head 8',
   ].join('\n');
 
   const stats = [
-    ['Loader ufficiali', clients.length, 'Client dichiarati in data_products.json'],
+    ['Loader ufficiali', clients.length, 'Client dichiarati nel sistema prodotti'],
     ['File dichiarati', Object.keys(releaseEntries).length, 'Scope della release corrente'],
-    ['Prodotti dati', products.length, 'Famiglie di dati disponibili'],
+    ['Prodotti dati', products.length, 'Catalogo prodotti disponibile'],
     ['Recipes', recipes.length, 'Percorsi machine-readable'],
   ];
   const statGrid = q('programmatic-stat-grid');

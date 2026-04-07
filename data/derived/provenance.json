@@ -407,6 +407,19 @@
       "limitations": [
         "gli shard non aggiungono copertura sostanziale: cambiano solo la strategia di consegna del bundle"
       ]
+    },
+    {
+      "dataset_key": "productCatalog",
+      "path": "data/products/product_catalog.json",
+      "produced_by": "build_result_shards.py",
+      "source_class": "derived_bundle",
+      "transformation_steps": [
+        "pubblicazione del sistema prodotti con catalogo e manifest dedicati per ogni product_key",
+        "normalizzazione dei data products dichiarati in un indice di prodotti leggibile da codice e dal sito"
+      ],
+      "limitations": [
+        "i product manifest non creano nuovi dati: organizzano i dataset esistenti in prodotti piu espliciti"
+      ]
     }
   ]
 }

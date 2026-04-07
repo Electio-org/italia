@@ -21,6 +21,10 @@ class LoaderTests(unittest.TestCase):
         products = self.bundle.list_products()
         self.assertGreaterEqual(len(products), 3)
 
+    def test_product_catalog_present(self):
+        catalog = self.bundle.product_catalog()
+        self.assertGreaterEqual(len(catalog.get('products') or []), 1)
+
     def test_integrity_report_ok(self):
         report = self.bundle.verify_integrity()
         self.assertTrue(report['ok'], report)
@@ -46,6 +50,12 @@ class LoaderTests(unittest.TestCase):
 
     def test_recipes_present(self):
         self.assertGreaterEqual(len(self.bundle.recipes()), 1)
+
+    def test_product_manifest_present(self):
+        product_key = (self.bundle.product_catalog().get('products') or [{}])[0].get('product_key')
+        self.assertTrue(product_key)
+        manifest = self.bundle.product_manifest(product_key)
+        self.assertEqual(manifest.get('product', {}).get('product_key'), product_key)
 
 
     def test_site_guides_present(self):

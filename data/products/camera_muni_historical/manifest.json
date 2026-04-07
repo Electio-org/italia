@@ -1,0 +1,71 @@
+{
+  "generated_by": "build_result_shards.py",
+  "release_version": "0.17.0",
+  "release_date": "2026-04-07",
+  "product": {
+    "product_key": "camera_muni_historical",
+    "title": "Camera Lombardia - comuni storici",
+    "kind": "election_panel",
+    "territorial_mode": "historical",
+    "granularity": "municipality-election",
+    "delivery_strategy": "summary_and_results_monolith_plus_election_shards",
+    "primary_dataset_key": "municipalitySummary",
+    "companion_dataset_key": "municipalityResultsLong",
+    "extra_dataset_keys": [],
+    "join_keys": [
+      "municipality_id",
+      "geometry_id",
+      "election_key"
+    ],
+    "guardrails": [
+      "Usare coverage e completeness_flag prima di interpretare trend forti.",
+      "Le quote di partito possono restare parziali nei bundle incompleti."
+    ],
+    "intended_use": [
+      "analisi storica comunale della Camera e dell'Assemblea Costituente in Lombardia",
+      "dashboard pubblica e download per anno o release",
+      "base primaria per confronto territoriale e profili comunali"
+    ]
+  },
+  "datasets": [
+    {
+      "role": "primary",
+      "dataset_key": "municipalitySummary",
+      "path": "data/derived/municipality_summary.csv",
+      "kind": "csv",
+      "size_bytes": 9576337,
+      "row_count": 30316,
+      "feature_count": null,
+      "sha256": "33c2747e8ed74908f136c18832617ca02fdc758f4092f235fa7645cf7a5ab267",
+      "delivery_strategy": "deferred_by_election",
+      "by_election_index": "data/derived/municipality_summary_by_election.json"
+    },
+    {
+      "role": "companion",
+      "dataset_key": "municipalityResultsLong",
+      "path": "data/derived/municipality_results_long.csv",
+      "kind": "csv",
+      "size_bytes": 99751278,
+      "row_count": 371027,
+      "feature_count": null,
+      "sha256": "3945676ca675b800a692f0f073afb7d287facdd8a4421f22702f8555444748e4",
+      "delivery_strategy": "deferred_by_election",
+      "by_election_index": "data/derived/municipality_results_long_by_election.json"
+    }
+  ],
+  "clients": [
+    {
+      "client_key": "python_loader",
+      "language": "python",
+      "entrypoint": "clients/python/lce_loader.py",
+      "example": "from clients.python.lce_loader import load_bundle\nbundle = load_bundle('.')\nsummary = bundle.load_dataset('municipalitySummary')"
+    },
+    {
+      "client_key": "r_loader",
+      "language": "r",
+      "entrypoint": "clients/r/lce_loader.R",
+      "example": "source('clients/r/lce_loader.R')\nbundle <- load_lce_bundle('.')\nsummary <- lce_read(bundle, 'municipalitySummary')"
+    }
+  ],
+  "bundle_manifest": "data/derived/manifest.json"
+}

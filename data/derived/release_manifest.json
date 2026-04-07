@@ -2,7 +2,7 @@
   "generated_by": "build_result_shards.py",
   "project": {
     "title": "Lombardia Camera Explorer",
-    "version": "0.16.0",
+    "version": "0.17.0",
     "ready_for_real_data": true,
     "notes": [
       "Vote shares are recomputed from votes whenever a plausible denominator is available.",
@@ -16,7 +16,8 @@
       "Coverage diagnostics now compare the published bundle against the official Eligendo open-data zip archives.",
       "The bundle can also declare a gap report that compares published coverage against the official Eligendo open-data archives.",
       "Municipality coverage is rebuilt from official Eligendo open-data zip archives across all Camera years plus Assemblea Costituente 1946.",
-      "Municipality summary rows can also be delivered as per-election shards to reduce initial browser load."
+      "Municipality summary rows can also be delivered as per-election shards to reduce initial browser load.",
+      "Products are also published through a product catalog plus per-product manifests, not only through the bundle-wide manifest."
     ]
   },
   "bundle_root": ".",
@@ -240,15 +241,15 @@
     "updateLog": {
       "path": "data/derived/update_log.json",
       "kind": "json",
-      "size_bytes": 8857,
-      "sha256": "61d6813c118e72c792ae032bce070950ad1481d4b49b703d4a957722b8f9b257",
-      "entry_count": 14
+      "size_bytes": 9923,
+      "sha256": "768518bc040e1482d001c93e621f8e6c8030257c83ef2cb5778b3a23b2b42cfc",
+      "entry_count": 15
     },
     "dataProducts": {
       "path": "data/derived/data_products.json",
       "kind": "json",
-      "size_bytes": 2167,
-      "sha256": "f79d89dd25a4edc4fe8a033063a4a263734e7c350cca857da98acab2880c2421",
+      "size_bytes": 2766,
+      "sha256": "f2fe21399d8578716e51b920d8410d27da9c14f7ffd7e559724338d4dddbc183",
       "product_count": 3
     },
     "datasetContracts": {
@@ -260,9 +261,9 @@
     "provenance": {
       "path": "data/derived/provenance.json",
       "kind": "json",
-      "size_bytes": 19774,
-      "sha256": "19da91fe099ecb14e5b927c8d335ce594c718ec18d70904a99c7828a7fa6e4fe",
-      "entry_count": 26
+      "size_bytes": 20371,
+      "sha256": "83415555b55670b86dbea1f7d48c8b1c68fede55629ab5f60b4da59e67b2e124",
+      "entry_count": 27
     },
     "researchRecipes": {
       "path": "data/derived/research_recipes.json",
@@ -287,6 +288,13 @@
       "kind": "json",
       "size_bytes": 2169,
       "sha256": "9ac5879121787927fed800997aad760947b8264947534af39f64a1fcbac3cb94"
+    },
+    "productCatalog": {
+      "path": "data/products/product_catalog.json",
+      "kind": "json",
+      "size_bytes": 2820,
+      "sha256": "b0e92667fe9101ff10e8a91a14e00e98c8deb850cd4ad6d728ab42bd73a4039a",
+      "product_count": 3
     }
   },
   "integrity": {
@@ -308,6 +316,7 @@
       "municipalitySummary",
       "municipalitySummaryByElectionIndex",
       "partiesMaster",
+      "productCatalog",
       "provenance",
       "provinceGeometry",
       "researchRecipes",

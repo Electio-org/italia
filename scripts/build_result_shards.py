@@ -15,7 +15,8 @@ EXTRA_NOTE = "Party results can be delivered both as a monolithic CSV and as per
 SUMMARY_NOTE = "Municipality summary rows can also be delivered as per-election shards to reduce initial browser load."
 ARCHIVE_GAP_NOTE = "The bundle can also declare a gap report that compares published coverage against the official Eligendo open-data archives."
 CANONICAL_REBUILD_NOTE = "Municipality coverage is rebuilt from official Eligendo open-data zip archives across all Camera years plus Assemblea Costituente 1946."
-CURRENT_VERSION = "0.16.0"
+PRODUCT_SYSTEM_NOTE = "Products are also published through a product catalog plus per-product manifests, not only through the bundle-wide manifest."
+CURRENT_VERSION = "0.17.0"
 
 
 def sha256_file(path: Path) -> str:
@@ -100,9 +101,12 @@ def main() -> None:
         notes.append(ARCHIVE_GAP_NOTE)
     if CANONICAL_REBUILD_NOTE not in notes:
         notes.append(CANONICAL_REBUILD_NOTE)
+    if PRODUCT_SYSTEM_NOTE not in notes:
+        notes.append(PRODUCT_SYSTEM_NOTE)
     project["notes"] = notes
 
     files = manifest.setdefault("files", {})
+    files["productCatalog"] = "data/products/product_catalog.json"
     files["municipalitySummaryByElectionIndex"] = "data/derived/municipality_summary_by_election.json"
     files["municipalityResultsLongByElectionIndex"] = "data/derived/municipality_results_long_by_election.json"
     manifest["loading"] = {
@@ -182,11 +186,29 @@ def main() -> None:
         dataset_registry_path.write_text(json.dumps(dataset_registry, ensure_ascii=False, indent=2), encoding="utf-8")
 
     data_products_path = derived / "data_products.json"
+    data_products = None
     if data_products_path.exists():
         data_products = json.loads(data_products_path.read_text(encoding="utf-8"))
+        intended_use_defaults = {
+            "camera_muni_historical": [
+                "analisi storica comunale della Camera e dell'Assemblea Costituente in Lombardia",
+                "dashboard pubblica e download per anno o release",
+                "base primaria per confronto territoriale e profili comunali"
+            ],
+            "geometry_pack_lombardia": [
+                "cartografia web e ricerca territoriale con basi annuali dichiarate",
+                "join geografico esplicito via geometry_id e municipality_id"
+            ],
+            "metadata_layer": [
+                "audit della release, codebook, guardrail e provenance",
+                "documentazione machine-readable del bundle"
+            ]
+        }
         for product in data_products.get("products") or []:
             if product.get("product_key") == "camera_muni_historical":
                 product["delivery_strategy"] = "summary_and_results_monolith_plus_election_shards"
+            if not (product.get("intended_use") or []):
+                product["intended_use"] = intended_use_defaults.get(str(product.get("product_key") or ""), [])
         data_products_path.write_text(json.dumps(data_products, ensure_ascii=False, indent=2), encoding="utf-8")
 
     provenance_path = derived / "provenance.json"
@@ -244,6 +266,118 @@ def main() -> None:
         update_log["entries"] = ensure_update_log_entry(list(update_log.get("entries") or []))
         update_log_path.write_text(json.dumps(update_log, ensure_ascii=False, indent=2), encoding="utf-8")
 
+    product_catalog_dir = root / "data" / "products"
+    product_catalog_dir.mkdir(parents=True, exist_ok=True)
+    release_date = ((update_log.get("entries") or [{}])[0].get("date") if 'update_log' in locals() else None)
+    product_catalog_items: List[Dict[str, object]] = []
+    product_manifest_step = "pubblicazione del sistema prodotti con catalogo e manifest dedicati per ogni product_key"
+    if data_products:
+        clients = list(data_products.get("clients") or [])
+        for product in data_products.get("products") or []:
+            product_key = str(product.get("product_key") or slugify(product.get("title") or "product"))
+            product_dir = product_catalog_dir / product_key
+            product_dir.mkdir(parents=True, exist_ok=True)
+            role_specs = []
+            if product.get("primary_dataset_key"):
+                role_specs.append(("primary", str(product["primary_dataset_key"])))
+            if product.get("companion_dataset_key"):
+                role_specs.append(("companion", str(product["companion_dataset_key"])))
+            for extra in product.get("extra_dataset_keys") or []:
+                if extra:
+                    role_specs.append(("extra", str(extra)))
+            dataset_entries: List[Dict[str, object]] = []
+            for role, dataset_key in role_specs:
+                rel = files.get(dataset_key)
+                if not rel:
+                    continue
+                meta = summarize_file(root / rel, root)
+                entry = {
+                    "role": role,
+                    "dataset_key": dataset_key,
+                    "path": rel,
+                    "kind": meta.get("kind"),
+                    "size_bytes": meta.get("size_bytes"),
+                    "row_count": meta.get("row_count"),
+                    "feature_count": meta.get("feature_count"),
+                    "sha256": meta.get("sha256"),
+                }
+                if dataset_key == "municipalitySummary" and files.get("municipalitySummaryByElectionIndex"):
+                    entry["delivery_strategy"] = manifest.get("loading", {}).get("municipalitySummary", {}).get("strategy")
+                    entry["by_election_index"] = files["municipalitySummaryByElectionIndex"]
+                if dataset_key == "municipalityResultsLong" and files.get("municipalityResultsLongByElectionIndex"):
+                    entry["delivery_strategy"] = manifest.get("loading", {}).get("municipalityResultsLong", {}).get("strategy")
+                    entry["by_election_index"] = files["municipalityResultsLongByElectionIndex"]
+                dataset_entries.append(entry)
+
+            product_manifest = {
+                "generated_by": "build_result_shards.py",
+                "release_version": CURRENT_VERSION,
+                "release_date": release_date,
+                "product": {
+                    "product_key": product_key,
+                    "title": product.get("title"),
+                    "kind": product.get("kind"),
+                    "territorial_mode": product.get("territorial_mode"),
+                    "granularity": product.get("granularity"),
+                    "delivery_strategy": product.get("delivery_strategy"),
+                    "primary_dataset_key": product.get("primary_dataset_key"),
+                    "companion_dataset_key": product.get("companion_dataset_key"),
+                    "extra_dataset_keys": product.get("extra_dataset_keys") or [],
+                    "join_keys": product.get("join_keys") or [],
+                    "guardrails": product.get("guardrails") or [],
+                    "intended_use": product.get("intended_use") or [],
+                },
+                "datasets": dataset_entries,
+                "clients": clients,
+                "bundle_manifest": "data/derived/manifest.json",
+            }
+            product_manifest_path = product_dir / "manifest.json"
+            product_manifest_path.write_text(json.dumps(product_manifest, ensure_ascii=False, indent=2), encoding="utf-8")
+            product_catalog_items.append({
+                "product_key": product_key,
+                "title": product.get("title"),
+                "kind": product.get("kind"),
+                "territorial_mode": product.get("territorial_mode"),
+                "granularity": product.get("granularity"),
+                "delivery_strategy": product.get("delivery_strategy"),
+                "manifest_path": str(product_manifest_path.relative_to(root)).replace("\\", "/"),
+                "dataset_count": len(dataset_entries),
+                "primary_dataset_key": product.get("primary_dataset_key"),
+                "companion_dataset_key": product.get("companion_dataset_key"),
+                "extra_dataset_keys": product.get("extra_dataset_keys") or [],
+                "guardrails": product.get("guardrails") or [],
+                "join_keys": product.get("join_keys") or [],
+                "intended_use": product.get("intended_use") or [],
+            })
+    product_catalog = {
+        "generated_by": "build_result_shards.py",
+        "release_version": CURRENT_VERSION,
+        "release_date": release_date,
+        "products": product_catalog_items,
+    }
+    product_catalog_path = product_catalog_dir / "product_catalog.json"
+    product_catalog_path.write_text(json.dumps(product_catalog, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    if provenance_path.exists():
+        provenance = json.loads(provenance_path.read_text(encoding="utf-8"))
+        entries = provenance.get("entries") or []
+        if not any(entry.get("dataset_key") == "productCatalog" for entry in entries):
+            entries.append({
+                "dataset_key": "productCatalog",
+                "path": files["productCatalog"],
+                "produced_by": "build_result_shards.py",
+                "source_class": "derived_bundle",
+                "transformation_steps": [
+                    product_manifest_step,
+                    "normalizzazione dei data products dichiarati in un indice di prodotti leggibile da codice e dal sito"
+                ],
+                "limitations": [
+                    "i product manifest non creano nuovi dati: organizzano i dataset esistenti in prodotti piu espliciti"
+                ]
+            })
+            provenance["entries"] = entries
+            provenance_path.write_text(json.dumps(provenance, ensure_ascii=False, indent=2), encoding="utf-8")
+
     manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
 
     release_manifest = {
@@ -265,6 +399,7 @@ def main() -> None:
     print(json.dumps({
         "root": str(root),
         "manifest_version": project.get("version"),
+        "product_count": len(product_catalog_items),
         "summary_shard_count": len(summary_shards),
         "shard_count": len(shards),
         "declared_summary_rows": sum(summary_row_counts.values()),

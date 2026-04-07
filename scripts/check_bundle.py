@@ -165,7 +165,7 @@ def main() -> int:
     if not geometry.get('features'):
         issues.append('geometry:placeholder_or_missing')
 
-    required_manifest_keys = ['geometryPack', 'dataProducts', 'datasetContracts', 'provenance', 'releaseManifest', 'researchRecipes', 'siteGuides', 'municipalitySummaryByElectionIndex', 'municipalityResultsLongByElectionIndex', 'archiveBundleGapReport']
+    required_manifest_keys = ['geometryPack', 'dataProducts', 'productCatalog', 'datasetContracts', 'provenance', 'releaseManifest', 'researchRecipes', 'siteGuides', 'municipalitySummaryByElectionIndex', 'municipalityResultsLongByElectionIndex', 'archiveBundleGapReport']
     for key in required_manifest_keys:
         rel = files.get(key)
         if not rel:
@@ -181,6 +181,20 @@ def main() -> int:
             entry = client.get('entrypoint')
             if entry and not (root / entry).exists():
                 issues.append(f'data_products:missing_client:{entry}')
+
+    if files.get('productCatalog') and (root / files['productCatalog']).exists():
+        product_catalog = json.loads((root / files['productCatalog']).read_text(encoding='utf-8'))
+        products = product_catalog.get('products') or []
+        if not products:
+            issues.append('product_catalog:empty_products')
+        for product in products:
+            manifest_path = product.get('manifest_path')
+            if not manifest_path or not (root / manifest_path).exists():
+                issues.append(f"product_catalog:missing_manifest:{product.get('product_key')}")
+                continue
+            product_manifest = json.loads((root / manifest_path).read_text(encoding='utf-8'))
+            if not (product_manifest.get('datasets') or []):
+                issues.append(f"product_manifest:empty_datasets:{product.get('product_key')}")
 
     if files.get('municipalitySummaryByElectionIndex') and (root / files['municipalitySummaryByElectionIndex']).exists():
         shard_payload = json.loads((root / files['municipalitySummaryByElectionIndex']).read_text(encoding='utf-8'))

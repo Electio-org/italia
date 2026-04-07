@@ -1,0 +1,93 @@
+{
+  "generated_by": "build_result_shards.py",
+  "release_version": "0.17.0",
+  "release_date": "2026-04-07",
+  "product": {
+    "product_key": "metadata_layer",
+    "title": "Metadata layer del bundle",
+    "kind": "metadata_bundle",
+    "territorial_mode": null,
+    "granularity": "bundle-level",
+    "delivery_strategy": null,
+    "primary_dataset_key": "datasetRegistry",
+    "companion_dataset_key": "codebook",
+    "extra_dataset_keys": [
+      "usageNotes",
+      "updateLog",
+      "archiveBundleGapReport"
+    ],
+    "join_keys": [],
+    "guardrails": [],
+    "intended_use": [
+      "audit della release, codebook, guardrail e provenance",
+      "documentazione machine-readable del bundle"
+    ]
+  },
+  "datasets": [
+    {
+      "role": "primary",
+      "dataset_key": "datasetRegistry",
+      "path": "data/derived/dataset_registry.json",
+      "kind": "json",
+      "size_bytes": 12812,
+      "row_count": null,
+      "feature_count": null,
+      "sha256": "c89c8dd2b073eaf9f3cd882a67a5c220fa9c4f67c5d901e0cfba936bc9200309"
+    },
+    {
+      "role": "companion",
+      "dataset_key": "codebook",
+      "path": "data/derived/codebook.json",
+      "kind": "json",
+      "size_bytes": 15353,
+      "row_count": null,
+      "feature_count": null,
+      "sha256": "9cf57feef45eed47543abc0c309da431bf37980e523341989f387f015058f61c"
+    },
+    {
+      "role": "extra",
+      "dataset_key": "usageNotes",
+      "path": "data/derived/usage_notes.json",
+      "kind": "json",
+      "size_bytes": 1902,
+      "row_count": null,
+      "feature_count": null,
+      "sha256": "7c2141c609559a3af57aeb7c32ea79e91224ce15e0d659ccb900c1ef2c685798"
+    },
+    {
+      "role": "extra",
+      "dataset_key": "updateLog",
+      "path": "data/derived/update_log.json",
+      "kind": "json",
+      "size_bytes": 9923,
+      "row_count": null,
+      "feature_count": null,
+      "sha256": "768518bc040e1482d001c93e621f8e6c8030257c83ef2cb5778b3a23b2b42cfc"
+    },
+    {
+      "role": "extra",
+      "dataset_key": "archiveBundleGapReport",
+      "path": "data/derived/archive_bundle_gap_report.json",
+      "kind": "json",
+      "size_bytes": 17606,
+      "row_count": null,
+      "feature_count": null,
+      "sha256": "d918c43d62776fa032bac7aa5aa6ea21f2fcf21917e50941f991e19e78c16f95"
+    }
+  ],
+  "clients": [
+    {
+      "client_key": "python_loader",
+      "language": "python",
+      "entrypoint": "clients/python/lce_loader.py",
+      "example": "from clients.python.lce_loader import load_bundle\nbundle = load_bundle('.')\nsummary = bundle.load_dataset('municipalitySummary')"
+    },
+    {
+      "client_key": "r_loader",
+      "language": "r",
+      "entrypoint": "clients/r/lce_loader.R",
+      "example": "source('clients/r/lce_loader.R')\nbundle <- load_lce_bundle('.')\nsummary <- lce_read(bundle, 'municipalitySummary')"
+    }
+  ],
+  "bundle_manifest": "data/derived/manifest.json"
+}

@@ -1,6 +1,7 @@
 {
-  "generated_by": "preprocess.py",
-  "release_channel": "static_bundle",
+  "generated_by": "build_result_shards.py",
+  "release_version": "0.17.0",
+  "release_date": "2026-04-07",
   "products": [
     {
       "product_key": "camera_muni_historical",
@@ -8,18 +9,21 @@
       "kind": "election_panel",
       "territorial_mode": "historical",
       "granularity": "municipality-election",
+      "delivery_strategy": "summary_and_results_monolith_plus_election_shards",
+      "manifest_path": "data/products/camera_muni_historical/manifest.json",
+      "dataset_count": 2,
       "primary_dataset_key": "municipalitySummary",
       "companion_dataset_key": "municipalityResultsLong",
+      "extra_dataset_keys": [],
+      "guardrails": [
+        "Usare coverage e completeness_flag prima di interpretare trend forti.",
+        "Le quote di partito possono restare parziali nei bundle incompleti."
+      ],
       "join_keys": [
         "municipality_id",
         "geometry_id",
         "election_key"
       ],
-      "guardrails": [
-        "Usare coverage e completeness_flag prima di interpretare trend forti.",
-        "Le quote di partito possono restare parziali nei bundle incompleti."
-      ],
-      "delivery_strategy": "summary_and_results_monolith_plus_election_shards",
       "intended_use": [
         "analisi storica comunale della Camera e dell'Assemblea Costituente in Lombardia",
         "dashboard pubblica e download per anno o release",
@@ -30,9 +34,15 @@
       "product_key": "geometry_pack_lombardia",
       "title": "Pacchetto geometrie Lombardia",
       "kind": "boundary_pack",
+      "territorial_mode": null,
       "granularity": "municipality/province boundary by year",
+      "delivery_strategy": null,
+      "manifest_path": "data/products/geometry_pack_lombardia/manifest.json",
+      "dataset_count": 2,
       "primary_dataset_key": "geometryPack",
       "companion_dataset_key": "provinceGeometry",
+      "extra_dataset_keys": [],
+      "guardrails": [],
       "join_keys": [
         "geometry_id",
         "municipality_id"
@@ -46,7 +56,11 @@
       "product_key": "metadata_layer",
       "title": "Metadata layer del bundle",
       "kind": "metadata_bundle",
+      "territorial_mode": null,
       "granularity": "bundle-level",
+      "delivery_strategy": null,
+      "manifest_path": "data/products/metadata_layer/manifest.json",
+      "dataset_count": 5,
       "primary_dataset_key": "datasetRegistry",
       "companion_dataset_key": "codebook",
       "extra_dataset_keys": [
@@ -54,24 +68,12 @@
         "updateLog",
         "archiveBundleGapReport"
       ],
+      "guardrails": [],
+      "join_keys": [],
       "intended_use": [
         "audit della release, codebook, guardrail e provenance",
         "documentazione machine-readable del bundle"
       ]
-    }
-  ],
-  "clients": [
-    {
-      "client_key": "python_loader",
-      "language": "python",
-      "entrypoint": "clients/python/lce_loader.py",
-      "example": "from clients.python.lce_loader import load_bundle\nbundle = load_bundle('.')\nsummary = bundle.load_dataset('municipalitySummary')"
-    },
-    {
-      "client_key": "r_loader",
-      "language": "r",
-      "entrypoint": "clients/r/lce_loader.R",
-      "example": "source('clients/r/lce_loader.R')\nbundle <- load_lce_bundle('.')\nsummary <- lce_read(bundle, 'municipalitySummary')"
     }
   ]
 }
