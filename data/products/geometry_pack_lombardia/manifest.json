@@ -1,6 +1,6 @@
 {
   "generated_by": "build_result_shards.py",
-  "release_version": "0.17.0",
+  "release_version": "0.18.0",
   "release_date": "2026-04-07",
   "product": {
     "product_key": "geometry_pack_lombardia",
@@ -44,6 +44,42 @@
       "sha256": "03aa143bfcf068f56f6dbefcfc67b08feba5e105c14f5a88b2414940ca3d5b8b"
     }
   ],
+  "inventory": {
+    "kind": "boundary_years",
+    "entry_count": 6,
+    "entries": [
+      {
+        "geometry_year": 1991,
+        "municipalities_path": "data/derived/geometries/municipalities_1991.geojson",
+        "provinces_path": "data/derived/geometries/provinces_1991.geojson"
+      },
+      {
+        "geometry_year": 2001,
+        "municipalities_path": "data/derived/geometries/municipalities_2001.geojson",
+        "provinces_path": "data/derived/geometries/provinces_2001.geojson"
+      },
+      {
+        "geometry_year": 2014,
+        "municipalities_path": "data/derived/geometries/municipalities_2014.geojson",
+        "provinces_path": "data/derived/geometries/provinces_2014.geojson"
+      },
+      {
+        "geometry_year": 2018,
+        "municipalities_path": "data/derived/geometries/municipalities_2018.geojson",
+        "provinces_path": "data/derived/geometries/provinces_2018.geojson"
+      },
+      {
+        "geometry_year": 2021,
+        "municipalities_path": "data/derived/geometries/municipalities_2021.geojson",
+        "provinces_path": "data/derived/geometries/provinces_2021.geojson"
+      },
+      {
+        "geometry_year": 2026,
+        "municipalities_path": "data/derived/geometries/municipalities_2026.geojson",
+        "provinces_path": "data/derived/geometries/provinces_2026.geojson"
+      }
+    ]
+  },
   "clients": [
     {
       "client_key": "python_loader",

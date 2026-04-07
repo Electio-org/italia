@@ -121,6 +121,10 @@ def main() -> int:
     if loader_guides.returncode != 0:
         issues.append(f'python_loader_guides:{loader_guides.stderr.strip() or loader_guides.stdout.strip()}')
 
+    loader_product_catalog = subprocess.run(['python', str(root / 'clients' / 'python' / 'lce_loader.py'), '--root', str(root), '--product-catalog'], capture_output=True, text=True)
+    if loader_product_catalog.returncode != 0:
+        issues.append(f'python_loader_product_catalog:{loader_product_catalog.stderr.strip() or loader_product_catalog.stdout.strip()}')
+
     loader_tests = subprocess.run(['python', '-m', 'unittest', 'clients.python.tests.test_loader'], capture_output=True, text=True, cwd=str(root))
     if loader_tests.returncode != 0:
         issues.append(f'python_loader_tests:{loader_tests.stderr.strip() or loader_tests.stdout.strip()}')
@@ -195,6 +199,9 @@ def main() -> int:
             product_manifest = json.loads((root / manifest_path).read_text(encoding='utf-8'))
             if not (product_manifest.get('datasets') or []):
                 issues.append(f"product_manifest:empty_datasets:{product.get('product_key')}")
+            inventory = product_manifest.get('inventory') or {}
+            if not (inventory.get('entries') or []):
+                issues.append(f"product_manifest:empty_inventory:{product.get('product_key')}")
 
     if files.get('municipalitySummaryByElectionIndex') and (root / files['municipalitySummaryByElectionIndex']).exists():
         shard_payload = json.loads((root / files['municipalitySummaryByElectionIndex']).read_text(encoding='utf-8'))
@@ -225,7 +232,8 @@ def main() -> int:
             issues.append('release_manifest:declared_files_missing')
         expected_release_scope = set(files.keys()) - {'releaseManifest'}
         actual_release_scope = set(entries.keys())
-        if actual_release_scope != set(files.keys()) and actual_release_scope != expected_release_scope:
+        allowed_extra_scope = {key for key in actual_release_scope if str(key).startswith('productManifest:')}
+        if actual_release_scope != set(files.keys()) and actual_release_scope != expected_release_scope and actual_release_scope != expected_release_scope.union(allowed_extra_scope):
             issues.append('release_manifest:file_scope_mismatch')
 
     if files.get('datasetContracts') and (root / files['datasetContracts']).exists():

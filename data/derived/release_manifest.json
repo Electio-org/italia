@@ -2,7 +2,7 @@
   "generated_by": "build_result_shards.py",
   "project": {
     "title": "Lombardia Camera Explorer",
-    "version": "0.17.0",
+    "version": "0.18.0",
     "ready_for_real_data": true,
     "notes": [
       "Vote shares are recomputed from votes whenever a plausible denominator is available.",
@@ -17,7 +17,8 @@
       "The bundle can also declare a gap report that compares published coverage against the official Eligendo open-data archives.",
       "Municipality coverage is rebuilt from official Eligendo open-data zip archives across all Camera years plus Assemblea Costituente 1946.",
       "Municipality summary rows can also be delivered as per-election shards to reduce initial browser load.",
-      "Products are also published through a product catalog plus per-product manifests, not only through the bundle-wide manifest."
+      "Products are also published through a product catalog plus per-product manifests, not only through the bundle-wide manifest.",
+      "Every declared product also exposes a product-level inventory so users can see what is inside before loading the data."
     ]
   },
   "bundle_root": ".",
@@ -241,9 +242,9 @@
     "updateLog": {
       "path": "data/derived/update_log.json",
       "kind": "json",
-      "size_bytes": 9923,
-      "sha256": "768518bc040e1482d001c93e621f8e6c8030257c83ef2cb5778b3a23b2b42cfc",
-      "entry_count": 15
+      "size_bytes": 11269,
+      "sha256": "b2f16911c11fe6a44203130f4b33a4a0fc8012067fa7d6908d3a395dddfc8389",
+      "entry_count": 16
     },
     "dataProducts": {
       "path": "data/derived/data_products.json",
@@ -292,9 +293,30 @@
     "productCatalog": {
       "path": "data/products/product_catalog.json",
       "kind": "json",
-      "size_bytes": 2820,
-      "sha256": "b0e92667fe9101ff10e8a91a14e00e98c8deb850cd4ad6d728ab42bd73a4039a",
+      "size_bytes": 3424,
+      "sha256": "82ba263a80748711b9062f9c4096be57a800eaeb6e152889bcfd73d8d0c8dd69",
       "product_count": 3
+    },
+    "productManifest:camera_muni_historical": {
+      "path": "data/products/camera_muni_historical/manifest.json",
+      "kind": "json",
+      "size_bytes": 12651,
+      "sha256": "03d90390630fc2eaca5423cbdcb71dea99363b53f7ea37cf50d4655070b24f51",
+      "dataset_count": 2
+    },
+    "productManifest:geometry_pack_lombardia": {
+      "path": "data/products/geometry_pack_lombardia/manifest.json",
+      "kind": "json",
+      "size_bytes": 3468,
+      "sha256": "c3360e4958ca0c02462659a58017d6b91ab668773f22062a5b0e1988ebccff4f",
+      "dataset_count": 2
+    },
+    "productManifest:metadata_layer": {
+      "path": "data/products/metadata_layer/manifest.json",
+      "kind": "json",
+      "size_bytes": 4215,
+      "sha256": "3d9db5a3ee1ce246ce49e49e06767e01d0414c5d82120d9bfd25deaed57d9711",
+      "dataset_count": 5
     }
   },
   "integrity": {
@@ -317,6 +339,9 @@
       "municipalitySummaryByElectionIndex",
       "partiesMaster",
       "productCatalog",
+      "productManifest:camera_muni_historical",
+      "productManifest:geometry_pack_lombardia",
+      "productManifest:metadata_layer",
       "provenance",
       "provinceGeometry",
       "researchRecipes",

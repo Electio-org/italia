@@ -1,6 +1,6 @@
 {
   "generated_by": "build_result_shards.py",
-  "release_version": "0.17.0",
+  "release_version": "0.18.0",
   "release_date": "2026-04-07",
   "products": [
     {
@@ -28,6 +28,14 @@
         "analisi storica comunale della Camera e dell'Assemblea Costituente in Lombardia",
         "dashboard pubblica e download per anno o release",
         "base primaria per confronto territoriale e profili comunali"
+      ],
+      "inventory_kind": "election_datasets",
+      "inventory_count": 20,
+      "inventory_preview": [
+        "assemblea_costituente_1946",
+        "camera_1948",
+        "camera_1953",
+        "camera_1958"
       ]
     },
     {
@@ -50,6 +58,14 @@
       "intended_use": [
         "cartografia web e ricerca territoriale con basi annuali dichiarate",
         "join geografico esplicito via geometry_id e municipality_id"
+      ],
+      "inventory_kind": "boundary_years",
+      "inventory_count": 6,
+      "inventory_preview": [
+        1991,
+        2001,
+        2014,
+        2018
       ]
     },
     {
@@ -73,6 +89,14 @@
       "intended_use": [
         "audit della release, codebook, guardrail e provenance",
         "documentazione machine-readable del bundle"
+      ],
+      "inventory_kind": "metadata_objects",
+      "inventory_count": 5,
+      "inventory_preview": [
+        "datasetRegistry",
+        "codebook",
+        "usageNotes",
+        "updateLog"
       ]
     }
   ]

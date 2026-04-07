@@ -57,6 +57,12 @@ class LoaderTests(unittest.TestCase):
         manifest = self.bundle.product_manifest(product_key)
         self.assertEqual(manifest.get('product', {}).get('product_key'), product_key)
 
+    def test_product_inventory_present(self):
+        product_key = (self.bundle.product_catalog().get('products') or [{}])[0].get('product_key')
+        self.assertTrue(product_key)
+        inventory = self.bundle.product_inventory(product_key)
+        self.assertGreaterEqual(len(inventory.get('entries') or []), 1)
+
 
     def test_site_guides_present(self):
         self.assertGreaterEqual(len(self.bundle.site_guides().get('layers') or []), 1)

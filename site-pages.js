@@ -223,8 +223,10 @@ function renderDownloadPage(bundle) {
               <span><strong>Primario</strong> ${primaryPath ? `<a href="${escapeHtml(primaryPath)}" download>${escapeHtml(product.primary_dataset_key)}</a>` : 'n.d.'}</span>
               <span><strong>Companion</strong> ${companionPath ? `<a href="${escapeHtml(companionPath)}" download>${escapeHtml(product.companion_dataset_key)}</a>` : 'n.d.'}</span>
               <span><strong>Dataset</strong> ${escapeHtml(String(product.dataset_count ?? 'n.d.'))}</span>
+              <span><strong>Inventory</strong> ${escapeHtml(String(product.inventory_count ?? 'n.d.'))}</span>
             </div>
             <ul class="doc-list">
+              ${(product.inventory_preview || []).map((item) => `<li><code>${escapeHtml(String(item))}</code></li>`).join('')}
               ${(product.guardrails || []).map((item) => `<li>${escapeHtml(item)}</li>`).join('')}
             </ul>
           </article>
@@ -390,6 +392,24 @@ function renderProgrammaticPage(bundle) {
   }
   if (q('citation-block')) {
     q('citation-block').textContent = bundle.citation || '';
+  }
+
+  const productManifestBody = q('product-manifest-table-body');
+  if (productManifestBody) {
+    productManifestBody.innerHTML = products
+      .map((product) => `
+        <tr>
+          <td>
+            <strong>${escapeHtml(product.title || product.product_key)}</strong>
+            <div class="table-muted">${escapeHtml(product.product_key || '')}</div>
+          </td>
+          <td>${product.manifest_path ? `<a class="doc-download-link" href="${escapeHtml(product.manifest_path)}" download>manifest.json</a>` : 'n.d.'}</td>
+          <td>${escapeHtml(product.inventory_kind || 'n.d.')}</td>
+          <td>${escapeHtml(String(product.inventory_count ?? 'n.d.'))}</td>
+          <td>${escapeHtml(product.delivery_strategy || 'declared in manifest')}</td>
+        </tr>
+      `)
+      .join('');
   }
 
   const recipeBody = q('recipe-table-body');

@@ -1,6 +1,6 @@
 {
   "generated_by": "build_result_shards.py",
-  "release_version": "0.17.0",
+  "release_version": "0.18.0",
   "release_date": "2026-04-07",
   "product": {
     "product_key": "metadata_layer",
@@ -59,10 +59,10 @@
       "dataset_key": "updateLog",
       "path": "data/derived/update_log.json",
       "kind": "json",
-      "size_bytes": 9923,
+      "size_bytes": 11269,
       "row_count": null,
       "feature_count": null,
-      "sha256": "768518bc040e1482d001c93e621f8e6c8030257c83ef2cb5778b3a23b2b42cfc"
+      "sha256": "b2f16911c11fe6a44203130f4b33a4a0fc8012067fa7d6908d3a395dddfc8389"
     },
     {
       "role": "extra",
@@ -75,6 +75,52 @@
       "sha256": "d918c43d62776fa032bac7aa5aa6ea21f2fcf21917e50941f991e19e78c16f95"
     }
   ],
+  "inventory": {
+    "kind": "metadata_objects",
+    "entry_count": 5,
+    "entries": [
+      {
+        "dataset_key": "datasetRegistry",
+        "path": "data/derived/dataset_registry.json",
+        "kind": "json",
+        "size_bytes": 12812,
+        "row_count": null,
+        "feature_count": null
+      },
+      {
+        "dataset_key": "codebook",
+        "path": "data/derived/codebook.json",
+        "kind": "json",
+        "size_bytes": 15353,
+        "row_count": null,
+        "feature_count": null
+      },
+      {
+        "dataset_key": "usageNotes",
+        "path": "data/derived/usage_notes.json",
+        "kind": "json",
+        "size_bytes": 1902,
+        "row_count": null,
+        "feature_count": null
+      },
+      {
+        "dataset_key": "updateLog",
+        "path": "data/derived/update_log.json",
+        "kind": "json",
+        "size_bytes": 11269,
+        "row_count": null,
+        "feature_count": null
+      },
+      {
+        "dataset_key": "archiveBundleGapReport",
+        "path": "data/derived/archive_bundle_gap_report.json",
+        "kind": "json",
+        "size_bytes": 17606,
+        "row_count": null,
+        "feature_count": null
+      }
+    ]
+  },
   "clients": [
     {
       "client_key": "python_loader",

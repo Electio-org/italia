@@ -1,6 +1,6 @@
 {
   "generated_by": "build_result_shards.py",
-  "release_version": "0.17.0",
+  "release_version": "0.18.0",
   "release_date": "2026-04-07",
   "product": {
     "product_key": "camera_muni_historical",
@@ -53,6 +53,252 @@
       "by_election_index": "data/derived/municipality_results_long_by_election.json"
     }
   ],
+  "inventory": {
+    "kind": "election_datasets",
+    "entry_count": 20,
+    "entries": [
+      {
+        "dataset_key": "assemblea_costituente_1946",
+        "dataset_family": "assemblea_costituente_municipality_historical",
+        "election_key": "assemblea_costituente_1946",
+        "election_year": 1946,
+        "coverage_label": "summary+results",
+        "status": "usable",
+        "summary_rows": 1383,
+        "result_rows": 11534,
+        "download_summary": "data/derived/summary_by_election/assemblea_costituente_1946.csv",
+        "download_results": "data/derived/results_by_election/assemblea_costituente_1946.csv"
+      },
+      {
+        "dataset_key": "camera_1948",
+        "dataset_family": "camera_municipality_historical",
+        "election_key": "camera_1948",
+        "election_year": 1948,
+        "coverage_label": "summary+results",
+        "status": "usable",
+        "summary_rows": 1433,
+        "result_rows": 13769,
+        "download_summary": "data/derived/summary_by_election/camera_1948.csv",
+        "download_results": "data/derived/results_by_election/camera_1948.csv"
+      },
+      {
+        "dataset_key": "camera_1953",
+        "dataset_family": "camera_municipality_historical",
+        "election_key": "camera_1953",
+        "election_year": 1953,
+        "coverage_label": "summary+results",
+        "status": "usable",
+        "summary_rows": 1474,
+        "result_rows": 15764,
+        "download_summary": "data/derived/summary_by_election/camera_1953.csv",
+        "download_results": "data/derived/results_by_election/camera_1953.csv"
+      },
+      {
+        "dataset_key": "camera_1958",
+        "dataset_family": "camera_municipality_historical",
+        "election_key": "camera_1958",
+        "election_year": 1958,
+        "coverage_label": "summary+results",
+        "status": "usable",
+        "summary_rows": 1529,
+        "result_rows": 15126,
+        "download_summary": "data/derived/summary_by_election/camera_1958.csv",
+        "download_results": "data/derived/results_by_election/camera_1958.csv"
+      },
+      {
+        "dataset_key": "camera_1963",
+        "dataset_family": "camera_municipality_historical",
+        "election_key": "camera_1963",
+        "election_year": 1963,
+        "coverage_label": "summary+results",
+        "status": "usable",
+        "summary_rows": 1539,
+        "result_rows": 14211,
+        "download_summary": "data/derived/summary_by_election/camera_1963.csv",
+        "download_results": "data/derived/results_by_election/camera_1963.csv"
+      },
+      {
+        "dataset_key": "camera_1968",
+        "dataset_family": "camera_municipality_historical",
+        "election_key": "camera_1968",
+        "election_year": 1968,
+        "coverage_label": "summary+results",
+        "status": "usable",
+        "summary_rows": 1544,
+        "result_rows": 13962,
+        "download_summary": "data/derived/summary_by_election/camera_1968.csv",
+        "download_results": "data/derived/results_by_election/camera_1968.csv"
+      },
+      {
+        "dataset_key": "camera_1972",
+        "dataset_family": "camera_municipality_historical",
+        "election_key": "camera_1972",
+        "election_year": 1972,
+        "coverage_label": "summary+results",
+        "status": "usable",
+        "summary_rows": 1546,
+        "result_rows": 16571,
+        "download_summary": "data/derived/summary_by_election/camera_1972.csv",
+        "download_results": "data/derived/results_by_election/camera_1972.csv"
+      },
+      {
+        "dataset_key": "camera_1976",
+        "dataset_family": "camera_municipality_historical",
+        "election_key": "camera_1976",
+        "election_year": 1976,
+        "coverage_label": "summary+results",
+        "status": "usable",
+        "summary_rows": 1546,
+        "result_rows": 14018,
+        "download_summary": "data/derived/summary_by_election/camera_1976.csv",
+        "download_results": "data/derived/results_by_election/camera_1976.csv"
+      },
+      {
+        "dataset_key": "camera_1979",
+        "dataset_family": "camera_municipality_historical",
+        "election_key": "camera_1979",
+        "election_year": 1979,
+        "coverage_label": "summary+results",
+        "status": "usable",
+        "summary_rows": 1546,
+        "result_rows": 17958,
+        "download_summary": "data/derived/summary_by_election/camera_1979.csv",
+        "download_results": "data/derived/results_by_election/camera_1979.csv"
+      },
+      {
+        "dataset_key": "camera_1983",
+        "dataset_family": "camera_municipality_historical",
+        "election_key": "camera_1983",
+        "election_year": 1983,
+        "coverage_label": "summary+results",
+        "status": "usable",
+        "summary_rows": 1546,
+        "result_rows": 17288,
+        "download_summary": "data/derived/summary_by_election/camera_1983.csv",
+        "download_results": "data/derived/results_by_election/camera_1983.csv"
+      },
+      {
+        "dataset_key": "camera_1987",
+        "dataset_family": "camera_municipality_historical",
+        "election_key": "camera_1987",
+        "election_year": 1987,
+        "coverage_label": "summary+results",
+        "status": "usable",
+        "summary_rows": 1546,
+        "result_rows": 20902,
+        "download_summary": "data/derived/summary_by_election/camera_1987.csv",
+        "download_results": "data/derived/results_by_election/camera_1987.csv"
+      },
+      {
+        "dataset_key": "camera_1992",
+        "dataset_family": "camera_municipality_historical",
+        "election_key": "camera_1992",
+        "election_year": 1992,
+        "coverage_label": "summary+results",
+        "status": "usable",
+        "summary_rows": 1546,
+        "result_rows": 27412,
+        "download_summary": "data/derived/summary_by_election/camera_1992.csv",
+        "download_results": "data/derived/results_by_election/camera_1992.csv"
+      },
+      {
+        "dataset_key": "camera_1994",
+        "dataset_family": "camera_municipality_historical",
+        "election_key": "camera_1994",
+        "election_year": 1994,
+        "coverage_label": "summary+results",
+        "status": "usable",
+        "summary_rows": 1546,
+        "result_rows": 18451,
+        "download_summary": "data/derived/summary_by_election/camera_1994.csv",
+        "download_results": "data/derived/results_by_election/camera_1994.csv"
+      },
+      {
+        "dataset_key": "camera_1996",
+        "dataset_family": "camera_municipality_historical",
+        "election_key": "camera_1996",
+        "election_year": 1996,
+        "coverage_label": "summary+results",
+        "status": "usable",
+        "summary_rows": 1545,
+        "result_rows": 16328,
+        "download_summary": "data/derived/summary_by_election/camera_1996.csv",
+        "download_results": "data/derived/results_by_election/camera_1996.csv"
+      },
+      {
+        "dataset_key": "camera_2001",
+        "dataset_family": "camera_municipality_historical",
+        "election_key": "camera_2001",
+        "election_year": 2001,
+        "coverage_label": "summary+results",
+        "status": "usable",
+        "summary_rows": 1544,
+        "result_rows": 23367,
+        "download_summary": "data/derived/summary_by_election/camera_2001.csv",
+        "download_results": "data/derived/results_by_election/camera_2001.csv"
+      },
+      {
+        "dataset_key": "camera_2006",
+        "dataset_family": "camera_municipality_historical",
+        "election_key": "camera_2006",
+        "election_year": 2006,
+        "coverage_label": "summary+results",
+        "status": "usable",
+        "summary_rows": 1496,
+        "result_rows": 24327,
+        "download_summary": "data/derived/summary_by_election/camera_2006.csv",
+        "download_results": "data/derived/results_by_election/camera_2006.csv"
+      },
+      {
+        "dataset_key": "camera_2008",
+        "dataset_family": "camera_municipality_historical",
+        "election_key": "camera_2008",
+        "election_year": 2008,
+        "coverage_label": "summary+results",
+        "status": "usable",
+        "summary_rows": 1496,
+        "result_rows": 21924,
+        "download_summary": "data/derived/summary_by_election/camera_2008.csv",
+        "download_results": "data/derived/results_by_election/camera_2008.csv"
+      },
+      {
+        "dataset_key": "camera_2013",
+        "dataset_family": "camera_municipality_historical",
+        "election_key": "camera_2013",
+        "election_year": 2013,
+        "coverage_label": "summary+results",
+        "status": "usable",
+        "summary_rows": 1489,
+        "result_rows": 21972,
+        "download_summary": "data/derived/summary_by_election/camera_2013.csv",
+        "download_results": "data/derived/results_by_election/camera_2013.csv"
+      },
+      {
+        "dataset_key": "camera_2018",
+        "dataset_family": "camera_municipality_historical",
+        "election_key": "camera_2018",
+        "election_year": 2018,
+        "coverage_label": "summary+results",
+        "status": "usable",
+        "summary_rows": 1516,
+        "result_rows": 24076,
+        "download_summary": "data/derived/summary_by_election/camera_2018.csv",
+        "download_results": "data/derived/results_by_election/camera_2018.csv"
+      },
+      {
+        "dataset_key": "camera_2022",
+        "dataset_family": "camera_municipality_historical",
+        "election_key": "camera_2022",
+        "election_year": 2022,
+        "coverage_label": "summary+results",
+        "status": "usable",
+        "summary_rows": 1506,
+        "result_rows": 22067,
+        "download_summary": "data/derived/summary_by_election/camera_2022.csv",
+        "download_results": "data/derived/results_by_election/camera_2022.csv"
+      }
+    ]
+  },
   "clients": [
     {
       "client_key": "python_loader",

@@ -75,6 +75,10 @@ class LombardiaCameraBundle:
             raise KeyError(f"Manifest non dichiarato per il prodotto: {product_key}")
         return self.read_json(rel)
 
+    def product_inventory(self, product_key: str) -> Dict[str, Any]:
+        manifest = self.product_manifest(product_key)
+        return dict(manifest.get('inventory') or {})
+
     def release_manifest(self) -> Dict[str, Any]:
         rel = self.files.get('releaseManifest')
         if not rel:
@@ -238,6 +242,7 @@ def main() -> int:
     parser.add_argument('--citation', action='store_true', help='Stampa la citazione del progetto / bundle')
     parser.add_argument('--product-catalog', action='store_true', help='Stampa il catalogo prodotti dichiarato')
     parser.add_argument('--product-manifest', help='Stampa il manifest del prodotto indicato')
+    parser.add_argument('--product-inventory', help='Stampa l inventory del prodotto indicato')
     args = parser.parse_args()
 
     bundle = load_bundle(args.root)
@@ -260,6 +265,9 @@ def main() -> int:
         did_something = True
     if args.product_manifest:
         print(json.dumps(bundle.product_manifest(args.product_manifest), ensure_ascii=False, indent=2))
+        did_something = True
+    if args.product_inventory:
+        print(json.dumps(bundle.product_inventory(args.product_inventory), ensure_ascii=False, indent=2))
         did_something = True
     if args.citation:
         print(bundle.citation())

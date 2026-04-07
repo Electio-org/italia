@@ -16,7 +16,8 @@ SUMMARY_NOTE = "Municipality summary rows can also be delivered as per-election 
 ARCHIVE_GAP_NOTE = "The bundle can also declare a gap report that compares published coverage against the official Eligendo open-data archives."
 CANONICAL_REBUILD_NOTE = "Municipality coverage is rebuilt from official Eligendo open-data zip archives across all Camera years plus Assemblea Costituente 1946."
 PRODUCT_SYSTEM_NOTE = "Products are also published through a product catalog plus per-product manifests, not only through the bundle-wide manifest."
-CURRENT_VERSION = "0.17.0"
+PRODUCT_INVENTORY_NOTE = "Every declared product also exposes a product-level inventory so users can see what is inside before loading the data."
+CURRENT_VERSION = "0.18.0"
 
 
 def sha256_file(path: Path) -> str:
@@ -65,13 +66,15 @@ def ensure_update_log_entry(entries: List[Dict[str, object]]) -> List[Dict[str, 
     return [{
         "version": CURRENT_VERSION,
         "date": "2026-04-07",
-        "title": "Official open-data zip rebuild with summary/result shards and Assemblea Costituente 1946",
+        "title": "Official open-data rebuild with shards, product catalog, and product inventories",
         "changes": [
             "Rebuilt 1946-2022 municipality summary and party results from the official Eligendo open-data zip archives for Assemblea Costituente and Camera.",
             "Shifted the primary source from HTML archive navigation to the national open-data bundles, keeping HTML only as QA and fallback.",
             "Added by-election shards for municipality_summary.csv and municipality_results_long.csv.",
             "Declared deferred loading for municipality summary and party results in manifest.json.",
             "Aligned dataset registry, provenance, and release metadata to the shard-based delivery layout.",
+            "Added a product catalog plus per-product manifests so the bundle can be navigated as product families, not only as a flat file list.",
+            "Added product-level inventories that declare which election datasets, geometry years, or metadata objects are inside each product.",
             "Added an official-source-vs-bundle gap report to make residual coverage and geometry-join gaps explicit in the public bundle.",
             "Release manifest paths are now web-relative, so declared downloads stay usable inside the static site."
         ]
@@ -103,6 +106,8 @@ def main() -> None:
         notes.append(CANONICAL_REBUILD_NOTE)
     if PRODUCT_SYSTEM_NOTE not in notes:
         notes.append(PRODUCT_SYSTEM_NOTE)
+    if PRODUCT_INVENTORY_NOTE not in notes:
+        notes.append(PRODUCT_INVENTORY_NOTE)
     project["notes"] = notes
 
     files = manifest.setdefault("files", {})
@@ -175,8 +180,10 @@ def main() -> None:
     shard_index_path.write_text(json.dumps(shard_index, ensure_ascii=False, indent=2), encoding="utf-8")
 
     dataset_registry_path = derived / "dataset_registry.json"
+    dataset_registry_rows: List[Dict[str, object]] = []
     if dataset_registry_path.exists():
         dataset_registry = json.loads(dataset_registry_path.read_text(encoding="utf-8"))
+        dataset_registry_rows = list(dataset_registry.get("datasets") or [])
         for dataset in dataset_registry.get("datasets") or []:
             key = str(dataset.get("election_key") or "")
             if key and key in summary_shards:
@@ -270,6 +277,7 @@ def main() -> None:
     product_catalog_dir.mkdir(parents=True, exist_ok=True)
     release_date = ((update_log.get("entries") or [{}])[0].get("date") if 'update_log' in locals() else None)
     product_catalog_items: List[Dict[str, object]] = []
+    geometry_pack_payload = json.loads((root / files["geometryPack"]).read_text(encoding="utf-8")) if files.get("geometryPack") and (root / files["geometryPack"]).exists() else {}
     product_manifest_step = "pubblicazione del sistema prodotti con catalogo e manifest dedicati per ogni product_key"
     if data_products:
         clients = list(data_products.get("clients") or [])
@@ -309,6 +317,62 @@ def main() -> None:
                     entry["by_election_index"] = files["municipalityResultsLongByElectionIndex"]
                 dataset_entries.append(entry)
 
+            inventory_kind = "flat"
+            inventory_entries: List[Dict[str, object]] = []
+            if product_key == "camera_muni_historical":
+                inventory_kind = "election_datasets"
+                allowed_families = {"assemblea_costituente_municipality_historical", "camera_municipality_historical"}
+                def registry_sort_key(item: Dict[str, object]) -> tuple[int, str]:
+                    try:
+                        year = int(item.get("election_year") or 0)
+                    except Exception:
+                        year = 0
+                    return year, str(item.get("election_key") or "")
+
+                for row in sorted(dataset_registry_rows, key=registry_sort_key):
+                    if str(row.get("dataset_family") or "") not in allowed_families:
+                        continue
+                    inventory_entries.append({
+                        "dataset_key": row.get("dataset_key"),
+                        "dataset_family": row.get("dataset_family"),
+                        "election_key": row.get("election_key"),
+                        "election_year": row.get("election_year"),
+                        "coverage_label": row.get("coverage_label"),
+                        "status": row.get("status"),
+                        "summary_rows": row.get("summary_rows"),
+                        "result_rows": row.get("result_rows"),
+                        "download_summary": row.get("download_summary"),
+                        "download_results": row.get("download_results"),
+                    })
+            elif product_key == "geometry_pack_lombardia":
+                inventory_kind = "boundary_years"
+                municipalities = geometry_pack_payload.get("municipalities") or {}
+                provinces = geometry_pack_payload.get("provinces") or {}
+                years = geometry_pack_payload.get("availableYears") or sorted({*municipalities.keys(), *provinces.keys()}, key=lambda value: int(value))
+                for year in years:
+                    inventory_entries.append({
+                        "geometry_year": int(year),
+                        "municipalities_path": municipalities.get(str(year)),
+                        "provinces_path": provinces.get(str(year)),
+                    })
+            elif product_key == "metadata_layer":
+                inventory_kind = "metadata_objects"
+                for dataset_key in [product.get("primary_dataset_key"), product.get("companion_dataset_key"), *(product.get("extra_dataset_keys") or [])]:
+                    if not dataset_key:
+                        continue
+                    rel = files.get(str(dataset_key))
+                    if not rel:
+                        continue
+                    meta = summarize_file(root / rel, root)
+                    inventory_entries.append({
+                        "dataset_key": dataset_key,
+                        "path": rel,
+                        "kind": meta.get("kind"),
+                        "size_bytes": meta.get("size_bytes"),
+                        "row_count": meta.get("row_count"),
+                        "feature_count": meta.get("feature_count"),
+                    })
+
             product_manifest = {
                 "generated_by": "build_result_shards.py",
                 "release_version": CURRENT_VERSION,
@@ -328,6 +392,11 @@ def main() -> None:
                     "intended_use": product.get("intended_use") or [],
                 },
                 "datasets": dataset_entries,
+                "inventory": {
+                    "kind": inventory_kind,
+                    "entry_count": len(inventory_entries),
+                    "entries": inventory_entries,
+                },
                 "clients": clients,
                 "bundle_manifest": "data/derived/manifest.json",
             }
@@ -348,6 +417,9 @@ def main() -> None:
                 "guardrails": product.get("guardrails") or [],
                 "join_keys": product.get("join_keys") or [],
                 "intended_use": product.get("intended_use") or [],
+                "inventory_kind": inventory_kind,
+                "inventory_count": len(inventory_entries),
+                "inventory_preview": [entry.get("election_key") or entry.get("geometry_year") or entry.get("dataset_key") for entry in inventory_entries[:4]],
             })
     product_catalog = {
         "generated_by": "build_result_shards.py",
@@ -390,6 +462,11 @@ def main() -> None:
         if key == "releaseManifest":
             continue
         release_manifest["file_entries"][key] = summarize_file(root / rel, root)
+    for product in product_catalog_items:
+        manifest_path = product.get("manifest_path")
+        product_key = product.get("product_key") or "product"
+        if manifest_path:
+            release_manifest["file_entries"][f"productManifest:{product_key}"] = summarize_file(root / str(manifest_path), root)
     release_manifest["integrity"] = {
         "sha256_scope": sorted(release_manifest["file_entries"].keys()),
         "all_declared_files_present": all((root / rel).exists() for key, rel in files.items() if key != "releaseManifest")
