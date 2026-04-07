@@ -22,6 +22,7 @@ import {
 import {
   loadData,
   loadDataFromLocalFiles,
+  ensureSummaryForElections,
   ensureResultsForElections,
   geometryJoinKey,
   rowJoinKey,
@@ -182,6 +183,9 @@ const state = {
   uiLevel: 'basic',
   audienceMode: 'public',
   renderQueued: false,
+  summaryDeclaredRows: 0,
+  summaryHydrationStarted: false,
+  summaryHydrationComplete: false,
   resultsLongDeclaredRows: 0,
   resultsHydrationStarted: false,
   resultsHydrationComplete: false,
@@ -293,12 +297,34 @@ function currentCoverageNote() {
   return 'Copertura sostanziale buona: il bundle regge letture più ambiziose, restando comunque da verificare anno per anno.';
 }
 
+function summaryHydrationSummary() {
+  const declared = Math.max(state.summaryDeclaredRows || 0, state.summary.length || 0);
+  const loaded = state.summary.length || 0;
+  if (!declared) return 'Nessun summary comunale dichiarato nel bundle corrente.';
+  if (state.summaryFullLoaded || loaded >= declared) return `Summary comunali caricati: ${fmtInt(loaded)} righe.`;
+  return `Summary comunali caricati progressivamente: ${fmtInt(loaded)} / ${fmtInt(declared)} righe.`;
+}
+
 function resultsHydrationSummary() {
   const declared = Math.max(state.resultsLongDeclaredRows || 0, state.resultsLong.length || 0);
   const loaded = state.resultsLong.length || 0;
   if (!declared) return 'Nessun risultato di partito dichiarato nel bundle corrente.';
   if (state.resultsLongFullLoaded || loaded >= declared) return `Risultati di partito caricati: ${fmtInt(loaded)} righe.`;
   return `Risultati di partito caricati progressivamente: ${fmtInt(loaded)} / ${fmtInt(declared)} righe.`;
+}
+
+function visibleElectionKeysForSummary() {
+  const keys = new Set([state.selectedElection, state.compareElection].filter(Boolean));
+  const needsHistory = ['volatility', 'dominance_changes', 'stability_index', 'concentration'].includes(state.selectedMetric)
+    || ['trajectory', 'similarity', 'archetypes', 'group_compare'].includes(state.analysisMode)
+    || Boolean(state.selectedMunicipalityId);
+  if (needsHistory) {
+    state.elections.forEach(election => {
+      const coverage = electionCoverageFor(state, election.election_key);
+      if (coverage.summary) keys.add(election.election_key);
+    });
+  }
+  return [...keys];
 }
 
 function visibleElectionKeysForResults() {
@@ -313,6 +339,29 @@ function visibleElectionKeysForResults() {
     });
   }
   return [...keys];
+}
+
+function applySummaryHydrationOutcome(report, { silent = true } = {}) {
+  if (!report || (!report.loadedRows && !(report.loadedKeys || []).length)) return;
+  invalidateDerivedCaches();
+  renderStatusPanel();
+  requestRender();
+  if (!silent) {
+    const label = report.strategy === 'by_election'
+      ? `${(report.loadedKeys || []).join(', ')}`
+      : 'bundle completo';
+    showToast(`Summary comunali caricati: ${label}.`, 'success', 1800);
+  }
+}
+
+function ensureVisibleSummary({ silent = true } = {}) {
+  return ensureSummaryForElections(state, visibleElectionKeysForSummary(), {
+    buildIndices: () => buildIndices(state),
+    registerIssue
+  }).then(report => {
+    applySummaryHydrationOutcome(report, { silent });
+    return report;
+  });
 }
 
 function applyResultsHydrationOutcome(report, { silent = true } = {}) {
@@ -341,7 +390,6 @@ function ensureVisibleResults({ silent = true } = {}) {
 function scheduleBackgroundResultsHydration() {
   if (state.resultsHydrationStarted || state.resultsLongLoadStrategy !== 'by_election') return;
   state.resultsHydrationStarted = true;
-  ensureVisibleResults({ silent: true });
   const idle = window.requestIdleCallback
     ? callback => window.requestIdleCallback(callback, { timeout: 600 })
     : callback => window.setTimeout(() => callback({ didTimeout: false, timeRemaining: () => 0 }), 350);
@@ -367,7 +415,38 @@ function scheduleBackgroundResultsHydration() {
       pump();
     });
   };
-  pump();
+  window.setTimeout(pump, 1200);
+}
+
+function scheduleBackgroundSummaryHydration() {
+  if (state.summaryHydrationStarted || state.summaryLoadStrategy !== 'by_election') return;
+  state.summaryHydrationStarted = true;
+  const idle = window.requestIdleCallback
+    ? callback => window.requestIdleCallback(callback, { timeout: 600 })
+    : callback => window.setTimeout(() => callback({ didTimeout: false, timeRemaining: () => 0 }), 350);
+
+  const pump = () => {
+    const remaining = state.elections
+      .map(election => election.election_key)
+      .filter(key => {
+        const coverage = electionCoverageFor(state, key);
+        return coverage.summary && !state.loadedSummaryElectionKeys?.has(key);
+      });
+    if (!remaining.length) {
+      state.summaryHydrationComplete = true;
+      renderStatusPanel();
+      return;
+    }
+    idle(async () => {
+      const report = await ensureSummaryForElections(state, remaining.slice(0, 1), {
+        buildIndices: () => buildIndices(state),
+        registerIssue
+      });
+      applySummaryHydrationOutcome(report, { silent: true });
+      pump();
+    });
+  };
+  window.setTimeout(pump, 1200);
 }
 
 
@@ -751,6 +830,7 @@ function readControls() {
   updateBodyAppearance();
   syncActiveGeometry(state, registerIssue).then(() => {
     requestRender();
+    ensureVisibleSummary({ silent: true });
     ensureVisibleResults({ silent: !metricNeedsPartyResults() });
   }).catch(err => registerIssue('geometry-sync', err));
   syncURLState();
@@ -1258,6 +1338,7 @@ function renderStatusPanel() {
       <div class="helper-text" style="margin-top:4px">Sorgente attiva: <strong>${sourceText}</strong>.</div>
       <div class="helper-text" style="margin-top:4px">Confini comunali Lombardia disponibili per: ${geometryYears}. Modalità attiva: ${escapeHtml(state.territorialMode)} · base geometrica: <strong>${escapeHtml(String(state.geometryReferenceYear || 'auto'))}</strong>.</div>
       <div class="helper-text" style="margin-top:4px">Readiness tecnica: ${fmtInt(technical)} · copertura sostanziale: ${fmtInt(substantive)}.</div>
+      <div class="helper-text" style="margin-top:4px">${escapeHtml(summaryHydrationSummary())}</div>
       <div class="helper-text" style="margin-top:4px">${escapeHtml(resultsHydrationSummary())}</div>
       <div class="helper-text" style="margin-top:4px">${escapeHtml(archiveGapText)}</div>
     </div>`;
@@ -1350,6 +1431,7 @@ async function activateLocalBundle(fileList) {
     setupControls();
     renderStatusPanel();
     requestRender();
+    scheduleBackgroundSummaryHydration();
     scheduleBackgroundResultsHydration();
     showToast('Bundle locale caricato nel browser.');
   } catch (err) {
@@ -4483,6 +4565,7 @@ function renderViewTrustPill() {
 }
 
 function renderAll() {
+  ensureVisibleSummary({ silent: true });
   ensureVisibleResults({ silent: true });
   clearIssues();
   [
@@ -4747,6 +4830,7 @@ async function init() {
     updateBodyAppearance();
     toggleFocusMode(state.focusMode);
     requestRender();
+    scheduleBackgroundSummaryHydration();
     scheduleBackgroundResultsHydration();
     setLoading(false);
     if (!state.onboardingDismissed && new URLSearchParams(window.location.search).get('onboarding') === '1') openOnboarding();

@@ -165,7 +165,7 @@ def main() -> int:
     if not geometry.get('features'):
         issues.append('geometry:placeholder_or_missing')
 
-    required_manifest_keys = ['geometryPack', 'dataProducts', 'datasetContracts', 'provenance', 'releaseManifest', 'researchRecipes', 'siteGuides', 'municipalityResultsLongByElectionIndex', 'archiveBundleGapReport']
+    required_manifest_keys = ['geometryPack', 'dataProducts', 'datasetContracts', 'provenance', 'releaseManifest', 'researchRecipes', 'siteGuides', 'municipalitySummaryByElectionIndex', 'municipalityResultsLongByElectionIndex', 'archiveBundleGapReport']
     for key in required_manifest_keys:
         rel = files.get(key)
         if not rel:
@@ -181,6 +181,16 @@ def main() -> int:
             entry = client.get('entrypoint')
             if entry and not (root / entry).exists():
                 issues.append(f'data_products:missing_client:{entry}')
+
+    if files.get('municipalitySummaryByElectionIndex') and (root / files['municipalitySummaryByElectionIndex']).exists():
+        shard_payload = json.loads((root / files['municipalitySummaryByElectionIndex']).read_text(encoding='utf-8'))
+        shards = shard_payload.get('shards') or {}
+        if not shards:
+            warnings.append('summary_shards:empty')
+        else:
+            missing_shards = [key for key, rel in shards.items() if not (root / rel).exists()]
+            if missing_shards:
+                issues.append(f'summary_shards:missing_files:{",".join(missing_shards[:10])}')
 
     if files.get('municipalityResultsLongByElectionIndex') and (root / files['municipalityResultsLongByElectionIndex']).exists():
         shard_payload = json.loads((root / files['municipalityResultsLongByElectionIndex']).read_text(encoding='utf-8'))

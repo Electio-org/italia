@@ -4,7 +4,7 @@
   "products": [
     {
       "product_key": "camera_muni_historical",
-      "title": "Camera Lombardia · comuni storici",
+      "title": "Camera Lombardia - comuni storici",
       "kind": "election_panel",
       "territorial_mode": "historical",
       "granularity": "municipality-election",
@@ -19,7 +19,7 @@
         "Usare coverage e completeness_flag prima di interpretare trend forti.",
         "Le quote di partito possono restare parziali nei bundle incompleti."
       ],
-      "delivery_strategy": "monolith_plus_election_shards"
+      "delivery_strategy": "summary_and_results_monolith_plus_election_shards"
     },
     {
       "product_key": "geometry_pack_lombardia",

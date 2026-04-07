@@ -74,7 +74,8 @@
         "ingest da cartelle camera_YYYY e layout clean/raw/validated quando presenti",
         "normalizzazione di comuni, province, partiti e join geometry-aware",
         "scrittura di dataset derived, metadata layer e manifest machine-readable",
-        "derivazione opzionale dei risultati di partito anche come shard per elezione"
+        "derivazione opzionale dei risultati di partito anche come shard per elezione",
+        "derivazione opzionale del municipality_summary anche come shard per elezione"
       ],
       "limitations": [
         "la provenance del bundle non sostituisce le fonti elettorali originali",
@@ -392,6 +393,19 @@
       "limitations": [
         "the report diagnoses residual gaps and unresolved geometry joins but does not harmonize extinct municipalities",
         "coverage equivalence with the official source does not imply full historical harmonization across boundary changes"
+      ]
+    },
+    {
+      "dataset_key": "municipalitySummaryByElectionIndex",
+      "path": "data/derived/municipality_summary_by_election.json",
+      "produced_by": "build_result_shards.py",
+      "source_class": "derived_bundle",
+      "transformation_steps": [
+        "lettura del dataset municipality_summary.csv gia validato",
+        "scrittura di shard per election_key per caricamento progressivo lato app"
+      ],
+      "limitations": [
+        "gli shard non aggiungono copertura sostanziale: cambiano solo la strategia di consegna del bundle"
       ]
     }
   ]

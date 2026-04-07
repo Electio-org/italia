@@ -30,6 +30,13 @@ class LoaderTests(unittest.TestCase):
         summary = self.bundle.filter_summary(election_key=self.bundle.available_elections().iloc[0]['election_key'])
         self.assertIn('election_key', summary.columns)
 
+    def test_can_read_summary_shard_for_election(self):
+        shard_keys = list((self.bundle.summary_shards().get('shards') or {}).keys())
+        if not shard_keys:
+            self.skipTest('No summary shards declared in this bundle')
+        rows = self.bundle.load_summary_for_election(shard_keys[0])
+        self.assertIn('election_key', rows.columns)
+
     def test_can_read_results_shard_for_election(self):
         shard_keys = list((self.bundle.result_shards().get('shards') or {}).keys())
         if not shard_keys:

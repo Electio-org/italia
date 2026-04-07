@@ -1,7 +1,7 @@
 {
   "project": {
     "title": "Lombardia Camera Explorer",
-    "version": "0.15.0",
+    "version": "0.16.0",
     "ready_for_real_data": true,
     "notes": [
       "Vote shares are recomputed from votes whenever a plausible denominator is available.",
@@ -14,7 +14,8 @@
       "Party results can be delivered both as a monolithic CSV and as per-election shards for faster interactive loading.",
       "Coverage diagnostics now compare the published bundle against the official Eligendo open-data zip archives.",
       "The bundle can also declare a gap report that compares published coverage against the official Eligendo open-data archives.",
-      "Municipality coverage is rebuilt from official Eligendo open-data zip archives across all Camera years plus Assemblea Costituente 1946."
+      "Municipality coverage is rebuilt from official Eligendo open-data zip archives across all Camera years plus Assemblea Costituente 1946.",
+      "Municipality summary rows can also be delivered as per-election shards to reduce initial browser load."
     ]
   },
   "files": {
@@ -41,7 +42,8 @@
     "releaseManifest": "data/derived/release_manifest.json",
     "researchRecipes": "data/derived/research_recipes.json",
     "siteGuides": "data/derived/site_guides.json",
-    "archiveBundleGapReport": "data/derived/archive_bundle_gap_report.json"
+    "archiveBundleGapReport": "data/derived/archive_bundle_gap_report.json",
+    "municipalitySummaryByElectionIndex": "data/derived/municipality_summary_by_election.json"
   },
   "contracts": {
     "geometryJoinPriority": [
@@ -55,6 +57,10 @@
     ]
   },
   "loading": {
+    "municipalitySummary": {
+      "strategy": "deferred_by_election",
+      "index": "data/derived/municipality_summary_by_election.json"
+    },
     "municipalityResultsLong": {
       "strategy": "deferred_by_election",
       "index": "data/derived/municipality_results_long_by_election.json"

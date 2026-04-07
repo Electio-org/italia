@@ -13,7 +13,7 @@
       "boundary_basis": "auto",
       "status": "usable",
       "coverage_label": "summary+results",
-      "download_summary": "data/derived/municipality_summary.csv",
+      "download_summary": "data/derived/summary_by_election/assemblea_costituente_1946.csv",
       "download_results": "data/derived/results_by_election/assemblea_costituente_1946.csv"
     },
     {
@@ -27,7 +27,7 @@
       "boundary_basis": "auto",
       "status": "usable",
       "coverage_label": "summary+results",
-      "download_summary": "data/derived/municipality_summary.csv",
+      "download_summary": "data/derived/summary_by_election/camera_1948.csv",
       "download_results": "data/derived/results_by_election/camera_1948.csv"
     },
     {
@@ -41,7 +41,7 @@
       "boundary_basis": "auto",
       "status": "usable",
       "coverage_label": "summary+results",
-      "download_summary": "data/derived/municipality_summary.csv",
+      "download_summary": "data/derived/summary_by_election/camera_1953.csv",
       "download_results": "data/derived/results_by_election/camera_1953.csv"
     },
     {
@@ -55,7 +55,7 @@
       "boundary_basis": "auto",
       "status": "usable",
       "coverage_label": "summary+results",
-      "download_summary": "data/derived/municipality_summary.csv",
+      "download_summary": "data/derived/summary_by_election/camera_1958.csv",
       "download_results": "data/derived/results_by_election/camera_1958.csv"
     },
     {
@@ -69,7 +69,7 @@
       "boundary_basis": "auto",
       "status": "usable",
       "coverage_label": "summary+results",
-      "download_summary": "data/derived/municipality_summary.csv",
+      "download_summary": "data/derived/summary_by_election/camera_1963.csv",
       "download_results": "data/derived/results_by_election/camera_1963.csv"
     },
     {
@@ -83,7 +83,7 @@
       "boundary_basis": "auto",
       "status": "usable",
       "coverage_label": "summary+results",
-      "download_summary": "data/derived/municipality_summary.csv",
+      "download_summary": "data/derived/summary_by_election/camera_1968.csv",
       "download_results": "data/derived/results_by_election/camera_1968.csv"
     },
     {
@@ -97,7 +97,7 @@
       "boundary_basis": "auto",
       "status": "usable",
       "coverage_label": "summary+results",
-      "download_summary": "data/derived/municipality_summary.csv",
+      "download_summary": "data/derived/summary_by_election/camera_1972.csv",
       "download_results": "data/derived/results_by_election/camera_1972.csv"
     },
     {
@@ -111,7 +111,7 @@
       "boundary_basis": "auto",
       "status": "usable",
       "coverage_label": "summary+results",
-      "download_summary": "data/derived/municipality_summary.csv",
+      "download_summary": "data/derived/summary_by_election/camera_1976.csv",
       "download_results": "data/derived/results_by_election/camera_1976.csv"
     },
     {
@@ -125,7 +125,7 @@
       "boundary_basis": "auto",
       "status": "usable",
       "coverage_label": "summary+results",
-      "download_summary": "data/derived/municipality_summary.csv",
+      "download_summary": "data/derived/summary_by_election/camera_1979.csv",
       "download_results": "data/derived/results_by_election/camera_1979.csv"
     },
     {
@@ -139,7 +139,7 @@
       "boundary_basis": "auto",
       "status": "usable",
       "coverage_label": "summary+results",
-      "download_summary": "data/derived/municipality_summary.csv",
+      "download_summary": "data/derived/summary_by_election/camera_1983.csv",
       "download_results": "data/derived/results_by_election/camera_1983.csv"
     },
     {
@@ -153,7 +153,7 @@
       "boundary_basis": "auto",
       "status": "usable",
       "coverage_label": "summary+results",
-      "download_summary": "data/derived/municipality_summary.csv",
+      "download_summary": "data/derived/summary_by_election/camera_1987.csv",
       "download_results": "data/derived/results_by_election/camera_1987.csv"
     },
     {
@@ -167,7 +167,7 @@
       "boundary_basis": "auto",
       "status": "usable",
       "coverage_label": "summary+results",
-      "download_summary": "data/derived/municipality_summary.csv",
+      "download_summary": "data/derived/summary_by_election/camera_1992.csv",
       "download_results": "data/derived/results_by_election/camera_1992.csv"
     },
     {
@@ -181,7 +181,7 @@
       "boundary_basis": "auto",
       "status": "usable",
       "coverage_label": "summary+results",
-      "download_summary": "data/derived/municipality_summary.csv",
+      "download_summary": "data/derived/summary_by_election/camera_1994.csv",
       "download_results": "data/derived/results_by_election/camera_1994.csv"
     },
     {
@@ -195,7 +195,7 @@
       "boundary_basis": "auto",
       "status": "usable",
       "coverage_label": "summary+results",
-      "download_summary": "data/derived/municipality_summary.csv",
+      "download_summary": "data/derived/summary_by_election/camera_1996.csv",
       "download_results": "data/derived/results_by_election/camera_1996.csv"
     },
     {
@@ -209,7 +209,7 @@
       "boundary_basis": "auto",
       "status": "usable",
       "coverage_label": "summary+results",
-      "download_summary": "data/derived/municipality_summary.csv",
+      "download_summary": "data/derived/summary_by_election/camera_2001.csv",
       "download_results": "data/derived/results_by_election/camera_2001.csv"
     },
     {
@@ -223,7 +223,7 @@
       "boundary_basis": "auto",
       "status": "usable",
       "coverage_label": "summary+results",
-      "download_summary": "data/derived/municipality_summary.csv",
+      "download_summary": "data/derived/summary_by_election/camera_2006.csv",
       "download_results": "data/derived/results_by_election/camera_2006.csv"
     },
     {
@@ -237,7 +237,7 @@
       "boundary_basis": "auto",
       "status": "usable",
       "coverage_label": "summary+results",
-      "download_summary": "data/derived/municipality_summary.csv",
+      "download_summary": "data/derived/summary_by_election/camera_2008.csv",
       "download_results": "data/derived/results_by_election/camera_2008.csv"
     },
     {
@@ -251,7 +251,7 @@
       "boundary_basis": "auto",
       "status": "usable",
       "coverage_label": "summary+results",
-      "download_summary": "data/derived/municipality_summary.csv",
+      "download_summary": "data/derived/summary_by_election/camera_2013.csv",
       "download_results": "data/derived/results_by_election/camera_2013.csv"
     },
     {
@@ -265,7 +265,7 @@
       "boundary_basis": "auto",
       "status": "usable",
       "coverage_label": "summary+results",
-      "download_summary": "data/derived/municipality_summary.csv",
+      "download_summary": "data/derived/summary_by_election/camera_2018.csv",
       "download_results": "data/derived/results_by_election/camera_2018.csv"
     },
     {
@@ -279,7 +279,7 @@
       "boundary_basis": "auto",
       "status": "usable",
       "coverage_label": "summary+results",
-      "download_summary": "data/derived/municipality_summary.csv",
+      "download_summary": "data/derived/summary_by_election/camera_2022.csv",
       "download_results": "data/derived/results_by_election/camera_2022.csv"
     },
     {

@@ -12,9 +12,10 @@ import pandas as pd
 
 
 EXTRA_NOTE = "Party results can be delivered both as a monolithic CSV and as per-election shards for faster interactive loading."
+SUMMARY_NOTE = "Municipality summary rows can also be delivered as per-election shards to reduce initial browser load."
 ARCHIVE_GAP_NOTE = "The bundle can also declare a gap report that compares published coverage against the official Eligendo open-data archives."
 CANONICAL_REBUILD_NOTE = "Municipality coverage is rebuilt from official Eligendo open-data zip archives across all Camera years plus Assemblea Costituente 1946."
-CURRENT_VERSION = "0.15.0"
+CURRENT_VERSION = "0.16.0"
 
 
 def sha256_file(path: Path) -> str:
@@ -63,12 +64,12 @@ def ensure_update_log_entry(entries: List[Dict[str, object]]) -> List[Dict[str, 
     return [{
         "version": CURRENT_VERSION,
         "date": "2026-04-07",
-        "title": "Official open-data zip rebuild with Assemblea Costituente 1946 and refreshed shard metadata",
+        "title": "Official open-data zip rebuild with summary/result shards and Assemblea Costituente 1946",
         "changes": [
             "Rebuilt 1946-2022 municipality summary and party results from the official Eligendo open-data zip archives for Assemblea Costituente and Camera.",
             "Shifted the primary source from HTML archive navigation to the national open-data bundles, keeping HTML only as QA and fallback.",
-            "Added by-election shards for municipality_results_long.csv.",
-            "Declared deferred result loading in manifest.json.",
+            "Added by-election shards for municipality_summary.csv and municipality_results_long.csv.",
+            "Declared deferred loading for municipality summary and party results in manifest.json.",
             "Aligned dataset registry, provenance, and release metadata to the shard-based delivery layout.",
             "Added an official-source-vs-bundle gap report to make residual coverage and geometry-join gaps explicit in the public bundle.",
             "Release manifest paths are now web-relative, so declared downloads stay usable inside the static site."
@@ -77,7 +78,7 @@ def ensure_update_log_entry(entries: List[Dict[str, object]]) -> List[Dict[str, 
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Build municipality_results_long shards and refresh bundle metadata.")
+    parser = argparse.ArgumentParser(description="Build municipality summary/result shards and refresh bundle metadata.")
     parser.add_argument("--root", default=".", help="Project root of lombardia_camera_app_v35")
     args = parser.parse_args()
 
@@ -93,6 +94,8 @@ def main() -> None:
     notes = list(project.get("notes") or [])
     if EXTRA_NOTE not in notes:
         notes.append(EXTRA_NOTE)
+    if SUMMARY_NOTE not in notes:
+        notes.append(SUMMARY_NOTE)
     if ARCHIVE_GAP_NOTE not in notes:
         notes.append(ARCHIVE_GAP_NOTE)
     if CANONICAL_REBUILD_NOTE not in notes:
@@ -100,13 +103,45 @@ def main() -> None:
     project["notes"] = notes
 
     files = manifest.setdefault("files", {})
+    files["municipalitySummaryByElectionIndex"] = "data/derived/municipality_summary_by_election.json"
     files["municipalityResultsLongByElectionIndex"] = "data/derived/municipality_results_long_by_election.json"
     manifest["loading"] = {
+        "municipalitySummary": {
+            "strategy": "deferred_by_election",
+            "index": "data/derived/municipality_summary_by_election.json"
+        },
         "municipalityResultsLong": {
             "strategy": "deferred_by_election",
             "index": "data/derived/municipality_results_long_by_election.json"
         }
     }
+
+    summary_path = derived / "municipality_summary.csv"
+    summary = pd.read_csv(summary_path, dtype=str).fillna("")
+    summary_shard_dir = derived / "summary_by_election"
+    summary_shard_dir.mkdir(parents=True, exist_ok=True)
+    for old in summary_shard_dir.glob("*.csv"):
+        old.unlink()
+
+    summary_shards: Dict[str, str] = {}
+    summary_row_counts: Dict[str, int] = {}
+    if not summary.empty and "election_key" in summary.columns:
+        for election_key, chunk in sorted(summary.groupby("election_key"), key=lambda item: str(item[0])):
+            filename = f"{slugify(str(election_key))}.csv"
+            path = summary_shard_dir / filename
+            chunk.to_csv(path, index=False)
+            summary_shards[str(election_key)] = str(path.relative_to(root)).replace("\\", "/")
+            summary_row_counts[str(election_key)] = int(len(chunk))
+
+    summary_shard_index = {
+        "generated_by": "build_result_shards.py",
+        "dataset": "municipality_summary.csv",
+        "strategy": "by_election",
+        "shards": summary_shards,
+        "row_counts": summary_row_counts,
+    }
+    summary_shard_index_path = derived / "municipality_summary_by_election.json"
+    summary_shard_index_path.write_text(json.dumps(summary_shard_index, ensure_ascii=False, indent=2), encoding="utf-8")
 
     results_path = derived / "municipality_results_long.csv"
     results = pd.read_csv(results_path, dtype=str).fillna("")
@@ -140,6 +175,8 @@ def main() -> None:
         dataset_registry = json.loads(dataset_registry_path.read_text(encoding="utf-8"))
         for dataset in dataset_registry.get("datasets") or []:
             key = str(dataset.get("election_key") or "")
+            if key and key in summary_shards:
+                dataset["download_summary"] = summary_shards[key]
             if key and key in shards:
                 dataset["download_results"] = shards[key]
         dataset_registry_path.write_text(json.dumps(dataset_registry, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -149,20 +186,41 @@ def main() -> None:
         data_products = json.loads(data_products_path.read_text(encoding="utf-8"))
         for product in data_products.get("products") or []:
             if product.get("product_key") == "camera_muni_historical":
-                product["delivery_strategy"] = "monolith_plus_election_shards"
+                product["delivery_strategy"] = "summary_and_results_monolith_plus_election_shards"
         data_products_path.write_text(json.dumps(data_products, ensure_ascii=False, indent=2), encoding="utf-8")
 
     provenance_path = derived / "provenance.json"
     if provenance_path.exists():
         provenance = json.loads(provenance_path.read_text(encoding="utf-8"))
         entries = provenance.get("entries") or []
+        summary_shard_step = "derivazione opzionale del municipality_summary anche come shard per elezione"
         shard_step = "derivazione opzionale dei risultati di partito anche come shard per elezione"
+        for entry in entries:
+            if entry.get("dataset_key") == "municipalitySummary":
+                steps = list(entry.get("transformation_steps") or [])
+                if summary_shard_step not in steps:
+                    steps.append(summary_shard_step)
+                entry["transformation_steps"] = steps
         for entry in entries:
             if entry.get("dataset_key") == "municipalityResultsLong":
                 steps = list(entry.get("transformation_steps") or [])
                 if shard_step not in steps:
                     steps.append(shard_step)
                 entry["transformation_steps"] = steps
+        if not any(entry.get("dataset_key") == "municipalitySummaryByElectionIndex" for entry in entries):
+            entries.append({
+                "dataset_key": "municipalitySummaryByElectionIndex",
+                "path": files["municipalitySummaryByElectionIndex"],
+                "produced_by": "build_result_shards.py",
+                "source_class": "derived_bundle",
+                "transformation_steps": [
+                    "lettura del dataset municipality_summary.csv gia validato",
+                    "scrittura di shard per election_key per caricamento progressivo lato app"
+                ],
+                "limitations": [
+                    "gli shard non aggiungono copertura sostanziale: cambiano solo la strategia di consegna del bundle"
+                ]
+            })
         if not any(entry.get("dataset_key") == "municipalityResultsLongByElectionIndex" for entry in entries):
             entries.append({
                 "dataset_key": "municipalityResultsLongByElectionIndex",
@@ -170,7 +228,7 @@ def main() -> None:
                 "produced_by": "build_result_shards.py",
                 "source_class": "derived_bundle",
                 "transformation_steps": [
-                    "lettura del dataset municipality_results_long.csv già validato",
+                    "lettura del dataset municipality_results_long.csv gia validato",
                     "scrittura di shard per election_key per caricamento progressivo lato app"
                 ],
                 "limitations": [
@@ -207,7 +265,9 @@ def main() -> None:
     print(json.dumps({
         "root": str(root),
         "manifest_version": project.get("version"),
+        "summary_shard_count": len(summary_shards),
         "shard_count": len(shards),
+        "declared_summary_rows": sum(summary_row_counts.values()),
         "declared_rows": sum(row_counts.values()),
     }, ensure_ascii=False, indent=2))
 

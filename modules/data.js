@@ -62,7 +62,7 @@ function parseCustomIndicatorRows(rows) {
   return parseNumberFields(rows, CUSTOM_INDICATOR_NUMBER_FIELDS);
 }
 
-function buildDeclaredCoverageByElection(elections, datasetRegistry, summaryRows, resultRows) {
+function buildDeclaredCoverageByElection(elections, datasetRegistry, summaryRows, resultRows, summaryShardRowCounts = {}, resultShardRowCounts = {}) {
   const map = new Map();
   (elections || []).forEach(election => {
     const key = election?.election_key;
@@ -93,6 +93,18 @@ function buildDeclaredCoverageByElection(elections, datasetRegistry, summaryRows
       map.set(key, current);
     });
   }
+  Object.entries(summaryShardRowCounts || {}).forEach(([key, count]) => {
+    if (!key) return;
+    const current = map.get(key) || { summary: 0, results: 0 };
+    current.summary = Math.max(current.summary, safeNumber(count) || 0);
+    map.set(key, current);
+  });
+  Object.entries(resultShardRowCounts || {}).forEach(([key, count]) => {
+    if (!key) return;
+    const current = map.get(key) || { summary: 0, results: 0 };
+    current.results = Math.max(current.results, safeNumber(count) || 0);
+    map.set(key, current);
+  });
   return map;
 }
 
@@ -230,17 +242,96 @@ export function defaultElectionSequence(state) {
   return useful.length ? useful : ordered;
 }
 
+async function loadFullSummaryOnce(state, { buildIndices, registerIssue = () => {} } = {}) {
+  if (state.summaryFullLoaded) {
+    return { strategy: 'full', loadedKeys: [], loadedRows: 0, alreadyLoaded: true };
+  }
+  if (state.summaryFullLoadPromise) return state.summaryFullLoadPromise;
+  const rel = state.manifest?.files?.municipalitySummary;
+  if (!rel) return { strategy: 'full', loadedKeys: [], loadedRows: 0, missing: true };
+  state.summaryFullLoadPromise = state.summaryResolver(rel)
+    .then(rows => {
+      const parsed = parseSummaryRows(rows);
+      state.summary = parsed;
+      state.loadedSummaryElectionKeys = new Set(parsed.map(row => row.election_key).filter(Boolean));
+      state.summaryFullLoaded = true;
+      state.summaryHydrationComplete = true;
+      if (typeof buildIndices === 'function') buildIndices();
+      return { strategy: 'full', loadedKeys: [...state.loadedSummaryElectionKeys], loadedRows: parsed.length };
+    })
+    .catch(err => {
+      registerIssue('summary-full-load', err);
+      return { strategy: 'full', loadedKeys: [], loadedRows: 0, error: err };
+    })
+    .finally(() => {
+      state.summaryFullLoadPromise = null;
+    });
+  return state.summaryFullLoadPromise;
+}
+
+export async function ensureSummaryForElections(state, electionKeys, { buildIndices, registerIssue = () => {} } = {}) {
+  const wanted = [...new Set((electionKeys || []).filter(Boolean))];
+  if (!wanted.length || !state.manifest?.files) return { strategy: state.summaryLoadStrategy || 'none', loadedKeys: [], loadedRows: 0 };
+  if (state.summaryFullLoaded) return { strategy: 'full', loadedKeys: [], loadedRows: 0, alreadyLoaded: true };
+  if (state.summaryLoadStrategy !== 'by_election') {
+    return loadFullSummaryOnce(state, { buildIndices, registerIssue });
+  }
+
+  const shardPaths = state.summaryShardPaths || {};
+  const missing = wanted.filter(key => !state.loadedSummaryElectionKeys?.has(key));
+  if (!missing.length) return { strategy: 'by_election', loadedKeys: [], loadedRows: 0, alreadyLoaded: true };
+  if (missing.some(key => !shardPaths[key])) {
+    return loadFullSummaryOnce(state, { buildIndices, registerIssue });
+  }
+
+  const tasks = missing.map(key => {
+    if (state.summaryLoadPromises?.has(key)) return state.summaryLoadPromises.get(key);
+    const promise = state.summaryResolver(shardPaths[key])
+      .then(rows => ({ key, rows: parseSummaryRows(rows) }))
+      .catch(err => {
+        registerIssue(`summary-shard-${key}`, err);
+        return { key, rows: [], error: err };
+      })
+      .finally(() => {
+        state.summaryLoadPromises?.delete(key);
+      });
+    state.summaryLoadPromises?.set(key, promise);
+    return promise;
+  });
+
+  const chunks = await Promise.all(tasks);
+  const fresh = [];
+  const loadedKeys = [];
+  chunks.forEach(chunk => {
+    if (!chunk?.key || state.loadedSummaryElectionKeys?.has(chunk.key)) return;
+    state.loadedSummaryElectionKeys?.add(chunk.key);
+    loadedKeys.push(chunk.key);
+    if (chunk.rows?.length) fresh.push(...chunk.rows);
+  });
+  if (fresh.length) state.summary = state.summary.concat(fresh);
+  if (fresh.length || loadedKeys.length) {
+    if (typeof buildIndices === 'function') buildIndices();
+  }
+  if (state.summaryDeclaredRows && state.summary.length >= state.summaryDeclaredRows) {
+    state.summaryHydrationComplete = true;
+  }
+  return { strategy: 'by_election', loadedKeys, loadedRows: fresh.length };
+}
+
 async function loadBundleWithManifest(state, manifest, resolver, { buildIndices, registerIssue = () => {}, source = 'embedded' } = {}) {
   state.manifest = manifest;
   const files = manifest.files || {};
+  const deferredSummaryStrategy = String(manifest.loading?.municipalitySummary?.strategy || '');
   const deferredResultsStrategy = String(manifest.loading?.municipalityResultsLong?.strategy || '');
+  const preferDeferredSummary = Boolean(files.municipalitySummaryByElectionIndex || deferredSummaryStrategy.includes('deferred'));
   const preferDeferredResults = Boolean(files.municipalityResultsLongByElectionIndex || deferredResultsStrategy.includes('deferred'));
-  const [elections, municipalities, parties, lineage, summary, eagerResultsLong, resultsShardIndex, aliases, customIndicators, qualityReport, geometryPack, datasetRegistry, codebook, usageNotes, updateLog, dataProducts, datasetContracts, provenance, releaseManifest, researchRecipes, siteGuides, archiveGapReport] = await Promise.all([
+  const [elections, municipalities, parties, lineage, eagerSummary, summaryShardIndex, eagerResultsLong, resultsShardIndex, aliases, customIndicators, qualityReport, geometryPack, datasetRegistry, codebook, usageNotes, updateLog, dataProducts, datasetContracts, provenance, releaseManifest, researchRecipes, siteGuides, archiveGapReport] = await Promise.all([
     resolver.csv(files.electionsMaster),
     resolver.csv(files.municipalitiesMaster),
     resolver.csv(files.partiesMaster),
     resolver.csv(files.territorialLineage),
-    resolver.csv(files.municipalitySummary),
+    !preferDeferredSummary && files.municipalitySummary ? resolver.csv(files.municipalitySummary).catch(() => []) : Promise.resolve([]),
+    files.municipalitySummaryByElectionIndex ? resolver.json(files.municipalitySummaryByElectionIndex).catch(() => null) : Promise.resolve(null),
     !preferDeferredResults && files.municipalityResultsLong ? resolver.csv(files.municipalityResultsLong).catch(() => []) : Promise.resolve([]),
     files.municipalityResultsLongByElectionIndex ? resolver.json(files.municipalityResultsLongByElectionIndex).catch(() => null) : Promise.resolve(null),
     resolver.csv(files.municipalityAliases),
@@ -270,7 +361,7 @@ async function loadBundleWithManifest(state, manifest, resolver, { buildIndices,
   state.parties = parties;
   state.lineage = lineage;
   state.aliases = aliases;
-  state.summary = parseSummaryRows(summary);
+  state.summary = parseSummaryRows(eagerSummary);
   state.resultsLong = parseResultsLongRows(eagerResultsLong);
   state.customIndicators = parseCustomIndicatorRows(customIndicators);
   state.qualityReport = qualityReport;
@@ -293,25 +384,46 @@ async function loadBundleWithManifest(state, manifest, resolver, { buildIndices,
   state.geometryCache = {};
   state.dataSource = source;
   state.dataSourceLabel = source === 'local' ? `Bundle locale (${resolver.fileCount || 0} file)` : 'Bundle incorporato';
+  state.summaryResolver = path => resolver.csv(path);
   state.geometryResolver = path => resolver.geometry(path);
   state.resultsResolver = path => resolver.csv(path);
+  state.summaryShardIndex = summaryShardIndex || null;
+  state.summaryShardPaths = summaryShardIndex?.shards || null;
   state.resultsLongShardIndex = resultsShardIndex || null;
   state.resultsLongShardPaths = resultsShardIndex?.shards || null;
+  state.summaryLoadStrategy = state.summaryShardPaths && Object.keys(state.summaryShardPaths).length
+    ? 'by_election'
+    : (files.municipalitySummary ? 'full' : 'none');
   state.resultsLongLoadStrategy = state.resultsLongShardPaths && Object.keys(state.resultsLongShardPaths).length
     ? 'by_election'
     : (files.municipalityResultsLong ? 'full' : 'none');
+  state.summaryFullLoaded = state.summaryLoadStrategy === 'full';
   state.resultsLongFullLoaded = state.resultsLongLoadStrategy === 'full';
+  state.loadedSummaryElectionKeys = new Set(state.summary.map(row => row.election_key).filter(Boolean));
   state.loadedResultElectionKeys = new Set(state.resultsLong.map(row => row.election_key).filter(Boolean));
+  state.summaryLoadPromises = new Map();
   state.resultsLoadPromises = new Map();
+  state.summaryFullLoadPromise = null;
   state.resultsFullLoadPromise = null;
-  state.declaredCoverageByElection = buildDeclaredCoverageByElection(state.elections, state.datasetRegistry, state.summary, state.resultsLong);
+  state.declaredCoverageByElection = buildDeclaredCoverageByElection(
+    state.elections,
+    state.datasetRegistry,
+    state.summary,
+    state.resultsLong,
+    summaryShardIndex?.row_counts || {},
+    resultsShardIndex?.row_counts || {}
+  );
+  state.summaryDeclaredRows = Array.from(state.declaredCoverageByElection.values()).reduce((sum, row) => sum + (row.summary || 0), 0);
   state.resultsLongDeclaredRows = Array.from(state.declaredCoverageByElection.values()).reduce((sum, row) => sum + (row.results || 0), 0);
+  state.summaryHydrationStarted = false;
   state.resultsHydrationStarted = false;
+  state.summaryHydrationComplete = state.summaryFullLoaded;
   state.resultsHydrationComplete = state.resultsLongFullLoaded;
   if (typeof buildIndices === 'function') buildIndices();
   const defaults = defaultElectionSequence(state);
   state.selectedElection = state.selectedElection || defaults.at(-1)?.election_key || state.elections.at(-1)?.election_key || null;
-  state.compareElection = state.compareElection || defaults.at(-2)?.election_key || state.selectedElection;
+  state.compareElection = state.compareElection || state.selectedElection || defaults.at(-2)?.election_key || null;
+  await ensureSummaryForElections(state, [state.selectedElection, state.compareElection].filter(Boolean), { buildIndices, registerIssue });
   await syncActiveGeometry(state, registerIssue);
 }
 
