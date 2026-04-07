@@ -10,6 +10,10 @@ _*.html
 __pycache__/
 *.py[cod]
 
+# Local rebuild intermediates
+data/intermediate/
+data/derived/historical_rebuild_log.json
+
 # OS/editor noise
 .DS_Store
 Thumbs.db

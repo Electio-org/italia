@@ -1,7 +1,7 @@
 {
   "project": {
     "title": "Lombardia Camera Explorer",
-    "version": "0.11.0",
+    "version": "0.15.0",
     "ready_for_real_data": true,
     "notes": [
       "Vote shares are recomputed from votes whenever a plausible denominator is available.",
@@ -10,7 +10,11 @@
       "Geometry pack and province overlay are declared in the manifest for reproducible map loading.",
       "Municipality lookup metadata is used when available to enrich province / geometry identifiers.",
       "Guided question cards and evidence ladder are part of the bundle-facing UX layer.",
-      "Copy-ready citation and reproducibility lines help make each view shareable and method-aware."
+      "Copy-ready citation and reproducibility lines help make each view shareable and method-aware.",
+      "Party results can be delivered both as a monolithic CSV and as per-election shards for faster interactive loading.",
+      "Coverage diagnostics now compare the published bundle against the official Eligendo open-data zip archives.",
+      "The bundle can also declare a gap report that compares published coverage against the official Eligendo open-data archives.",
+      "Municipality coverage is rebuilt from official Eligendo open-data zip archives across all Camera years plus Assemblea Costituente 1946."
     ]
   },
   "files": {
@@ -20,6 +24,7 @@
     "territorialLineage": "data/derived/territorial_lineage.csv",
     "municipalitySummary": "data/derived/municipality_summary.csv",
     "municipalityResultsLong": "data/derived/municipality_results_long.csv",
+    "municipalityResultsLongByElectionIndex": "data/derived/municipality_results_long_by_election.json",
     "municipalityAliases": "data/derived/municipality_aliases.csv",
     "geometry": "data/derived/geometries/municipalities_2026.geojson",
     "dataQualityReport": "data/derived/data_quality_report.json",
@@ -35,7 +40,8 @@
     "provenance": "data/derived/provenance.json",
     "releaseManifest": "data/derived/release_manifest.json",
     "researchRecipes": "data/derived/research_recipes.json",
-    "siteGuides": "data/derived/site_guides.json"
+    "siteGuides": "data/derived/site_guides.json",
+    "archiveBundleGapReport": "data/derived/archive_bundle_gap_report.json"
   },
   "contracts": {
     "geometryJoinPriority": [
@@ -47,5 +53,11 @@
       "historical",
       "harmonized"
     ]
+  },
+  "loading": {
+    "municipalityResultsLong": {
+      "strategy": "deferred_by_election",
+      "index": "data/derived/municipality_results_long_by_election.json"
+    }
   }
 }

@@ -1,8 +1,8 @@
 {
-  "generated_by": "preprocess.py",
+  "generated_by": "build_result_shards.py",
   "project": {
     "title": "Lombardia Camera Explorer",
-    "version": "0.11.0",
+    "version": "0.15.0",
     "ready_for_real_data": true,
     "notes": [
       "Vote shares are recomputed from votes whenever a plausible denominator is available.",
@@ -11,17 +11,21 @@
       "Geometry pack and province overlay are declared in the manifest for reproducible map loading.",
       "Municipality lookup metadata is used when available to enrich province / geometry identifiers.",
       "Guided question cards and evidence ladder are part of the bundle-facing UX layer.",
-      "Copy-ready citation and reproducibility lines help make each view shareable and method-aware."
+      "Copy-ready citation and reproducibility lines help make each view shareable and method-aware.",
+      "Party results can be delivered both as a monolithic CSV and as per-election shards for faster interactive loading.",
+      "Coverage diagnostics now compare the published bundle against the official Eligendo open-data zip archives.",
+      "The bundle can also declare a gap report that compares published coverage against the official Eligendo open-data archives.",
+      "Municipality coverage is rebuilt from official Eligendo open-data zip archives across all Camera years plus Assemblea Costituente 1946."
     ]
   },
   "bundle_root": ".",
   "file_entries": {
     "electionsMaster": {
-      "path": "D:/camera_lombardia_only_suite_v5/lombardia_camera_app_v35/data/derived/elections_master.csv",
+      "path": "data/derived/elections_master.csv",
       "kind": "csv",
-      "size_bytes": 2400,
-      "sha256": "d43e7e7b0b5bac64f7dc4708e28216940a7e0c7c9e2edd0c150b68c46771e145",
-      "row_count": 19,
+      "size_bytes": 8632,
+      "sha256": "ed52d0791324afda3b068488f071556dbf22776287f30c2805f871bc5f37188a",
+      "row_count": 20,
       "columns": [
         "election_key",
         "election_year",
@@ -35,11 +39,11 @@
       ]
     },
     "municipalitiesMaster": {
-      "path": "D:/camera_lombardia_only_suite_v5/lombardia_camera_app_v35/data/derived/municipalities_master.csv",
+      "path": "data/derived/municipalities_master.csv",
       "kind": "csv",
-      "size_bytes": 525848,
-      "sha256": "3d74c937b39383bd85ff724a0be8771c05ac99f8739d4a75dd6c88c07bb42a66",
-      "row_count": 2849,
+      "size_bytes": 339327,
+      "sha256": "1cec4856da0737db99c3794f8bf18b11d8b2ec89681a6a9265076f703aaf8db0",
+      "row_count": 1821,
       "columns": [
         "municipality_id",
         "name_current",
@@ -58,11 +62,11 @@
       ]
     },
     "partiesMaster": {
-      "path": "D:/camera_lombardia_only_suite_v5/lombardia_camera_app_v35/data/derived/parties_master.csv",
+      "path": "data/derived/parties_master.csv",
       "kind": "csv",
-      "size_bytes": 8499,
-      "sha256": "49c1dd265195ef26e7f3a01f74fb0ea6b56e64098b6465213255dedfea17fee6",
-      "row_count": 76,
+      "size_bytes": 18731,
+      "sha256": "ca76a0152707432403f907eb3c150957d3025b38dd8b977100a0f6e720182acd",
+      "row_count": 184,
       "columns": [
         "party_std",
         "party_display_name",
@@ -76,11 +80,11 @@
       ]
     },
     "territorialLineage": {
-      "path": "D:/camera_lombardia_only_suite_v5/lombardia_camera_app_v35/data/derived/territorial_lineage.csv",
+      "path": "data/derived/territorial_lineage.csv",
       "kind": "csv",
-      "size_bytes": 322892,
-      "sha256": "12e90cb8c615ffe83c77e5461c14776dcda6e09e0e447acb7db5d120bf4f4033",
-      "row_count": 2849,
+      "size_bytes": 208766,
+      "sha256": "a15350b34502254d549c0b49474a45c14084e8935cb50b6f78e636afbfab0e29",
+      "row_count": 1821,
       "columns": [
         "municipality_id_stable",
         "name_current",
@@ -99,11 +103,11 @@
       ]
     },
     "municipalitySummary": {
-      "path": "D:/camera_lombardia_only_suite_v5/lombardia_camera_app_v35/data/derived/municipality_summary.csv",
+      "path": "data/derived/municipality_summary.csv",
       "kind": "csv",
-      "size_bytes": 1501826,
-      "sha256": "9bf08bcde6a7889ceb739892058c5d67180f9d096d7a2a75c0bdcdfafc71ed96",
-      "row_count": 4888,
+      "size_bytes": 9576337,
+      "sha256": "33c2747e8ed74908f136c18832617ca02fdc758f4092f235fa7645cf7a5ab267",
+      "row_count": 30316,
       "columns": [
         "election_key",
         "election_year",
@@ -131,11 +135,11 @@
       ]
     },
     "municipalityResultsLong": {
-      "path": "D:/camera_lombardia_only_suite_v5/lombardia_camera_app_v35/data/derived/municipality_results_long.csv",
+      "path": "data/derived/municipality_results_long.csv",
       "kind": "csv",
-      "size_bytes": 32225498,
-      "sha256": "2e297c10844a24946af37db4d8bfc897aa0f6e518608820435a8462d96d92ee0",
-      "row_count": 132333,
+      "size_bytes": 99751278,
+      "sha256": "3945676ca675b800a692f0f073afb7d287facdd8a4421f22702f8555444748e4",
+      "row_count": 371027,
       "columns": [
         "election_key",
         "election_year",
@@ -157,12 +161,18 @@
         "comparability_note"
       ]
     },
+    "municipalityResultsLongByElectionIndex": {
+      "path": "data/derived/municipality_results_long_by_election.json",
+      "kind": "json",
+      "size_bytes": 2194,
+      "sha256": "a4fcb7e5b35ff5547d5027cd2e4a7c7b2a82a760444c336398354d289c8c8ccd"
+    },
     "municipalityAliases": {
-      "path": "D:/camera_lombardia_only_suite_v5/lombardia_camera_app_v35/data/derived/municipality_aliases.csv",
+      "path": "data/derived/municipality_aliases.csv",
       "kind": "csv",
-      "size_bytes": 111850,
-      "sha256": "d00a4d90892d1ebe2dd996a41bf53138f0f4efbb2c3675c82929bf9348ebee4a",
-      "row_count": 2064,
+      "size_bytes": 101150,
+      "sha256": "38594a861fef84211b27a1578e13ade1b7613bc1de0734dc05ed9aa351606d0a",
+      "row_count": 1820,
       "columns": [
         "municipality_id",
         "alias",
@@ -173,20 +183,20 @@
       ]
     },
     "geometry": {
-      "path": "D:/camera_lombardia_only_suite_v5/lombardia_camera_app_v35/data/derived/geometries/municipalities_2026.geojson",
+      "path": "data/derived/geometries/municipalities_2026.geojson",
       "kind": "geojson",
       "size_bytes": 17217658,
       "sha256": "45bbc8129914182bce2cb1c8df32cf738b46f7e751fc2529c8abe62dd4cbfc5a",
       "feature_count": 1502
     },
     "dataQualityReport": {
-      "path": "D:/camera_lombardia_only_suite_v5/lombardia_camera_app_v35/data/derived/data_quality_report.json",
+      "path": "data/derived/data_quality_report.json",
       "kind": "json",
-      "size_bytes": 69708,
-      "sha256": "e9111622d0fedd16bde5c0a6c958cf5ffbe2ef4b347df77219c90373d233ae46"
+      "size_bytes": 8256,
+      "sha256": "ed7d1ed1b589b8b37782c91917ff4aa1b205bff89c39fe4a27fb4279695e231a"
     },
     "customIndicators": {
-      "path": "D:/camera_lombardia_only_suite_v5/lombardia_camera_app_v35/data/derived/custom_indicators.csv",
+      "path": "data/derived/custom_indicators.csv",
       "kind": "csv",
       "size_bytes": 110,
       "sha256": "69d5c837f9587e368dba01adea4e9bb63f255edf7e2c448a5f7c61d707404aab",
@@ -194,78 +204,87 @@
       "columns": []
     },
     "geometryPack": {
-      "path": "D:/camera_lombardia_only_suite_v5/lombardia_camera_app_v35/data/derived/geometry_pack.json",
+      "path": "data/derived/geometry_pack.json",
       "kind": "json",
       "size_bytes": 946,
       "sha256": "f606facba83019a521710b0c62423aca8d50d71dc8231daf3c68c2bcba50b11f"
     },
     "provinceGeometry": {
-      "path": "D:/camera_lombardia_only_suite_v5/lombardia_camera_app_v35/data/derived/geometries/provinces_2026.geojson",
+      "path": "data/derived/geometries/provinces_2026.geojson",
       "kind": "geojson",
       "size_bytes": 1692077,
       "sha256": "03aa143bfcf068f56f6dbefcfc67b08feba5e105c14f5a88b2414940ca3d5b8b",
       "feature_count": 12
     },
     "datasetRegistry": {
-      "path": "D:/camera_lombardia_only_suite_v5/lombardia_camera_app_v35/data/derived/dataset_registry.json",
+      "path": "data/derived/dataset_registry.json",
       "kind": "json",
-      "size_bytes": 11668,
-      "sha256": "b9dbd0d52b4ee181cbe453b67ce8d28a627c592c1b6264e4576066add7e3bdf7",
-      "dataset_count": 25
+      "size_bytes": 12577,
+      "sha256": "1692a1337c901da802ef1f5d0c2618dd31f1bd3f55c03974df1aae6076dd1469",
+      "dataset_count": 26
     },
     "codebook": {
-      "path": "D:/camera_lombardia_only_suite_v5/lombardia_camera_app_v35/data/derived/codebook.json",
+      "path": "data/derived/codebook.json",
       "kind": "json",
       "size_bytes": 15353,
       "sha256": "9cf57feef45eed47543abc0c309da431bf37980e523341989f387f015058f61c",
       "dataset_count": 7
     },
     "usageNotes": {
-      "path": "D:/camera_lombardia_only_suite_v5/lombardia_camera_app_v35/data/derived/usage_notes.json",
+      "path": "data/derived/usage_notes.json",
       "kind": "json",
-      "size_bytes": 1505,
-      "sha256": "7f7fd4e973a98be63f6164785c5acc3bf3acfb7e1c1352363d782ea2a9b822e2"
+      "size_bytes": 1902,
+      "sha256": "7c2141c609559a3af57aeb7c32ea79e91224ce15e0d659ccb900c1ef2c685798"
     },
     "updateLog": {
-      "path": "D:/camera_lombardia_only_suite_v5/lombardia_camera_app_v35/data/derived/update_log.json",
+      "path": "data/derived/update_log.json",
       "kind": "json",
-      "size_bytes": 3020,
-      "sha256": "8828be97ee56644761550a0f27626615df3271db3c1487174c101df0204f3c76"
+      "size_bytes": 7791,
+      "sha256": "a90f5c2bb007f4ebaa2c75dbf01195ce422e9a76e75683d67a6424cba1cb5a93",
+      "entry_count": 13
     },
     "dataProducts": {
-      "path": "D:/camera_lombardia_only_suite_v5/lombardia_camera_app_v35/data/derived/data_products.json",
+      "path": "data/derived/data_products.json",
       "kind": "json",
-      "size_bytes": 2052,
-      "sha256": "6c537de47e0db500e1511fc657c04b6fb26fd4f5daa32815be236fedf47e8159",
+      "size_bytes": 2148,
+      "sha256": "bc29fc8c91c21ca5a338d107f1d4b2cca126bb9a4089dc95737cf0ccaaf0eef7",
       "product_count": 3
     },
     "datasetContracts": {
-      "path": "D:/camera_lombardia_only_suite_v5/lombardia_camera_app_v35/data/derived/dataset_contracts.json",
+      "path": "data/derived/dataset_contracts.json",
       "kind": "json",
       "size_bytes": 4824,
       "sha256": "0faaf2562681aa8027091040656ad2ec1663a22b797ca9597ac2a17507280486"
     },
     "provenance": {
-      "path": "D:/camera_lombardia_only_suite_v5/lombardia_camera_app_v35/data/derived/provenance.json",
+      "path": "data/derived/provenance.json",
       "kind": "json",
-      "size_bytes": 14913,
-      "sha256": "fe663624f4b8c11daaa337612f98ada59e24b373abf1b04dde3c6b52b920ec9a"
+      "size_bytes": 19113,
+      "sha256": "bc9c1f4c31921ee539076f6b2532ca48375d01bebf4cb6018df9e83060650155",
+      "entry_count": 25
     },
     "researchRecipes": {
-      "path": "D:/camera_lombardia_only_suite_v5/lombardia_camera_app_v35/data/derived/research_recipes.json",
+      "path": "data/derived/research_recipes.json",
       "kind": "json",
       "size_bytes": 1652,
       "sha256": "e93761f9c199bb0716a184819e8ce476da4bd0b40a669c9cda3da92c4f5d1e98"
     },
     "siteGuides": {
-      "path": "D:/camera_lombardia_only_suite_v5/lombardia_camera_app_v35/data/derived/site_guides.json",
+      "path": "data/derived/site_guides.json",
       "kind": "json",
       "size_bytes": 5033,
       "sha256": "50a22cadfb3552c5a77eecbd1a194a8d71f977e59784b5a8ace502067b380972"
+    },
+    "archiveBundleGapReport": {
+      "path": "data/derived/archive_bundle_gap_report.json",
+      "kind": "json",
+      "size_bytes": 17606,
+      "sha256": "d918c43d62776fa032bac7aa5aa6ea21f2fcf21917e50941f991e19e78c16f95"
     }
   },
   "integrity": {
     "sha256_scope": [
+      "archiveBundleGapReport",
       "codebook",
       "customIndicators",
       "dataProducts",
@@ -278,6 +297,7 @@
       "municipalitiesMaster",
       "municipalityAliases",
       "municipalityResultsLong",
+      "municipalityResultsLongByElectionIndex",
       "municipalitySummary",
       "partiesMaster",
       "provenance",

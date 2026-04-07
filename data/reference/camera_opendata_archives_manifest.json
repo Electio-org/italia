@@ -1,0 +1,418 @@
+{
+  "generated_by": "sync_camera_opendata_archives.py",
+  "source_url": "https://elezionistorico.interno.gov.it/eligendo/opendata.php",
+  "archive_dir": "D:\\camera_lombardia_only_suite_v5\\opendata_camera_archives",
+  "count": 20,
+  "entries": [
+    {
+      "election_type": "assemblea_costituente",
+      "year": "1946",
+      "election_date": "02/06/1946",
+      "relative_path": "assemblea_costituente/assemblea_costituente-19460602.zip",
+      "filename": "assemblea_costituente-19460602.zip",
+      "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/assemblea_costituente/assemblea_costituente-19460602.zip",
+      "local_path": "D:\\camera_lombardia_only_suite_v5\\opendata_camera_archives\\assemblea_costituente-19460602.zip",
+      "size_bytes": 454342,
+      "downloaded_now": true,
+      "entry_count": 1,
+      "members": [
+        "assemblea_costituente-19460602.txt"
+      ],
+      "csv_members": [],
+      "xlsx_members": []
+    },
+    {
+      "election_type": "camera",
+      "year": "1948",
+      "election_date": "18/04/1948",
+      "relative_path": "camera/camera-19480418.zip",
+      "filename": "camera-19480418.zip",
+      "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/camera/camera-19480418.zip",
+      "local_path": "D:\\camera_lombardia_only_suite_v5\\opendata_camera_archives\\camera-19480418.zip",
+      "size_bytes": 1455327,
+      "downloaded_now": false,
+      "entry_count": 2,
+      "members": [
+        "camera-19480418.txt",
+        "camera1948_preferenze.txt"
+      ],
+      "csv_members": [],
+      "xlsx_members": []
+    },
+    {
+      "election_type": "camera",
+      "year": "1953",
+      "election_date": "07/06/1953",
+      "relative_path": "camera/camera-19530607.zip",
+      "filename": "camera-19530607.zip",
+      "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/camera/camera-19530607.zip",
+      "local_path": "D:\\camera_lombardia_only_suite_v5\\opendata_camera_archives\\camera-19530607.zip",
+      "size_bytes": 729087,
+      "downloaded_now": false,
+      "entry_count": 2,
+      "members": [
+        "camera-19530607.txt",
+        "camera1953_preferenze.txt"
+      ],
+      "csv_members": [],
+      "xlsx_members": []
+    },
+    {
+      "election_type": "camera",
+      "year": "1958",
+      "election_date": "25/05/1958",
+      "relative_path": "camera/camera-19580525.zip",
+      "filename": "camera-19580525.zip",
+      "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/camera/camera-19580525.zip",
+      "local_path": "D:\\camera_lombardia_only_suite_v5\\opendata_camera_archives\\camera-19580525.zip",
+      "size_bytes": 719194,
+      "downloaded_now": false,
+      "entry_count": 2,
+      "members": [
+        "camera-19580525.txt",
+        "camera1958_preferenze.txt"
+      ],
+      "csv_members": [],
+      "xlsx_members": []
+    },
+    {
+      "election_type": "camera",
+      "year": "1963",
+      "election_date": "28/04/1963",
+      "relative_path": "camera/camera-19630428.zip",
+      "filename": "camera-19630428.zip",
+      "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/camera/camera-19630428.zip",
+      "local_path": "D:\\camera_lombardia_only_suite_v5\\opendata_camera_archives\\camera-19630428.zip",
+      "size_bytes": 631245,
+      "downloaded_now": false,
+      "entry_count": 2,
+      "members": [
+        "camera-19630428.txt",
+        "camera1963_preferenze.txt"
+      ],
+      "csv_members": [],
+      "xlsx_members": []
+    },
+    {
+      "election_type": "camera",
+      "year": "1968",
+      "election_date": "19/05/1968",
+      "relative_path": "camera/camera-19680519.zip",
+      "filename": "camera-19680519.zip",
+      "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/camera/camera-19680519.zip",
+      "local_path": "D:\\camera_lombardia_only_suite_v5\\opendata_camera_archives\\camera-19680519.zip",
+      "size_bytes": 657131,
+      "downloaded_now": false,
+      "entry_count": 2,
+      "members": [
+        "camera-19680519.txt",
+        "camera1968_preferenze.txt"
+      ],
+      "csv_members": [],
+      "xlsx_members": []
+    },
+    {
+      "election_type": "camera",
+      "year": "1972",
+      "election_date": "07/05/1972",
+      "relative_path": "camera/camera-19720507.zip",
+      "filename": "camera-19720507.zip",
+      "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/camera/camera-19720507.zip",
+      "local_path": "D:\\camera_lombardia_only_suite_v5\\opendata_camera_archives\\camera-19720507.zip",
+      "size_bytes": 753842,
+      "downloaded_now": false,
+      "entry_count": 2,
+      "members": [
+        "camera-19720507.txt",
+        "camera1972_preferenze.txt"
+      ],
+      "csv_members": [],
+      "xlsx_members": []
+    },
+    {
+      "election_type": "camera",
+      "year": "1976",
+      "election_date": "20/06/1976",
+      "relative_path": "camera/camera-19760620.zip",
+      "filename": "camera-19760620.zip",
+      "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/camera/camera-19760620.zip",
+      "local_path": "D:\\camera_lombardia_only_suite_v5\\opendata_camera_archives\\camera-19760620.zip",
+      "size_bytes": 658725,
+      "downloaded_now": false,
+      "entry_count": 2,
+      "members": [
+        "camera-19760620.txt",
+        "camera1976_preferenze.txt"
+      ],
+      "csv_members": [],
+      "xlsx_members": []
+    },
+    {
+      "election_type": "camera",
+      "year": "1979",
+      "election_date": "03/06/1979",
+      "relative_path": "camera/camera-19790603.zip",
+      "filename": "camera-19790603.zip",
+      "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/camera/camera-19790603.zip",
+      "local_path": "D:\\camera_lombardia_only_suite_v5\\opendata_camera_archives\\camera-19790603.zip",
+      "size_bytes": 701553,
+      "downloaded_now": false,
+      "entry_count": 2,
+      "members": [
+        "camera-19790603.txt",
+        "camera1979_preferenze.txt"
+      ],
+      "csv_members": [],
+      "xlsx_members": []
+    },
+    {
+      "election_type": "camera",
+      "year": "1983",
+      "election_date": "26/06/1983",
+      "relative_path": "camera/camera-19830626.zip",
+      "filename": "camera-19830626.zip",
+      "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/camera/camera-19830626.zip",
+      "local_path": "D:\\camera_lombardia_only_suite_v5\\opendata_camera_archives\\camera-19830626.zip",
+      "size_bytes": 685920,
+      "downloaded_now": false,
+      "entry_count": 2,
+      "members": [
+        "camera-19830626.txt",
+        "camera1983_preferenze.txt"
+      ],
+      "csv_members": [],
+      "xlsx_members": []
+    },
+    {
+      "election_type": "camera",
+      "year": "1987",
+      "election_date": "14/06/1987",
+      "relative_path": "camera/camera-19870614.zip",
+      "filename": "camera-19870614.zip",
+      "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/camera/camera-19870614.zip",
+      "local_path": "D:\\camera_lombardia_only_suite_v5\\opendata_camera_archives\\camera-19870614.zip",
+      "size_bytes": 934649,
+      "downloaded_now": false,
+      "entry_count": 2,
+      "members": [
+        "Camera-19870614.txt",
+        "camera1987_preferenze.txt"
+      ],
+      "csv_members": [],
+      "xlsx_members": []
+    },
+    {
+      "election_type": "camera",
+      "year": "1992",
+      "election_date": "05/04/1992",
+      "relative_path": "camera/camera-19920405.zip",
+      "filename": "camera-19920405.zip",
+      "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/camera/camera-19920405.zip",
+      "local_path": "D:\\camera_lombardia_only_suite_v5\\opendata_camera_archives\\camera-19920405.zip",
+      "size_bytes": 1200081,
+      "downloaded_now": false,
+      "entry_count": 2,
+      "members": [
+        "camera-19920405.txt",
+        "camera1992_preferenze.txt"
+      ],
+      "csv_members": [],
+      "xlsx_members": []
+    },
+    {
+      "election_type": "camera",
+      "year": "1994",
+      "election_date": "27/03/1994",
+      "relative_path": "camera/camera-19940327.zip",
+      "filename": "camera-19940327.zip",
+      "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/camera/camera-19940327.zip",
+      "local_path": "D:\\camera_lombardia_only_suite_v5\\opendata_camera_archives\\camera-19940327.zip",
+      "size_bytes": 1370971,
+      "downloaded_now": false,
+      "entry_count": 4,
+      "members": [
+        "camera-19940327_Proporzionale.txt",
+        "Camera_19940327_Uninom_Cand&Contr.txt",
+        "Camera_19940327_Uninom_Scrutini.txt",
+        "camera1994_candidatilista.txt"
+      ],
+      "csv_members": [],
+      "xlsx_members": []
+    },
+    {
+      "election_type": "camera",
+      "year": "1996",
+      "election_date": "21/04/1996",
+      "relative_path": "camera/camera-19960421.zip",
+      "filename": "camera-19960421.zip",
+      "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/camera/camera-19960421.zip",
+      "local_path": "D:\\camera_lombardia_only_suite_v5\\opendata_camera_archives\\camera-19960421.zip",
+      "size_bytes": 1088476,
+      "downloaded_now": false,
+      "entry_count": 4,
+      "members": [
+        "camera-19960421_Proporzionale.txt",
+        "Camera_19960421_Uninom_Cand&Contr.txt",
+        "Camera_19960421_Uninom_Scrutini.txt",
+        "camera1996_candidatilista.txt"
+      ],
+      "csv_members": [],
+      "xlsx_members": []
+    },
+    {
+      "election_type": "camera",
+      "year": "2001",
+      "election_date": "13/05/2001",
+      "relative_path": "camera/camera-20010513.zip",
+      "filename": "camera-20010513.zip",
+      "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/camera/camera-20010513.zip",
+      "local_path": "D:\\camera_lombardia_only_suite_v5\\opendata_camera_archives\\camera-20010513.zip",
+      "size_bytes": 1409000,
+      "downloaded_now": false,
+      "entry_count": 4,
+      "members": [
+        "camera2001_candidatilista.txt",
+        "camera-20010513_Proporzionale.txt",
+        "Camera_20010513_Uninom_Cand&Contr.txt",
+        "Camera_20010513_Uninom_Scrutini.txt"
+      ],
+      "csv_members": [],
+      "xlsx_members": []
+    },
+    {
+      "election_type": "camera",
+      "year": "2006",
+      "election_date": "09/04/2006",
+      "relative_path": "camera/camera-20060409.zip",
+      "filename": "camera-20060409.zip",
+      "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/camera/camera-20060409.zip",
+      "local_path": "D:\\camera_lombardia_only_suite_v5\\opendata_camera_archives\\camera-20060409.zip",
+      "size_bytes": 1232198,
+      "downloaded_now": false,
+      "entry_count": 5,
+      "members": [
+        "camera2006_EsteroListe_livNaz.xlsx",
+        "camera2006EsteroScrutini_livNaz.xlsx",
+        "camera_italia-20060409.txt",
+        "camera_vaosta-20060409.txt",
+        "camera2006_candidatilista.txt"
+      ],
+      "csv_members": [],
+      "xlsx_members": [
+        "camera2006_EsteroListe_livNaz.xlsx",
+        "camera2006EsteroScrutini_livNaz.xlsx"
+      ]
+    },
+    {
+      "election_type": "camera",
+      "year": "2008",
+      "election_date": "13/04/2008",
+      "relative_path": "camera/camera-20080413.zip",
+      "filename": "camera-20080413.zip",
+      "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/camera/camera-20080413.zip",
+      "local_path": "D:\\camera_lombardia_only_suite_v5\\opendata_camera_archives\\camera-20080413.zip",
+      "size_bytes": 2636771,
+      "downloaded_now": false,
+      "entry_count": 5,
+      "members": [
+        "camera2008_EsteroScrutini_livNaz.xlsx",
+        "camera_italia-20080413.txt",
+        "camera_vaosta-20080413.txt",
+        "camera2008_candidatilista.txt",
+        "camera2008_EsteroListe_livNaz.xlsx"
+      ],
+      "csv_members": [],
+      "xlsx_members": [
+        "camera2008_EsteroScrutini_livNaz.xlsx",
+        "camera2008_EsteroListe_livNaz.xlsx"
+      ]
+    },
+    {
+      "election_type": "camera",
+      "year": "2013",
+      "election_date": "24/02/2013",
+      "relative_path": "camera/camera-20130224.zip",
+      "filename": "camera-20130224.zip",
+      "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/camera/camera-20130224.zip",
+      "local_path": "D:\\camera_lombardia_only_suite_v5\\opendata_camera_archives\\camera-20130224.zip",
+      "size_bytes": 3276971,
+      "downloaded_now": false,
+      "entry_count": 5,
+      "members": [
+        "camera2013_EsteroScrutini_livNaz.xlsx",
+        "camera_italia-20130224.txt",
+        "camera_vaosta-20130224.txt",
+        "camera2013_candidatilista.txt",
+        "camera2013_EsteroListe_livNaz.xlsx"
+      ],
+      "csv_members": [],
+      "xlsx_members": [
+        "camera2013_EsteroScrutini_livNaz.xlsx",
+        "camera2013_EsteroListe_livNaz.xlsx"
+      ]
+    },
+    {
+      "election_type": "camera",
+      "year": "2018",
+      "election_date": "04/03/2018",
+      "relative_path": "camera/camera-20180304.zip",
+      "filename": "camera-20180304.zip",
+      "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/camera/camera-20180304.zip",
+      "local_path": "D:\\camera_lombardia_only_suite_v5\\opendata_camera_archives\\camera-20180304.zip",
+      "size_bytes": 1502314,
+      "downloaded_now": false,
+      "entry_count": 19,
+      "members": [
+        "Camera2018_Scrutini_Estero_LivComplessivo.txt",
+        "Camera2018_Scrutini_Estero_LivNazione.txt",
+        "Camera2018_Scrutini_Estero_LivRipart.txt",
+        "Camera2018_Scrutini_Italia_CollPlurinom.txt",
+        "Camera2018_Scrutini_Italia_CollUninom.txt",
+        "Camera2018_Scrutini_Italia_Liv_Circ.txt",
+        "Camera2018_Scrutini_Italia_Liv_Naz.txt",
+        "Camera2018_Scrutini_VAosta_LivCollUninom.txt",
+        "Camera2018_VAosta_CandidCollUninom.txt",
+        "camera2018_candidatilista.txt",
+        "Camera2018_CandidDiListaCollPlurinom.txt",
+        "Camera2018_Liste&CandidCollUninom.txt",
+        "Camera2018_Liste_Estero_Liv_Naz.txt",
+        "Camera2018_Liste_Estero_Liv_Ripart.txt",
+        "Camera2018_Liste_Estero_LivComplessivo.txt",
+        "Camera2018_Liste_Italia_CollPlurinom.txt",
+        "Camera2018_Liste_Italia_Liv_Circ.txt",
+        "Camera2018_Liste_Italia_Liv_Naz.txt",
+        "Camera2018_livComune.txt"
+      ],
+      "csv_members": [],
+      "xlsx_members": []
+    },
+    {
+      "election_type": "camera",
+      "year": "2022",
+      "election_date": "25/09/2022",
+      "relative_path": "camera/camera-20220925.zip",
+      "filename": "camera-20220925.zip",
+      "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/camera/camera-20220925.zip",
+      "local_path": "D:\\camera_lombardia_only_suite_v5\\opendata_camera_archives\\camera-20220925.zip",
+      "size_bytes": 1052569,
+      "downloaded_now": false,
+      "entry_count": 5,
+      "members": [
+        "camera2022_EsteroScrutini_livNaz.xlsx",
+        "Camera_Italia_LivComune.csv",
+        "Camera_VAosta_LivComune.csv",
+        "camera2022_candidatilista.csv",
+        "camera2022_EsteroListe_livNaz.xlsx"
+      ],
+      "csv_members": [
+        "Camera_Italia_LivComune.csv",
+        "Camera_VAosta_LivComune.csv",
+        "camera2022_candidatilista.csv"
+      ],
+      "xlsx_members": [
+        "camera2022_EsteroScrutini_livNaz.xlsx",
+        "camera2022_EsteroListe_livNaz.xlsx"
+      ]
+    }
+  ]
+}

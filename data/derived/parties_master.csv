@@ -1,77 +1,185 @@
 party_std,party_display_name,party_family,bloc,color,aliases,valid_from,valid_to,comparability_note
-ALLEANZA NAZIONALE,ALLEANZA NAZIONALE,altro,altro,#64748b,ALLEANZA NAZIONALE,1948,,heuristic_party_parse
-AVS / Verdi,AVS / Verdi,ecologista,sinistra,#2f855a,FEDERAZIONE DEI VERDI,1948,,heuristic_party_parse
-Forza Italia,Forza Italia,liberal-conservatore,centro-destra,#1976d2,FORZA ITALIA,1948,,heuristic_party_parse
-Lega,Lega,regionalista,centro-destra,#2e7d32,LEGA ALPINA LUMBARDA,1948,,heuristic_party_parse
-Lega,Lega,regionalista,centro-destra,#2e7d32,LEGA NORD,1948,,heuristic_party_parse
-LISTA PANNELLA,LISTA PANNELLA,altro,altro,#64748b,LISTA PANNELLA,1948,,heuristic_party_parse
-P.POPOLARE ITALIANO,P.POPOLARE ITALIANO,altro,altro,#64748b,P.POPOLARE ITALIANO,1948,,heuristic_party_parse
-PDS,PDS,altro,altro,#64748b,PDS,1948,,heuristic_party_parse
-PSI,PSI,sinistra socialista,centro-sinistra,#ec407a,PSI,1948,,heuristic_party_parse
-ALLEANZA DEMOCRATICA,ALLEANZA DEMOCRATICA,altro,altro,#64748b,ALLEANZA DEMOCRATICA,1948,,heuristic_party_parse
-POP-SVP-PRI-UD-PRODI,POP-SVP-PRI-UD-PRODI,altro,altro,#64748b,POP-SVP-PRI-UD-PRODI,1948,,heuristic_party_parse
-COMUNISTI ITALIANI,COMUNISTI ITALIANI,altro,altro,#64748b,COMUNISTI ITALIANI,1948,,heuristic_party_parse
-DEMOCRATICI SINISTRA,DEMOCRATICI SINISTRA,altro,altro,#64748b,DEMOCRATICI SINISTRA,1948,,heuristic_party_parse
-DEMOCRAZIA EUROPEA,DEMOCRAZIA EUROPEA,altro,altro,#64748b,DEMOCRAZIA EUROPEA,1948,,heuristic_party_parse
-LISTA DI PIETRO,LISTA DI PIETRO,altro,altro,#64748b,LISTA DI PIETRO,1948,,heuristic_party_parse
-NUOVO PSI,NUOVO PSI,altro,altro,#64748b,NUOVO PSI,1948,,heuristic_party_parse
-PARTITO PENSIONATI,PARTITO PENSIONATI,altro,altro,#64748b,PARTITO PENSIONATI,1948,,heuristic_party_parse
-ALLEANZA LOMBARDA AUTONOMIA,ALLEANZA LOMBARDA AUTONOMIA,altro,altro,#64748b,ALLEANZA LOMBARDA AUTONOMIA,1948,,heuristic_party_parse
-ALTERNATIVA SOCIALE MUSSOLINI,ALTERNATIVA SOCIALE MUSSOLINI,altro,altro,#64748b,ALTERNATIVA SOCIALE MUSSOLINI,1948,,heuristic_party_parse
-DEM.CRIST.-NUOVO PSI,DEM.CRIST.-NUOVO PSI,altro,altro,#64748b,DEM.CRIST.-NUOVO PSI,1948,,heuristic_party_parse
-DI PIETRO ITALIA DEI VALORI,DI PIETRO ITALIA DEI VALORI,altro,altro,#64748b,DI PIETRO ITALIA DEI VALORI,1948,,heuristic_party_parse
-S.O.S. ITALIA,S.O.S. ITALIA,altro,altro,#64748b,S.O.S. ITALIA,1948,,heuristic_party_parse
-UNIONE DI CENTRO,UNIONE DI CENTRO,altro,altro,#64748b,UNIONE DI CENTRO,1948,,heuristic_party_parse
-FORZA NUOVA,FORZA NUOVA,altro,altro,#64748b,FORZA NUOVA,1948,,heuristic_party_parse
-IL POPOLO DELLA LIBERTA',IL POPOLO DELLA LIBERTA',altro,altro,#64748b,IL POPOLO DELLA LIBERTA',1948,,heuristic_party_parse
-LA SINISTRA L'ARCOBALENO,LA SINISTRA L'ARCOBALENO,altro,altro,#64748b,LA SINISTRA L'ARCOBALENO,1948,,heuristic_party_parse
-Lega,Lega,regionalista,centro-destra,#2e7d32,LEGA PER L'AUTONOMIA ALL.LOMB. LEGA PENS,1948,,heuristic_party_parse
-P.LIBERALE ITALIANO,P.LIBERALE ITALIANO,altro,altro,#64748b,P.LIBERALE ITALIANO,1948,,heuristic_party_parse
-PCI,PCI,sinistra storica,sinistra,#c62828,PARTITO COMUNISTA DEI LAVORATORI,1948,,heuristic_party_parse
-PD,PD,centro-sinistra,centro-sinistra,#d32f2f,PARTITO DEMOCRATICO,1948,,heuristic_party_parse
-PSI,PSI,sinistra socialista,centro-sinistra,#ec407a,PARTITO SOCIALISTA,1948,,heuristic_party_parse
-SINISTRA CRITICA,SINISTRA CRITICA,altro,altro,#64748b,SINISTRA CRITICA,1948,,heuristic_party_parse
-UNIONE DEMOCRATICA PER I CONSUMATORI,UNIONE DEMOCRATICA PER I CONSUMATORI,altro,altro,#64748b,UNIONE DEMOCRATICA PER I CONSUMATORI,1948,,heuristic_party_parse
-LISTA DEI GRILLI PARLANTI,LISTA DEI GRILLI PARLANTI,altro,altro,#64748b,LISTA DEI GRILLI PARLANTI,1948,,heuristic_party_parse
-CENTRO DEMOCRATICO,CENTRO DEMOCRATICO,altro,altro,#64748b,CENTRO DEMOCRATICO,1948,,heuristic_party_parse
-FdI,FdI,destra nazionale,destra,#1e3a8a,FRATELLI D'ITALIA,1948,,heuristic_party_parse
-FUTURO E LIBERTA',FUTURO E LIBERTA',altro,altro,#64748b,FUTURO E LIBERTA',1948,,heuristic_party_parse
-IO AMO L'ITALIA,IO AMO L'ITALIA,altro,altro,#64748b,IO AMO L'ITALIA,1948,,heuristic_party_parse
-M5S,M5S,populista,populista,#f59e0b,MOVIMENTO 5 STELLE BEPPEGRILLO.IT,1948,,heuristic_party_parse
-SCELTA CIVICA CON MONTI PER L'ITALIA,SCELTA CIVICA CON MONTI PER L'ITALIA,altro,altro,#64748b,SCELTA CIVICA CON MONTI PER L'ITALIA,1948,,heuristic_party_parse
-SINISTRA ECOLOGIA LIBERTA',SINISTRA ECOLOGIA LIBERTA',altro,altro,#64748b,SINISTRA ECOLOGIA LIBERTA',1948,,heuristic_party_parse
-INTESA POPOLARE,INTESA POPOLARE,altro,altro,#64748b,INTESA POPOLARE,1948,,heuristic_party_parse
-RIFORMISTI ITALIANI,RIFORMISTI ITALIANI,altro,altro,#64748b,RIFORMISTI ITALIANI,1948,,heuristic_party_parse
-+EUROPA,+EUROPA,altro,altro,#64748b,+EUROPA,1948,,heuristic_party_parse
-CASAPOUND ITALIA,CASAPOUND ITALIA,altro,altro,#64748b,CASAPOUND ITALIA,1948,,heuristic_party_parse
-CIVICA POPOLARE LORENZIN,CIVICA POPOLARE LORENZIN,altro,altro,#64748b,CIVICA POPOLARE LORENZIN,1948,,heuristic_party_parse
-FdI,FdI,destra nazionale,destra,#1e3a8a,FRATELLI D'ITALIA CON GIORGIA MELONI,1948,,heuristic_party_parse
-ITALIA AGLI ITALIANI,ITALIA AGLI ITALIANI,altro,altro,#64748b,ITALIA AGLI ITALIANI,1948,,heuristic_party_parse
-ITALIA EUROPA INSIEME,ITALIA EUROPA INSIEME,altro,altro,#64748b,ITALIA EUROPA INSIEME,1948,,heuristic_party_parse
-Lega,Lega,regionalista,centro-destra,#2e7d32,LEGA,1948,,heuristic_party_parse
-LIBERI E UGUALI,LIBERI E UGUALI,altro,altro,#64748b,LIBERI E UGUALI,1948,,heuristic_party_parse
-M5S,M5S,populista,populista,#f59e0b,MOVIMENTO 5 STELLE,1948,,heuristic_party_parse
-NOI CON L'ITALIA - UDC,NOI CON L'ITALIA - UDC,altro,altro,#64748b,NOI CON L'ITALIA - UDC,1948,,heuristic_party_parse
-PARTITO REPUBBLICANO ITALIANO - ALA,PARTITO REPUBBLICANO ITALIANO - ALA,altro,altro,#64748b,PARTITO REPUBBLICANO ITALIANO - ALA,1948,,heuristic_party_parse
-PER UNA SINISTRA RIVOLUZIONARIA,PER UNA SINISTRA RIVOLUZIONARIA,altro,altro,#64748b,PER UNA SINISTRA RIVOLUZIONARIA,1948,,heuristic_party_parse
-POTERE AL POPOLO!,POTERE AL POPOLO!,altro,altro,#64748b,POTERE AL POPOLO!,1948,,heuristic_party_parse
-CASATI EZIO PRIMO,CASATI EZIO PRIMO,altro,altro,#64748b,CASATI EZIO PRIMO,1948,,heuristic_party_parse
-BLOCCO NAZIONALE PER LE LIBERTA',BLOCCO NAZIONALE PER LE LIBERTA',altro,altro,#64748b,BLOCCO NAZIONALE PER LE LIBERTA',1948,,heuristic_party_parse
-PARTITO VALORE UMANO,PARTITO VALORE UMANO,altro,altro,#64748b,PARTITO VALORE UMANO,1948,,heuristic_party_parse
-ITALIA NEL CUORE,ITALIA NEL CUORE,altro,altro,#64748b,ITALIA NEL CUORE,1948,,heuristic_party_parse
-PRINA FRANCESCO,PRINA FRANCESCO,altro,altro,#64748b,PRINA FRANCESCO,1948,,heuristic_party_parse
-PRINI LUCA,PRINI LUCA,altro,altro,#64748b,PRINI LUCA,1948,,heuristic_party_parse
-AVS / Verdi,AVS / Verdi,ecologista,sinistra,#2f855a,ALLEANZA VERDI E SINISTRA,1948,,heuristic_party_parse
-Azione / IV,Azione / IV,liberale-riformista,centro,#fb923c,AZIONE - ITALIA VIVA - CALENDA,1948,,heuristic_party_parse
-IMPEGNO CIVICO LUIGI DI MAIO - CENTRO DEMOCRATICO,IMPEGNO CIVICO LUIGI DI MAIO - CENTRO DEMOCRATICO,altro,altro,#64748b,IMPEGNO CIVICO LUIGI DI MAIO - CENTRO DEMOCRATICO,1948,,heuristic_party_parse
-ITALEXIT PER L'ITALIA,ITALEXIT PER L'ITALIA,altro,altro,#64748b,ITALEXIT PER L'ITALIA,1948,,heuristic_party_parse
-ITALIA SOVRANA E POPOLARE,ITALIA SOVRANA E POPOLARE,altro,altro,#64748b,ITALIA SOVRANA E POPOLARE,1948,,heuristic_party_parse
-Lega,Lega,regionalista,centro-destra,#2e7d32,LEGA PER SALVINI PREMIER,1948,,heuristic_party_parse
-NOI MODERATI/LUPI - TOTI - BRUGNARO - UDC,NOI MODERATI/LUPI - TOTI - BRUGNARO - UDC,altro,altro,#64748b,NOI MODERATI/LUPI - TOTI - BRUGNARO - UDC,1948,,heuristic_party_parse
-PD,PD,centro-sinistra,centro-sinistra,#d32f2f,PARTITO DEMOCRATICO - ITALIA DEMOCRATICA E PROGRESSISTA,1948,,heuristic_party_parse
-UNIONE POPOLARE CON DE MAGISTRIS,UNIONE POPOLARE CON DE MAGISTRIS,altro,altro,#64748b,UNIONE POPOLARE CON DE MAGISTRIS,1948,,heuristic_party_parse
-VITA,VITA,altro,altro,#64748b,VITA,1948,,heuristic_party_parse
-RIBELLI LIBERO MILA,RIBELLI LIBERO MILA,altro,altro,#64748b,RIBELLI LIBERO MILA,1948,,heuristic_party_parse
-ALTERNATIVA PER L'ITALIA - NO GREEN PASS,ALTERNATIVA PER L'ITALIA - NO GREEN PASS,altro,altro,#64748b,ALTERNATIVA PER L'ITALIA - NO GREEN PASS,1948,,heuristic_party_parse
-FREE,FREE,altro,altro,#64748b,FREE,1948,,heuristic_party_parse
-CAPRIOLO MATTEO,CAPRIOLO MATTEO,altro,altro,#64748b,CAPRIOLO MATTEO,1948,,heuristic_party_parse
+DC,DC,cattolico-popolare,centro,#2e7d32,Dc,1946,,heuristic_party_parse
+Psiup,Psiup,altro,altro,#64748b,Psiup,1946,,heuristic_party_parse
+PCI,PCI,sinistra storica,sinistra,#c62828,Pci,1946,,heuristic_party_parse
+Un.Democ.Nazionale,Un.Democ.Nazionale,altro,altro,#64748b,Un.Democ.Nazionale,1946,,heuristic_party_parse
+Fr.Uomo Qualunque,Fr.Uomo Qualunque,altro,altro,#64748b,Fr.Uomo Qualunque,1946,,heuristic_party_parse
+Azione / IV,Azione / IV,liberale-riformista,centro,#fb923c,Partito d'Azione,1946,,heuristic_party_parse
+Blocco Naz.Liberta',Blocco Naz.Liberta',altro,altro,#64748b,Blocco Naz.Liberta',1946,,heuristic_party_parse
+Pri,Pri,altro,altro,#64748b,Pri,1946,,heuristic_party_parse
+P.Contadini d'Italia,P.Contadini d'Italia,altro,altro,#64748b,P.Contadini d'Italia,1946,,heuristic_party_parse
+Pc.Internazionalista,Pc.Internazionalista,altro,altro,#64748b,Pc.Internazionalista,1946,,heuristic_party_parse
+Schieramento Naz.,Schieramento Naz.,altro,altro,#64748b,Schieramento Naz.,1946,,heuristic_party_parse
+Cdr,Cdr,altro,altro,#64748b,Cdr,1946,,heuristic_party_parse
+MSI,MSI,destra nazionale,destra,#0d47a1,Msi,1946,,heuristic_party_parse
+Blocco Nazionale,Blocco Nazionale,altro,altro,#64748b,Blocco Nazionale,1946,,heuristic_party_parse
+Fr.Democr.Popolare,Fr.Democr.Popolare,altro,altro,#64748b,Fr.Democr.Popolare,1946,,heuristic_party_parse
+Blocco Pop.Unionista,Blocco Pop.Unionista,altro,altro,#64748b,Blocco Pop.Unionista,1946,,heuristic_party_parse
+P.Naz.Mon.All.D.Lav.,P.Naz.Mon.All.D.Lav.,altro,altro,#64748b,P.Naz.Mon.All.D.Lav.,1946,,heuristic_party_parse
+Conc.Naz.Combat.Unit,Conc.Naz.Combat.Unit,altro,altro,#64748b,Conc.Naz.Combat.Unit,1946,,heuristic_party_parse
+Mov.Naz.Dem.Soc.,Mov.Naz.Dem.Soc.,altro,altro,#64748b,Mov.Naz.Dem.Soc.,1946,,heuristic_party_parse
+PSI,PSI,sinistra socialista,centro-sinistra,#ec407a,Unita' Socialista,1946,,heuristic_party_parse
+Un.Mov.Federalisti,Un.Mov.Federalisti,altro,altro,#64748b,Un.Mov.Federalisti,1946,,heuristic_party_parse
+Fr.Degli Italiani,Fr.Degli Italiani,altro,altro,#64748b,Fr.Degli Italiani,1946,,heuristic_party_parse
+P.Demolaburista It.,P.Demolaburista It.,altro,altro,#64748b,P.Demolaburista It.,1946,,heuristic_party_parse
+Psdi,Psdi,altro,altro,#64748b,Psdi,1946,,heuristic_party_parse
+All.Democ.Nazionale,All.Democ.Nazionale,altro,altro,#64748b,All.Democ.Nazionale,1946,,heuristic_party_parse
+Mov.Soc.Cristiano,Mov.Soc.Cristiano,altro,altro,#64748b,Mov.Soc.Cristiano,1946,,heuristic_party_parse
+PSI,PSI,sinistra socialista,centro-sinistra,#ec407a,Psi,1946,,heuristic_party_parse
+P.Naz.Monarchico,P.Naz.Monarchico,altro,altro,#64748b,P.Naz.Monarchico,1946,,heuristic_party_parse
+Pli,Pli,altro,altro,#64748b,Pli,1946,,heuristic_party_parse
+Unita'Popolare,Unita'Popolare,altro,altro,#64748b,Unita'Popolare,1946,,heuristic_party_parse
+Ps d'Az.,Ps d'Az.,altro,altro,#64748b,Ps d'Az.,1946,,heuristic_party_parse
+Un.Social.Indip.,Un.Social.Indip.,altro,altro,#64748b,Un.Social.Indip.,1946,,heuristic_party_parse
+P.Nettista Italiano,P.Nettista Italiano,altro,altro,#64748b,P.Nettista Italiano,1946,,heuristic_party_parse
+Un.Naz.Dem.Imp.Pub.,Un.Naz.Dem.Imp.Pub.,altro,altro,#64748b,Un.Naz.Dem.Imp.Pub.,1946,,heuristic_party_parse
+Movim.Aut.Reg.-M.A.R.P.,Movim.Aut.Reg.-M.A.R.P.,altro,altro,#64748b,Movim.Aut.Reg.-M.A.R.P.,1946,,heuristic_party_parse
+P.Monarchico Pop.,P.Monarchico Pop.,altro,altro,#64748b,P.Monarchico Pop.,1946,,heuristic_party_parse
+Pri-P.Rad.,Pri-P.Rad.,altro,altro,#64748b,Pri-P.Rad.,1946,,heuristic_party_parse
+Conc.Europea Democ.,Conc.Europea Democ.,altro,altro,#64748b,Conc.Europea Democ.,1946,,heuristic_party_parse
+P.Nazionale Lavoro,P.Nazionale Lavoro,altro,altro,#64748b,P.Nazionale Lavoro,1946,,heuristic_party_parse
+Comunita',Comunita',altro,altro,#64748b,Comunita',1946,,heuristic_party_parse
+Conc.Unita'Rurale,Conc.Unita'Rurale,altro,altro,#64748b,Conc.Unita'Rurale,1946,,heuristic_party_parse
+M.Comb.It-Fr.Rin.Naz,M.Comb.It-Fr.Rin.Naz,altro,altro,#64748b,M.Comb.It-Fr.Rin.Naz,1946,,heuristic_party_parse
+Pdium,Pdium,altro,altro,#64748b,Pdium,1946,,heuristic_party_parse
+Papi,Papi,altro,altro,#64748b,Papi,1946,,heuristic_party_parse
+Mov.Pol.Catt.It.,Mov.Pol.Catt.It.,altro,altro,#64748b,Mov.Pol.Catt.It.,1946,,heuristic_party_parse
+Psu,Psu,altro,altro,#64748b,Psu,1946,,heuristic_party_parse
+Ppst,Ppst,altro,altro,#64748b,Ppst,1946,,heuristic_party_parse
+Nuova Repubblica,Nuova Repubblica,altro,altro,#64748b,Nuova Repubblica,1946,,heuristic_party_parse
+Part.Mon.Naz.,Part.Mon.Naz.,altro,altro,#64748b,Part.Mon.Naz.,1946,,heuristic_party_parse
+"Rag.Vol.""T","Rag.Vol.""T",altro,altro,#64748b,"Rag.Vol.""T",1946,,heuristic_party_parse
+P.Rad,P.Rad,altro,altro,#64748b,P.Rad,1946,,heuristic_party_parse
+Manifesto,Manifesto,altro,altro,#64748b,Manifesto,1946,,heuristic_party_parse
+Mov.Pol.Lav.,Mov.Pol.Lav.,altro,altro,#64748b,Mov.Pol.Lav.,1946,,heuristic_party_parse
+Pc(Marx-Len)It,Pc(Marx-Len)It,altro,altro,#64748b,Pc(Marx-Len)It,1946,,heuristic_party_parse
+Un.Forze Dem.,Un.Forze Dem.,altro,altro,#64748b,Un.Forze Dem.,1946,,heuristic_party_parse
+Dem.Prol,Dem.Prol,altro,altro,#64748b,Dem.Prol,1946,,heuristic_party_parse
+Msi-Dn,Msi-Dn,altro,altro,#64748b,Msi-Dn,1946,,heuristic_party_parse
+Poe,Poe,altro,altro,#64748b,Poe,1946,,heuristic_party_parse
+Nuova Sin.Unita,Nuova Sin.Unita,altro,altro,#64748b,Nuova Sin.Unita,1946,,heuristic_party_parse
+Dn-Cd,Dn-Cd,altro,altro,#64748b,Dn-Cd,1946,,heuristic_party_parse
+Pdup,Pdup,altro,altro,#64748b,Pdup,1946,,heuristic_party_parse
+Part.Crist.Az.Soc.,Part.Crist.Az.Soc.,altro,altro,#64748b,Part.Crist.Az.Soc.,1946,,heuristic_party_parse
+Partito Popolare Italiano,Partito Popolare Italiano,altro,altro,#64748b,Partito Popolare Italiano,1946,,heuristic_party_parse
+Lista Per Trieste,Lista Per Trieste,altro,altro,#64748b,Lista Per Trieste,1946,,heuristic_party_parse
+Part.Naz.Pens.,Part.Naz.Pens.,altro,altro,#64748b,Part.Naz.Pens.,1946,,heuristic_party_parse
+Viv.Lib.,Viv.Lib.,altro,altro,#64748b,Viv.Lib.,1946,,heuristic_party_parse
+Liga Veneta-Pu,Liga Veneta-Pu,altro,altro,#64748b,Liga Veneta-Pu,1946,,heuristic_party_parse
+Lega,Lega,regionalista,centro-destra,#2e7d32,Lega Lombarda,1946,,heuristic_party_parse
+Lista Verde,Lista Verde,altro,altro,#64748b,Lista Verde,1946,,heuristic_party_parse
+All.Pop.,All.Pop.,altro,altro,#64748b,All.Pop.,1946,,heuristic_party_parse
+Mov.Lib.Fiscale,Mov.Lib.Fiscale,altro,altro,#64748b,Mov.Lib.Fiscale,1946,,heuristic_party_parse
+Mov.Naz.It.Cacc.,Mov.Naz.It.Cacc.,altro,altro,#64748b,Mov.Naz.It.Cacc.,1946,,heuristic_party_parse
+All.Um.,All.Um.,altro,altro,#64748b,All.Um.,1946,,heuristic_party_parse
+Partito Pensionati,Partito Pensionati,altro,altro,#64748b,Partito Pensionati,1946,,heuristic_party_parse
+Mov.Pol.Dif.Automob.,Mov.Pol.Dif.Automob.,altro,altro,#64748b,Mov.Pol.Dif.Automob.,1946,,heuristic_party_parse
+Alleanza Lombarda Autonomia,Alleanza Lombarda Autonomia,altro,altro,#64748b,Alleanza Lombarda Autonomia,1946,,heuristic_party_parse
+AVS / Verdi,AVS / Verdi,ecologista,sinistra,#2f855a,Federazione dei Verdi,1946,,heuristic_party_parse
+Lega,Lega,regionalista,centro-destra,#2e7d32,Lega Merid.D'It.,1946,,heuristic_party_parse
+Federalismo-Pens.Uv.,Federalismo-Pens.Uv.,altro,altro,#64748b,Federalismo-Pens.Uv.,1946,,heuristic_party_parse
+Lista Referendum,Lista Referendum,altro,altro,#64748b,Lista Referendum,1946,,heuristic_party_parse
+Lega,Lega,regionalista,centro-destra,#2e7d32,Lega Alpina Lumbarda,1946,,heuristic_party_parse
+Lega,Lega,regionalista,centro-destra,#2e7d32,La Lega Cas-Pens.,1946,,heuristic_party_parse
+Pds,Pds,altro,altro,#64748b,Pds,1946,,heuristic_party_parse
+Lista Pannella,Lista Pannella,altro,altro,#64748b,Lista Pannella,1946,,heuristic_party_parse
+La Rete-Mov.Dem.,La Rete-Mov.Dem.,altro,altro,#64748b,La Rete-Mov.Dem.,1946,,heuristic_party_parse
+Azione / IV,Azione / IV,liberale-riformista,centro,#fb923c,Rifondazione Comunista,1946,,heuristic_party_parse
+Part.Europa 2000,Part.Europa 2000,altro,altro,#64748b,Part.Europa 2000,1946,,heuristic_party_parse
+Cpa,Cpa,altro,altro,#64748b,Cpa,1946,,heuristic_party_parse
+Lg.Lomb.Eur.T.Lib.,Lg.Lomb.Eur.T.Lib.,altro,altro,#64748b,Lg.Lomb.Eur.T.Lib.,1946,,heuristic_party_parse
+P.Popolare Italiano,P.Popolare Italiano,altro,altro,#64748b,P.Popolare Italiano,1946,,heuristic_party_parse
+Alleanza Democratica,Alleanza Democratica,altro,altro,#64748b,Alleanza Democratica,1946,,heuristic_party_parse
+Alleanza Nazionale,Alleanza Nazionale,altro,altro,#64748b,Alleanza Nazionale,1946,,heuristic_party_parse
+Lega,Lega,regionalista,centro-destra,#2e7d32,Lega Nord,1946,,heuristic_party_parse
+Forza Italia,Forza Italia,liberal-conservatore,centro-destra,#1976d2,Forza Italia,1946,,heuristic_party_parse
+Lg.Angela Bossi,Lg.Angela Bossi,altro,altro,#64748b,Lg.Angela Bossi,1946,,heuristic_party_parse
+Patto Segni,Patto Segni,altro,altro,#64748b,Patto Segni,1946,,heuristic_party_parse
+Pannella-Sgarbi,Pannella-Sgarbi,altro,altro,#64748b,Pannella-Sgarbi,1946,,heuristic_party_parse
+Ccd-Cdu,Ccd-Cdu,altro,altro,#64748b,Ccd-Cdu,1946,,heuristic_party_parse
+Mov.Soc.Tricolore,Mov.Soc.Tricolore,altro,altro,#64748b,Mov.Soc.Tricolore,1946,,heuristic_party_parse
+Rinnovamento It-Dini,Rinnovamento It-Dini,altro,altro,#64748b,Rinnovamento It-Dini,1946,,heuristic_party_parse
+Pop-Svp-Pri-Ud-Prodi,Pop-Svp-Pri-Ud-Prodi,altro,altro,#64748b,Pop-Svp-Pri-Ud-Prodi,1946,,heuristic_party_parse
+Part.Umanista,Part.Umanista,altro,altro,#64748b,Part.Umanista,1946,,heuristic_party_parse
+Abolizione Scorporo,Abolizione Scorporo,altro,altro,#64748b,Abolizione Scorporo,1946,,heuristic_party_parse
+Comunisti Italiani,Comunisti Italiani,altro,altro,#64748b,Comunisti Italiani,1946,,heuristic_party_parse
+Il Girasole,Il Girasole,altro,altro,#64748b,Il Girasole,1946,,heuristic_party_parse
+Democrazia Europea,Democrazia Europea,altro,altro,#64748b,Democrazia Europea,1946,,heuristic_party_parse
+Democratici Sinistra,Democratici Sinistra,altro,altro,#64748b,Democratici Sinistra,1946,,heuristic_party_parse
+La Margherita,La Margherita,altro,altro,#64748b,La Margherita,1946,,heuristic_party_parse
+Pannella-Bonino,Pannella-Bonino,altro,altro,#64748b,Pannella-Bonino,1946,,heuristic_party_parse
+Lista di Pietro,Lista di Pietro,altro,altro,#64748b,Lista di Pietro,1946,,heuristic_party_parse
+Paese Nuovo,Paese Nuovo,altro,altro,#64748b,Paese Nuovo,1946,,heuristic_party_parse
+Nuovo Psi,Nuovo Psi,altro,altro,#64748b,Nuovo Psi,1946,,heuristic_party_parse
+Libdem.Basta,Libdem.Basta,altro,altro,#64748b,Libdem.Basta,1946,,heuristic_party_parse
+Fiamma Tricolore,Fiamma Tricolore,altro,altro,#64748b,Fiamma Tricolore,1946,,heuristic_party_parse
+No Euro,No Euro,altro,altro,#64748b,No Euro,1946,,heuristic_party_parse
+U.D.Eur Popolari,U.D.Eur Popolari,altro,altro,#64748b,U.D.Eur Popolari,1946,,heuristic_party_parse
+La Rosa Nel Pugno,La Rosa Nel Pugno,altro,altro,#64748b,La Rosa Nel Pugno,1946,,heuristic_party_parse
+Di Pietro Italia dei Valori,Di Pietro Italia dei Valori,altro,altro,#64748b,Di Pietro Italia dei Valori,1946,,heuristic_party_parse
+L'Ulivo,L'Ulivo,altro,altro,#64748b,L'Ulivo,1946,,heuristic_party_parse
+Unione di Centro,Unione di Centro,altro,altro,#64748b,Unione di Centro,1946,,heuristic_party_parse
+Dem.Crist.-Nuovo Psi,Dem.Crist.-Nuovo Psi,altro,altro,#64748b,Dem.Crist.-Nuovo Psi,1946,,heuristic_party_parse
+Alternativa Sociale Mussolini,Alternativa Sociale Mussolini,altro,altro,#64748b,Alternativa Sociale Mussolini,1946,,heuristic_party_parse
+S.O.S. Italia,S.O.S. Italia,altro,altro,#64748b,S.O.S. Italia,1946,,heuristic_party_parse
+Forza Nuova,Forza Nuova,altro,altro,#64748b,Forza Nuova,1946,,heuristic_party_parse
+P.Liberale Italiano,P.Liberale Italiano,altro,altro,#64748b,P.Liberale Italiano,1946,,heuristic_party_parse
+Lega,Lega,regionalista,centro-destra,#2e7d32,Lega Per l'Autonomia All.Lomb. Lega Pens,1946,,heuristic_party_parse
+La Destra - Fiamma Tricolore,La Destra - Fiamma Tricolore,altro,altro,#64748b,La Destra - Fiamma Tricolore,1946,,heuristic_party_parse
+Per Il Bene Comune,Per Il Bene Comune,altro,altro,#64748b,Per Il Bene Comune,1946,,heuristic_party_parse
+Il Popolo della Liberta',Il Popolo della Liberta',altro,altro,#64748b,Il Popolo della Liberta',1946,,heuristic_party_parse
+PD,PD,centro-sinistra,centro-sinistra,#d32f2f,Partito Democratico,1946,,heuristic_party_parse
+PCI,PCI,sinistra storica,sinistra,#c62828,Partito Comunista dei Lavoratori,1946,,heuristic_party_parse
+La Sinistra l'Arcobaleno,La Sinistra l'Arcobaleno,altro,altro,#64748b,La Sinistra l'Arcobaleno,1946,,heuristic_party_parse
+Unione Democratica Per I Consumatori,Unione Democratica Per I Consumatori,altro,altro,#64748b,Unione Democratica Per I Consumatori,1946,,heuristic_party_parse
+"Ass.Difesa della Vita Aborto?No,Grazie","Ass.Difesa della Vita Aborto?No,Grazie",altro,altro,#64748b,"Ass.Difesa della Vita Aborto?No,Grazie",1946,,heuristic_party_parse
+Sinistra Critica,Sinistra Critica,altro,altro,#64748b,Sinistra Critica,1946,,heuristic_party_parse
+PSI,PSI,sinistra socialista,centro-sinistra,#ec407a,Partito Socialista,1946,,heuristic_party_parse
+Lista dei Grilli Parlanti,Lista dei Grilli Parlanti,altro,altro,#64748b,Lista dei Grilli Parlanti,1946,,heuristic_party_parse
+Scelta Civica Con Monti Per l'Italia,Scelta Civica Con Monti Per l'Italia,altro,altro,#64748b,Scelta Civica Con Monti Per l'Italia,1946,,heuristic_party_parse
+Fare Per Fermare Il Declino,Fare Per Fermare Il Declino,altro,altro,#64748b,Fare Per Fermare Il Declino,1946,,heuristic_party_parse
+Io Amo l'Italia,Io Amo l'Italia,altro,altro,#64748b,Io Amo l'Italia,1946,,heuristic_party_parse
+Sinistra Ecologia Liberta',Sinistra Ecologia Liberta',altro,altro,#64748b,Sinistra Ecologia Liberta',1946,,heuristic_party_parse
+Riformisti Italiani,Riformisti Italiani,altro,altro,#64748b,Riformisti Italiani,1946,,heuristic_party_parse
+I Pirati,I Pirati,altro,altro,#64748b,I Pirati,1946,,heuristic_party_parse
+FdI,FdI,destra nazionale,destra,#1e3a8a,Fratelli d'Italia,1946,,heuristic_party_parse
+M5S,M5S,populista,populista,#f59e0b,Movimento 5 Stelle Beppegrillo.It,1946,,heuristic_party_parse
+Rivoluzione Civile,Rivoluzione Civile,altro,altro,#64748b,Rivoluzione Civile,1946,,heuristic_party_parse
+Centro Democratico,Centro Democratico,altro,altro,#64748b,Centro Democratico,1946,,heuristic_party_parse
+Mir - Moderati in Rivoluzione,Mir - Moderati in Rivoluzione,altro,altro,#64748b,Mir - Moderati in Rivoluzione,1946,,heuristic_party_parse
+Futuro e Liberta',Futuro e Liberta',altro,altro,#64748b,Futuro e Liberta',1946,,heuristic_party_parse
+Intesa Popolare,Intesa Popolare,altro,altro,#64748b,Intesa Popolare,1946,,heuristic_party_parse
+La Destra,La Destra,altro,altro,#64748b,La Destra,1946,,heuristic_party_parse
+Grande Sud - Mpa,Grande Sud - Mpa,altro,altro,#64748b,Grande Sud - Mpa,1946,,heuristic_party_parse
+Il Popolo della Famiglia,Il Popolo della Famiglia,altro,altro,#64748b,Il Popolo della Famiglia,1946,,heuristic_party_parse
+Partito Repubblicano Italiano - Ala,Partito Repubblicano Italiano - Ala,altro,altro,#64748b,Partito Repubblicano Italiano - Ala,1946,,heuristic_party_parse
+Potere al Popolo!,Potere al Popolo!,altro,altro,#64748b,Potere al Popolo!,1946,,heuristic_party_parse
+Italia Agli Italiani,Italia Agli Italiani,altro,altro,#64748b,Italia Agli Italiani,1946,,heuristic_party_parse
+10 Volte Meglio,10 Volte Meglio,altro,altro,#64748b,10 Volte Meglio,1946,,heuristic_party_parse
+Lega,Lega,regionalista,centro-destra,#2e7d32,Lega,1946,,heuristic_party_parse
+FdI,FdI,destra nazionale,destra,#1e3a8a,Fratelli d'Italia Con Giorgia Meloni,1946,,heuristic_party_parse
+Noi Con l'Italia - Udc,Noi Con l'Italia - Udc,altro,altro,#64748b,Noi Con l'Italia - Udc,1946,,heuristic_party_parse
+Per Una Sinistra Rivoluzionaria,Per Una Sinistra Rivoluzionaria,altro,altro,#64748b,Per Una Sinistra Rivoluzionaria,1946,,heuristic_party_parse
+Casapound Italia,Casapound Italia,altro,altro,#64748b,Casapound Italia,1946,,heuristic_party_parse
++Europa,+Europa,altro,altro,#64748b,+Europa,1946,,heuristic_party_parse
+Italia Europa Insieme,Italia Europa Insieme,altro,altro,#64748b,Italia Europa Insieme,1946,,heuristic_party_parse
+Civica Popolare Lorenzin,Civica Popolare Lorenzin,altro,altro,#64748b,Civica Popolare Lorenzin,1946,,heuristic_party_parse
+M5S,M5S,populista,populista,#f59e0b,Movimento 5 Stelle,1946,,heuristic_party_parse
+Liberi e Uguali,Liberi e Uguali,altro,altro,#64748b,Liberi e Uguali,1946,,heuristic_party_parse
+Grande Nord,Grande Nord,altro,altro,#64748b,Grande Nord,1946,,heuristic_party_parse
+Partito Valore Umano,Partito Valore Umano,altro,altro,#64748b,Partito Valore Umano,1946,,heuristic_party_parse
+Blocco Nazionale Per Le Liberta',Blocco Nazionale Per Le Liberta',altro,altro,#64748b,Blocco Nazionale Per Le Liberta',1946,,heuristic_party_parse
+Italia Nel Cuore,Italia Nel Cuore,altro,altro,#64748b,Italia Nel Cuore,1946,,heuristic_party_parse
+Lega,Lega,regionalista,centro-destra,#2e7d32,Lega Per Salvini Premier,1946,,heuristic_party_parse
+Noi Moderati/Lupi - Toti - Brugnaro - Udc,Noi Moderati/Lupi - Toti - Brugnaro - Udc,altro,altro,#64748b,Noi Moderati/Lupi - Toti - Brugnaro - Udc,1946,,heuristic_party_parse
+PD,PD,centro-sinistra,centro-sinistra,#d32f2f,Partito Democratico - Italia Democratica e Progressista,1946,,heuristic_party_parse
+AVS / Verdi,AVS / Verdi,ecologista,sinistra,#2f855a,Alleanza Verdi e Sinistra,1946,,heuristic_party_parse
+Impegno Civico Luigi di Maio - Centro Democratico,Impegno Civico Luigi di Maio - Centro Democratico,altro,altro,#64748b,Impegno Civico Luigi di Maio - Centro Democratico,1946,,heuristic_party_parse
+Azione / IV,Azione / IV,liberale-riformista,centro,#fb923c,Azione - Italia Viva - Calenda,1946,,heuristic_party_parse
+Italexit Per l'Italia,Italexit Per l'Italia,altro,altro,#64748b,Italexit Per l'Italia,1946,,heuristic_party_parse
+Unione Popolare Con de Magistris,Unione Popolare Con de Magistris,altro,altro,#64748b,Unione Popolare Con de Magistris,1946,,heuristic_party_parse
+Italia Sovrana e Popolare,Italia Sovrana e Popolare,altro,altro,#64748b,Italia Sovrana e Popolare,1946,,heuristic_party_parse
+Vita,Vita,altro,altro,#64748b,Vita,1946,,heuristic_party_parse
+Mastella Noi di Centro Europeisti,Mastella Noi di Centro Europeisti,altro,altro,#64748b,Mastella Noi di Centro Europeisti,1946,,heuristic_party_parse
+Alternativa Per l'Italia - No Green Pass,Alternativa Per l'Italia - No Green Pass,altro,altro,#64748b,Alternativa Per l'Italia - No Green Pass,1946,,heuristic_party_parse
+Free,Free,altro,altro,#64748b,Free,1946,,heuristic_party_parse

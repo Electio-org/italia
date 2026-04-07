@@ -1,6 +1,6 @@
 # Lombardia Camera Explorer
 
-Infrastruttura statica per analizzare nel tempo le elezioni della Camera in Lombardia a livello comunale.
+Infrastruttura statica per analizzare nel tempo le elezioni della Camera e dell'Assemblea Costituente in Lombardia a livello comunale.
 
 ## Cosa contiene
 

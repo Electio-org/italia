@@ -16,8 +16,8 @@
     {
       "key": "coverage",
       "title": "Copertura sostanziale",
-      "severity": "warn",
-      "text": "La readiness tecnica può essere alta anche con copertura sostanziale bassa. Bundle attuale: technical=50, substantive=42."
+      "severity": "info",
+      "text": "La readiness tecnica può essere alta anche con copertura sostanziale bassa. Bundle attuale: technical=100, substantive=100."
     },
     {
       "key": "shares",
@@ -30,6 +30,12 @@
       "title": "Contesto provinciale e regionale",
       "severity": "info",
       "text": "I confronti con provincia e Lombardia sono calcolati come aggregati pesati sui conteggi disponibili, non come media semplice dei comuni."
+    },
+    {
+      "key": "official_opendata_source",
+      "title": "Fonte primaria ufficiale",
+      "severity": "info",
+      "text": "I risultati comunali del bundle corrente derivano prioritariamente dagli zip open data ufficiali di Eligendo per la Camera e, per il 1946, per l'Assemblea Costituente. La navigazione HTML resta un supporto di QA e recupero, non la sorgente primaria."
     }
   ]
 }

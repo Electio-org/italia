@@ -1,5 +1,9 @@
 import { safeNumber } from './shared.js';
 
+const SUMMARY_NUMBER_FIELDS = ['election_year', 'turnout_pct', 'electors', 'voters', 'valid_votes', 'total_votes', 'first_party_share', 'second_party_share', 'first_second_margin'];
+const RESULTS_LONG_NUMBER_FIELDS = ['election_year', 'votes', 'vote_share', 'rank'];
+const CUSTOM_INDICATOR_NUMBER_FIELDS = ['election_year', 'value'];
+
 export async function fetchTextFile(path) {
   const res = await fetch(path);
   if (!res.ok) throw new Error(`Impossibile caricare ${path}`);
@@ -44,6 +48,52 @@ export function parseNumberFields(rows, fields) {
     });
     return out;
   });
+}
+
+function parseSummaryRows(rows) {
+  return parseNumberFields(rows, SUMMARY_NUMBER_FIELDS);
+}
+
+function parseResultsLongRows(rows) {
+  return parseNumberFields(rows, RESULTS_LONG_NUMBER_FIELDS);
+}
+
+function parseCustomIndicatorRows(rows) {
+  return parseNumberFields(rows, CUSTOM_INDICATOR_NUMBER_FIELDS);
+}
+
+function buildDeclaredCoverageByElection(elections, datasetRegistry, summaryRows, resultRows) {
+  const map = new Map();
+  (elections || []).forEach(election => {
+    const key = election?.election_key;
+    if (!key) return;
+    map.set(key, { summary: 0, results: 0 });
+  });
+  (datasetRegistry || []).forEach(row => {
+    const key = row?.election_key || row?.dataset_key;
+    if (!key) return;
+    const current = map.get(key) || { summary: 0, results: 0 };
+    const summary = safeNumber(row?.summary_rows);
+    const results = safeNumber(row?.result_rows);
+    if (summary != null) current.summary = Math.max(current.summary, summary);
+    if (results != null) current.results = Math.max(current.results, results);
+    map.set(key, current);
+  });
+  if (summaryRows?.length) {
+    d3.rollup(summaryRows, v => v.length, d => d.election_key).forEach((count, key) => {
+      const current = map.get(key) || { summary: 0, results: 0 };
+      current.summary = Math.max(current.summary, count);
+      map.set(key, current);
+    });
+  }
+  if (resultRows?.length) {
+    d3.rollup(resultRows, v => v.length, d => d.election_key).forEach((count, key) => {
+      const current = map.get(key) || { summary: 0, results: 0 };
+      current.results = Math.max(current.results, count);
+      map.set(key, current);
+    });
+  }
+  return map;
 }
 
 export function buildSyntheticGeometryPack(mainGeometryPath, provinceGeometryPath) {
@@ -163,9 +213,12 @@ export async function syncActiveGeometry(state, registerIssue = () => {}) {
 }
 
 export function electionCoverageFor(state, electionKey) {
-  const summary = state.indices.summaryCountByElection?.get(electionKey) ?? state.summary.filter(r => r.election_key === electionKey).length;
-  const results = state.indices.resultCountByElection?.get(electionKey) ?? state.resultsLong.filter(r => r.election_key === electionKey).length;
-  return { summary, results };
+  const declared = state.declaredCoverageByElection?.get(electionKey) || {};
+  const summaryLoaded = state.indices.summaryCountByElection?.get(electionKey) ?? state.summary.filter(r => r.election_key === electionKey).length;
+  const resultsLoaded = state.indices.resultCountByElection?.get(electionKey) ?? state.resultsLong.filter(r => r.election_key === electionKey).length;
+  const summary = Math.max(summaryLoaded || 0, declared.summary || 0);
+  const results = Math.max(resultsLoaded || 0, declared.results || 0);
+  return { summary, results, summaryLoaded, resultsLoaded, summaryDeclared: declared.summary || 0, resultsDeclared: declared.results || 0 };
 }
 
 export function defaultElectionSequence(state) {
@@ -180,19 +233,20 @@ export function defaultElectionSequence(state) {
 async function loadBundleWithManifest(state, manifest, resolver, { buildIndices, registerIssue = () => {}, source = 'embedded' } = {}) {
   state.manifest = manifest;
   const files = manifest.files || {};
-  const [elections, municipalities, parties, lineage, summary, resultsLong, aliases, customIndicators, qualityReport, geometryPack, mainGeometry, provinceGeometry, datasetRegistry, codebook, usageNotes, updateLog, dataProducts, datasetContracts, provenance, releaseManifest, researchRecipes, siteGuides] = await Promise.all([
+  const deferredResultsStrategy = String(manifest.loading?.municipalityResultsLong?.strategy || '');
+  const preferDeferredResults = Boolean(files.municipalityResultsLongByElectionIndex || deferredResultsStrategy.includes('deferred'));
+  const [elections, municipalities, parties, lineage, summary, eagerResultsLong, resultsShardIndex, aliases, customIndicators, qualityReport, geometryPack, datasetRegistry, codebook, usageNotes, updateLog, dataProducts, datasetContracts, provenance, releaseManifest, researchRecipes, siteGuides, archiveGapReport] = await Promise.all([
     resolver.csv(files.electionsMaster),
     resolver.csv(files.municipalitiesMaster),
     resolver.csv(files.partiesMaster),
     resolver.csv(files.territorialLineage),
     resolver.csv(files.municipalitySummary),
-    resolver.csv(files.municipalityResultsLong),
+    !preferDeferredResults && files.municipalityResultsLong ? resolver.csv(files.municipalityResultsLong).catch(() => []) : Promise.resolve([]),
+    files.municipalityResultsLongByElectionIndex ? resolver.json(files.municipalityResultsLongByElectionIndex).catch(() => null) : Promise.resolve(null),
     resolver.csv(files.municipalityAliases),
     resolver.csv(files.customIndicators),
     resolver.json(files.dataQualityReport),
     files.geometryPack ? resolver.json(files.geometryPack).catch(() => null) : Promise.resolve(null),
-    files.geometry ? resolver.geometry(files.geometry).catch(() => null) : Promise.resolve(null),
-    files.provinceGeometry ? resolver.geometry(files.provinceGeometry).catch(() => null) : Promise.resolve(null),
     files.datasetRegistry ? resolver.json(files.datasetRegistry).catch(() => null) : Promise.resolve(null),
     files.codebook ? resolver.json(files.codebook).catch(() => null) : Promise.resolve(null),
     files.usageNotes ? resolver.json(files.usageNotes).catch(() => null) : Promise.resolve(null),
@@ -202,16 +256,23 @@ async function loadBundleWithManifest(state, manifest, resolver, { buildIndices,
     files.provenance ? resolver.json(files.provenance).catch(() => null) : Promise.resolve(null),
     files.releaseManifest ? resolver.json(files.releaseManifest).catch(() => null) : Promise.resolve(null),
     files.researchRecipes ? resolver.json(files.researchRecipes).catch(() => null) : Promise.resolve(null),
-    files.siteGuides ? resolver.json(files.siteGuides).catch(() => null) : Promise.resolve(null)
+    files.siteGuides ? resolver.json(files.siteGuides).catch(() => null) : Promise.resolve(null),
+    files.archiveBundleGapReport ? resolver.json(files.archiveBundleGapReport).catch(() => null) : Promise.resolve(null)
+  ]);
+  const needsFallbackGeometry = !geometryPack && files.geometry;
+  const needsFallbackProvinceGeometry = !geometryPack && files.provinceGeometry;
+  const [mainGeometry, provinceGeometry] = await Promise.all([
+    needsFallbackGeometry ? resolver.geometry(files.geometry).catch(() => null) : Promise.resolve(null),
+    needsFallbackProvinceGeometry ? resolver.geometry(files.provinceGeometry).catch(() => null) : Promise.resolve(null)
   ]);
   state.elections = parseNumberFields(elections, ['election_year']).sort((a, b) => (a.election_year || 0) - (b.election_year || 0));
   state.municipalities = municipalities;
   state.parties = parties;
   state.lineage = lineage;
   state.aliases = aliases;
-  state.summary = parseNumberFields(summary, ['election_year', 'turnout_pct', 'electors', 'voters', 'valid_votes', 'total_votes', 'first_party_share', 'second_party_share', 'first_second_margin']);
-  state.resultsLong = parseNumberFields(resultsLong, ['election_year', 'votes', 'vote_share', 'rank']);
-  state.customIndicators = parseNumberFields(customIndicators, ['election_year', 'value']);
+  state.summary = parseSummaryRows(summary);
+  state.resultsLong = parseResultsLongRows(eagerResultsLong);
+  state.customIndicators = parseCustomIndicatorRows(customIndicators);
   state.qualityReport = qualityReport;
   state.datasetRegistry = datasetRegistry?.datasets || datasetRegistry || [];
   state.codebook = codebook || null;
@@ -223,6 +284,9 @@ async function loadBundleWithManifest(state, manifest, resolver, { buildIndices,
   state.releaseManifest = releaseManifest || null;
   state.researchRecipes = researchRecipes?.recipes || researchRecipes || [];
   state.siteGuides = siteGuides || null;
+  state.archiveBundleGapReport = archiveGapReport?.rows || archiveGapReport || [];
+  state.archiveBundleGapSummary = archiveGapReport?.summary || null;
+  state.archiveGapByElection = new Map((state.archiveBundleGapReport || []).map(row => [row?.consultation_key || row?.election_key, row]).filter(([key]) => key));
   state.geometryPack = geometryPack || buildSyntheticGeometryPack(files.geometry, files.provinceGeometry);
   state.geometryFallback = mainGeometry || { type: 'FeatureCollection', features: [] };
   state.provinceGeometryFallback = provinceGeometry || { type: 'FeatureCollection', features: [] };
@@ -230,11 +294,101 @@ async function loadBundleWithManifest(state, manifest, resolver, { buildIndices,
   state.dataSource = source;
   state.dataSourceLabel = source === 'local' ? `Bundle locale (${resolver.fileCount || 0} file)` : 'Bundle incorporato';
   state.geometryResolver = path => resolver.geometry(path);
+  state.resultsResolver = path => resolver.csv(path);
+  state.resultsLongShardIndex = resultsShardIndex || null;
+  state.resultsLongShardPaths = resultsShardIndex?.shards || null;
+  state.resultsLongLoadStrategy = state.resultsLongShardPaths && Object.keys(state.resultsLongShardPaths).length
+    ? 'by_election'
+    : (files.municipalityResultsLong ? 'full' : 'none');
+  state.resultsLongFullLoaded = state.resultsLongLoadStrategy === 'full';
+  state.loadedResultElectionKeys = new Set(state.resultsLong.map(row => row.election_key).filter(Boolean));
+  state.resultsLoadPromises = new Map();
+  state.resultsFullLoadPromise = null;
+  state.declaredCoverageByElection = buildDeclaredCoverageByElection(state.elections, state.datasetRegistry, state.summary, state.resultsLong);
+  state.resultsLongDeclaredRows = Array.from(state.declaredCoverageByElection.values()).reduce((sum, row) => sum + (row.results || 0), 0);
+  state.resultsHydrationStarted = false;
+  state.resultsHydrationComplete = state.resultsLongFullLoaded;
   if (typeof buildIndices === 'function') buildIndices();
   const defaults = defaultElectionSequence(state);
   state.selectedElection = state.selectedElection || defaults.at(-1)?.election_key || state.elections.at(-1)?.election_key || null;
   state.compareElection = state.compareElection || defaults.at(-2)?.election_key || state.selectedElection;
   await syncActiveGeometry(state, registerIssue);
+}
+
+async function loadFullResultsLongOnce(state, { buildIndices, registerIssue = () => {} } = {}) {
+  if (state.resultsLongFullLoaded) {
+    return { strategy: 'full', loadedKeys: [], loadedRows: 0, alreadyLoaded: true };
+  }
+  if (state.resultsFullLoadPromise) return state.resultsFullLoadPromise;
+  const rel = state.manifest?.files?.municipalityResultsLong;
+  if (!rel) return { strategy: 'full', loadedKeys: [], loadedRows: 0, missing: true };
+  state.resultsFullLoadPromise = state.resultsResolver(rel)
+    .then(rows => {
+      const parsed = parseResultsLongRows(rows);
+      state.resultsLong = parsed;
+      state.loadedResultElectionKeys = new Set(parsed.map(row => row.election_key).filter(Boolean));
+      state.resultsLongFullLoaded = true;
+      state.resultsHydrationComplete = true;
+      if (typeof buildIndices === 'function') buildIndices();
+      return { strategy: 'full', loadedKeys: [...state.loadedResultElectionKeys], loadedRows: parsed.length };
+    })
+    .catch(err => {
+      registerIssue('results-long-full-load', err);
+      return { strategy: 'full', loadedKeys: [], loadedRows: 0, error: err };
+    })
+    .finally(() => {
+      state.resultsFullLoadPromise = null;
+    });
+  return state.resultsFullLoadPromise;
+}
+
+export async function ensureResultsForElections(state, electionKeys, { buildIndices, registerIssue = () => {} } = {}) {
+  const wanted = [...new Set((electionKeys || []).filter(Boolean))];
+  if (!wanted.length || !state.manifest?.files) return { strategy: state.resultsLongLoadStrategy || 'none', loadedKeys: [], loadedRows: 0 };
+  if (state.resultsLongFullLoaded) return { strategy: 'full', loadedKeys: [], loadedRows: 0, alreadyLoaded: true };
+  if (state.resultsLongLoadStrategy !== 'by_election') {
+    return loadFullResultsLongOnce(state, { buildIndices, registerIssue });
+  }
+
+  const shardPaths = state.resultsLongShardPaths || {};
+  const missing = wanted.filter(key => !state.loadedResultElectionKeys?.has(key));
+  if (!missing.length) return { strategy: 'by_election', loadedKeys: [], loadedRows: 0, alreadyLoaded: true };
+  if (missing.some(key => !shardPaths[key])) {
+    return loadFullResultsLongOnce(state, { buildIndices, registerIssue });
+  }
+
+  const tasks = missing.map(key => {
+    if (state.resultsLoadPromises?.has(key)) return state.resultsLoadPromises.get(key);
+    const promise = state.resultsResolver(shardPaths[key])
+      .then(rows => ({ key, rows: parseResultsLongRows(rows) }))
+      .catch(err => {
+        registerIssue(`results-long-shard-${key}`, err);
+        return { key, rows: [], error: err };
+      })
+      .finally(() => {
+        state.resultsLoadPromises?.delete(key);
+      });
+    state.resultsLoadPromises?.set(key, promise);
+    return promise;
+  });
+
+  const chunks = await Promise.all(tasks);
+  const fresh = [];
+  const loadedKeys = [];
+  chunks.forEach(chunk => {
+    if (!chunk?.key || state.loadedResultElectionKeys?.has(chunk.key)) return;
+    state.loadedResultElectionKeys?.add(chunk.key);
+    loadedKeys.push(chunk.key);
+    if (chunk.rows?.length) fresh.push(...chunk.rows);
+  });
+  if (fresh.length) state.resultsLong = state.resultsLong.concat(fresh);
+  if (fresh.length || loadedKeys.length) {
+    if (typeof buildIndices === 'function') buildIndices();
+  }
+  if (state.resultsLongDeclaredRows && state.resultsLong.length >= state.resultsLongDeclaredRows) {
+    state.resultsHydrationComplete = true;
+  }
+  return { strategy: 'by_election', loadedKeys, loadedRows: fresh.length };
 }
 
 export async function loadData(state, { buildIndices, registerIssue = () => {} } = {}) {

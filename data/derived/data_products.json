@@ -18,7 +18,8 @@
       "guardrails": [
         "Usare coverage e completeness_flag prima di interpretare trend forti.",
         "Le quote di partito possono restare parziali nei bundle incompleti."
-      ]
+      ],
+      "delivery_strategy": "monolith_plus_election_shards"
     },
     {
       "product_key": "geometry_pack_lombardia",
@@ -41,7 +42,8 @@
       "companion_dataset_key": "codebook",
       "extra_dataset_keys": [
         "usageNotes",
-        "updateLog"
+        "updateLog",
+        "archiveBundleGapReport"
       ]
     }
   ],

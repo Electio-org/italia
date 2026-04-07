@@ -30,6 +30,13 @@ class LoaderTests(unittest.TestCase):
         summary = self.bundle.filter_summary(election_key=self.bundle.available_elections().iloc[0]['election_key'])
         self.assertIn('election_key', summary.columns)
 
+    def test_can_read_results_shard_for_election(self):
+        shard_keys = list((self.bundle.result_shards().get('shards') or {}).keys())
+        if not shard_keys:
+            self.skipTest('No result shards declared in this bundle')
+        rows = self.bundle.load_results_for_election(shard_keys[0])
+        self.assertIn('election_key', rows.columns)
+
     def test_recipes_present(self):
         self.assertGreaterEqual(len(self.bundle.recipes()), 1)
 
@@ -39,6 +46,11 @@ class LoaderTests(unittest.TestCase):
 
     def test_citation_present(self):
         self.assertIn('cff-version', self.bundle.citation())
+
+    def test_archive_gap_report_present(self):
+        report = self.bundle.archive_gap_report()
+        self.assertIn('rows', report)
+        self.assertGreaterEqual(len(report.get('rows') or []), 1)
 
 
 if __name__ == '__main__':

@@ -65,6 +65,12 @@ class LombardiaCameraBundle:
             return {}
         return self.read_json(rel)
 
+    def result_shards(self) -> Dict[str, Any]:
+        rel = self.files.get('municipalityResultsLongByElectionIndex')
+        if not rel:
+            return {}
+        return self.read_json(rel)
+
     def verify_integrity(self) -> Dict[str, Any]:
         release = self.release_manifest()
         entries = release.get('file_entries') or {}
@@ -93,6 +99,15 @@ class LombardiaCameraBundle:
     def available_elections(self) -> pd.DataFrame:
         return self.load_dataset('electionsMaster')
 
+    def load_results_for_election(self, election_key: str, **kwargs) -> pd.DataFrame:
+        shard_payload = self.result_shards()
+        shard_paths = shard_payload.get('shards') or {}
+        rel = shard_paths.get(election_key)
+        if rel:
+            return self.read_csv(rel, **kwargs)
+        df = self.load_dataset('municipalityResultsLong', **kwargs)
+        return df[df['election_key'] == election_key].reset_index(drop=True)
+
     def filter_summary(self, election_key: Optional[str] = None, province: Optional[str] = None, municipality_id: Optional[str] = None) -> pd.DataFrame:
         df = self.load_dataset('municipalitySummary')
         if election_key is not None:
@@ -116,6 +131,12 @@ class LombardiaCameraBundle:
             return {}
         return self.read_json(rel)
 
+    def archive_gap_report(self) -> Dict[str, Any]:
+        rel = self.files.get('archiveBundleGapReport')
+        if not rel:
+            return {}
+        return self.read_json(rel)
+
     def citation(self) -> str:
         citation_path = self.root / 'CITATION.cff'
         if citation_path.exists():
@@ -133,14 +154,18 @@ class LombardiaCameraBundle:
 
     def summary(self) -> Dict[str, Any]:
         products = self.files.keys()
+        archive_gap = self.archive_gap_report()
         return {
             'root': str(self.root),
             'version': self.version,
             'declared_files': sorted(products),
             'data_products': len(self.list_products()),
             'has_release_manifest': bool(self.files.get('releaseManifest')),
+            'result_shards': len((self.result_shards().get('shards') or {})),
             'recipes': len(self.recipes()),
             'site_guides': len((self.site_guides().get('layers') or [])),
+            'archive_gap_rows': len(archive_gap.get('rows') or []),
+            'archive_gap_flagged_elections': (archive_gap.get('summary') or {}).get('with_any_flags', 0),
         }
 
 

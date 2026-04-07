@@ -9,7 +9,8 @@
       "transformation_steps": [
         "ingest da cartelle camera_YYYY e layout clean/raw/validated quando presenti",
         "normalizzazione di comuni, province, partiti e join geometry-aware",
-        "scrittura di dataset derived, metadata layer e manifest machine-readable"
+        "scrittura di dataset derived, metadata layer e manifest machine-readable",
+        "derivazione opzionale dei risultati di partito anche come shard per elezione"
       ],
       "limitations": [
         "la provenance del bundle non sostituisce le fonti elettorali originali",
@@ -24,7 +25,8 @@
       "transformation_steps": [
         "ingest da cartelle camera_YYYY e layout clean/raw/validated quando presenti",
         "normalizzazione di comuni, province, partiti e join geometry-aware",
-        "scrittura di dataset derived, metadata layer e manifest machine-readable"
+        "scrittura di dataset derived, metadata layer e manifest machine-readable",
+        "derivazione opzionale dei risultati di partito anche come shard per elezione"
       ],
       "limitations": [
         "la provenance del bundle non sostituisce le fonti elettorali originali",
@@ -39,7 +41,8 @@
       "transformation_steps": [
         "ingest da cartelle camera_YYYY e layout clean/raw/validated quando presenti",
         "normalizzazione di comuni, province, partiti e join geometry-aware",
-        "scrittura di dataset derived, metadata layer e manifest machine-readable"
+        "scrittura di dataset derived, metadata layer e manifest machine-readable",
+        "derivazione opzionale dei risultati di partito anche come shard per elezione"
       ],
       "limitations": [
         "la provenance del bundle non sostituisce le fonti elettorali originali",
@@ -54,7 +57,8 @@
       "transformation_steps": [
         "ingest da cartelle camera_YYYY e layout clean/raw/validated quando presenti",
         "normalizzazione di comuni, province, partiti e join geometry-aware",
-        "scrittura di dataset derived, metadata layer e manifest machine-readable"
+        "scrittura di dataset derived, metadata layer e manifest machine-readable",
+        "derivazione opzionale dei risultati di partito anche come shard per elezione"
       ],
       "limitations": [
         "la provenance del bundle non sostituisce le fonti elettorali originali",
@@ -69,7 +73,8 @@
       "transformation_steps": [
         "ingest da cartelle camera_YYYY e layout clean/raw/validated quando presenti",
         "normalizzazione di comuni, province, partiti e join geometry-aware",
-        "scrittura di dataset derived, metadata layer e manifest machine-readable"
+        "scrittura di dataset derived, metadata layer e manifest machine-readable",
+        "derivazione opzionale dei risultati di partito anche come shard per elezione"
       ],
       "limitations": [
         "la provenance del bundle non sostituisce le fonti elettorali originali",
@@ -84,7 +89,8 @@
       "transformation_steps": [
         "ingest da cartelle camera_YYYY e layout clean/raw/validated quando presenti",
         "normalizzazione di comuni, province, partiti e join geometry-aware",
-        "scrittura di dataset derived, metadata layer e manifest machine-readable"
+        "scrittura di dataset derived, metadata layer e manifest machine-readable",
+        "derivazione opzionale dei risultati di partito anche come shard per elezione"
       ],
       "limitations": [
         "la provenance del bundle non sostituisce le fonti elettorali originali",
@@ -99,7 +105,8 @@
       "transformation_steps": [
         "ingest da cartelle camera_YYYY e layout clean/raw/validated quando presenti",
         "normalizzazione di comuni, province, partiti e join geometry-aware",
-        "scrittura di dataset derived, metadata layer e manifest machine-readable"
+        "scrittura di dataset derived, metadata layer e manifest machine-readable",
+        "derivazione opzionale dei risultati di partito anche come shard per elezione"
       ],
       "limitations": [
         "la provenance del bundle non sostituisce le fonti elettorali originali",
@@ -128,7 +135,8 @@
       "transformation_steps": [
         "ingest da cartelle camera_YYYY e layout clean/raw/validated quando presenti",
         "normalizzazione di comuni, province, partiti e join geometry-aware",
-        "scrittura di dataset derived, metadata layer e manifest machine-readable"
+        "scrittura di dataset derived, metadata layer e manifest machine-readable",
+        "derivazione opzionale dei risultati di partito anche come shard per elezione"
       ],
       "limitations": [
         "la provenance del bundle non sostituisce le fonti elettorali originali",
@@ -143,7 +151,8 @@
       "transformation_steps": [
         "ingest da cartelle camera_YYYY e layout clean/raw/validated quando presenti",
         "normalizzazione di comuni, province, partiti e join geometry-aware",
-        "scrittura di dataset derived, metadata layer e manifest machine-readable"
+        "scrittura di dataset derived, metadata layer e manifest machine-readable",
+        "derivazione opzionale dei risultati di partito anche come shard per elezione"
       ],
       "limitations": [
         "la provenance del bundle non sostituisce le fonti elettorali originali",
@@ -186,7 +195,8 @@
       "transformation_steps": [
         "ingest da cartelle camera_YYYY e layout clean/raw/validated quando presenti",
         "normalizzazione di comuni, province, partiti e join geometry-aware",
-        "scrittura di dataset derived, metadata layer e manifest machine-readable"
+        "scrittura di dataset derived, metadata layer e manifest machine-readable",
+        "derivazione opzionale dei risultati di partito anche come shard per elezione"
       ],
       "limitations": [
         "la provenance del bundle non sostituisce le fonti elettorali originali",
@@ -201,7 +211,8 @@
       "transformation_steps": [
         "ingest da cartelle camera_YYYY e layout clean/raw/validated quando presenti",
         "normalizzazione di comuni, province, partiti e join geometry-aware",
-        "scrittura di dataset derived, metadata layer e manifest machine-readable"
+        "scrittura di dataset derived, metadata layer e manifest machine-readable",
+        "derivazione opzionale dei risultati di partito anche come shard per elezione"
       ],
       "limitations": [
         "la provenance del bundle non sostituisce le fonti elettorali originali",
@@ -216,7 +227,8 @@
       "transformation_steps": [
         "ingest da cartelle camera_YYYY e layout clean/raw/validated quando presenti",
         "normalizzazione di comuni, province, partiti e join geometry-aware",
-        "scrittura di dataset derived, metadata layer e manifest machine-readable"
+        "scrittura di dataset derived, metadata layer e manifest machine-readable",
+        "derivazione opzionale dei risultati di partito anche come shard per elezione"
       ],
       "limitations": [
         "la provenance del bundle non sostituisce le fonti elettorali originali",
@@ -231,7 +243,8 @@
       "transformation_steps": [
         "ingest da cartelle camera_YYYY e layout clean/raw/validated quando presenti",
         "normalizzazione di comuni, province, partiti e join geometry-aware",
-        "scrittura di dataset derived, metadata layer e manifest machine-readable"
+        "scrittura di dataset derived, metadata layer e manifest machine-readable",
+        "derivazione opzionale dei risultati di partito anche come shard per elezione"
       ],
       "limitations": [
         "la provenance del bundle non sostituisce le fonti elettorali originali",
@@ -246,7 +259,8 @@
       "transformation_steps": [
         "ingest da cartelle camera_YYYY e layout clean/raw/validated quando presenti",
         "normalizzazione di comuni, province, partiti e join geometry-aware",
-        "scrittura di dataset derived, metadata layer e manifest machine-readable"
+        "scrittura di dataset derived, metadata layer e manifest machine-readable",
+        "derivazione opzionale dei risultati di partito anche come shard per elezione"
       ],
       "limitations": [
         "la provenance del bundle non sostituisce le fonti elettorali originali",
@@ -261,7 +275,8 @@
       "transformation_steps": [
         "ingest da cartelle camera_YYYY e layout clean/raw/validated quando presenti",
         "normalizzazione di comuni, province, partiti e join geometry-aware",
-        "scrittura di dataset derived, metadata layer e manifest machine-readable"
+        "scrittura di dataset derived, metadata layer e manifest machine-readable",
+        "derivazione opzionale dei risultati di partito anche come shard per elezione"
       ],
       "limitations": [
         "la provenance del bundle non sostituisce le fonti elettorali originali",
@@ -276,7 +291,8 @@
       "transformation_steps": [
         "ingest da cartelle camera_YYYY e layout clean/raw/validated quando presenti",
         "normalizzazione di comuni, province, partiti e join geometry-aware",
-        "scrittura di dataset derived, metadata layer e manifest machine-readable"
+        "scrittura di dataset derived, metadata layer e manifest machine-readable",
+        "derivazione opzionale dei risultati di partito anche come shard per elezione"
       ],
       "limitations": [
         "la provenance del bundle non sostituisce le fonti elettorali originali",
@@ -291,7 +307,8 @@
       "transformation_steps": [
         "ingest da cartelle camera_YYYY e layout clean/raw/validated quando presenti",
         "normalizzazione di comuni, province, partiti e join geometry-aware",
-        "scrittura di dataset derived, metadata layer e manifest machine-readable"
+        "scrittura di dataset derived, metadata layer e manifest machine-readable",
+        "derivazione opzionale dei risultati di partito anche come shard per elezione"
       ],
       "limitations": [
         "la provenance del bundle non sostituisce le fonti elettorali originali",
@@ -306,7 +323,8 @@
       "transformation_steps": [
         "ingest da cartelle camera_YYYY e layout clean/raw/validated quando presenti",
         "normalizzazione di comuni, province, partiti e join geometry-aware",
-        "scrittura di dataset derived, metadata layer e manifest machine-readable"
+        "scrittura di dataset derived, metadata layer e manifest machine-readable",
+        "derivazione opzionale dei risultati di partito anche come shard per elezione"
       ],
       "limitations": [
         "la provenance del bundle non sostituisce le fonti elettorali originali",
@@ -321,11 +339,59 @@
       "transformation_steps": [
         "ingest da cartelle camera_YYYY e layout clean/raw/validated quando presenti",
         "normalizzazione di comuni, province, partiti e join geometry-aware",
-        "scrittura di dataset derived, metadata layer e manifest machine-readable"
+        "scrittura di dataset derived, metadata layer e manifest machine-readable",
+        "derivazione opzionale dei risultati di partito anche come shard per elezione"
       ],
       "limitations": [
         "la provenance del bundle non sostituisce le fonti elettorali originali",
         "la copertura sostanziale dipende dai dati effettivamente ingestiti"
+      ]
+    },
+    {
+      "dataset_key": "municipalityResultsLongByElectionIndex",
+      "path": "data/derived/municipality_results_long_by_election.json",
+      "produced_by": "scripts/preprocess.py",
+      "source_class": "derived_bundle",
+      "transformation_steps": [
+        "ingest da cartelle camera_YYYY e layout clean/raw/validated quando presenti",
+        "normalizzazione di comuni, province, partiti e join geometry-aware",
+        "scrittura di dataset derived, metadata layer e manifest machine-readable",
+        "derivazione opzionale dei risultati di partito anche come shard per elezione"
+      ],
+      "limitations": [
+        "la provenance del bundle non sostituisce le fonti elettorali originali",
+        "la copertura sostanziale dipende dai dati effettivamente ingestiti"
+      ]
+    },
+    {
+      "dataset_key": "historicalGroupedRepair",
+      "path": "data/intermediate/historical_fixed_source",
+      "produced_by": "rebuild_historical_bundle_from_grouped.py",
+      "source_class": "repair_staging",
+      "transformation_steps": [
+        "lettura dei grouped storici con URL comunali ancora raw",
+        "normalizzazione dei token archivio X-levkY nei parametri ne/lev",
+        "refetch delle pagine comunali corrette e ricostruzione dei clean CSV storici",
+        "fusione del bundle storico riparato con il bundle moderno già pubblicato"
+      ],
+      "limitations": [
+        "dipende dal fetch live delle pagine storiche corrette del sito Archivio",
+        "la copertura storica resta vincolata alla topologia comunale effettivamente esposta dall'Archivio"
+      ]
+    },
+    {
+      "dataset_key": "archiveBundleGapReport",
+      "path": "data/derived/archive_bundle_gap_report.json",
+      "produced_by": "rebuild_bundle_from_camera_opendata_archives.py",
+      "source_class": "coverage_diagnostics",
+      "transformation_steps": [
+        "derive official municipality coverage directly from the Eligendo open-data zip archives for Camera and Assemblea Costituente",
+        "compare published summary coverage against the same official source",
+        "carry the diagnostics into the static bundle as machine-readable metadata"
+      ],
+      "limitations": [
+        "the report diagnoses residual gaps and unresolved geometry joins but does not harmonize extinct municipalities",
+        "coverage equivalence with the official source does not imply full historical harmonization across boundary changes"
       ]
     }
   ]

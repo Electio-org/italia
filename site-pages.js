@@ -29,6 +29,18 @@ function formatBytes(bytes) {
   return `${value.toFixed(digits)} ${units[index]}`;
 }
 
+function isAbsoluteLikePath(value) {
+  return /^[a-zA-Z]:[\\/]/.test(String(value || '')) || /^\/(?!\/)/.test(String(value || '')) || /^https?:\/\//i.test(String(value || ''));
+}
+
+function preferredDownloadHref(bundle, datasetKey, meta = {}) {
+  const declared = meta.path || '';
+  const manifestPath = bundle.manifest?.files?.[datasetKey] || '';
+  if (declared && !isAbsoluteLikePath(declared)) return declared;
+  if (manifestPath) return manifestPath;
+  return declared;
+}
+
 function slugify(value) {
   return String(value ?? '')
     .toLowerCase()
@@ -94,6 +106,7 @@ async function loadBundle() {
     siteGuides: 'siteGuides',
     updateLog: 'updateLog',
     dataQualityReport: 'dataQualityReport',
+    archiveBundleGapReport: 'archiveBundleGapReport',
   };
 
   await Promise.all(
@@ -167,6 +180,9 @@ function renderDownloadPage(bundle) {
   const recipes = bundle.researchRecipes?.recipes || [];
   const notes = bundle.usageNotes?.notes || [];
   const quality = bundle.dataQualityReport?.derived_validations || {};
+  const archiveGap = bundle.archiveBundleGapReport?.rows || [];
+  const archiveGapSummary = bundle.archiveBundleGapReport?.summary || {};
+  const archiveGapByKey = new Map(archiveGap.map((row) => [row.consultation_key || row.election_key, row]));
   const usableElectionRows = registryDatasets.filter((row) => row.election_key);
   const geometryRows = registryDatasets.filter((row) => row.dataset_family === 'geometry_boundary');
   const yearsWithCoverage = usableElectionRows.filter((row) => row.status === 'usable').length;
@@ -178,6 +194,8 @@ function renderDownloadPage(bundle) {
     ['Prodotti dati', products.length, 'Famiglie pubblicate in questa release'],
     ['Elezioni con copertura', yearsWithCoverage, 'Anni almeno utilizzabili nel bundle attuale'],
     ['Basi geometriche', geometryRows.length, 'Boundary pack disponibili'],
+    ['Gap forti vs archivio', archiveGapSummary.bundle_severely_partial_vs_archive ?? archiveGapSummary.bundle_below_archive_positive_tables ?? 'n.d.', 'Elezioni dove il bundle resta molto sotto il canonico'],
+    ['Vuote ma non vuote nel canonico', archiveGapSummary.bundle_empty_archive_nonempty ?? 'n.d.', 'Elezioni oggi vuote nel bundle ma non nel piu ampio archivio Lombardia'],
   ];
   const statGrid = q('page-stat-grid');
   if (statGrid) {
@@ -216,17 +234,23 @@ function renderDownloadPage(bundle) {
   if (coverageBody) {
     coverageBody.innerHTML = usableElectionRows
       .sort((a, b) => Number(a.election_year || 0) - Number(b.election_year || 0))
-      .map((row) => `
+      .map((row) => {
+        const gap = archiveGapByKey.get(row.election_key);
+        const archiveHint = gap
+          ? `Archivio: ${formatNumber(gap.archive_positive_table_rows || gap.archive_municipality_like_rows || 0)}`
+          : '';
+        return `
         <tr>
           <td>${escapeHtml(row.election_year || '')}</td>
           <td>${escapeHtml(row.election_key || '')}</td>
           <td><span class="doc-pill tone-${row.status === 'usable' ? 'good' : 'muted'}">${escapeHtml(row.coverage_label || row.status || 'n.d.')}</span></td>
           <td>${escapeHtml(row.territorial_mode || 'n.d.')}</td>
           <td>${escapeHtml(row.boundary_basis || 'auto')}</td>
-          <td>${formatNumber(row.summary_rows || 0)}</td>
+          <td>${formatNumber(row.summary_rows || 0)}${archiveHint ? `<div class="table-muted">${escapeHtml(archiveHint)}</div>` : ''}</td>
           <td>${formatNumber(row.result_rows || 0)}</td>
         </tr>
-      `)
+      `;
+      })
       .join('');
   }
 
@@ -234,12 +258,12 @@ function renderDownloadPage(bundle) {
   if (filesBody) {
     filesBody.innerHTML = Object.entries(releaseEntries)
       .map(([datasetKey, meta]) => {
-        const rel = meta.path || bundle.manifest.files?.[datasetKey] || '';
+        const rel = preferredDownloadHref(bundle, datasetKey, meta);
         return `
           <tr>
             <td>
               <strong>${escapeHtml(datasetKey)}</strong>
-              <div class="table-muted">${escapeHtml(rel)}</div>
+              <div class="table-muted">${escapeHtml(rel || meta.path || '')}</div>
             </td>
             <td>${escapeHtml(meta.kind || 'n.d.')}</td>
             <td>${formatBytes(meta.size_bytes || 0)}</td>
@@ -281,6 +305,29 @@ function renderDownloadPage(bundle) {
           </ul>
         </article>
       `)
+      .join('');
+  }
+
+  const archiveGapBody = q('archive-gap-table-body');
+  if (archiveGapBody) {
+    archiveGapBody.innerHTML = archiveGap
+      .sort((a, b) => Number(a.election_year || 0) - Number(b.election_year || 0))
+      .map((row) => {
+        const flags = row.flags || [];
+        const ratio = Number(row.summary_vs_archive_positive_ratio);
+        const ratioText = Number.isFinite(ratio) ? `${(ratio * 100).toFixed(1)}%` : 'n.d.';
+        const archiveScope = row.archive_positive_table_rows || row.archive_municipality_like_rows || 0;
+        return `
+          <tr>
+            <td>${escapeHtml(row.election_year || '')}</td>
+            <td>${escapeHtml(row.consultation_key || '')}</td>
+            <td>${formatNumber(row.bundle_summary_rows || 0)}</td>
+            <td>${formatNumber(archiveScope)}</td>
+            <td>${escapeHtml(ratioText)}</td>
+            <td>${flags.length ? flags.map((flag) => `<span class="doc-pill tone-warn">${escapeHtml(flag)}</span>`).join(' ') : '<span class="doc-pill tone-good">in linea</span>'}</td>
+          </tr>
+        `;
+      })
       .join('');
   }
 }

@@ -327,6 +327,48 @@ def geometry_manifest_files(output_root: Path) -> dict:
     }
 
 
+def results_shard_index_path(output_root: Path) -> Path:
+    return output_root / "data" / "derived" / "municipality_results_long_by_election.json"
+
+
+def load_results_shard_index(output_root: Path) -> Dict[str, object]:
+    path = results_shard_index_path(output_root)
+    if not path.exists():
+        return {"generated_by": "preprocess.py", "dataset": "municipality_results_long.csv", "shards": {}, "row_counts": {}}
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return {"generated_by": "preprocess.py", "dataset": "municipality_results_long.csv", "shards": {}, "row_counts": {}}
+
+
+def write_results_long_shards(output_root: Path, party_rows: pd.DataFrame) -> None:
+    derived = output_root / "data" / "derived"
+    shard_dir = derived / "results_by_election"
+    shard_dir.mkdir(parents=True, exist_ok=True)
+    for old in shard_dir.glob("*.csv"):
+        old.unlink()
+
+    shards: Dict[str, str] = {}
+    row_counts: Dict[str, int] = {}
+    if not party_rows.empty and "election_key" in party_rows.columns:
+        for election_key, chunk in sorted(party_rows.groupby("election_key"), key=lambda item: str(item[0])):
+            filename = f"{slugify(str(election_key))}.csv"
+            path = shard_dir / filename
+            chunk.to_csv(path, index=False)
+            rel = str(path.relative_to(output_root)).replace("\\", "/")
+            shards[str(election_key)] = rel
+            row_counts[str(election_key)] = int(len(chunk))
+
+    payload = {
+        "generated_by": "preprocess.py",
+        "dataset": "municipality_results_long.csv",
+        "strategy": "by_election",
+        "shards": shards,
+        "row_counts": row_counts,
+    }
+    write_json_file(results_shard_index_path(output_root), payload)
+
+
 def write_geometry_pack(output_root: Path) -> None:
     derived = output_root / 'data' / 'derived'
     info = geometry_manifest_files(output_root)
@@ -350,7 +392,7 @@ def write_manifest(output_root: Path) -> None:
     manifest = {
         "project": {
             "title": "Lombardia Camera Explorer",
-            "version": "0.11.0",
+            "version": "0.11.1",
             "ready_for_real_data": True,
             "notes": [
                 "Vote shares are recomputed from votes whenever a plausible denominator is available.",
@@ -359,7 +401,8 @@ def write_manifest(output_root: Path) -> None:
                 "Geometry pack and province overlay are declared in the manifest for reproducible map loading.",
                 "Municipality lookup metadata is used when available to enrich province / geometry identifiers.",
                 "Guided question cards and evidence ladder are part of the bundle-facing UX layer.",
-                "Copy-ready citation and reproducibility lines help make each view shareable and method-aware."
+                "Copy-ready citation and reproducibility lines help make each view shareable and method-aware.",
+                "Party results can be delivered both as a monolithic CSV and as per-election shards for faster interactive loading."
             ]
         },
         "files": {
@@ -369,6 +412,7 @@ def write_manifest(output_root: Path) -> None:
             "territorialLineage": "data/derived/territorial_lineage.csv",
             "municipalitySummary": "data/derived/municipality_summary.csv",
             "municipalityResultsLong": "data/derived/municipality_results_long.csv",
+            "municipalityResultsLongByElectionIndex": "data/derived/municipality_results_long_by_election.json",
             "municipalityAliases": "data/derived/municipality_aliases.csv",
             "geometry": geometry_info["geometry"],
             "dataQualityReport": "data/derived/data_quality_report.json",
@@ -389,6 +433,12 @@ def write_manifest(output_root: Path) -> None:
         "contracts": {
             "geometryJoinPriority": ["geometry_id", "municipality_id", "name_current"],
             "territorialModes": ["historical", "harmonized"]
+        },
+        "loading": {
+            "municipalityResultsLong": {
+                "strategy": "deferred_by_election",
+                "index": "data/derived/municipality_results_long_by_election.json"
+            }
         }
     }
     target = output_root / "data" / "derived"
@@ -400,14 +450,17 @@ def write_manifest(output_root: Path) -> None:
 def build_dataset_registry(output_root: Path, elections: List[Dict[str, object]], summary_rows: pd.DataFrame, party_rows: pd.DataFrame, quality: Dict[str, object]) -> Dict[str, object]:
     derived = output_root / "data" / "derived"
     geometry_info = geometry_manifest_files(output_root)
+    shard_index = load_results_shard_index(output_root)
+    shard_paths = {str(k): str(v) for k, v in (shard_index.get("shards") or {}).items()}
     rows = []
     for election in elections:
         key = election.get("election_key")
         summary_n = int(len(summary_rows[summary_rows.get("election_key") == key])) if not summary_rows.empty and "election_key" in summary_rows else 0
         result_n = int(len(party_rows[party_rows.get("election_key") == key])) if not party_rows.empty and "election_key" in party_rows else 0
+        dataset_family = "assemblea_costituente_municipality_historical" if str(key).startswith("assemblea_costituente_") else "camera_municipality_historical"
         rows.append({
             "dataset_key": key,
-            "dataset_family": "camera_municipality_historical",
+            "dataset_family": dataset_family,
             "election_key": key,
             "election_year": election.get("election_year"),
             "summary_rows": summary_n,
@@ -417,7 +470,7 @@ def build_dataset_registry(output_root: Path, elections: List[Dict[str, object]]
             "status": "usable" if (summary_n or result_n) else "empty",
             "coverage_label": "summary+results" if (summary_n and result_n) else "summary_only" if summary_n else "results_only" if result_n else "empty",
             "download_summary": "data/derived/municipality_summary.csv",
-            "download_results": "data/derived/municipality_results_long.csv"
+            "download_results": shard_paths.get(str(key), "data/derived/municipality_results_long.csv")
         })
     for year, path in (geometry_info.get('municipalities') or {}).items():
         rows.append({
@@ -493,12 +546,13 @@ def build_data_products_payload() -> Dict[str, object]:
         "products": [
             {
                 "product_key": "camera_muni_historical",
-                "title": "Camera Lombardia · comuni storici",
+                "title": "Camera e Costituente Lombardia · comuni storici",
                 "kind": "election_panel",
                 "territorial_mode": "historical",
                 "granularity": "municipality-election",
                 "primary_dataset_key": "municipalitySummary",
                 "companion_dataset_key": "municipalityResultsLong",
+                "delivery_strategy": "monolith_plus_election_shards",
                 "join_keys": ["municipality_id", "geometry_id", "election_key"],
                 "guardrails": [
                     "Usare coverage e completeness_flag prima di interpretare trend forti.",
@@ -636,7 +690,8 @@ def build_provenance_payload(output_root: Path) -> Dict[str, object]:
     generic_steps = [
         "ingest da cartelle camera_YYYY e layout clean/raw/validated quando presenti",
         "normalizzazione di comuni, province, partiti e join geometry-aware",
-        "scrittura di dataset derived, metadata layer e manifest machine-readable"
+        "scrittura di dataset derived, metadata layer e manifest machine-readable",
+        "derivazione opzionale dei risultati di partito anche come shard per elezione"
     ]
     for key, rel in files.items():
         entries.append({
@@ -1549,6 +1604,7 @@ def main() -> None:
         summary_rows.to_csv(derived / "municipality_summary.csv", index=False)
     if not party_rows.empty:
         party_rows.to_csv(derived / "municipality_results_long.csv", index=False)
+    write_results_long_shards(output_root, party_rows)
     if not municipalities.empty:
         municipalities.to_csv(derived / "municipalities_master.csv", index=False)
     if not parties.empty:

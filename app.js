@@ -22,6 +22,7 @@ import {
 import {
   loadData,
   loadDataFromLocalFiles,
+  ensureResultsForElections,
   geometryJoinKey,
   rowJoinKey,
   makeGeoProjection,
@@ -180,7 +181,13 @@ const state = {
   onboardingDismissed: false,
   uiLevel: 'basic',
   audienceMode: 'public',
-  renderQueued: false
+  renderQueued: false,
+  resultsLongDeclaredRows: 0,
+  resultsHydrationStarted: false,
+  resultsHydrationComplete: false,
+  archiveBundleGapReport: [],
+  archiveBundleGapSummary: null,
+  archiveGapByElection: new Map()
 };
 
 state.geometryPack = null;
@@ -286,6 +293,83 @@ function currentCoverageNote() {
   return 'Copertura sostanziale buona: il bundle regge letture più ambiziose, restando comunque da verificare anno per anno.';
 }
 
+function resultsHydrationSummary() {
+  const declared = Math.max(state.resultsLongDeclaredRows || 0, state.resultsLong.length || 0);
+  const loaded = state.resultsLong.length || 0;
+  if (!declared) return 'Nessun risultato di partito dichiarato nel bundle corrente.';
+  if (state.resultsLongFullLoaded || loaded >= declared) return `Risultati di partito caricati: ${fmtInt(loaded)} righe.`;
+  return `Risultati di partito caricati progressivamente: ${fmtInt(loaded)} / ${fmtInt(declared)} righe.`;
+}
+
+function visibleElectionKeysForResults() {
+  const keys = new Set([state.selectedElection, state.compareElection].filter(Boolean));
+  const needsHistory = ['volatility', 'dominance_changes', 'stability_index', 'concentration'].includes(state.selectedMetric)
+    || state.analysisMode === 'trajectory'
+    || Boolean(state.selectedMunicipalityId);
+  if (needsHistory) {
+    state.elections.forEach(election => {
+      const coverage = electionCoverageFor(state, election.election_key);
+      if (coverage.results) keys.add(election.election_key);
+    });
+  }
+  return [...keys];
+}
+
+function applyResultsHydrationOutcome(report, { silent = true } = {}) {
+  if (!report || (!report.loadedRows && !(report.loadedKeys || []).length)) return;
+  invalidateDerivedCaches();
+  renderStatusPanel();
+  requestRender();
+  if (!silent) {
+    const label = report.strategy === 'by_election'
+      ? `${(report.loadedKeys || []).join(', ')}`
+      : 'bundle completo';
+    showToast(`Risultati di partito caricati: ${label}.`, 'success', 1800);
+  }
+}
+
+function ensureVisibleResults({ silent = true } = {}) {
+  return ensureResultsForElections(state, visibleElectionKeysForResults(), {
+    buildIndices: () => buildIndices(state),
+    registerIssue
+  }).then(report => {
+    applyResultsHydrationOutcome(report, { silent });
+    return report;
+  });
+}
+
+function scheduleBackgroundResultsHydration() {
+  if (state.resultsHydrationStarted || state.resultsLongLoadStrategy !== 'by_election') return;
+  state.resultsHydrationStarted = true;
+  ensureVisibleResults({ silent: true });
+  const idle = window.requestIdleCallback
+    ? callback => window.requestIdleCallback(callback, { timeout: 600 })
+    : callback => window.setTimeout(() => callback({ didTimeout: false, timeRemaining: () => 0 }), 350);
+
+  const pump = () => {
+    const remaining = state.elections
+      .map(election => election.election_key)
+      .filter(key => {
+        const coverage = electionCoverageFor(state, key);
+        return coverage.results && !state.loadedResultElectionKeys?.has(key);
+      });
+    if (!remaining.length) {
+      state.resultsHydrationComplete = true;
+      renderStatusPanel();
+      return;
+    }
+    idle(async () => {
+      const report = await ensureResultsForElections(state, remaining.slice(0, 1), {
+        buildIndices: () => buildIndices(state),
+        registerIssue
+      });
+      applyResultsHydrationOutcome(report, { silent: true });
+      pump();
+    });
+  };
+  pump();
+}
+
 
 function currentReleaseVersion() {
   return state.releaseManifest?.project?.version || state.manifest?.project?.version || 'n/d';
@@ -300,6 +384,33 @@ function releaseIntegrityStatus() {
   if (integrity.all_declared_files_present && integrity.all_declared_file_hashes_verified) return { label: 'Integrità verificata', tone: 'ok' };
   if (integrity.all_declared_files_present) return { label: 'File presenti', tone: 'warn' };
   return { label: 'Integrità non verificata', tone: 'warn' };
+}
+
+function archiveGapRowForElection(key) {
+  if (!key) return null;
+  return state.archiveGapByElection?.get(key) || null;
+}
+
+function currentArchiveGapSummary() {
+  if (state.archiveBundleGapSummary) return state.archiveBundleGapSummary;
+  const rows = state.archiveBundleGapReport || [];
+  return {
+    rows: rows.length,
+    bundle_empty_archive_nonempty: rows.filter(row => (row.flags || []).includes('bundle_empty_archive_nonempty')).length,
+    bundle_below_archive_positive_tables: rows.filter(row => (row.flags || []).includes('bundle_below_archive_positive_tables')).length,
+    bundle_severely_partial_vs_archive: rows.filter(row => (row.flags || []).includes('bundle_severely_partial_vs_archive')).length,
+    with_any_flags: rows.filter(row => (row.flags || []).length).length
+  };
+}
+
+function archiveGapStatus(gapRow) {
+  if (!gapRow) return { label: 'archivio n/d', tone: 'none' };
+  const flags = gapRow.flags || [];
+  if (flags.includes('bundle_empty_archive_nonempty')) return { label: 'bundle vuoto vs archivio', tone: 'partial' };
+  if (flags.includes('bundle_severely_partial_vs_archive')) return { label: 'gap forte vs archivio', tone: 'partial' };
+  if (flags.includes('bundle_below_archive_positive_tables')) return { label: 'sotto archivio', tone: 'partial' };
+  if ((gapRow.archive_positive_table_rows || gapRow.archive_municipality_like_rows || 0) > 0) return { label: 'in linea con archivio', tone: 'ok' };
+  return { label: 'archivio senza copertura utile', tone: 'none' };
 }
 
 function buildProgrammaticSnippet(language = 'python') {
@@ -321,7 +432,7 @@ print(summary.head())`;
 function buildProjectCitation() {
   const version = currentReleaseVersion();
   const date = currentReleaseDate();
-  return `Lombardia Camera Explorer, release ${version} (${date}). Bundle statico boundary-aware per l'analisi comunale delle elezioni della Camera in Lombardia.`;
+  return `Lombardia Camera Explorer, release ${version} (${date}). Bundle statico boundary-aware per l'analisi comunale delle elezioni della Camera e dell'Assemblea Costituente in Lombardia.`;
 }
 
 function researchRecipesForAudience() {
@@ -556,11 +667,11 @@ function setupControls() {
     const withoutData = state.elections.filter(d => { const c = electionCoverageFor(state, d.election_key); return !(c.summary || c.results); });
     const renderOption = d => {
       const c = electionCoverageFor(state, d.election_key);
-      const suffix = c.results ? ` · ${c.results} righe partiti` : c.summary ? ` · ${c.summary} righe summary` : ' · nessun dato utile';
+      const suffix = c.results ? ` | ${c.results} righe partiti` : c.summary ? ` | ${c.summary} righe summary` : ' | nessun dato comunale pubblicato';
       return `<option value="${escapeHtml(d.election_key)}">${escapeHtml(d.election_label || d.election_key)}${escapeHtml(suffix)}</option>`;
     };
-    els.electionSelect.innerHTML = `${withData.length ? `<optgroup label="Elezioni con copertura">${withData.map(renderOption).join('')}</optgroup>` : ''}${withoutData.length ? `<optgroup label="Anni noti senza righe utili">${withoutData.map(renderOption).join('')}</optgroup>` : ''}`;
-    els.compareElectionSelect.innerHTML = `<option value="">Nessun confronto</option>` + `${withData.length ? `<optgroup label="Elezioni con copertura">${withData.map(renderOption).join('')}</optgroup>` : ''}${withoutData.length ? `<optgroup label="Anni noti senza righe utili">${withoutData.map(renderOption).join('')}</optgroup>` : ''}`;
+    els.electionSelect.innerHTML = `${withData.length ? `<optgroup label="Elezioni con copertura">${withData.map(renderOption).join('')}</optgroup>` : ''}${withoutData.length ? `<optgroup label="Anni noti ma non ancora pubblicati a livello comunale">${withoutData.map(renderOption).join('')}</optgroup>` : ''}`;
+    els.compareElectionSelect.innerHTML = `<option value="">Nessun confronto</option>` + `${withData.length ? `<optgroup label="Elezioni con copertura">${withData.map(renderOption).join('')}</optgroup>` : ''}${withoutData.length ? `<optgroup label="Anni noti ma non ancora pubblicati a livello comunale">${withoutData.map(renderOption).join('')}</optgroup>` : ''}`;
     state.electionLabels = (withData.length ? withData : state.elections).map(d => ({ value: d.election_key, label: d.election_label || String(d.election_year || d.election_key) }));
     els.electionSelect.value = state.selectedElection || (withData.at(-1)?.election_key || state.elections.at(-1)?.election_key || '');
     els.compareElectionSelect.value = state.compareElection || '';
@@ -638,7 +749,10 @@ function readControls() {
   if (els.densitySelect) state.uiDensity = els.densitySelect.value || state.uiDensity;
   if (els.visionModeSelect) state.visionMode = els.visionModeSelect.value || state.visionMode;
   updateBodyAppearance();
-  syncActiveGeometry(state, registerIssue).then(() => requestRender()).catch(err => registerIssue('geometry-sync', err));
+  syncActiveGeometry(state, registerIssue).then(() => {
+    requestRender();
+    ensureVisibleResults({ silent: !metricNeedsPartyResults() });
+  }).catch(err => registerIssue('geometry-sync', err));
   syncURLState();
 }
 
@@ -1133,24 +1247,32 @@ function renderStatusPanel() {
   const uniqueSummaryMunicipalities = new Set(state.summary.map(r => r.municipality_id)).size;
   const electionsWithData = state.elections.filter(d => { const c = electionCoverageFor(state, d.election_key); return c.summary || c.results; }).length;
   const sourceText = escapeHtml(state.dataSourceLabel || 'Bundle incorporato');
+  const declaredResultRows = Math.max(state.resultsLongDeclaredRows || 0, state.resultsLong.length || 0);
+  const gapSummary = currentArchiveGapSummary();
+  const archiveGapText = gapSummary.with_any_flags
+    ? `Archivio canonico: ${fmtInt(gapSummary.bundle_empty_archive_nonempty || 0)} elezioni oggi vuote nel bundle e ${fmtInt(gapSummary.bundle_severely_partial_vs_archive || gapSummary.bundle_below_archive_positive_tables || 0)} ancora molto sotto la copertura gia prodotta.`
+    : 'Nessun gap archivio-vs-bundle dichiarato nel bundle corrente.';
   els.datasetStatus.innerHTML = `
     <div class="status-banner ${state.geometry?.features?.length ? 'ok' : 'warn'}">
       <strong>${state.geometry?.features?.length ? 'Geometrie ISTAT caricate' : 'Modalità data-first'}</strong>
       <div class="helper-text" style="margin-top:4px">Sorgente attiva: <strong>${sourceText}</strong>.</div>
       <div class="helper-text" style="margin-top:4px">Confini comunali Lombardia disponibili per: ${geometryYears}. Modalità attiva: ${escapeHtml(state.territorialMode)} · base geometrica: <strong>${escapeHtml(String(state.geometryReferenceYear || 'auto'))}</strong>.</div>
       <div class="helper-text" style="margin-top:4px">Readiness tecnica: ${fmtInt(technical)} · copertura sostanziale: ${fmtInt(substantive)}.</div>
+      <div class="helper-text" style="margin-top:4px">${escapeHtml(resultsHydrationSummary())}</div>
+      <div class="helper-text" style="margin-top:4px">${escapeHtml(archiveGapText)}</div>
     </div>`;
   els.dataCounts.innerHTML = `
     <div class="count-grid">
       <div class="count-card"><span class="eyebrow">Elezioni note</span><strong>${fmtInt(state.elections.length)}</strong></div>
       <div class="count-card"><span class="eyebrow">Elezioni con dati</span><strong>${fmtInt(electionsWithData)}</strong></div>
       <div class="count-card"><span class="eyebrow">Comuni unici in summary</span><strong>${fmtInt(uniqueSummaryMunicipalities)}</strong></div>
-      <div class="count-card"><span class="eyebrow">Righe risultati</span><strong>${fmtInt(state.resultsLong.length)}</strong></div>
+      <div class="count-card"><span class="eyebrow">Righe risultati</span><strong>${fmtInt(state.resultsLong.length)} / ${fmtInt(declaredResultRows)}</strong></div>
+      <div class="count-card"><span class="eyebrow">Gap vs archivio</span><strong>${fmtInt(gapSummary.with_any_flags || 0)}</strong></div>
     </div>`;
   if (els.dataSourceBadge) els.dataSourceBadge.textContent = state.dataSource === 'local' ? 'Bundle locale' : 'Bundle incorporato';
   if (els.localBundleSummary) {
     els.localBundleSummary.textContent = state.dataSource === 'local'
-      ? `Bundle locale attivo · ${fmtInt(state.elections.length)} elezioni note · ${fmtInt(state.summary.length)} righe summary · ${fmtInt(state.resultsLong.length)} righe partito.`
+      ? `Bundle locale attivo · ${fmtInt(state.elections.length)} elezioni note · ${fmtInt(state.summary.length)} righe summary · ${fmtInt(state.resultsLong.length)} / ${fmtInt(declaredResultRows)} righe partito caricate.`
       : 'Nessun bundle locale caricato.';
   }
 }
@@ -1165,7 +1287,8 @@ function datasetFileDescriptors() {
     { key: 'aliases', label: 'Municipality aliases', rows: state.aliases.length, path: files.municipalityAliases, note: 'Alias storici e nomi ricercabili nel finder.' },
     { key: 'parties', label: 'Parties master', rows: state.parties.length, path: files.partiesMaster, note: 'Normalizzazione partiti/famiglie/blocchi.' },
     { key: 'lineage', label: 'Territorial lineage', rows: state.lineage.length, path: files.territorialLineage, note: 'Lineage territoriale e note di armonizzazione.' },
-    { key: 'quality', label: 'Data quality report', rows: (state.qualityReport?.datasets || []).length, path: files.dataQualityReport, note: 'Audit di plausibilità, coverage e readiness.' }
+    { key: 'quality', label: 'Data quality report', rows: (state.qualityReport?.datasets || []).length, path: files.dataQualityReport, note: 'Audit di plausibilità, coverage e readiness.' },
+    { key: 'archiveGap', label: 'Archive bundle gap report', rows: (state.archiveBundleGapReport || []).length, path: files.archiveBundleGapReport, note: 'Confronto esplicito tra bundle pubblicato e archivio canonico Lombardia.' }
   ].filter(d => d.path);
 }
 
@@ -1176,7 +1299,7 @@ function renderDataPackagePanel() {
   const rows = ordered.map(e => {
     const coverage = electionCoverageFor(state, e.election_key);
     const hasGeom = geometryYears.size ? [...geometryYears].some(y => y <= Number(e.election_year || 0)) : Boolean(state.geometryFallback?.features?.length);
-    return { election: e, coverage, hasGeom };
+    return { election: e, coverage, hasGeom, archiveGap: archiveGapRowForElection(e.election_key) };
   });
   const dot = (kind, value) => {
     const cls = value ? (value === 'partial' ? 'partial' : 'ok') : 'none';
@@ -1185,12 +1308,14 @@ function renderDataPackagePanel() {
   };
   els.coverageMatrix.innerHTML = `
     <table class="coverage-matrix-table">
-      <thead><tr><th>Anno</th><th>Summary</th><th>Partiti</th><th>Geometria</th><th>Stato</th></tr></thead>
-      <tbody>${rows.map(({ election, coverage, hasGeom }) => {
+      <thead><tr><th>Anno</th><th>Summary</th><th>Partiti</th><th>Geometria</th><th>Archivio</th><th>Stato</th></tr></thead>
+      <tbody>${rows.map(({ election, coverage, hasGeom, archiveGap }) => {
         const summary = coverage.summary ? 'ok' : null;
         const results = coverage.results ? 'ok' : null;
+        const gapStatus = archiveGapStatus(archiveGap);
         const status = coverage.summary && coverage.results ? 'copertura utile' : coverage.summary || coverage.results ? 'parziale' : 'vuoto';
-        return `<tr><td><strong>${escapeHtml(election.election_year || election.election_key)}</strong></td><td>${dot('S', summary)}</td><td>${dot('P', results)}</td><td>${dot('G', hasGeom ? 'ok' : null)}</td><td>${escapeHtml(status)}</td></tr>`;
+        const archiveScope = archiveGap ? (archiveGap.archive_positive_table_rows || archiveGap.archive_municipality_like_rows || 0) : null;
+        return `<tr><td><strong>${escapeHtml(election.election_year || election.election_key)}</strong></td><td>${dot('S', summary)}</td><td>${dot('P', results)}</td><td>${dot('G', hasGeom ? 'ok' : null)}</td><td><span class="coverage-dot ${escapeHtml(gapStatus.tone)}">${escapeHtml(gapStatus.label)}</span>${archiveScope != null ? `<div class="helper-text">Archivio: ${fmtInt(archiveScope)}</div>` : ''}</td><td>${escapeHtml(status)}</td></tr>`;
       }).join('')}</tbody>
     </table>`;
   const sourceLocal = state.dataSource === 'local';
@@ -1225,6 +1350,7 @@ async function activateLocalBundle(fileList) {
     setupControls();
     renderStatusPanel();
     requestRender();
+    scheduleBackgroundResultsHydration();
     showToast('Bundle locale caricato nel browser.');
   } catch (err) {
     registerIssue('local-bundle', err);
@@ -4357,6 +4483,7 @@ function renderViewTrustPill() {
 }
 
 function renderAll() {
+  ensureVisibleResults({ silent: true });
   clearIssues();
   [
     ['hero', renderHeroPanel],
@@ -4620,6 +4747,7 @@ async function init() {
     updateBodyAppearance();
     toggleFocusMode(state.focusMode);
     requestRender();
+    scheduleBackgroundResultsHydration();
     setLoading(false);
     if (!state.onboardingDismissed && new URLSearchParams(window.location.search).get('onboarding') === '1') openOnboarding();
     showToast('Explorer pronto. Controlla audit e metodo se i dati sono parziali.', 'success', 2600);

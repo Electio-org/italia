@@ -2,6 +2,84 @@
   "generated_by": "preprocess.py",
   "entries": [
     {
+      "version": "0.15.0",
+      "date": "2026-04-07",
+      "title": "Official open-data zip rebuild with Assemblea Costituente 1946 and refreshed shard metadata",
+      "changes": [
+        "Rebuilt 1946-2022 municipality summary and party results from the official Eligendo open-data zip archives for Assemblea Costituente and Camera.",
+        "Shifted the primary source from HTML archive navigation to the national open-data bundles, keeping HTML only as QA and fallback.",
+        "Added by-election shards for municipality_results_long.csv.",
+        "Declared deferred result loading in manifest.json.",
+        "Aligned dataset registry, provenance, and release metadata to the shard-based delivery layout.",
+        "Added an official-source-vs-bundle gap report to make residual coverage and geometry-join gaps explicit in the public bundle.",
+        "Release manifest paths are now web-relative, so declared downloads stay usable inside the static site."
+      ]
+    },
+    {
+      "version": "0.14.0",
+      "date": "2026-04-07",
+      "title": "Official open-data zip rebuild and refreshed shard metadata",
+      "changes": [
+        "Rebuilt 1948-2022 municipality summary and party results from the official Eligendo Camera open-data zip archives.",
+        "Shifted the primary source from HTML archive navigation to the national open-data bundles, keeping HTML only as QA and fallback.",
+        "Added by-election shards for municipality_results_long.csv.",
+        "Declared deferred result loading in manifest.json.",
+        "Aligned dataset registry, provenance, and release metadata to the shard-based delivery layout.",
+        "Added an official-source-vs-bundle gap report to make residual coverage and geometry-join gaps explicit in the public bundle.",
+        "Release manifest paths are now web-relative, so declared downloads stay usable inside the static site."
+      ]
+    },
+    {
+      "version": "0.13.0",
+      "date": "2026-04-07",
+      "title": "Historical grouped repair, canonical bundle merge, and refreshed shard metadata",
+      "changes": [
+        "Rebuilt 1994-2022 municipality summary and party results from canonical archive outputs.",
+        "Repaired 1948-1992 and 1953 grouped municipality URLs by splitting Archivio tokens X-levkY into ne/lev parameters.",
+        "Recovered municipal turnout and party tables for historical years by refetching corrected pages.",
+        "Added by-election shards for municipality_results_long.csv.",
+        "Declared deferred result loading in manifest.json.",
+        "Aligned dataset registry, provenance, and release metadata to the shard-based delivery layout.",
+        "Added an archive-vs-bundle gap report to make coverage gaps explicit in the public bundle.",
+        "Release manifest paths are now web-relative, so declared downloads stay usable inside the static site."
+      ]
+    },
+    {
+      "version": "0.12.0",
+      "date": "2026-04-07",
+      "title": "Canonical modern rebuild, result shards, and archive-aware bundle metadata",
+      "changes": [
+        "Rebuilt 1994-2022 municipality summary and party results from canonical archive outputs.",
+        "Added by-election shards for municipality_results_long.csv.",
+        "Declared deferred result loading in manifest.json.",
+        "Aligned dataset registry, provenance, and release metadata to the shard-based delivery layout.",
+        "Added an archive-vs-bundle gap report to make coverage gaps explicit in the public bundle.",
+        "Release manifest paths are now web-relative, so declared downloads stay usable inside the static site."
+      ]
+    },
+    {
+      "version": "0.11.2",
+      "date": "2026-04-07",
+      "title": "Deferred result shards, archive gap report, and leaner startup geometry loading",
+      "changes": [
+        "Added by-election shards for municipality_results_long.csv.",
+        "Declared deferred result loading in manifest.json.",
+        "Aligned dataset registry, provenance, and release metadata to the shard-based delivery layout.",
+        "Added an archive-vs-bundle gap report to make coverage gaps explicit in the public bundle.",
+        "Release manifest paths are now web-relative, so declared downloads stay usable inside the static site."
+      ]
+    },
+    {
+      "version": "0.11.1",
+      "date": "2026-04-07",
+      "title": "Deferred result shards and faster interactive loading",
+      "changes": [
+        "Added by-election shards for municipality_results_long.csv.",
+        "Declared deferred result loading in manifest.json.",
+        "Aligned dataset registry, provenance, and release metadata to the shard-based delivery layout."
+      ]
+    },
+    {
       "version": "v31",
       "date": "2026-04-05",
       "title": "Front door più forte, site guides e FAQ rapido",

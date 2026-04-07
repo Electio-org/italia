@@ -1,6 +1,6 @@
 # Lombardia Camera Explorer
 
-Private preview of a Lombardia-wide election data platform for `Camera dei Deputati` results at municipal level.
+Private preview of a Lombardia-wide election data platform for `Camera dei Deputati` and `Assemblea Costituente` results at municipal level.
 
 This repository is the focused home for the Lombardia build: a public-facing explorer, a structured derived-data bundle, and lightweight programmatic access for research and reuse. The long-term direction is broader, but this repo stays intentionally narrow so the Lombardia layer can become solid, credible, and reusable first.
 
@@ -14,7 +14,7 @@ This repository is the focused home for the Lombardia build: a public-facing exp
 ## Current scope
 
 - Geography: Lombardia
-- Election family: `Camera dei Deputati`
+- Election family: `Camera dei Deputati` plus `Assemblea Costituente 1946`
 - Granularity: primarily municipal, with province and region context layers
 - Product style: public-facing and explorable, but structured as a data product rather than a one-off dashboard
 

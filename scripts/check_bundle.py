@@ -65,13 +65,17 @@ def main() -> int:
         'app.js',
         'site-pages.js',
         'scripts/preprocess.py',
+        'scripts/import_archive_gap_report.py',
+        'scripts/rebuild_bundle_from_camera_opendata_archives.py',
+        'scripts/rebuild_modern_bundle_from_archive.py',
+        'scripts/rebuild_historical_bundle_from_grouped.py',
         'data/derived/manifest.json',
     ]
     for rel in expected:
         if not (root / rel).exists():
             issues.append(f'missing:{rel}')
 
-    for rel_script in ['scripts/preprocess.py', 'clients/python/lce_loader.py']:
+    for rel_script in ['scripts/preprocess.py', 'scripts/import_archive_gap_report.py', 'scripts/rebuild_bundle_from_camera_opendata_archives.py', 'scripts/rebuild_modern_bundle_from_archive.py', 'scripts/rebuild_historical_bundle_from_grouped.py', 'clients/python/lce_loader.py']:
         try:
             tmp_pyc = root / f'_tmp_{Path(rel_script).stem}_check.pyc'
             py_compile.compile(str(root / rel_script), cfile=str(tmp_pyc), doraise=True)
@@ -161,7 +165,7 @@ def main() -> int:
     if not geometry.get('features'):
         issues.append('geometry:placeholder_or_missing')
 
-    required_manifest_keys = ['geometryPack', 'dataProducts', 'datasetContracts', 'provenance', 'releaseManifest', 'researchRecipes', 'siteGuides']
+    required_manifest_keys = ['geometryPack', 'dataProducts', 'datasetContracts', 'provenance', 'releaseManifest', 'researchRecipes', 'siteGuides', 'municipalityResultsLongByElectionIndex', 'archiveBundleGapReport']
     for key in required_manifest_keys:
         rel = files.get(key)
         if not rel:
@@ -177,6 +181,16 @@ def main() -> int:
             entry = client.get('entrypoint')
             if entry and not (root / entry).exists():
                 issues.append(f'data_products:missing_client:{entry}')
+
+    if files.get('municipalityResultsLongByElectionIndex') and (root / files['municipalityResultsLongByElectionIndex']).exists():
+        shard_payload = json.loads((root / files['municipalityResultsLongByElectionIndex']).read_text(encoding='utf-8'))
+        shards = shard_payload.get('shards') or {}
+        if not shards:
+            warnings.append('result_shards:empty')
+        else:
+            missing_shards = [key for key, rel in shards.items() if not (root / rel).exists()]
+            if missing_shards:
+                issues.append(f'result_shards:missing_files:{",".join(missing_shards[:10])}')
 
     if files.get('releaseManifest') and (root / files['releaseManifest']).exists():
         release_manifest = json.loads((root / files['releaseManifest']).read_text(encoding='utf-8'))
@@ -211,6 +225,12 @@ def main() -> int:
             issues.append('site_guides:empty_layers')
         if len(guides.get('faq') or []) < 1:
             issues.append('site_guides:empty_faq')
+
+    if files.get('archiveBundleGapReport') and (root / files['archiveBundleGapReport']).exists():
+        gap_report = json.loads((root / files['archiveBundleGapReport']).read_text(encoding='utf-8'))
+        rows = gap_report.get('rows') or []
+        if not rows:
+            issues.append('archive_gap_report:empty')
 
     citation_path = root / 'CITATION.cff'
     if not citation_path.exists():

@@ -1,162 +1,254 @@
 {
-  "parse_log": [
+  "generated_by": "rebuild_bundle_from_camera_opendata_archives.py",
+  "source_manifest": "D:/camera_lombardia_only_suite_v5/lombardia_camera_app_v35/data/reference/camera_opendata_archives_manifest.json",
+  "source_rows": [
+    {
+      "election_key": "assemblea_costituente_1946",
+      "election_type": "assemblea_costituente",
+      "election_year": 1946,
+      "election_date": "1946-06-02",
+      "archive_filename": "assemblea_costituente-19460602.zip",
+      "primary_member": "assemblea_costituente-19460602.txt",
+      "source_rows": 68172,
+      "lombardy_rows": 11905,
+      "expected_bundle_rows": 1383,
+      "unresolved_geometry_rows": 394
+    },
     {
       "election_key": "camera_1948",
-      "status": "parsed_empty",
-      "municipality_rows": 0,
-      "party_rows_raw": 0
+      "election_type": "camera",
+      "election_year": 1948,
+      "election_date": "1948-04-18",
+      "archive_filename": "camera-19480418.zip",
+      "primary_member": "camera-19480418.txt",
+      "source_rows": 84192,
+      "lombardy_rows": 15901,
+      "expected_bundle_rows": 1433,
+      "unresolved_geometry_rows": 316
     },
     {
       "election_key": "camera_1953",
-      "status": "parsed_empty",
-      "municipality_rows": 0,
-      "party_rows_raw": 0
+      "election_type": "camera",
+      "election_year": 1953,
+      "election_date": "1953-06-07",
+      "archive_filename": "camera-19530607.zip",
+      "primary_member": "camera-19530607.txt",
+      "source_rows": 91272,
+      "lombardy_rows": 16894,
+      "expected_bundle_rows": 1474,
+      "unresolved_geometry_rows": 197
     },
     {
       "election_key": "camera_1958",
-      "status": "parsed_empty",
-      "municipality_rows": 0,
-      "party_rows_raw": 0
+      "election_type": "camera",
+      "election_year": 1958,
+      "election_date": "1958-05-25",
+      "archive_filename": "camera-19580525.zip",
+      "primary_member": "camera-19580525.txt",
+      "source_rows": 85751,
+      "lombardy_rows": 16228,
+      "expected_bundle_rows": 1529,
+      "unresolved_geometry_rows": 73
     },
     {
       "election_key": "camera_1963",
-      "status": "parsed_empty",
-      "municipality_rows": 0,
-      "party_rows_raw": 0
+      "election_type": "camera",
+      "election_year": 1963,
+      "election_date": "1963-04-28",
+      "archive_filename": "camera-19630428.zip",
+      "primary_member": "camera-19630428.txt",
+      "source_rows": 74230,
+      "lombardy_rows": 14211,
+      "expected_bundle_rows": 1539,
+      "unresolved_geometry_rows": 39
     },
     {
       "election_key": "camera_1968",
-      "status": "parsed_empty",
-      "municipality_rows": 0,
-      "party_rows_raw": 0
+      "election_type": "camera",
+      "election_year": 1968,
+      "election_date": "1968-05-19",
+      "archive_filename": "camera-19680519.zip",
+      "primary_member": "camera-19680519.txt",
+      "source_rows": 77771,
+      "lombardy_rows": 15025,
+      "expected_bundle_rows": 1544,
+      "unresolved_geometry_rows": 18
     },
     {
       "election_key": "camera_1972",
-      "status": "parsed_empty",
-      "municipality_rows": 0,
-      "party_rows_raw": 0
+      "election_type": "camera",
+      "election_year": 1972,
+      "election_date": "1972-05-07",
+      "archive_filename": "camera-19720507.zip",
+      "primary_member": "camera-19720507.txt",
+      "source_rows": 90169,
+      "lombardy_rows": 17445,
+      "expected_bundle_rows": 1546,
+      "unresolved_geometry_rows": 11
     },
     {
       "election_key": "camera_1976",
-      "status": "parsed_empty",
-      "municipality_rows": 0,
-      "party_rows_raw": 0
+      "election_type": "camera",
+      "election_year": 1976,
+      "election_date": "1976-06-20",
+      "archive_filename": "camera-19760620.zip",
+      "primary_member": "camera-19760620.txt",
+      "source_rows": 76947,
+      "lombardy_rows": 14353,
+      "expected_bundle_rows": 1546,
+      "unresolved_geometry_rows": 9
     },
     {
       "election_key": "camera_1979",
-      "status": "parsed_empty",
-      "municipality_rows": 0,
-      "party_rows_raw": 0
+      "election_type": "camera",
+      "election_year": 1979,
+      "election_date": "1979-06-03",
+      "archive_filename": "camera-19790603.zip",
+      "primary_member": "camera-19790603.txt",
+      "source_rows": 95554,
+      "lombardy_rows": 18796,
+      "expected_bundle_rows": 1546,
+      "unresolved_geometry_rows": 11
     },
     {
       "election_key": "camera_1983",
-      "status": "parsed_empty",
-      "municipality_rows": 0,
-      "party_rows_raw": 0
+      "election_type": "camera",
+      "election_year": 1983,
+      "election_date": "1983-06-26",
+      "archive_filename": "camera-19830626.zip",
+      "primary_member": "camera-19830626.txt",
+      "source_rows": 92862,
+      "lombardy_rows": 18155,
+      "expected_bundle_rows": 1546,
+      "unresolved_geometry_rows": 11
     },
     {
       "election_key": "camera_1987",
-      "status": "parsed_empty",
-      "municipality_rows": 0,
-      "party_rows_raw": 0
+      "election_type": "camera",
+      "election_year": 1987,
+      "election_date": "1987-06-14",
+      "archive_filename": "camera-19870614.zip",
+      "primary_member": "Camera-19870614.txt",
+      "source_rows": 117345,
+      "lombardy_rows": 22776,
+      "expected_bundle_rows": 1546,
+      "unresolved_geometry_rows": 0
     },
     {
       "election_key": "camera_1992",
-      "status": "parsed_empty",
-      "municipality_rows": 0,
-      "party_rows_raw": 0
+      "election_type": "camera",
+      "election_year": 1992,
+      "election_date": "1992-04-05",
+      "archive_filename": "camera-19920405.zip",
+      "primary_member": "camera-19920405.txt",
+      "source_rows": 138489,
+      "lombardy_rows": 29204,
+      "expected_bundle_rows": 1546,
+      "unresolved_geometry_rows": 0
     },
     {
       "election_key": "camera_1994",
-      "status": "parsed_with_data",
-      "municipality_rows": 312,
-      "party_rows_raw": 14202
+      "election_type": "camera",
+      "election_year": 1994,
+      "election_date": "1994-03-27",
+      "archive_filename": "camera-19940327.zip",
+      "primary_member": "camera-19940327_Proporzionale.txt",
+      "source_rows": 104494,
+      "lombardy_rows": 18644,
+      "expected_bundle_rows": 1546,
+      "unresolved_geometry_rows": 0
     },
     {
       "election_key": "camera_1996",
-      "status": "parsed_with_data",
-      "municipality_rows": 312,
-      "party_rows_raw": 9275
+      "election_type": "camera",
+      "election_year": 1996,
+      "election_date": "1996-04-21",
+      "archive_filename": "camera-19960421.zip",
+      "primary_member": "camera-19960421_Proporzionale.txt",
+      "source_rows": 93699,
+      "lombardy_rows": 16451,
+      "expected_bundle_rows": 1545,
+      "unresolved_geometry_rows": 0
     },
     {
       "election_key": "camera_2001",
-      "status": "parsed_with_data",
-      "municipality_rows": 312,
-      "party_rows_raw": 12925
+      "election_type": "camera",
+      "election_year": 2001,
+      "election_date": "2001-05-13",
+      "archive_filename": "camera-20010513.zip",
+      "primary_member": "camera-20010513_Proporzionale.txt",
+      "source_rows": 124978,
+      "lombardy_rows": 24533,
+      "expected_bundle_rows": 1544,
+      "unresolved_geometry_rows": 0
     },
     {
       "election_key": "camera_2006",
-      "status": "parsed_with_data",
-      "municipality_rows": 310,
-      "party_rows_raw": 17301
+      "election_type": "camera",
+      "election_year": 2006,
+      "election_date": "2006-04-09",
+      "archive_filename": "camera-20060409.zip",
+      "primary_member": "camera_italia-20060409.txt",
+      "source_rows": 142212,
+      "lombardy_rows": 25342,
+      "expected_bundle_rows": 1496,
+      "unresolved_geometry_rows": 0
     },
     {
       "election_key": "camera_2008",
-      "status": "parsed_with_data",
-      "municipality_rows": 310,
-      "party_rows_raw": 18730
+      "election_type": "camera",
+      "election_year": 2008,
+      "election_date": "2008-04-13",
+      "archive_filename": "camera-20080413.zip",
+      "primary_member": "camera_italia-20080413.txt",
+      "source_rows": 126059,
+      "lombardy_rows": 23222,
+      "expected_bundle_rows": 1496,
+      "unresolved_geometry_rows": 0
     },
     {
       "election_key": "camera_2013",
-      "status": "parsed_with_data",
-      "municipality_rows": 310,
-      "party_rows_raw": 16913
+      "election_type": "camera",
+      "election_year": 2013,
+      "election_date": "2013-02-24",
+      "archive_filename": "camera-20130224.zip",
+      "primary_member": "camera_italia-20130224.txt",
+      "source_rows": 152621,
+      "lombardy_rows": 23488,
+      "expected_bundle_rows": 1489,
+      "unresolved_geometry_rows": 0
     },
     {
       "election_key": "camera_2018",
-      "status": "parsed_with_data",
-      "municipality_rows": 1516,
-      "party_rows_raw": 22994
+      "election_type": "camera",
+      "election_year": 2018,
+      "election_date": "2018-03-04",
+      "archive_filename": "camera-20180304.zip",
+      "primary_member": "Camera2018_livComune.txt",
+      "source_rows": 133824,
+      "lombardy_rows": 26524,
+      "expected_bundle_rows": 1516,
+      "unresolved_geometry_rows": 0
     },
     {
       "election_key": "camera_2022",
-      "status": "parsed_with_data",
-      "municipality_rows": 1506,
-      "party_rows_raw": 22185
+      "election_type": "camera",
+      "election_year": 2022,
+      "election_date": "2022-09-25",
+      "archive_filename": "camera-20220925.zip",
+      "primary_member": "Camera_Italia_LivComune.csv",
+      "source_rows": 117591,
+      "lombardy_rows": 23508,
+      "expected_bundle_rows": 1506,
+      "unresolved_geometry_rows": 0
     }
   ],
   "validations": {
-    "issues": [
-      {
-        "severity": "warning",
-        "check": "vote_share_range",
-        "scope": "municipality_results_long",
-        "details": "Quote fuori range [0,100].",
-        "affected_rows": 1
-      },
-      {
-        "severity": "warning",
-        "check": "share_sum_plausibility",
-        "scope": "municipality_results_long",
-        "details": "Somma quote per comune lontana da 100 ± 10.",
-        "affected_rows": 1358
-      },
-      {
-        "severity": "warning",
-        "check": "turnout_vs_counts",
-        "scope": "municipality_summary",
-        "details": "Affluenza incoerente con votanti/elettori oltre 1.5 punti.",
-        "affected_rows": 4
-      },
-      {
-        "severity": "warning",
-        "check": "missing_province",
-        "scope": "municipality_summary",
-        "details": "Provincia vuota su righe comunali osservate.",
-        "affected_rows": 203
-      },
-      {
-        "severity": "warning",
-        "check": "party_votes_vs_valid_votes",
-        "scope": "derived_consistency",
-        "details": "Somma voti per partito lontana dai voti validi oltre l'8%.",
-        "affected_rows": 1876
-      }
-    ],
-    "issue_count": 5,
-    "readiness_score": 50,
-    "technical_readiness_score": 50,
+    "issues": [],
+    "issue_count": 0,
+    "readiness_score": 100,
+    "technical_readiness_score": 100,
     "has_errors": false,
-    "substantive_coverage_score": 42
+    "substantive_coverage_score": 100
   }
 }
