@@ -21,6 +21,7 @@ This repository is the focused home for the Lombardia build: a public-facing exp
 ## Main entry points
 
 - `index.html`: main explorer
+- `products.html`: product catalog, product manifests, and inventories
 - `data-download.html`: bundle files, dataset families, and download-facing view
 - `programmatic-access.html`: Python and R access paths
 - `usage-notes.html`: caveats, comparability, and bundle notes
@@ -63,6 +64,8 @@ The bundle is meant to behave like a small release artifact, not just frontend f
 - `data/derived/dataset_contracts.json`
 - `data/derived/provenance.json`
 - `data/derived/usage_notes.json`
+- `data/products/product_catalog.json`
+- `data/products/*/manifest.json`
 
 ## Repository layout
 

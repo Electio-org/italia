@@ -701,3 +701,19 @@ body[data-site-page] .selection-dock-main {
     grid-template-columns: 1fr;
   }
 }
+.doc-card-actions {
+  margin-top: 0.9rem;
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.doc-card-stack {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.product-detail-card.is-focused {
+  border-color: rgba(33, 115, 255, 0.45);
+  box-shadow: 0 24px 52px rgba(15, 23, 42, 0.12);
+}

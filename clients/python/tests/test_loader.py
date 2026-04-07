@@ -63,6 +63,10 @@ class LoaderTests(unittest.TestCase):
         inventory = self.bundle.product_inventory(product_key)
         self.assertGreaterEqual(len(inventory.get('entries') or []), 1)
 
+    def test_can_load_primary_product_dataset(self):
+        frame = self.bundle.load_product_dataset('camera_muni_historical', role='primary')
+        self.assertIn('election_key', frame.columns)
+
 
     def test_site_guides_present(self):
         self.assertGreaterEqual(len(self.bundle.site_guides().get('layers') or []), 1)

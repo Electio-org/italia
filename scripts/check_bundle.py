@@ -57,6 +57,7 @@ def main() -> int:
 
     expected = [
         'index.html',
+        'products.html',
         'data-download.html',
         'programmatic-access.html',
         'usage-notes.html',
@@ -124,6 +125,12 @@ def main() -> int:
     loader_product_catalog = subprocess.run(['python', str(root / 'clients' / 'python' / 'lce_loader.py'), '--root', str(root), '--product-catalog'], capture_output=True, text=True)
     if loader_product_catalog.returncode != 0:
         issues.append(f'python_loader_product_catalog:{loader_product_catalog.stderr.strip() or loader_product_catalog.stdout.strip()}')
+    loader_product_inventory = subprocess.run(['python', str(root / 'clients' / 'python' / 'lce_loader.py'), '--root', str(root), '--product-inventory', 'camera_muni_historical'], capture_output=True, text=True)
+    if loader_product_inventory.returncode != 0:
+        issues.append(f'python_loader_product_inventory:{loader_product_inventory.stderr.strip() or loader_product_inventory.stdout.strip()}')
+    loader_product_dataset = subprocess.run(['python', str(root / 'clients' / 'python' / 'lce_loader.py'), '--root', str(root), '--product-dataset', 'camera_muni_historical:primary', '--head', '3'], capture_output=True, text=True)
+    if loader_product_dataset.returncode != 0:
+        issues.append(f'python_loader_product_dataset:{loader_product_dataset.stderr.strip() or loader_product_dataset.stdout.strip()}')
 
     loader_tests = subprocess.run(['python', '-m', 'unittest', 'clients.python.tests.test_loader'], capture_output=True, text=True, cwd=str(root))
     if loader_tests.returncode != 0:

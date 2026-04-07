@@ -137,6 +137,7 @@ function activateNav() {
   if (!nav || !page) return;
   const pageToHref = {
     dashboard: 'index.html',
+    products: 'products.html',
     'data-download': 'data-download.html',
     'programmatic-access': 'programmatic-access.html',
     'usage-notes': 'usage-notes.html',
@@ -229,6 +230,9 @@ function renderDownloadPage(bundle) {
               ${(product.inventory_preview || []).map((item) => `<li><code>${escapeHtml(String(item))}</code></li>`).join('')}
               ${(product.guardrails || []).map((item) => `<li>${escapeHtml(item)}</li>`).join('')}
             </ul>
+            <div class="doc-card-actions">
+              <a class="doc-download-link" href="products.html?product=${encodeURIComponent(product.product_key || '')}">Apri prodotto</a>
+            </div>
           </article>
         `;
       })
@@ -349,6 +353,8 @@ function renderProgrammaticPage(bundle) {
     'python clients/python/lce_loader.py --root . --products',
     'python clients/python/lce_loader.py --root . --product-catalog',
     'python clients/python/lce_loader.py --root . --product-manifest camera_muni_historical',
+    'python clients/python/lce_loader.py --root . --product-inventory camera_muni_historical',
+    'python clients/python/lce_loader.py --root . --product-dataset camera_muni_historical:primary --head 8',
     'python clients/python/lce_loader.py --root . --verify',
     'python clients/python/lce_loader.py --root . --dataset municipalitySummary --head 8',
   ].join('\n');
@@ -435,7 +441,7 @@ function renderProgrammaticPage(bundle) {
       },
       {
         title: 'Prodotti dati',
-        body: `${products.length} famiglie dichiarate, con guardrail e intended use leggibili da codice.`,
+        body: `${products.length} famiglie dichiarate, con manifest e inventory dedicati oltre ai guardrail.`,
       },
       {
         title: 'Recipes e guide',
@@ -455,6 +461,214 @@ function renderProgrammaticPage(bundle) {
         </article>
       `)
       .join('');
+  }
+}
+
+function renderInventoryMarkup(manifest) {
+  const inventory = manifest?.inventory || {};
+  const entries = inventory.entries || [];
+  if (!entries.length) {
+    return '<div class="empty-state">Inventory non disponibile per questo prodotto.</div>';
+  }
+  if (inventory.kind === 'election_datasets') {
+    return `
+      <div class="doc-table-wrap">
+        <table class="doc-table">
+          <thead>
+            <tr>
+              <th>Anno</th>
+              <th>Election key</th>
+              <th>Status</th>
+              <th>Summary</th>
+              <th>Results</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${entries.map((entry) => `
+              <tr>
+                <td>${escapeHtml(entry.election_year || '')}</td>
+                <td>${escapeHtml(entry.election_key || entry.dataset_key || '')}</td>
+                <td><span class="doc-pill">${escapeHtml(entry.coverage_label || entry.status || 'n.d.')}</span></td>
+                <td>${entry.download_summary ? `<a class="doc-download-link" href="${escapeHtml(entry.download_summary)}" download>${formatNumber(entry.summary_rows || 0)}</a>` : formatNumber(entry.summary_rows || 0)}</td>
+                <td>${entry.download_results ? `<a class="doc-download-link" href="${escapeHtml(entry.download_results)}" download>${formatNumber(entry.result_rows || 0)}</a>` : formatNumber(entry.result_rows || 0)}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+    `;
+  }
+  if (inventory.kind === 'boundary_years') {
+    return `
+      <div class="doc-table-wrap">
+        <table class="doc-table">
+          <thead>
+            <tr>
+              <th>Anno base</th>
+              <th>Confini comunali</th>
+              <th>Confini provinciali</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${entries.map((entry) => `
+              <tr>
+                <td>${escapeHtml(entry.geometry_year || '')}</td>
+                <td>${entry.municipalities_path ? `<a class="doc-download-link" href="${escapeHtml(entry.municipalities_path)}" download>Municipalities</a>` : 'n.d.'}</td>
+                <td>${entry.provinces_path ? `<a class="doc-download-link" href="${escapeHtml(entry.provinces_path)}" download>Provinces</a>` : 'n.d.'}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+    `;
+  }
+  if (inventory.kind === 'metadata_objects') {
+    return `
+      <div class="doc-table-wrap">
+        <table class="doc-table">
+          <thead>
+            <tr>
+              <th>Dataset</th>
+              <th>Tipo</th>
+              <th>Dimensione</th>
+              <th>Conteggio</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${entries.map((entry) => `
+              <tr>
+                <td>${entry.path ? `<a class="doc-download-link" href="${escapeHtml(entry.path)}" download>${escapeHtml(entry.dataset_key || '')}</a>` : escapeHtml(entry.dataset_key || '')}</td>
+                <td>${escapeHtml(entry.kind || 'n.d.')}</td>
+                <td>${formatBytes(entry.size_bytes || 0)}</td>
+                <td>${escapeHtml(metaCount(entry))}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+    `;
+  }
+  return `
+    <ul class="doc-list">
+      ${entries.map((entry) => `<li><code>${escapeHtml(JSON.stringify(entry))}</code></li>`).join('')}
+    </ul>
+  `;
+}
+
+async function renderProductsPage(bundle) {
+  const products = bundle.productCatalog?.products || [];
+  const manifests = await Promise.all(products.map(async (product) => {
+    if (!product.manifest_path) return [product.product_key, null];
+    try {
+      return [product.product_key, await fetchJson(product.manifest_path)];
+    } catch (error) {
+      console.error(error);
+      return [product.product_key, null];
+    }
+  }));
+  const manifestMap = new Map(manifests);
+  const selectedProduct = new URLSearchParams(window.location.search).get('product');
+  const stats = [
+    ['Prodotti', products.length, 'Famiglie pubblicate nella release'],
+    ['Inventory entries', products.reduce((sum, product) => sum + Number(product.inventory_count || 0), 0), 'Contenuti dichiarati dentro i prodotti'],
+    ['Manifest di prodotto', manifests.filter(([, manifest]) => Boolean(manifest)).length, 'Manifest dedicati disponibili'],
+    ['Client ufficiali', (bundle.dataProducts?.clients || []).length, 'Loader dichiarati e riusabili'],
+  ];
+  const statGrid = q('products-stat-grid');
+  if (statGrid) {
+    statGrid.innerHTML = stats.map(([label, value, meta]) => statCard(label, value, meta)).join('');
+  }
+
+  const productGrid = q('products-overview-grid');
+  if (productGrid) {
+    productGrid.innerHTML = products.map((product) => `
+      <article class="doc-card">
+        <div class="doc-card-head">
+          <span class="doc-pill">${escapeHtml(product.kind || 'product')}</span>
+          <strong>${escapeHtml(product.title || product.product_key)}</strong>
+        </div>
+        <p>${escapeHtml((product.intended_use || []).join(' · ') || 'Uso non dichiarato')}</p>
+        <div class="doc-meta-list">
+          <span><strong>Manifest</strong> ${product.manifest_path ? `<a href="${escapeHtml(product.manifest_path)}" download>manifest.json</a>` : 'n.d.'}</span>
+          <span><strong>Inventory</strong> ${escapeHtml(String(product.inventory_count ?? 'n.d.'))}</span>
+          <span><strong>Delivery</strong> ${escapeHtml(product.delivery_strategy || 'declared')}</span>
+        </div>
+        <ul class="doc-list">
+          ${(product.inventory_preview || []).map((item) => `<li><code>${escapeHtml(String(item))}</code></li>`).join('')}
+        </ul>
+        <div class="doc-card-actions">
+          <a class="doc-download-link" href="#product-${slugify(product.product_key)}">Vai al dettaglio</a>
+        </div>
+      </article>
+    `).join('');
+  }
+
+  const details = q('product-detail-list');
+  if (details) {
+    details.innerHTML = products.map((product) => {
+      const manifest = manifestMap.get(product.product_key) || {};
+      return `
+        <article id="product-${slugify(product.product_key)}" class="doc-card doc-card-wide product-detail-card${selectedProduct === product.product_key ? ' is-focused' : ''}">
+          <div class="doc-card-head">
+            <div>
+              <span class="doc-pill">${escapeHtml(product.kind || 'product')}</span>
+              <strong>${escapeHtml(product.title || product.product_key)}</strong>
+            </div>
+            <a class="doc-download-link" href="${escapeHtml(product.manifest_path || '#')}" download>Scarica manifest</a>
+          </div>
+          <p>${escapeHtml((product.intended_use || []).join(' · ') || 'Uso non dichiarato')}</p>
+          <div class="doc-split-grid">
+            <article class="doc-card">
+              <div class="doc-card-head"><strong>Product contract</strong></div>
+              <ul class="doc-list">
+                <li><strong>Delivery:</strong> ${escapeHtml(product.delivery_strategy || 'declared')}</li>
+                <li><strong>Primary:</strong> ${escapeHtml(product.primary_dataset_key || 'n.d.')}</li>
+                <li><strong>Companion:</strong> ${escapeHtml(product.companion_dataset_key || 'n.d.')}</li>
+                <li><strong>Join keys:</strong> ${escapeHtml((product.join_keys || []).join(', ') || 'n.d.')}</li>
+              </ul>
+            </article>
+            <article class="doc-card">
+              <div class="doc-card-head"><strong>Guardrail</strong></div>
+              <ul class="doc-list">
+                ${(product.guardrails || []).length ? (product.guardrails || []).map((item) => `<li>${escapeHtml(item)}</li>`).join('') : '<li>Nessun guardrail aggiuntivo dichiarato.</li>'}
+              </ul>
+            </article>
+          </div>
+          <div class="doc-card-head"><strong>Inventory</strong></div>
+          ${renderInventoryMarkup(manifest)}
+          <div class="doc-card-head"><strong>Dataset del prodotto</strong></div>
+          <div class="doc-table-wrap">
+            <table class="doc-table">
+              <thead>
+                <tr>
+                  <th>Role</th>
+                  <th>Dataset key</th>
+                  <th>Path</th>
+                  <th>Delivery</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${((manifest.datasets || []).map((entry) => `
+                  <tr>
+                    <td>${escapeHtml(entry.role || '')}</td>
+                    <td>${escapeHtml(entry.dataset_key || '')}</td>
+                    <td>${entry.path ? `<a class="doc-download-link" href="${escapeHtml(entry.path)}" download>${escapeHtml(entry.path)}</a>` : 'n.d.'}</td>
+                    <td>${escapeHtml(entry.delivery_strategy || 'direct')}</td>
+                  </tr>
+                `).join('')) || '<tr><td colspan="4">Dataset non dichiarati.</td></tr>'}
+              </tbody>
+            </table>
+          </div>
+        </article>
+      `;
+    }).join('');
+  }
+
+  if (selectedProduct) {
+    window.requestAnimationFrame(() => {
+      const target = document.getElementById(`product-${slugify(selectedProduct)}`);
+      target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
   }
 }
 
@@ -698,6 +912,7 @@ async function init() {
   try {
     const bundle = await loadBundle();
     if (page === 'data-download') renderDownloadPage(bundle);
+    if (page === 'products') await renderProductsPage(bundle);
     if (page === 'programmatic-access') renderProgrammaticPage(bundle);
     if (page === 'usage-notes') renderUsageNotesPage(bundle);
     if (page === 'update-log') renderUpdateLogPage(bundle);

@@ -243,6 +243,7 @@ def main() -> int:
     parser.add_argument('--product-catalog', action='store_true', help='Stampa il catalogo prodotti dichiarato')
     parser.add_argument('--product-manifest', help='Stampa il manifest del prodotto indicato')
     parser.add_argument('--product-inventory', help='Stampa l inventory del prodotto indicato')
+    parser.add_argument('--product-dataset', help='Carica il dataset di un prodotto nel formato product_key[:role]')
     args = parser.parse_args()
 
     bundle = load_bundle(args.root)
@@ -287,6 +288,15 @@ def main() -> int:
                 print(json.dumps({'type': obj.get('type'), 'features': len(obj.get('features') or [])}, ensure_ascii=False, indent=2))
             else:
                 print(json.dumps(obj, ensure_ascii=False, indent=2)[:4000])
+        did_something = True
+    if args.product_dataset:
+        spec = str(args.product_dataset)
+        product_key, role = spec.split(':', 1) if ':' in spec else (spec, 'primary')
+        obj = bundle.load_product_dataset(product_key, role=role)
+        if isinstance(obj, pd.DataFrame):
+            print(obj.head(args.head).to_string(index=False))
+        else:
+            print(json.dumps(obj, ensure_ascii=False, indent=2)[:4000])
         did_something = True
 
     return 0 if did_something else 0
