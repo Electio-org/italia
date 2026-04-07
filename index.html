@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light" />
+  <title>Lombardia Camera Explorer | Dashboard</title>
+  <meta name="description" content="Atlante elettorale comunale della Camera in Lombardia: mappe, confronti tra elezioni, profili comunali, note d'uso e accesso ai dataset." />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="stylesheet" href="vendor/tabler/core/tabler.min.css" />
+  <link rel="stylesheet" href="vendor/tabler/icons/tabler-icons.min.css" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="tabler-theme.css" />
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+</head>
+<body data-site-page="dashboard">
+  <a href="#main-content" class="skip-link">Salta al contenuto</a>
+    <div class="page page-dashboard">
+    <header class="site-header navbar navbar-expand-lg navbar-light d-print-none" role="banner">
+      <div class="container-xl site-header-inner">
+        <a class="navbar-brand site-brand" href="#dashboard-intro">
+          <span class="site-brand-monogram">LC</span>
+          <span class="site-brand-copy">
+            <span class="site-brand-mark">Lombardia Camera Explorer</span>
+            <span class="site-brand-subtitle">Piattaforma pubblica per i risultati comunali della Camera in Lombardia</span>
+          </span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#site-nav-menu" aria-controls="site-nav-menu" aria-expanded="false" aria-label="Apri navigazione">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="site-nav-menu">
+          <nav class="navbar-nav ms-auto site-nav" aria-label="Navigazione principale">
+            <a class="nav-link is-active active" href="index.html"><i class="ti ti-chart-grid-dots site-nav-icon"></i><span>Dashboard</span></a>
+            <a class="nav-link" href="data-download.html"><i class="ti ti-database-export site-nav-icon"></i><span>Scarica dati</span></a>
+            <a class="nav-link" href="programmatic-access.html"><i class="ti ti-code-circle-2 site-nav-icon"></i><span>Accesso programmatico</span></a>
+            <a class="nav-link" href="usage-notes.html"><i class="ti ti-book-2 site-nav-icon"></i><span>Note d'uso</span></a>
+            <a class="nav-link" href="update-log.html"><i class="ti ti-history site-nav-icon"></i><span>Aggiornamenti</span></a>
+          </nav>
+        </div>
+      </div>
+    </header>
+    <div class="page-wrapper">
+      <div class="page-body">
+        <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="eyebrow">Camera · Lombardia</div>
+        <h1>Atlante elettorale</h1>
+        <p>Una base pubblica per leggere i risultati comunali della Camera in Lombardia con mappe reali, profilo del comune, confronto tra elezioni e strato dati esplicito.</p>
+        <div class="brand-facts" aria-label="Scope del progetto">
+          <div class="brand-fact">
+            <span class="brand-fact-label">Copertura</span>
+            <strong>Comune per comune</strong>
+          </div>
+          <div class="brand-fact">
+            <span class="brand-fact-label">Geometrie</span>
+            <strong>Storiche e boundary-aware</strong>
+          </div>
+          <div class="brand-fact">
+            <span class="brand-fact-label">Uso</span>
+            <strong>Pubblico e ricerca</strong>
+          </div>
+        </div>
+      </div>
+
+      <section class="panel control-panel">
+        <div class="panel-header tight">
+          <div>
+            <h2>Controlli mappa</h2>
+            <p class="panel-subtitle">Anno, metrica, confronto e base geometrica in un unico pannello.</p>
+          </div>
+          <button type="button" id="reset-btn" class="ghost-btn small-btn">Reset</button>
+        </div>
+
+        <label>
+          Cerca comune
+          <input id="municipality-search" list="municipality-list" placeholder="Digita il nome di un comune" />
+          <datalist id="municipality-list"></datalist>
+        </label>
+
+        <div class="two-col two-col-main">
+          <label>
+            Elezione
+            <select id="election-select"></select>
+          </label>
+          <label>
+            Confronta con
+            <select id="compare-election-select"></select>
+          </label>
+        </div>
+
+        <div class="two-col two-col-main">
+          <label>
+            Mostra in mappa
+            <select id="metric-select">
+              <option value="first_party">Winning party</option>
+              <option value="party_share">Selected share</option>
+              <option value="turnout">Turnout</option>
+              <option value="margin">Winner margin</option>
+              <option value="dominant_block">Dominant bloc</option>
+              <option value="swing_compare">Swing vs comparison</option>
+              <option value="delta_turnout">Turnout delta</option>
+              <option value="volatility">Historical volatility</option>
+              <option value="dominance_changes">Dominance changes</option>
+              <option value="concentration">Vote concentration</option>
+              <option value="over_performance_province">Over-performance vs province</option>
+              <option value="over_performance_region">Over-performance vs Lombardia</option>
+              <option value="stability_index">Stability index</option>
+              <option value="custom_indicator">Custom indicator</option>
+            </select>
+          </label>
+          <label>
+            Livello selezione
+            <select id="party-mode-select">
+              <option value="party_std">Party</option>
+              <option value="party_family">Family</option>
+              <option value="bloc">Bloc</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="two-col two-col-main">
+          <label>
+            Partito / famiglia / blocco
+            <select id="party-select"></select>
+          </label>
+          <label>
+            Base geometrica
+            <select id="geometry-reference-select"></select>
+          </label>
+        </div>
+
+        <div class="two-col two-col-main">
+          <label>
+            Modalità territoriale
+            <select id="territorial-mode-select">
+              <option value="historical">Historical municipality</option>
+              <option value="harmonized">Harmonized municipality</option>
+            </select>
+          </label>
+          <label>
+            Palette
+            <select id="palette-select">
+              <option value="auto">Auto</option>
+              <option value="sequential">Sequential</option>
+              <option value="diverging">Diverging</option>
+              <option value="categorical">Categorical</option>
+              <option value="accessible">Accessible</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="time-nav-box compact-time-nav">
+          <div class="time-nav-actions">
+            <button type="button" id="prev-election-btn" class="ghost-btn small-btn">← Anno prec.</button>
+            <button type="button" id="next-election-btn" class="ghost-btn small-btn">Anno succ. →</button>
+            <button type="button" id="play-timeline-btn" class="ghost-btn small-btn">â–¶ Play</button>
+          </div>
+          <label>
+            Timeline
+            <input id="election-slider" type="range" min="0" max="0" value="0" step="1" />
+          </label>
+          <div id="slider-year-label" class="helper-text">Timeline non disponibile</div>
+        </div>
+
+        <details class="advanced-sidebar-details">
+          <summary>Controlli avanzati</summary>
+          <div class="advanced-sidebar-grid">
+            <label>
+              Area
+              <select id="area-preset-select"></select>
+            </label>
+
+            <label>
+              Province
+              <select id="province-select" multiple size="8"></select>
+            </label>
+
+            <div class="two-col">
+              <label>
+                Completezza dati
+                <select id="completeness-select">
+                  <option value="all">All</option>
+                  <option value="complete">Complete</option>
+                  <option value="non_partial">Non-partial</option>
+                  <option value="partial">Partial</option>
+                  <option value="unknown">Unknown</option>
+                </select>
+              </label>
+              <label>
+                Stato territoriale
+                <select id="territorial-status-select"></select>
+              </label>
+            </div>
+
+            <div class="two-col">
+              <label>
+                Indicatore custom
+                <select id="custom-indicator-select"></select>
+              </label>
+              <label>
+                Ordinamento tabella
+                <select id="table-sort-select">
+                  <option value="municipality_asc">Comune A→Z</option>
+                  <option value="turnout_desc">Turnout ↓</option>
+                  <option value="party_desc">Selected share ↓</option>
+                  <option value="margin_desc">Margin ↓</option>
+                  <option value="swing_desc">Swing ↓</option>
+                  <option value="volatility_desc">Volatility ↓</option>
+                  <option value="dominance_changes_desc">Dominance changes ↓</option>
+                  <option value="stability_desc">Stability ↓</option>
+                  <option value="over_perf_prov_desc">Vs province ↓</option>
+                  <option value="over_perf_reg_desc">Vs Lombardia ↓</option>
+                </select>
+              </label>
+            </div>
+
+            <label>
+              Soglia minima quota (%)
+              <input id="min-share-input" type="number" min="0" max="100" step="1" value="0" />
+            </label>
+
+            <div class="toggle-stack">
+              <label class="checkbox-row">
+                <input id="same-scale-checkbox" type="checkbox" checked />
+                Mantieni scala cromatica fissa tra elezioni
+              </label>
+              <label class="checkbox-row">
+                <input id="show-notes-checkbox" type="checkbox" checked />
+                Mostra note metodologiche e territoriali
+              </label>
+            </div>
+
+            <div class="preset-box">
+              <div class="helper-text">Preset rapidi</div>
+              <div class="preset-grid">
+                <button type="button" class="preset-btn" data-preset-metric="first_party" data-preset-mode="party_std">Primo partito</button>
+                <button type="button" class="preset-btn" data-preset-metric="party_share">Quota selezionata</button>
+                <button type="button" class="preset-btn" data-preset-metric="turnout" data-preset-palette="sequential">Turnout</button>
+                <button type="button" class="preset-btn" data-preset-metric="swing_compare" data-preset-palette="diverging">Swing</button>
+                <button type="button" class="preset-btn" data-preset-metric="volatility" data-preset-palette="sequential">Volatility</button>
+                <button type="button" class="preset-btn" data-preset-metric="dominant_block" data-preset-mode="bloc">Blocs</button>
+              </div>
+            </div>
+          </div>
+        </details>
+      </section>
+
+      <details class="sidebar-tools">
+        <summary>Strumenti explorer</summary>
+        <div class="sidebar-tools-copy">Funzioni avanzate sempre disponibili, ma fuori dal primo colpo d'occhio.</div>
+      <section class="panel quick-actions-panel">
+        <h2>Azioni rapide</h2>
+        <div class="button-grid">
+          <button type="button" id="copy-link-btn">Copia permalink</button>
+          <button type="button" id="export-state-btn">Esporta vista JSON</button>
+          <button type="button" id="export-table-btn">Esporta tabella CSV</button>
+          <button type="button" id="export-municipality-btn">Esporta comune JSON</button>
+          <button type="button" id="export-map-png-btn">Esporta mappa PNG</button>
+          <button type="button" id="export-timeline-png-btn">Esporta timeline PNG</button>
+          <button type="button" id="export-heatmap-png-btn">Esporta heatmap PNG</button>
+          <button type="button" id="export-audit-btn">Esporta audit JSON</button>
+          <button type="button" id="export-report-html-btn">Esporta report HTML</button>
+          <button type="button" id="print-report-btn">Stampa scheda comune</button>
+        </div>
+      </section>
+
+      <section class="panel modes-panel">
+        <div class="panel-header tight">
+          <h2>Modalità guidate</h2>
+          <span class="helper-text">Task-first, per non perdersi</span>
+        </div>
+        <div id="analysis-mode-buttons" class="mode-button-grid">
+          <button type="button" class="mode-btn" data-analysis-mode="explore">Esplora</button>
+          <button type="button" class="mode-btn" data-analysis-mode="compare">Confronta</button>
+          <button type="button" class="mode-btn" data-analysis-mode="trajectory">Traiettoria</button>
+          <button type="button" class="mode-btn" data-analysis-mode="diagnose">Diagnostica</button>
+          <button type="button" class="mode-btn" data-analysis-mode="layers">Layer esterni</button>
+        </div>
+        <div id="analysis-mode-summary" class="helper-text">Scegli una modalità per impostare metrica, palette e fuoco analitico.</div>
+      </section>
+
+      <section class="panel audience-panel">
+        <div class="panel-header tight">
+          <h2>Pubblici e usi</h2>
+          <span class="helper-text">Accademici, cittadini, amministratori, stampa</span>
+        </div>
+        <div id="audience-mode-buttons" class="audience-button-grid"></div>
+        <div id="audience-mode-summary" class="helper-text">Scegli il pubblico di riferimento: la struttura resta completa, ma la guida di lettura cambia tono e priorità.</div>
+      </section>
+
+      <section class="panel preferences-panel">
+        <div class="panel-header tight">
+          <h2>Vista e accessibilità</h2>
+          <span class="helper-text">Contrasto, densità, lettura</span>
+        </div>
+        <div class="two-col">
+          <label>
+            Densità
+            <select id="density-select">
+              <option value="comfortable">Comfort</option>
+              <option value="compact">Compatta</option>
+            </select>
+          </label>
+          <label>
+            Colore / contrasto
+            <select id="vision-mode-select">
+              <option value="default">Default</option>
+              <option value="colorblind">Color-blind</option>
+              <option value="high_contrast">Alto contrasto</option>
+            </select>
+          </label>
+        </div>
+        <div id="display-mode-summary" class="helper-text">Le preferenze vengono salvate nel browser locale.</div>
+        <div class="view-mode-box">
+          <div class="mini-section-title">Semplicità d'uso</div>
+          <div class="view-mode-toggle" role="tablist" aria-label="Livello interfaccia">
+            <button id="ui-level-basic-btn" type="button" class="ghost-btn small-btn">Base</button>
+            <button id="ui-level-advanced-btn" type="button" class="ghost-btn small-btn">Esperto</button>
+          </div>
+          <div id="ui-level-summary" class="helper-text">Modalità base: focus su comune, anno, metrica e contesto.</div>
+        </div>
+      </section>
+
+      <section class="panel saved-views-panel">
+        <div class="panel-header tight">
+          <h2>Viste salvate</h2>
+          <button type="button" id="save-view-btn" class="ghost-btn small-btn">Salva vista</button>
+        </div>
+        <div id="saved-views-panel" class="recent-stack"></div>
+      </section>
+
+      <section class="panel recent-panel">
+        <h2>Comuni recenti e bookmark</h2>
+        <div id="recent-municipality-panel" class="recent-stack"></div>
+      </section>
+
+      <section class="panel status-panel">
+        <div class="panel-header tight">
+          <h2>Stato dati</h2>
+          <span id="data-counts" class="pill muted"></span>
+        </div>
+        <div id="dataset-status"></div>
+        <div id="diagnostics-panel" class="diagnostics-panel"></div>
+      </section>
+
+      <section class="panel local-bundle-panel">
+        <div class="panel-header tight">
+          <h2>Bundle locale</h2>
+          <span id="data-source-badge" class="pill muted">Bundle incorporato</span>
+        </div>
+        <p class="helper-text">Mentre completi i dati puoi caricare una cartella locale con <code>manifest.json</code> e i file derived. La app la legge nel browser senza riscrivere il progetto.</p>
+        <div class="button-grid two-up">
+          <button type="button" id="load-local-bundle-btn">Carica cartella locale</button>
+          <button type="button" id="reset-embedded-bundle-btn" class="ghost-btn">Torna al bundle incorporato</button>
+        </div>
+        <input id="local-bundle-input" type="file" webkitdirectory directory multiple hidden />
+        <div id="local-bundle-summary" class="helper-text">Nessun bundle locale caricato.</div>
+      </section>
+
+
+      <section class="panel external-panel">
+        <h2>Indicatori esterni / custom</h2>
+        <div id="custom-indicator-summary" class="helper-text">Nessun indicatore custom caricato.</div>
+      </section>
+      </details>
+
+      <section class="panel methodology-panel section-view section-view-method">
+        <h2>Metodo e trasparenza</h2>
+        <ul class="methodology-list">
+          <li>Nessun dato elettorale viene inventato: l'app legge solo i file in <code>data/derived/</code>.</li>
+          <li>Le aggregazioni territoriali dipendono dai file di lineage e dalla modalità <em>storico</em> / <em>armonizzato</em>.</li>
+          <li>I colori di partiti, famiglie e blocchi usano prima il metadata reale; in mancanza, applicano un fallback coerente e dichiarato.</li>
+          <li>Se mancano geometrie storiche o join completi, la UI lo segnala esplicitamente.</li>
+        </ul>
+        <div id="coverage-audit" class="coverage-audit"></div>
+          <kbd>/</kbd> cerca &middot; <kbd>[</kbd>/<kbd>]</kbd> anno &middot; <kbd>?</kbd> guida &middot; <kbd>B</kbd> bookmark &middot; <kbd>C</kbd> comparatore
+      </section>
+    </aside>
+
+    <main id="main-content" class="main-content" role="main">
+      <section class="toolbar panel compact">
+        <div class="toolbar-left">
+          <span id="active-summary" class="pill"></span>
+          <span id="territory-summary" class="pill muted"></span>
+          <span id="metric-summary" class="pill muted"></span>
+        </div>
+        <div class="toolbar-right">
+          <button type="button" id="history-back-btn" class="ghost-btn small-btn" aria-label="Vista precedente"><i class="ti ti-arrow-left"></i><span>Indietro</span></button>
+          <button type="button" id="history-forward-btn" class="ghost-btn small-btn" aria-label="Vista successiva"><i class="ti ti-arrow-right"></i><span>Avanti</span></button>
+          <button type="button" id="command-palette-btn" class="ghost-btn small-btn">Ctrl+K</button>
+          <button type="button" id="help-btn" class="ghost-btn small-btn" aria-label="Apri guida rapida">Guida</button>
+          <button type="button" id="focus-mode-btn" class="ghost-btn small-btn">Modalit&agrave; focus</button>
+          <span id="view-trust-pill" class="pill muted">Affidabilità vista: n/d</span>
+          <span id="selected-municipality-badge" class="pill muted">Nessun comune selezionato</span>
+        </div>
+      </section>
+
+      <section id="active-filter-chips" class="filter-chip-bar"></section>
+
+      <section class="jump-bar panel compact">
+        <div class="jump-bar-left">
+          <strong>Vai a</strong>
+          <div id="jump-nav" class="jump-nav" role="navigation" aria-label="Scorciatoie sezioni">
+            <button type="button" class="ghost-btn small-btn" data-jump-target="overview-cards">Panoramica</button>
+            <button type="button" class="ghost-btn small-btn" data-jump-target="guided-question-grid">Domande</button>
+            <button type="button" class="ghost-btn small-btn" data-jump-target="map-wrapper">Mappa</button>
+            <button type="button" class="ghost-btn small-btn" data-jump-target="municipality-profile">Comune</button>
+            <button type="button" class="ghost-btn small-btn" data-jump-target="comparison-panel-content">Confronti</button>
+            <button type="button" class="ghost-btn small-btn" data-jump-target="results-table">Tabella</button>
+            <button type="button" class="ghost-btn small-btn" data-jump-target="similarity-panel-content">Simili</button>
+            <button type="button" class="ghost-btn small-btn" data-jump-target="readiness-audit">Audit</button>
+            <button type="button" class="ghost-btn small-btn" data-jump-target="evidence-panel">Evidenza</button>
+            <button type="button" class="ghost-btn small-btn" data-jump-target="usage-notes-panel">Metodologia</button>
+          </div>
+        </div>
+        <div id="view-health-pill" class="pill muted">Vista pronta</div>
+      </section>
+
+      <section id="warning-strip" class="warning-strip hidden"></section>
+
+      <section id="dashboard-intro" class="dashboard-intro-strip panel compact">
+        <div class="dashboard-intro-copy">
+          <div class="dashboard-kicker">Camera · Lombardia</div>
+          <h1>Una piattaforma elettorale leggibile e verificabile.</h1>
+          <p class="dashboard-intro-text">Esplora i risultati comunali della Camera in Lombardia con una dashboard pubblica, schede comunali, confronto tra elezioni, download dei dataset e note metodologiche sempre visibili.</p>
+          <div class="dashboard-intro-meta">
+            <span class="meta-pill">Mappa comunale</span>
+            <span class="meta-pill">Profili, confronti, coverage</span>
+            <span class="meta-pill">Release, usage notes e loader</span>
+          </div>
+        </div>
+        <aside class="dashboard-intro-aside" aria-label="Punti chiave del prodotto">
+          <article class="intro-note-card">
+            <span class="intro-note-label">Base</span>
+            <strong>Explorer pubblico</strong>
+            <p>Mappa dominante, controlli chiari e ingresso leggibile per pubblico, stampa e amministratori.</p>
+          </article>
+          <article class="intro-note-card">
+            <span class="intro-note-label">Dati</span>
+            <strong>Archivio dichiarato</strong>
+            <p>Coverage, release, codebook, provenance e accesso programmatico stanno dentro la piattaforma.</p>
+          </article>
+          <article class="intro-note-card">
+            <span class="intro-note-label">Metodo</span>
+            <strong>Boundary-aware</strong>
+            <p>Geometrie storiche, differenza tra storico e armonizzato, e limiti dichiarati senza enfasi artificiale.</p>
+          </article>
+        </aside>
+      </section>
+
+      <nav class="dashboard-section-tabs panel compact" role="tablist" aria-label="Sezioni del dashboard">
+        <button type="button" class="dashboard-tab is-active" data-section-view="dashboard" role="tab" aria-selected="true">Cruscotto</button>
+        <button type="button" class="dashboard-tab" data-section-view="profile" role="tab" aria-selected="false">Comune</button>
+        <button type="button" class="dashboard-tab" data-section-view="analysis" role="tab" aria-selected="false">Confronti &amp; pattern</button>
+        <button type="button" class="dashboard-tab" data-section-view="method" role="tab" aria-selected="false">Dati &amp; metodo</button>
+      </nav>
+
+
+      <section class="site-hero panel is-secondary-surface">
+        <div class="site-hero-grid">
+          <div class="hero-copy">
+            <div class="eyebrow hero-eyebrow">Atlante elettorale boundary-aware</div>
+            <h2 id="hero-title" class="hero-title">Una base dati che prova a reggere sia come sito sia come infrastruttura.</h2>
+            <p id="hero-standfirst" class="hero-standfirst">Stesso motore per pubblico, ricerca, amministratori e stampa: esplorazione, coverage, metodo, release e accesso programmatico nello stesso posto.</p>
+            <div id="hero-badges" class="hero-badge-row"></div>
+            <div class="hero-actions">
+              <button type="button" class="hero-primary-btn" data-jump-target="map-wrapper">Apri la mappa</button>
+              <button type="button" class="ghost-btn" data-jump-target="usage-notes-panel">Metodo e dati</button>
+              <button type="button" class="ghost-btn" data-jump-target="release-studio-panel">Release studio</button>
+              <button type="button" id="copy-hero-python-btn" class="ghost-btn">Copia snippet Python</button>
+            </div>
+          </div>
+          <div class="hero-stat-grid">
+            <article class="hero-stat-card accent">
+              <span class="label">Release</span>
+              <strong id="hero-release-version">—</strong>
+              <span id="hero-release-meta" class="sub">—</span>
+            </article>
+            <article class="hero-stat-card">
+              <span class="label">Readiness tecnica</span>
+              <strong id="hero-technical-readiness">—</strong>
+              <span class="sub">Coerenza interna del bundle</span>
+            </article>
+            <article class="hero-stat-card">
+              <span class="label">Copertura sostanziale</span>
+              <strong id="hero-substantive-readiness">—</strong>
+              <span class="sub">Base empirica davvero popolata</span>
+            </article>
+            <article class="hero-stat-card">
+              <span class="label">Prodotti dati</span>
+              <strong id="hero-products-count">—</strong>
+              <span id="hero-products-meta" class="sub">—</span>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel signature-panel">
+        <div class="signature-grid">
+          <div class="signature-copy">
+            <div class="eyebrow hero-eyebrow">Perché dovrebbe restare in testa</div>
+            <h2 id="signature-title" class="signature-title">Una base elettorale che non ti chiede di scegliere tra rigore e accessibilità.</h2>
+            <p id="signature-standfirst" class="signature-standfirst">Sotto c'è una release leggibile da codice; sopra, un sito che prova a spiegare, confrontare e dichiarare i limiti senza nasconderli.</p>
+            <div id="signature-statement" class="signature-statement"></div>
+          </div>
+          <div id="signature-proof-grid" class="signature-proof-grid"></div>
+        </div>
+        <div id="signature-marquee" class="signature-marquee"></div>
+      </section>
+
+      <section class="panel site-layers-panel compact is-secondary-surface">
+        <div class="panel-header tight">
+          <div>
+            <h2>Tre livelli, stesso motore</h2>
+            <p id="site-layers-summary" class="panel-subtitle">Puoi entrare dal lato pubblico, briefing o ricerca senza cambiare base dati.</p>
+          </div>
+        </div>
+        <div id="site-layers-grid" class="site-layers-grid"></div>
+      </section>
+
+      <section class="panel method-explainers-panel compact is-secondary-surface">
+        <div class="panel-header tight">
+          <div>
+            <h2>Metodo in 90 secondi</h2>
+            <p id="method-explainers-summary" class="panel-subtitle">Quattro card per capire cosa mostra la vista e cosa no.</p>
+          </div>
+        </div>
+        <div id="method-explainers-grid" class="method-explainers-grid"></div>
+      </section>
+
+      <section class="pathway-strip panel compact is-secondary-surface">
+        <div class="panel-header tight">
+          <div>
+            <h2>Ingressi rapidi</h2>
+            <p class="panel-subtitle">Una facciata più chiara sopra lo stesso motore: esplora, confronta, audita, usa da codice.</p>
+          </div>
+        </div>
+        <div id="pathway-grid" class="pathway-grid"></div>
+      </section>
+
+      <section class="quickstart-strip panel compact is-secondary-surface">
+        <div class="panel-header tight">
+          <div>
+            <h2>Inizia da qui</h2>
+            <p class="panel-subtitle">Percorsi rapidi per partire senza perdersi.</p>
+          </div>
+        </div>
+        <div id="quickstart-cards" class="quickstart-cards"></div>
+      </section>
+
+      <section class="panel question-workbench-panel compact is-secondary-surface">
+        <div class="panel-header tight">
+          <div>
+            <h2>Domande guidate</h2>
+            <p class="panel-subtitle">Stessa base dati, ma trasformata in domande semplici da aprire con un click.</p>
+          </div>
+        </div>
+        <div id="guided-question-summary" class="helper-text"></div>
+        <div id="guided-question-grid" class="question-grid"></div>
+      </section>
+
+      <section class="panel reading-guide-panel compact is-secondary-surface">
+        <div class="panel-header tight">
+          <div>
+            <h2>Come leggere questa vista</h2>
+            <p class="panel-subtitle">Stesso motore dati, ma spiegato in modo utile per il pubblico che hai in mente.</p>
+          </div>
+        </div>
+        <div id="reading-guide" class="reading-guide-grid"></div>
+        <div class="reading-guide-columns">
+          <div>
+            <div class="mini-section-title">Checklist rapida</div>
+            <div id="audience-checklist" class="checklist-stack"></div>
+          </div>
+          <div>
+            <div class="mini-section-title">Glossario minimo</div>
+            <div id="glossary-panel" class="glossary-grid"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel briefing-panel section-view section-view-method">
+        <div class="panel-header tight">
+          <div>
+            <h2>Briefing e limiti della vista</h2>
+            <p class="panel-subtitle">Uno strato in più, utile per pubblico, ricerca, amministratori e stampa: sintesi pronta, guardrail e nota metodologica da incollare.</p>
+          </div>
+          <div class="map-header-actions">
+            <span id="briefing-badge" class="pill muted">Briefing vista</span>
+            <button type="button" id="copy-brief-btn" class="ghost-btn small-btn">Copia sintesi</button>
+            <button type="button" id="copy-method-note-btn" class="ghost-btn small-btn">Copia nota metodo</button>
+          </div>
+        </div>
+        <div id="briefing-headline" class="briefing-headline"></div>
+        <div id="briefing-standfirst" class="helper-text briefing-standfirst"></div>
+        <div class="briefing-grid">
+          <div>
+            <div class="mini-section-title">Cosa puoi dire</div>
+            <div id="briefing-can-say" class="briefing-list"></div>
+          </div>
+          <div>
+            <div class="mini-section-title">Cose da dire con cautela</div>
+            <div id="briefing-caution" class="briefing-list"></div>
+          </div>
+          <div>
+            <div class="mini-section-title">Cosa questa vista non prova</div>
+            <div id="briefing-cannot-say" class="briefing-list"></div>
+          </div>
+        </div>
+        <div class="mini-section-title" style="margin-top:14px">Nota metodologica pronta da incollare</div>
+        <div id="briefing-method-note" class="briefing-note"></div>
+      </section>
+
+      <section id="evidence-panel" class="panel evidence-panel section-view section-view-method">
+        <div class="panel-header tight">
+          <div>
+            <h2>Livello di evidenza e citazione</h2>
+            <p class="panel-subtitle">Ti dice quanto la vista è usabile come base empirica adesso, e ti lascia già pronta una riga citabile e riproducibile.</p>
+          </div>
+          <div class="map-header-actions">
+            <span id="evidence-badge" class="pill muted">Livello di evidenza</span>
+            <button type="button" id="copy-view-citation-btn" class="ghost-btn small-btn">Copia citazione</button>
+            <button type="button" id="copy-repro-btn" class="ghost-btn small-btn">Copia riga repro</button>
+          </div>
+        </div>
+        <div id="evidence-headline" class="briefing-headline"></div>
+        <div id="evidence-body" class="helper-text briefing-standfirst"></div>
+        <div class="evidence-grid">
+          <div>
+            <div class="mini-section-title">Perché questa valutazione</div>
+            <div id="evidence-checks" class="evidence-list"></div>
+          </div>
+          <div>
+            <div class="mini-section-title">Prima di usarla davvero</div>
+            <div id="evidence-next-checks" class="evidence-list"></div>
+          </div>
+        </div>
+        <div class="mini-section-title" style="margin-top:14px">Citazione pronta della vista</div>
+        <div id="view-citation-note" class="briefing-note"></div>
+      </section>
+
+      <section class="panel data-package-panel section-view section-view-method">
+        <div class="panel-header tight">
+          <div>
+            <h2>Catalogo dati e copertura</h2>
+            <p class="panel-subtitle">Strato dataset, download e copertura del bundle corrente: utile anche mentre i dati stanno crescendo.</p>
+          </div>
+        </div>
+        <div id="coverage-matrix" class="coverage-matrix"></div>
+        <div id="data-catalog" class="data-catalog-grid"></div>
+      </section>
+
+
+      <section id="usage-notes-panel" class="panel methodology-panel section-view section-view-method">
+        <div class="panel-header tight">
+          <div>
+            <h2>Usage notes, data products, codebook e update log</h2>
+            <p class="panel-subtitle">Impostazione alla GERDA: dataset-first, note d'uso esplicite, codebook leggibile e changelog pubblico.</p>
+          </div>
+        </div>
+        <div class="method-grid">
+          <div>
+            <div class="mini-section-title">Usage notes</div>
+            <div id="usage-notes-list" class="note-list"></div>
+          </div>
+          <div>
+            <div class="mini-section-title">Dataset registry</div>
+            <div id="dataset-registry-panel" class="registry-list"></div>
+          </div>
+          <div>
+            <div class="mini-section-title">Data products</div>
+            <div id="data-products-panel" class="registry-list"></div>
+          </div>
+          <div>
+            <div class="mini-section-title">Codebook</div>
+            <div id="codebook-panel" class="codebook-panel"></div>
+          </div>
+          <div>
+            <div class="mini-section-title">Accesso ufficiale</div>
+            <div id="access-clients-panel" class="snippet-panel"></div>
+          </div>
+          <div>
+            <div class="mini-section-title">Starter snippets</div>
+            <div id="download-guide-panel" class="snippet-panel"></div>
+          </div>
+        </div>
+        <div class="mini-section-title" style="margin-top:14px">Aggiornamenti</div>
+        <div id="update-log-panel" class="update-log-panel"></div>
+      </section>
+
+      <section id="release-studio-panel" class="panel release-studio-panel section-view section-view-method">
+        <div class="panel-header tight">
+          <div>
+            <h2>Release studio</h2>
+            <p class="panel-subtitle">Identità della release, provenance, contracts, citazione e accesso ufficiale nello stesso posto.</p>
+          </div>
+          <div class="map-header-actions">
+            <span id="release-integrity-pill" class="pill muted">Integrità release</span>
+            <button type="button" id="copy-release-python-btn" class="ghost-btn small-btn">Copia snippet Python</button>
+            <button type="button" id="copy-citation-btn" class="ghost-btn small-btn">Copia citazione progetto</button>
+          </div>
+        </div>
+        <div class="release-studio-grid">
+          <article class="release-studio-card">
+            <div class="mini-section-title">Identità bundle</div>
+            <div id="release-identity-panel" class="registry-list"></div>
+          </article>
+          <article class="release-studio-card">
+            <div class="mini-section-title">Provenance e contracts</div>
+            <div id="provenance-panel" class="registry-list"></div>
+          </article>
+          <article class="release-studio-card">
+            <div class="mini-section-title">Accesso ufficiale</div>
+            <div id="client-snippet-panel" class="snippet-panel"></div>
+          </article>
+          <article class="release-studio-card">
+            <div class="mini-section-title">Citazione e recipes</div>
+            <div id="citation-panel" class="snippet-panel"></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="panel faq-panel compact section-view section-view-method">
+        <div class="panel-header tight">
+          <div>
+            <h2>FAQ rapido</h2>
+            <p id="faq-summary" class="panel-subtitle">Le domande che un sito pubblico serio dovrebbe anticipare.</p>
+          </div>
+        </div>
+        <div id="faq-accordion" class="faq-accordion"></div>
+      </section>
+
+      <section id="overview-cards" class="overview-grid section-view section-view-dashboard"></section>
+
+      <section class="insight-strip panel compact section-view section-view-dashboard">
+        <div class="panel-header tight">
+          <div>
+            <h2>Insight immediati</h2>
+            <p class="panel-subtitle">Sintesi cliccabile del filtro corrente: serve a orientare l'esplorazione senza leggere tutto.</p>
+          </div>
+        </div>
+        <div id="insight-feed" class="insight-feed"></div>
+        <div id="next-best-actions" class="helper-text next-actions"></div>
+      </section>
+
+      <section class="map-and-detail section-view section-view-dashboard section-view-profile">
+        <section class="map-panel panel">
+          <div class="panel-header">
+            <div>
+              <h2>Mappa comunale</h2>
+              <p class="panel-subtitle">Colorazione comune per comune su geografia reale quando disponibile.</p>
+            </div>
+            <div class="map-header-actions">
+              <div class="map-toolbar-buttons">
+                <button type="button" id="map-fullscreen-btn" class="ghost-btn small-btn">Schermo intero</button>
+                <button type="button" id="map-reset-btn" class="ghost-btn small-btn">Reset mappa</button>
+              </div>
+              <div id="legend"></div>
+            </div>
+          </div>
+          <div id="map-wrapper">
+            <svg id="map-svg" viewBox="0 0 960 680" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Mappa comunale interattiva della Lombardia"></svg>
+            <div id="map-empty-state" class="empty-state hidden"></div>
+            <div id="tooltip" class="tooltip hidden"></div>
+          </div>
+          <div class="map-context-strip">
+            <div class="map-context-block">
+              <span class="map-context-label">Lettura</span>
+              <strong>Vista comunale diretta</strong>
+              <p>La mappa resta il punto di ingresso principale: scegli una metrica e poi apri la scheda del comune.</p>
+            </div>
+            <div class="map-context-block">
+              <span class="map-context-label">Avvertenza</span>
+              <strong>No data distinto dal valore basso</strong>
+              <p>Le assenze di dato vanno lette come copertura mancante o non comparabile, non come risultato minimo.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="detail-panel panel" data-panel-key="detail">
+          <div class="panel-header">
+            <div>
+              <h2>Profilo del comune</h2>
+              <p class="panel-subtitle">Anagrafica, confronto con provincia/Lombardia, linea temporale, lineage.</p>
+            </div>
+          </div>
+
+          <div class="detail-summary-shell">
+            <div class="detail-meta-block">
+              <div class="detail-section-title">Scheda del caso</div>
+              <div id="municipality-profile" class="empty-state">Seleziona un comune dalla mappa o dalla ricerca.</div>
+            </div>
+            <div class="detail-meta-block">
+              <div class="detail-section-title">Affidabilità e comparabilità</div>
+              <div id="municipality-trust-box" class="trust-box empty-state">Seleziona un comune per leggere affidabilità, copertura e comparabilità del caso.</div>
+            </div>
+          </div>
+          <div class="detail-narrative-grid">
+            <div class="detail-meta-block">
+              <div class="detail-section-title">Lettura rapida</div>
+              <div id="municipality-story" class="story-box hidden"></div>
+            </div>
+            <div class="detail-meta-block">
+              <div class="detail-section-title">Storyboard</div>
+              <div id="trajectory-storyboard" class="story-grid"></div>
+            </div>
+          </div>
+          <div class="detail-meta-block">
+            <div class="detail-section-title">Report sintetico</div>
+            <div id="trajectory-report" class="report-box"></div>
+          </div>
+          <div class="detail-meta-block">
+            <div class="detail-section-title">Comparatore del caso</div>
+          <div class="detail-actions-row">
+            <button type="button" id="bookmark-municipality-btn">Aggiungi al comparatore</button>
+            <button type="button" id="pin-municipality-btn" class="ghost-btn">Salva bookmark</button>
+            <button type="button" id="clear-compare-btn" class="ghost-btn">Svuota comparatore</button>
+          </div>
+          <div id="compare-chip-list" class="compare-chip-list"></div>
+          </div>
+          <div class="detail-lineage-grid">
+            <div class="detail-meta-block">
+              <div class="detail-section-title">Lineage territoriale</div>
+              <div id="lineage-panel"></div>
+            </div>
+            <div class="detail-meta-block">
+              <div class="detail-section-title">Risultati elezione attiva</div>
+              <div id="single-election-results"></div>
+            </div>
+          </div>
+          <div class="detail-meta-block detail-chart-block">
+          <div class="trajectory-toolbar">
+            <div>
+              <div class="mini-section-title">Traiettoria storica del comune</div>
+              <div class="helper-text">Linee tra elezioni discrete, senza smoothing continuo implicito.</div>
+            </div>
+            <div class="trajectory-controls">
+              <label>
+                Vista traiettoria
+                <select id="trajectory-mode-select">
+                  <option value="selected_vs_context">Selezione attiva vs contesto</option>
+                  <option value="top_groups">Top gruppi nel tempo</option>
+                  <option value="top_parties">Top partiti nel tempo</option>
+                </select>
+              </label>
+            </div>
+          </div>
+          <div class="chart-frame">
+            <svg id="timeline-chart" viewBox="0 0 620 300"></svg>
+          </div>
+          <div class="chart-frame chart-frame-sm">
+            <svg id="dominance-strip" viewBox="0 0 620 92"></svg>
+          </div>
+          </div>
+          <div class="detail-meta-block detail-chart-block">
+          <div class="trajectory-toolbar">
+            <div>
+              <div class="mini-section-title">Confronto comune vs contesto</div>
+              <div class="helper-text">Posizione relativa del comune su quota attiva, affluenza e stabilità.</div>
+            </div>
+          </div>
+          <div class="chart-frame">
+            <svg id="context-compare-chart" viewBox="0 0 620 220"></svg>
+          </div>
+          </div>
+          <div class="annotation-box detail-meta-block">
+            <div class="panel-header tight">
+              <h3>Annotazioni locali sul comune</h3>
+              <span id="municipality-note-meta" class="helper-text">Salvate solo nel browser locale</span>
+            </div>
+            <textarea id="municipality-note-input" aria-label="Note sul comune selezionato" rows="4" placeholder="Note, ipotesi, osservazioni, fonti da controllare..."></textarea>
+            <div class="detail-actions-row">
+              <button type="button" id="save-note-btn">Salva nota</button>
+              <button type="button" id="clear-note-btn" class="ghost-btn">Cancella nota</button>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <section class="comparison-and-table section-view section-view-profile section-view-analysis">
+        <section class="panel comparison-panel" data-panel-key="comparison">
+          <div class="panel-header">
+            <div>
+              <h2>Confronto tra elezioni</h2>
+              <p class="panel-subtitle">Scarti comune per comune tra elezione attiva e anno di confronto.</p>
+            </div>
+          </div>
+          <div class="compare-map-toolbar">
+            <div id="compare-map-summary" class="helper-text">Confronto cartografico non attivo.</div>
+            <button type="button" id="swap-elections-btn" class="ghost-btn small-btn">Scambia anni</button>
+          </div>
+          <div class="compare-map-grid">
+            <div class="mini-map-box">
+              <div id="compare-map-a-title" class="mini-map-title">Elezione A</div>
+              <div class="mini-map-wrap"><svg id="compare-map-a" viewBox="0 0 420 300"></svg></div>
+            </div>
+            <div class="mini-map-box">
+              <div id="compare-map-b-title" class="mini-map-title">Elezione B</div>
+              <div class="mini-map-wrap"><svg id="compare-map-b" viewBox="0 0 420 300"></svg></div>
+            </div>
+          </div>
+          <div class="swipe-compare-box">
+            <div class="panel-header tight">
+              <div>
+                <h3>Swipe compare</h3>
+                <p class="panel-subtitle">Stessa geografia, due elezioni sovrapposte con cursore.</p>
+              </div>
+              <span id="swipe-compare-summary" class="helper-text">Attiva due elezioni per usare lo swipe.</span>
+            </div>
+            <label>
+              Posizione swipe
+              <input id="swipe-position" type="range" min="0" max="100" step="1" value="50" />
+            </label>
+            <div class="swipe-stage">
+              <svg id="swipe-map-svg" viewBox="0 0 840 320"></svg>
+              <div id="swipe-map-divider" class="swipe-map-divider"></div>
+            </div>
+          </div>
+          <div id="comparison-panel-content" class="comparison-grid"></div>
+        </section>
+
+        <section class="table-panel panel" data-panel-key="table">
+          <div class="panel-header">
+            <div>
+              <h2>Tabella interattiva</h2>
+              <p class="panel-subtitle">Ricerca rapida, ordinamento, click riga = selezione comune.</p>
+            </div>
+            <input id="table-filter" aria-label="Filtra tabella comuni" placeholder="Filtra tabella..." aria-label="Filtro testuale tabella comuni" />
+          </div>
+          <div class="table-wrap">
+            <table id="results-table">
+              <thead>
+                <tr>
+                  <th>Comune</th>
+                  <th>Provincia</th>
+                  <th>Affluenza</th>
+                  <th>Primo partito</th>
+                  <th>Quota attiva</th>
+                  <th>Δ confronto</th>
+                  <th>Volatilità</th>
+                  <th>Note</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <div class="table-pager">
+            <button id="table-prev-btn" class="ghost-btn small-btn" type="button">← Pagina</button>
+            <span id="table-page-info" class="helper-text">Pagina 1</span>
+            <button id="table-next-btn" class="ghost-btn small-btn" type="button">Pagina →</button>
+          </div>
+        </section>
+      </section>
+
+      <section class="analysis-grid section-view section-view-analysis">
+        <section class="panel rankings-panel" data-panel-key="rankings">
+          <div class="panel-header">
+            <div>
+              <h2>Top / bottom e comuni notevoli</h2>
+              <p class="panel-subtitle">Classifiche dinamiche sul filtro corrente.</p>
+            </div>
+          </div>
+          <div id="rankings-panel-content" class="comparison-grid"></div>
+        </section>
+
+        <section class="panel multi-compare-panel" data-panel-key="multi_compare">
+          <div class="panel-header">
+            <div>
+              <h2>Comparatore comuni</h2>
+              <p class="panel-subtitle">Fino a 4 comuni insieme sulla selezione attiva.</p>
+            </div>
+          </div>
+          <div id="multi-compare-summary" class="helper-text">Nessun comune nel comparatore.</div>
+          <svg id="multi-compare-chart" viewBox="0 0 720 260"></svg>
+        </section>
+      </section>
+
+      <section class="insights-grid section-view section-view-analysis">
+        <section class="panel province-panel" data-panel-key="province">
+          <div class="panel-header">
+            <div>
+              <h2>Province sotto filtro</h2>
+              <p class="panel-subtitle">Lettura rapida delle province su metrica, affluenza e copertura dati.</p>
+            </div>
+          </div>
+          <div id="province-insights"></div>
+        </section>
+
+        <section class="panel heatmap-panel" data-panel-key="heatmap">
+          <div class="panel-header">
+            <div>
+              <h2>Heatmap temporale del comune</h2>
+              <p class="panel-subtitle">Partiti / famiglie / blocchi per anno, utile per vedere continuità, picchi e sostituzioni.</p>
+            </div>
+          </div>
+          <div id="heatmap-summary" class="helper-text">Seleziona un comune per attivare la heatmap.</div>
+          <svg id="heatmap-chart" viewBox="0 0 720 320"></svg>
+        </section>
+      </section>
+
+      <section class="research-grid section-view section-view-analysis">
+        <section class="panel similar-panel" data-panel-key="similarity">
+          <div class="panel-header">
+            <div>
+              <h2>Comuni simili e cluster leggero</h2>
+              <p class="panel-subtitle">Vicini per traiettoria del voto, affluenza e stabilità. Pensato per trovare comuni comparabili in modo veloce e trasparente.</p>
+            </div>
+          </div>
+          <div id="similarity-summary" class="helper-text">Seleziona un comune per attivare l'analisi di similarità.</div>
+          <div id="similarity-panel-content"></div>
+        </section>
+
+        <section class="panel province-trends-panel" data-panel-key="province_trends">
+          <div class="panel-header">
+            <div>
+              <h2>Small multiples provinciali</h2>
+              <p class="panel-subtitle">Ogni provincia come mini-traiettoria temporale della metrica attiva, utile per confronti rapidi e pattern territoriali.</p>
+            </div>
+          </div>
+          <div id="province-small-multiples" class="province-small-multiples"></div>
+        </section>
+      </section>
+
+
+      <section class="advanced-grid section-view section-view-analysis">
+        <section class="panel pattern-panel" data-panel-key="patterns">
+          <div class="panel-header">
+            <div>
+              <h2>Archetipi e pattern comunali</h2>
+              <p class="panel-subtitle">Classificazione leggera ma leggibile: stabilità, blocco prevalente, affluenza e rapporto col contesto.</p>
+            </div>
+          </div>
+          <div id="archetype-summary" class="helper-text">Gli archetipi compariranno qui quando i dati lo consentono.</div>
+          <div id="archetype-panel-content"></div>
+        </section>
+
+        <section class="panel group-compare-panel" data-panel-key="group_compare">
+          <div class="panel-header">
+            <div>
+              <h2>Confronto gruppi di comuni</h2>
+              <p class="panel-subtitle">Media del comparatore e dei bookmark nel tempo, confrontata con contesto territoriale e regionale.</p>
+            </div>
+          </div>
+          <div id="group-compare-summary" class="helper-text">Aggiungi comuni al comparatore o ai bookmark per attivare il confronto di gruppo.</div>
+          <svg id="group-compare-chart" viewBox="0 0 720 280"></svg>
+        </section>
+      </section>
+
+      <section class="panel transitions-panel section-view section-view-analysis" data-panel-key="transitions">
+        <div class="panel-header">
+          <div>
+            <h2>Passaggi tra elezioni</h2>
+            <p class="panel-subtitle">Come cambiano leader e blocchi tra l'elezione attiva e quella di confronto nei comuni filtrati.</p>
+          </div>
+        </div>
+        <div id="transition-matrix-content"></div>
+      </section>
+
+      <section class="panel audit-panel section-view section-view-method" data-panel-key="audit">
+        <div class="panel-header">
+          <div>
+            <h2>Audit tecnico e readiness</h2>
+            <p class="panel-subtitle">Copertura per elezione, mismatch rilevati, stato delle funzioni e gap ancora aperti.</p>
+          </div>
+        </div>
+        <div id="readiness-audit"></div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <div class="site-footer-inner">
+      <div class="footer-section">
+        <h3>Progetto</h3>
+        <p>Lombardia Election Explorer è un atlante elettorale comunale per la Lombardia: mappa, profili, confronti, note d'uso, release e accesso programmatico nello stesso luogo.</p>
+      </div>
+      <div class="footer-section">
+        <h3>Risorse</h3>
+        <ul>
+          <li><a href="index.html">Dashboard</a></li>
+          <li><a href="data-download.html">Scarica dati</a></li>
+          <li><a href="programmatic-access.html">Accesso programmatico</a></li>
+          <li><a href="usage-notes.html">Note d'uso</a></li>
+          <li><a href="update-log.html">Aggiornamenti</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Stato del progetto</h3>
+        <p>La base pubblica è già esplorabile con il bundle incorporato ed è pensata per crescere insieme all'espansione del dato storico.</p>
+      </div>
+    </div>
+  </footer>
+    </div>
+  </div>
+
+  <div id="selection-dock" class="selection-dock hidden">
+    <div class="selection-dock-main">
+      <div>
+        <div class="eyebrow">Contesto attivo</div>
+        <strong id="selection-dock-title">Nessun comune selezionato</strong>
+        <div id="selection-dock-meta" class="helper-text">Seleziona un comune o usa il comparatore.</div>
+      </div>
+      <div class="selection-dock-actions">
+        <button type="button" id="selection-dock-open-btn">Apri profilo</button>
+        <button type="button" id="selection-dock-compare-btn" class="ghost-btn">Vai ai confronti</button>
+        <button type="button" id="selection-dock-clear-btn" class="ghost-btn">Pulisci</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="onboarding-modal" class="onboarding-modal hidden" aria-hidden="true">
+    <div class="onboarding-backdrop" data-close-onboarding="true"></div>
+    <div class="onboarding-dialog" role="dialog" aria-modal="true" aria-labelledby="onboarding-title">
+      <div class="panel-header tight">
+        <div>
+          <div class="eyebrow">Per iniziare bene</div>
+          <h2 id="onboarding-title">Come orientarsi nell'explorer</h2>
+        </div>
+        <button type="button" id="onboarding-close-btn" class="ghost-btn small-btn">Chiudi</button>
+      </div>
+      <div class="onboarding-grid">
+        <div class="onboarding-card">
+          <span class="mini-kicker">1 &middot; Parti dalla panoramica</span>
+          <strong>Leggi prima panoramica, mappa e insight</strong>
+          <p>Leggi prima i card principali e i warning. Poi scendi su comune, confronto o audit solo quando serve.</p>
+        </div>
+        <div class="onboarding-card">
+          <span class="mini-kicker">2 &middot; Traiettoria locale</span>
+          <strong>Seleziona un comune e leggi la sua storia</strong>
+          <p>Profilo, timeline, heatmap, simili e cluster lavorano insieme. È la vista più potente dell'app.</p>
+        </div>
+        <div class="onboarding-card">
+          <span class="mini-kicker">3 &middot; Controllo qualit&agrave;</span>
+          <strong>Controlla sempre audit e copertura</strong>
+          <p>Se mancano geometrie o lineage, l'app lo dichiara. Non fidarti di confronti non coperti.</p>
+        </div>
+      </div>
+      <div class="helper-grid">
+        <div class="helper-card"><span class="k">Scorciatoie</span><div class="helper-text">
+          <kbd>/</kbd> cerca &middot; <kbd>[</kbd>/<kbd>]</kbd> anno &middot; <kbd>?</kbd> guida &middot; <kbd>B</kbd> bookmark &middot; <kbd>C</kbd> comparatore
+        </div></div>
+        <div class="helper-card"><span class="k">Consiglio</span><div class="helper-text">Usa le sezioni comprimibili: tieni aperto solo ciò che ti serve davvero.</div></div>
+        <div class="helper-card"><span class="k">Per iniziare</span><div class="helper-text">Scegli una modalità guidata, poi usa la command palette o la ricerca comune.</div></div>
+      </div>
+      <div class="detail-actions-row">
+        <button type="button" id="onboarding-start-trajectory-btn">Modalit&agrave; traiettoria</button>
+        <button type="button" id="onboarding-start-compare-btn" class="ghost-btn">Modalit&agrave; confronto</button>
+        <button type="button" id="onboarding-dismiss-btn" class="ghost-btn">Non mostrare pi&ugrave;</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const tabs = Array.from(document.querySelectorAll('.dashboard-tab'));
+    const sections = Array.from(document.querySelectorAll('.section-view'));
+    const setView = (view) => {
+      tabs.forEach((tab) => {
+        const active = tab.dataset.sectionView === view;
+        tab.classList.toggle('is-active', active);
+        tab.setAttribute('aria-selected', active ? 'true' : 'false');
+      });
+      sections.forEach((section) => {
+        section.classList.toggle('hidden-by-view', !section.classList.contains(`section-view-${view}`));
+      });
+      document.body.dataset.dashboardView = view;
+    };
+    tabs.forEach((tab) => tab.addEventListener('click', () => setView(tab.dataset.sectionView)));
+    setView('dashboard');
+  });
+</script>
+<script src="vendor/tabler/core/tabler.min.js"></script>
+<script src="tabler-enhance.js"></script>
+<script type="module" src="app.js"></script>
+  <div id="loading-overlay" class="loading-overlay hidden"><div class="loading-card"><div class="loading-orb"></div><div><strong>Sto preparando l'explorer</strong><div class="helper-text">Caricamento dati, indici, geometrie e controlli…</div></div></div></div>
+  <div id="toast-stack" class="toast-stack" aria-live="polite"></div>
+  <div id="command-palette" class="command-palette hidden">
+    <div class="command-palette-backdrop" data-close-command="true"></div>
+    <div class="command-dialog">
+      <div class="command-header">
+        <div>
+          <div class="eyebrow">Navigazione rapida</div>
+          <h2>Command palette</h2>
+        </div>
+        <button type="button" id="command-close-btn" class="ghost-btn small-btn">Chiudi</button>
+      </div>
+      <label>
+        Cerca comune o azione
+        <input id="command-input" type="text" placeholder="Merate, swing, affluenza, reset, focus…" autocomplete="off" />
+      </label>
+      <div id="command-results" class="command-results"></div>
+      <div class="helper-text">Invio = apri · ↑↓ = scorri · Esc = chiudi</div>
+    </div>
+  </div>
+</body>
+</html>
+

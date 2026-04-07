@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+title: Lombardia Camera Explorer
+message: "Please cite this project using the metadata below and mention the bundle version used."
+type: software
+authors:
+  - family-names: OpenAI
+    given-names: ChatGPT
+  - family-names: Simone
+    given-names: ""
+repository-code: ./
+url: ./
+abstract: >-
+  Boundary-aware static explorer and data bundle for municipality-level analysis of Camera election results in Lombardia,
+  designed to combine public-facing exploration, methodological transparency and programmatic access.
+version: 0.11.0
+license: "Proprietary / project-specified"
+keywords:
+  - elections
+  - lombardia
+  - municipalities
+  - harmonization
+  - boundaries
+  - static-data-bundle

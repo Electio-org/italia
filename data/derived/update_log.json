@@ -1,0 +1,74 @@
+{
+  "generated_by": "preprocess.py",
+  "entries": [
+    {
+      "version": "v31",
+      "date": "2026-04-05",
+      "title": "Front door più forte, site guides e FAQ rapido",
+      "changes": [
+        "Aggiunti site guides machine-readable con layers, explainers e FAQ.",
+        "Nuove sezioni frontali: tre livelli d'uso, metodo in 90 secondi e FAQ rapido.",
+        "Release studio reso visibile e integrato nella facciata pubblica della app."
+      ]
+    },
+    {
+      "version": "v30",
+      "date": "2026-04-04",
+      "title": "Hero pubblico, release studio e research recipes",
+      "changes": [
+        "Aggiunte hero section, pathway cards e release studio come facciata più forte sopra il motore dati.",
+        "Introdotto research_recipes.json come guida machine-readable per percorsi pubblici e research-safe.",
+        "Loader Python esteso con recipes, citation e filtri summary; check bundle più severo sui nuovi strati."
+      ]
+    },
+    {
+      "version": "v29",
+      "date": "2026-04-04",
+      "title": "Release identity, provenance e dataset contracts",
+      "changes": [
+        "Aggiunti release_manifest.json, provenance.json e dataset_contracts.json come strati machine-readable del bundle.",
+        "Loader Python rafforzato con verifica integrità e listing dei prodotti dati.",
+        "Controlli bundle più severi su release identity, checksums, contratti dati e test del loader."
+      ]
+    },
+    {
+      "version": "v28",
+      "date": "2026-04-04",
+      "title": "Data products, loader ufficiali e release discipline",
+      "changes": [
+        "Aggiunto data_products.json come strato machine-readable sopra manifest e dataset registry.",
+        "Aggiunti loader ufficiali Python e R per usare il bundle anche fuori dal browser.",
+        "Rafforzati i controlli bundle su data products, client loader e allineamento release."
+      ]
+    },
+    {
+      "version": "v27",
+      "date": "2026-04-04",
+      "title": "Domande guidate, evidenza e citabilità",
+      "changes": [
+        "Aggiunto pannello di domande guidate audience-aware con percorsi one-click.",
+        "Aggiunto pannello livello di evidenza con citazione pronta della vista e riga minima di riproducibilità.",
+        "Estratti audience modes, glossario e question bank in modules/guidance.js."
+      ]
+    },
+    {
+      "version": "0.8.0",
+      "date": "2026-04-04",
+      "title": "GERDA-style data layer",
+      "changes": [
+        "Aggiunti dataset registry, codebook, usage notes e update log nel bundle.",
+        "Manifest allineato a un catalogo dati più esplicito e machine-readable.",
+        "Supporto a base geometrica selezionabile lato frontend."
+      ]
+    },
+    {
+      "version": "0.7.2",
+      "date": "2026-04-04",
+      "title": "Local bundle loader",
+      "changes": [
+        "Caricamento di bundle locali dal browser.",
+        "Catalogo dati e coverage matrix nel frontend."
+      ]
+    }
+  ]
+}

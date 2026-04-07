@@ -1,0 +1,332 @@
+{
+  "generated_by": "preprocess.py",
+  "entries": [
+    {
+      "dataset_key": "electionsMaster",
+      "path": "data/derived/elections_master.csv",
+      "produced_by": "scripts/preprocess.py",
+      "source_class": "derived_bundle",
+      "transformation_steps": [
+        "ingest da cartelle camera_YYYY e layout clean/raw/validated quando presenti",
+        "normalizzazione di comuni, province, partiti e join geometry-aware",
+        "scrittura di dataset derived, metadata layer e manifest machine-readable"
+      ],
+      "limitations": [
+        "la provenance del bundle non sostituisce le fonti elettorali originali",
+        "la copertura sostanziale dipende dai dati effettivamente ingestiti"
+      ]
+    },
+    {
+      "dataset_key": "municipalitiesMaster",
+      "path": "data/derived/municipalities_master.csv",
+      "produced_by": "scripts/preprocess.py",
+      "source_class": "derived_bundle",
+      "transformation_steps": [
+        "ingest da cartelle camera_YYYY e layout clean/raw/validated quando presenti",
+        "normalizzazione di comuni, province, partiti e join geometry-aware",
+        "scrittura di dataset derived, metadata layer e manifest machine-readable"
+      ],
+      "limitations": [
+        "la provenance del bundle non sostituisce le fonti elettorali originali",
+        "la copertura sostanziale dipende dai dati effettivamente ingestiti"
+      ]
+    },
+    {
+      "dataset_key": "partiesMaster",
+      "path": "data/derived/parties_master.csv",
+      "produced_by": "scripts/preprocess.py",
+      "source_class": "derived_bundle",
+      "transformation_steps": [
+        "ingest da cartelle camera_YYYY e layout clean/raw/validated quando presenti",
+        "normalizzazione di comuni, province, partiti e join geometry-aware",
+        "scrittura di dataset derived, metadata layer e manifest machine-readable"
+      ],
+      "limitations": [
+        "la provenance del bundle non sostituisce le fonti elettorali originali",
+        "la copertura sostanziale dipende dai dati effettivamente ingestiti"
+      ]
+    },
+    {
+      "dataset_key": "territorialLineage",
+      "path": "data/derived/territorial_lineage.csv",
+      "produced_by": "scripts/preprocess.py",
+      "source_class": "derived_bundle",
+      "transformation_steps": [
+        "ingest da cartelle camera_YYYY e layout clean/raw/validated quando presenti",
+        "normalizzazione di comuni, province, partiti e join geometry-aware",
+        "scrittura di dataset derived, metadata layer e manifest machine-readable"
+      ],
+      "limitations": [
+        "la provenance del bundle non sostituisce le fonti elettorali originali",
+        "la copertura sostanziale dipende dai dati effettivamente ingestiti"
+      ]
+    },
+    {
+      "dataset_key": "municipalitySummary",
+      "path": "data/derived/municipality_summary.csv",
+      "produced_by": "scripts/preprocess.py",
+      "source_class": "derived_bundle",
+      "transformation_steps": [
+        "ingest da cartelle camera_YYYY e layout clean/raw/validated quando presenti",
+        "normalizzazione di comuni, province, partiti e join geometry-aware",
+        "scrittura di dataset derived, metadata layer e manifest machine-readable"
+      ],
+      "limitations": [
+        "la provenance del bundle non sostituisce le fonti elettorali originali",
+        "la copertura sostanziale dipende dai dati effettivamente ingestiti"
+      ]
+    },
+    {
+      "dataset_key": "municipalityResultsLong",
+      "path": "data/derived/municipality_results_long.csv",
+      "produced_by": "scripts/preprocess.py",
+      "source_class": "derived_bundle",
+      "transformation_steps": [
+        "ingest da cartelle camera_YYYY e layout clean/raw/validated quando presenti",
+        "normalizzazione di comuni, province, partiti e join geometry-aware",
+        "scrittura di dataset derived, metadata layer e manifest machine-readable"
+      ],
+      "limitations": [
+        "la provenance del bundle non sostituisce le fonti elettorali originali",
+        "la copertura sostanziale dipende dai dati effettivamente ingestiti"
+      ]
+    },
+    {
+      "dataset_key": "municipalityAliases",
+      "path": "data/derived/municipality_aliases.csv",
+      "produced_by": "scripts/preprocess.py",
+      "source_class": "derived_bundle",
+      "transformation_steps": [
+        "ingest da cartelle camera_YYYY e layout clean/raw/validated quando presenti",
+        "normalizzazione di comuni, province, partiti e join geometry-aware",
+        "scrittura di dataset derived, metadata layer e manifest machine-readable"
+      ],
+      "limitations": [
+        "la provenance del bundle non sostituisce le fonti elettorali originali",
+        "la copertura sostanziale dipende dai dati effettivamente ingestiti"
+      ]
+    },
+    {
+      "dataset_key": "geometry",
+      "path": "data/derived/geometries/municipalities_2026.geojson",
+      "produced_by": "scripts/preprocess.py + pack geometrico presente nel bundle",
+      "source_class": "derived_bundle",
+      "transformation_steps": [
+        "integrazione di geometrie comunali/provinciali nel bundle",
+        "selezione anno base e fallback dichiarati nel geometry pack"
+      ],
+      "limitations": [
+        "la provenance del bundle non sostituisce le fonti elettorali originali",
+        "la copertura sostanziale dipende dai dati effettivamente ingestiti"
+      ]
+    },
+    {
+      "dataset_key": "dataQualityReport",
+      "path": "data/derived/data_quality_report.json",
+      "produced_by": "scripts/preprocess.py",
+      "source_class": "derived_bundle",
+      "transformation_steps": [
+        "ingest da cartelle camera_YYYY e layout clean/raw/validated quando presenti",
+        "normalizzazione di comuni, province, partiti e join geometry-aware",
+        "scrittura di dataset derived, metadata layer e manifest machine-readable"
+      ],
+      "limitations": [
+        "la provenance del bundle non sostituisce le fonti elettorali originali",
+        "la copertura sostanziale dipende dai dati effettivamente ingestiti"
+      ]
+    },
+    {
+      "dataset_key": "customIndicators",
+      "path": "data/derived/custom_indicators.csv",
+      "produced_by": "scripts/preprocess.py",
+      "source_class": "derived_bundle",
+      "transformation_steps": [
+        "ingest da cartelle camera_YYYY e layout clean/raw/validated quando presenti",
+        "normalizzazione di comuni, province, partiti e join geometry-aware",
+        "scrittura di dataset derived, metadata layer e manifest machine-readable"
+      ],
+      "limitations": [
+        "la provenance del bundle non sostituisce le fonti elettorali originali",
+        "la copertura sostanziale dipende dai dati effettivamente ingestiti"
+      ]
+    },
+    {
+      "dataset_key": "geometryPack",
+      "path": "data/derived/geometry_pack.json",
+      "produced_by": "scripts/preprocess.py + pack geometrico presente nel bundle",
+      "source_class": "derived_bundle",
+      "transformation_steps": [
+        "integrazione di geometrie comunali/provinciali nel bundle",
+        "selezione anno base e fallback dichiarati nel geometry pack"
+      ],
+      "limitations": [
+        "la provenance del bundle non sostituisce le fonti elettorali originali",
+        "la copertura sostanziale dipende dai dati effettivamente ingestiti"
+      ]
+    },
+    {
+      "dataset_key": "provinceGeometry",
+      "path": "data/derived/geometries/provinces_2026.geojson",
+      "produced_by": "scripts/preprocess.py + pack geometrico presente nel bundle",
+      "source_class": "derived_bundle",
+      "transformation_steps": [
+        "integrazione di geometrie comunali/provinciali nel bundle",
+        "selezione anno base e fallback dichiarati nel geometry pack"
+      ],
+      "limitations": [
+        "la provenance del bundle non sostituisce le fonti elettorali originali",
+        "la copertura sostanziale dipende dai dati effettivamente ingestiti"
+      ]
+    },
+    {
+      "dataset_key": "datasetRegistry",
+      "path": "data/derived/dataset_registry.json",
+      "produced_by": "scripts/preprocess.py",
+      "source_class": "derived_bundle",
+      "transformation_steps": [
+        "ingest da cartelle camera_YYYY e layout clean/raw/validated quando presenti",
+        "normalizzazione di comuni, province, partiti e join geometry-aware",
+        "scrittura di dataset derived, metadata layer e manifest machine-readable"
+      ],
+      "limitations": [
+        "la provenance del bundle non sostituisce le fonti elettorali originali",
+        "la copertura sostanziale dipende dai dati effettivamente ingestiti"
+      ]
+    },
+    {
+      "dataset_key": "codebook",
+      "path": "data/derived/codebook.json",
+      "produced_by": "scripts/preprocess.py",
+      "source_class": "derived_bundle",
+      "transformation_steps": [
+        "ingest da cartelle camera_YYYY e layout clean/raw/validated quando presenti",
+        "normalizzazione di comuni, province, partiti e join geometry-aware",
+        "scrittura di dataset derived, metadata layer e manifest machine-readable"
+      ],
+      "limitations": [
+        "la provenance del bundle non sostituisce le fonti elettorali originali",
+        "la copertura sostanziale dipende dai dati effettivamente ingestiti"
+      ]
+    },
+    {
+      "dataset_key": "usageNotes",
+      "path": "data/derived/usage_notes.json",
+      "produced_by": "scripts/preprocess.py",
+      "source_class": "derived_bundle",
+      "transformation_steps": [
+        "ingest da cartelle camera_YYYY e layout clean/raw/validated quando presenti",
+        "normalizzazione di comuni, province, partiti e join geometry-aware",
+        "scrittura di dataset derived, metadata layer e manifest machine-readable"
+      ],
+      "limitations": [
+        "la provenance del bundle non sostituisce le fonti elettorali originali",
+        "la copertura sostanziale dipende dai dati effettivamente ingestiti"
+      ]
+    },
+    {
+      "dataset_key": "updateLog",
+      "path": "data/derived/update_log.json",
+      "produced_by": "scripts/preprocess.py",
+      "source_class": "derived_bundle",
+      "transformation_steps": [
+        "ingest da cartelle camera_YYYY e layout clean/raw/validated quando presenti",
+        "normalizzazione di comuni, province, partiti e join geometry-aware",
+        "scrittura di dataset derived, metadata layer e manifest machine-readable"
+      ],
+      "limitations": [
+        "la provenance del bundle non sostituisce le fonti elettorali originali",
+        "la copertura sostanziale dipende dai dati effettivamente ingestiti"
+      ]
+    },
+    {
+      "dataset_key": "dataProducts",
+      "path": "data/derived/data_products.json",
+      "produced_by": "scripts/preprocess.py",
+      "source_class": "derived_bundle",
+      "transformation_steps": [
+        "ingest da cartelle camera_YYYY e layout clean/raw/validated quando presenti",
+        "normalizzazione di comuni, province, partiti e join geometry-aware",
+        "scrittura di dataset derived, metadata layer e manifest machine-readable"
+      ],
+      "limitations": [
+        "la provenance del bundle non sostituisce le fonti elettorali originali",
+        "la copertura sostanziale dipende dai dati effettivamente ingestiti"
+      ]
+    },
+    {
+      "dataset_key": "datasetContracts",
+      "path": "data/derived/dataset_contracts.json",
+      "produced_by": "scripts/preprocess.py",
+      "source_class": "derived_bundle",
+      "transformation_steps": [
+        "ingest da cartelle camera_YYYY e layout clean/raw/validated quando presenti",
+        "normalizzazione di comuni, province, partiti e join geometry-aware",
+        "scrittura di dataset derived, metadata layer e manifest machine-readable"
+      ],
+      "limitations": [
+        "la provenance del bundle non sostituisce le fonti elettorali originali",
+        "la copertura sostanziale dipende dai dati effettivamente ingestiti"
+      ]
+    },
+    {
+      "dataset_key": "provenance",
+      "path": "data/derived/provenance.json",
+      "produced_by": "scripts/preprocess.py",
+      "source_class": "derived_bundle",
+      "transformation_steps": [
+        "ingest da cartelle camera_YYYY e layout clean/raw/validated quando presenti",
+        "normalizzazione di comuni, province, partiti e join geometry-aware",
+        "scrittura di dataset derived, metadata layer e manifest machine-readable"
+      ],
+      "limitations": [
+        "la provenance del bundle non sostituisce le fonti elettorali originali",
+        "la copertura sostanziale dipende dai dati effettivamente ingestiti"
+      ]
+    },
+    {
+      "dataset_key": "releaseManifest",
+      "path": "data/derived/release_manifest.json",
+      "produced_by": "scripts/preprocess.py",
+      "source_class": "derived_bundle",
+      "transformation_steps": [
+        "ingest da cartelle camera_YYYY e layout clean/raw/validated quando presenti",
+        "normalizzazione di comuni, province, partiti e join geometry-aware",
+        "scrittura di dataset derived, metadata layer e manifest machine-readable"
+      ],
+      "limitations": [
+        "la provenance del bundle non sostituisce le fonti elettorali originali",
+        "la copertura sostanziale dipende dai dati effettivamente ingestiti"
+      ]
+    },
+    {
+      "dataset_key": "researchRecipes",
+      "path": "data/derived/research_recipes.json",
+      "produced_by": "scripts/preprocess.py",
+      "source_class": "derived_bundle",
+      "transformation_steps": [
+        "ingest da cartelle camera_YYYY e layout clean/raw/validated quando presenti",
+        "normalizzazione di comuni, province, partiti e join geometry-aware",
+        "scrittura di dataset derived, metadata layer e manifest machine-readable"
+      ],
+      "limitations": [
+        "la provenance del bundle non sostituisce le fonti elettorali originali",
+        "la copertura sostanziale dipende dai dati effettivamente ingestiti"
+      ]
+    },
+    {
+      "dataset_key": "siteGuides",
+      "path": "data/derived/site_guides.json",
+      "produced_by": "scripts/preprocess.py",
+      "source_class": "derived_bundle",
+      "transformation_steps": [
+        "ingest da cartelle camera_YYYY e layout clean/raw/validated quando presenti",
+        "normalizzazione di comuni, province, partiti e join geometry-aware",
+        "scrittura di dataset derived, metadata layer e manifest machine-readable"
+      ],
+      "limitations": [
+        "la provenance del bundle non sostituisce le fonti elettorali originali",
+        "la copertura sostanziale dipende dai dati effettivamente ingestiti"
+      ]
+    }
+  ]
+}

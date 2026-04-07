@@ -1,0 +1,15 @@
+# Local reference material
+gerda-main/
+tabler_vendor_tmp/
+
+# Temporary screenshots and DOM dumps
+_*.png
+_*.html
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# OS/editor noise
+.DS_Store
+Thumbs.db

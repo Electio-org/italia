@@ -1,0 +1,51 @@
+{
+  "project": {
+    "title": "Lombardia Camera Explorer",
+    "version": "0.11.0",
+    "ready_for_real_data": true,
+    "notes": [
+      "Vote shares are recomputed from votes whenever a plausible denominator is available.",
+      "Derived quality report now includes plausibility validations.",
+      "Alias bootstrap and stricter consistency checks are included for demo bundles.",
+      "Geometry pack and province overlay are declared in the manifest for reproducible map loading.",
+      "Municipality lookup metadata is used when available to enrich province / geometry identifiers.",
+      "Guided question cards and evidence ladder are part of the bundle-facing UX layer.",
+      "Copy-ready citation and reproducibility lines help make each view shareable and method-aware."
+    ]
+  },
+  "files": {
+    "electionsMaster": "data/derived/elections_master.csv",
+    "municipalitiesMaster": "data/derived/municipalities_master.csv",
+    "partiesMaster": "data/derived/parties_master.csv",
+    "territorialLineage": "data/derived/territorial_lineage.csv",
+    "municipalitySummary": "data/derived/municipality_summary.csv",
+    "municipalityResultsLong": "data/derived/municipality_results_long.csv",
+    "municipalityAliases": "data/derived/municipality_aliases.csv",
+    "geometry": "data/derived/geometries/municipalities_2026.geojson",
+    "dataQualityReport": "data/derived/data_quality_report.json",
+    "customIndicators": "data/derived/custom_indicators.csv",
+    "geometryPack": "data/derived/geometry_pack.json",
+    "provinceGeometry": "data/derived/geometries/provinces_2026.geojson",
+    "datasetRegistry": "data/derived/dataset_registry.json",
+    "codebook": "data/derived/codebook.json",
+    "usageNotes": "data/derived/usage_notes.json",
+    "updateLog": "data/derived/update_log.json",
+    "dataProducts": "data/derived/data_products.json",
+    "datasetContracts": "data/derived/dataset_contracts.json",
+    "provenance": "data/derived/provenance.json",
+    "releaseManifest": "data/derived/release_manifest.json",
+    "researchRecipes": "data/derived/research_recipes.json",
+    "siteGuides": "data/derived/site_guides.json"
+  },
+  "contracts": {
+    "geometryJoinPriority": [
+      "geometry_id",
+      "municipality_id",
+      "name_current"
+    ],
+    "territorialModes": [
+      "historical",
+      "harmonized"
+    ]
+  }
+}

@@ -1,0 +1,117 @@
+{
+  "generated_by": "preprocess.py",
+  "layers": [
+    {
+      "key": "explore",
+      "title": "Esplora",
+      "eyebrow": "Ingresso pubblico",
+      "description": "Apri la mappa, leggi affluenza, partiti e profilo comunale senza perdere coverage e contesto.",
+      "audience": "public",
+      "analysisMode": "explore",
+      "uiLevel": "basic",
+      "jumpTarget": "map-wrapper",
+      "cta": "Apri la mappa"
+    },
+    {
+      "key": "understand",
+      "title": "Capisci",
+      "eyebrow": "Layer briefing",
+      "description": "Passa da mappa a sintesi, evidenza e confronto per amministratori, stampa e uso civico disciplinato.",
+      "audience": "press",
+      "analysisMode": "compare",
+      "uiLevel": "basic",
+      "jumpTarget": "evidence-panel",
+      "cta": "Apri briefing"
+    },
+    {
+      "key": "analyze",
+      "title": "Analizza",
+      "eyebrow": "Layer ricerca",
+      "description": "Vai su audit, coverage, release, accesso programmatico e prodotti dati quando la vista deve essere riproducibile.",
+      "audience": "research",
+      "analysisMode": "diagnose",
+      "uiLevel": "advanced",
+      "jumpTarget": "release-studio-panel",
+      "cta": "Apri release studio"
+    }
+  ],
+  "explainers": [
+    {
+      "key": "what_you_see",
+      "title": "Cosa stai guardando",
+      "body": "Ogni vista combina metrica, elezione, modalita territoriale e base geometrica. La mappa non e mai neutra: e sempre un filtro dichiarato.",
+      "accent": "scope"
+    },
+    {
+      "key": "nodata",
+      "title": "No data non vuol dire valore basso",
+      "body": "Un comune non colorato puo indicare dato assente, join territoriale incompleto o coverage insufficiente. Va distinto da un risultato minimo.",
+      "accent": "nodata"
+    },
+    {
+      "key": "historical_vs_harm",
+      "title": "Storico vs armonizzato",
+      "body": "Storico segue il territorio com'era nell'elezione; armonizzato riallinea i risultati a un perimetro comune. Le due letture rispondono a domande diverse.",
+      "accent": "boundary"
+    },
+    {
+      "key": "cite",
+      "title": "Quando una vista e citabile",
+      "body": "Coverage, risultati, geometrie e confronto devono essere dichiarati. Per questo il sito espone evidenza, citazione pronta e riga minima di riproducibilita.",
+      "accent": "evidence"
+    }
+  ],
+  "faq": [
+    {
+      "question": "Posso confrontare due elezioni qualsiasi?",
+      "answer": "Solo se gli anni hanno copertura utile e la base territoriale scelta regge davvero la lettura. Evidence ladder e coverage matrix servono proprio a questo.",
+      "tag": "Confronti"
+    },
+    {
+      "question": "Che cosa significa no data?",
+      "answer": "Significa che il bundle non offre un valore affidabile per quella vista: dato assente, troppo parziale o non agganciato bene alla geometria.",
+      "tag": "No data"
+    },
+    {
+      "question": "Qual e la differenza tra storico e armonizzato?",
+      "answer": "Storico conserva il perimetro dell'epoca; armonizzato prova a riallineare i risultati su confini costanti. Uno privilegia fedelta storica, l'altro comparabilita.",
+      "tag": "Boundary"
+    },
+    {
+      "question": "Posso citare una vista in un report?",
+      "answer": "Si, ma conviene sempre citare metrica, anno, modalita territoriale, base geometrica e livello di evidenza.",
+      "tag": "Citazione"
+    }
+  ],
+  "manifesto": {
+    "title": "Una base elettorale che non ti chiede di scegliere tra rigore e accessibilita.",
+    "standfirst": "Sotto c'e una release leggibile da codice; sopra, un sito che prova a spiegare, confrontare e dichiarare i limiti senza nasconderli.",
+    "statement": "Non una mappa che suggerisce una storia sola, ma un atlante che lascia emergere storie diverse sullo stesso terreno dichiarato."
+  },
+  "pillars": [
+    {
+      "key": "same_engine",
+      "eyebrow": "Stesso motore",
+      "title": "Pubblico, briefing e ricerca",
+      "body": "Tre porte di ingresso, una sola base dati: puoi partire semplice e scendere fino a release, contracts e accesso programmatico."
+    },
+    {
+      "key": "declared_limits",
+      "eyebrow": "Limiti dichiarati",
+      "title": "No-data e coverage non vengono nascosti",
+      "body": "La parte divulgativa non finge completezza: rende leggibili coverage, evidenza e guardrail invece di trasformare il vuoto in storytelling."
+    },
+    {
+      "key": "release_backed",
+      "eyebrow": "Release-backed",
+      "title": "Ogni vista vive dentro una release",
+      "body": "Manifest, products, provenance, contracts, citation e loader spostano il progetto da dashboard gradevole a oggetto archivistico."
+    },
+    {
+      "key": "boundary_aware",
+      "eyebrow": "Boundary-aware",
+      "title": "I confini fanno parte della lettura",
+      "body": "Storico, armonizzato e basi geometriche non sono dettagli nascosti: sono parte della promessa metodologica e della UX."
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Lombardia Camera Explorer">
+  <rect width="64" height="64" rx="16" fill="#153a66"/>
+  <path d="M18 18h28v6H24v16h16v6H18V18Z" fill="#f5f7fb"/>
+  <path d="M34 18h12a4 4 0 0 1 4 4v24h-6V24h-10v-6Z" fill="#84a9d8"/>
+</svg>

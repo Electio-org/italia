@@ -1,0 +1,505 @@
+{
+  "generated_by": "preprocess.py",
+  "datasets": [
+    {
+      "dataset": "municipalities_master.csv",
+      "columns": [
+        {
+          "name": "municipality_id",
+          "description": "Codice comune stabile/normalizzato usato nel bundle.",
+          "type_hint": "string"
+        },
+        {
+          "name": "name_current",
+          "description": "Campo del contratto dati del bundle.",
+          "type_hint": "string"
+        },
+        {
+          "name": "name_historical",
+          "description": "Campo del contratto dati del bundle.",
+          "type_hint": "string"
+        },
+        {
+          "name": "province_current",
+          "description": "Campo del contratto dati del bundle.",
+          "type_hint": "string"
+        },
+        {
+          "name": "province_code_current",
+          "description": "Campo del contratto dati del bundle.",
+          "type_hint": "string"
+        },
+        {
+          "name": "region",
+          "description": "Campo del contratto dati del bundle.",
+          "type_hint": "string"
+        },
+        {
+          "name": "geometry_id",
+          "description": "Chiave di join geografico verso le geometrie comunali.",
+          "type_hint": "string"
+        },
+        {
+          "name": "valid_from",
+          "description": "Campo del contratto dati del bundle.",
+          "type_hint": "string"
+        },
+        {
+          "name": "valid_to",
+          "description": "Campo del contratto dati del bundle.",
+          "type_hint": "string"
+        },
+        {
+          "name": "active_current",
+          "description": "Campo del contratto dati del bundle.",
+          "type_hint": "string"
+        },
+        {
+          "name": "source_status",
+          "description": "Campo del contratto dati del bundle.",
+          "type_hint": "string"
+        },
+        {
+          "name": "alias_names",
+          "description": "Campo del contratto dati del bundle.",
+          "type_hint": "string"
+        },
+        {
+          "name": "lineage_note",
+          "description": "Campo del contratto dati del bundle.",
+          "type_hint": "string"
+        },
+        {
+          "name": "harmonized_group_id",
+          "description": "Campo del contratto dati del bundle.",
+          "type_hint": "string"
+        }
+      ]
+    },
+    {
+      "dataset": "parties_master.csv",
+      "columns": [
+        {
+          "name": "party_std",
+          "description": "Nome standardizzato del partito/lista.",
+          "type_hint": "string"
+        },
+        {
+          "name": "party_display_name",
+          "description": "Campo del contratto dati del bundle.",
+          "type_hint": "string"
+        },
+        {
+          "name": "party_family",
+          "description": "Famiglia politica comparabile.",
+          "type_hint": "string"
+        },
+        {
+          "name": "bloc",
+          "description": "Blocco ideologico aggregato.",
+          "type_hint": "string"
+        },
+        {
+          "name": "color",
+          "description": "Campo del contratto dati del bundle.",
+          "type_hint": "string"
+        },
+        {
+          "name": "aliases",
+          "description": "Campo del contratto dati del bundle.",
+          "type_hint": "string"
+        },
+        {
+          "name": "valid_from",
+          "description": "Campo del contratto dati del bundle.",
+          "type_hint": "string"
+        },
+        {
+          "name": "valid_to",
+          "description": "Campo del contratto dati del bundle.",
+          "type_hint": "string"
+        },
+        {
+          "name": "comparability_note",
+          "description": "Note metodologiche e fallback applicati al record.",
+          "type_hint": "string"
+        }
+      ]
+    },
+    {
+      "dataset": "territorial_lineage.csv",
+      "columns": [
+        {
+          "name": "municipality_id_stable",
+          "description": "Campo del contratto dati del bundle.",
+          "type_hint": "string"
+        },
+        {
+          "name": "name_current",
+          "description": "Campo del contratto dati del bundle.",
+          "type_hint": "string"
+        },
+        {
+          "name": "name_historical",
+          "description": "Campo del contratto dati del bundle.",
+          "type_hint": "string"
+        },
+        {
+          "name": "valid_from",
+          "description": "Campo del contratto dati del bundle.",
+          "type_hint": "string"
+        },
+        {
+          "name": "valid_to",
+          "description": "Campo del contratto dati del bundle.",
+          "type_hint": "string"
+        },
+        {
+          "name": "parent_ids",
+          "description": "Campo del contratto dati del bundle.",
+          "type_hint": "string"
+        },
+        {
+          "name": "child_ids",
+          "description": "Campo del contratto dati del bundle.",
+          "type_hint": "string"
+        },
+        {
+          "name": "event_type",
+          "description": "Campo del contratto dati del bundle.",
+          "type_hint": "string"
+        },
+        {
+          "name": "merge_event",
+          "description": "Campo del contratto dati del bundle.",
+          "type_hint": "string"
+        },
+        {
+          "name": "split_event",
+          "description": "Campo del contratto dati del bundle.",
+          "type_hint": "string"
+        },
+        {
+          "name": "rename_event",
+          "description": "Campo del contratto dati del bundle.",
+          "type_hint": "string"
+        },
+        {
+          "name": "province_history",
+          "description": "Campo del contratto dati del bundle.",
+          "type_hint": "string"
+        },
+        {
+          "name": "geometry_strategy",
+          "description": "Campo del contratto dati del bundle.",
+          "type_hint": "string"
+        },
+        {
+          "name": "notes",
+          "description": "Campo del contratto dati del bundle.",
+          "type_hint": "string"
+        }
+      ]
+    },
+    {
+      "dataset": "municipality_summary.csv",
+      "columns": [
+        {
+          "name": "election_key",
+          "description": "Chiave stabile dell'elezione.",
+          "type_hint": "string"
+        },
+        {
+          "name": "election_year",
+          "description": "Anno dell'elezione.",
+          "type_hint": "number"
+        },
+        {
+          "name": "election_date",
+          "description": "Data ISO dell'elezione, se disponibile.",
+          "type_hint": "string"
+        },
+        {
+          "name": "municipality_id",
+          "description": "Codice comune stabile/normalizzato usato nel bundle.",
+          "type_hint": "string"
+        },
+        {
+          "name": "municipality_name",
+          "description": "Nome del comune osservato nel record.",
+          "type_hint": "string"
+        },
+        {
+          "name": "province",
+          "description": "Provincia del record/territorio osservato.",
+          "type_hint": "string"
+        },
+        {
+          "name": "region",
+          "description": "Campo del contratto dati del bundle.",
+          "type_hint": "string"
+        },
+        {
+          "name": "geometry_id",
+          "description": "Chiave di join geografico verso le geometrie comunali.",
+          "type_hint": "string"
+        },
+        {
+          "name": "territorial_mode",
+          "description": "historical o harmonized.",
+          "type_hint": "string"
+        },
+        {
+          "name": "territorial_status",
+          "description": "Campo del contratto dati del bundle.",
+          "type_hint": "string"
+        },
+        {
+          "name": "turnout_pct",
+          "description": "Affluenza percentuale.",
+          "type_hint": "number"
+        },
+        {
+          "name": "electors",
+          "description": "Elettori iscritti, se disponibili.",
+          "type_hint": "string"
+        },
+        {
+          "name": "voters",
+          "description": "Votanti, se disponibili.",
+          "type_hint": "string"
+        },
+        {
+          "name": "valid_votes",
+          "description": "Voti validi, se disponibili.",
+          "type_hint": "number"
+        },
+        {
+          "name": "total_votes",
+          "description": "Campo del contratto dati del bundle.",
+          "type_hint": "number"
+        },
+        {
+          "name": "first_party_std",
+          "description": "Leader della competizione dopo standardizzazione partiti.",
+          "type_hint": "string"
+        },
+        {
+          "name": "first_party_share",
+          "description": "Campo del contratto dati del bundle.",
+          "type_hint": "number"
+        },
+        {
+          "name": "second_party_std",
+          "description": "Campo del contratto dati del bundle.",
+          "type_hint": "string"
+        },
+        {
+          "name": "second_party_share",
+          "description": "Campo del contratto dati del bundle.",
+          "type_hint": "number"
+        },
+        {
+          "name": "first_second_margin",
+          "description": "Campo del contratto dati del bundle.",
+          "type_hint": "number"
+        },
+        {
+          "name": "dominant_block",
+          "description": "Campo del contratto dati del bundle.",
+          "type_hint": "string"
+        },
+        {
+          "name": "comparability_note",
+          "description": "Note metodologiche e fallback applicati al record.",
+          "type_hint": "string"
+        },
+        {
+          "name": "completeness_flag",
+          "description": "Flag sintetico di completezza/qualità del record.",
+          "type_hint": "string"
+        }
+      ]
+    },
+    {
+      "dataset": "municipality_results_long.csv",
+      "columns": [
+        {
+          "name": "election_key",
+          "description": "Chiave stabile dell'elezione.",
+          "type_hint": "string"
+        },
+        {
+          "name": "election_year",
+          "description": "Anno dell'elezione.",
+          "type_hint": "number"
+        },
+        {
+          "name": "election_date",
+          "description": "Data ISO dell'elezione, se disponibile.",
+          "type_hint": "string"
+        },
+        {
+          "name": "municipality_id",
+          "description": "Codice comune stabile/normalizzato usato nel bundle.",
+          "type_hint": "string"
+        },
+        {
+          "name": "municipality_name",
+          "description": "Nome del comune osservato nel record.",
+          "type_hint": "string"
+        },
+        {
+          "name": "province",
+          "description": "Provincia del record/territorio osservato.",
+          "type_hint": "string"
+        },
+        {
+          "name": "region",
+          "description": "Campo del contratto dati del bundle.",
+          "type_hint": "string"
+        },
+        {
+          "name": "party_raw",
+          "description": "Campo del contratto dati del bundle.",
+          "type_hint": "string"
+        },
+        {
+          "name": "party_std",
+          "description": "Nome standardizzato del partito/lista.",
+          "type_hint": "string"
+        },
+        {
+          "name": "party_family",
+          "description": "Famiglia politica comparabile.",
+          "type_hint": "string"
+        },
+        {
+          "name": "bloc",
+          "description": "Blocco ideologico aggregato.",
+          "type_hint": "string"
+        },
+        {
+          "name": "votes",
+          "description": "Campo del contratto dati del bundle.",
+          "type_hint": "number"
+        },
+        {
+          "name": "vote_share",
+          "description": "Quota percentuale ricalcolata dai voti quando possibile.",
+          "type_hint": "number"
+        },
+        {
+          "name": "rank",
+          "description": "Campo del contratto dati del bundle.",
+          "type_hint": "string"
+        },
+        {
+          "name": "territorial_mode",
+          "description": "historical o harmonized.",
+          "type_hint": "string"
+        },
+        {
+          "name": "territorial_status",
+          "description": "Campo del contratto dati del bundle.",
+          "type_hint": "string"
+        },
+        {
+          "name": "geometry_id",
+          "description": "Chiave di join geografico verso le geometrie comunali.",
+          "type_hint": "string"
+        },
+        {
+          "name": "comparability_note",
+          "description": "Note metodologiche e fallback applicati al record.",
+          "type_hint": "string"
+        }
+      ]
+    },
+    {
+      "dataset": "municipality_aliases.csv",
+      "columns": [
+        {
+          "name": "municipality_id",
+          "description": "Codice comune stabile/normalizzato usato nel bundle.",
+          "type_hint": "string"
+        },
+        {
+          "name": "alias",
+          "description": "Campo del contratto dati del bundle.",
+          "type_hint": "string"
+        },
+        {
+          "name": "alias_type",
+          "description": "Campo del contratto dati del bundle.",
+          "type_hint": "string"
+        },
+        {
+          "name": "valid_from",
+          "description": "Campo del contratto dati del bundle.",
+          "type_hint": "string"
+        },
+        {
+          "name": "valid_to",
+          "description": "Campo del contratto dati del bundle.",
+          "type_hint": "string"
+        },
+        {
+          "name": "notes",
+          "description": "Campo del contratto dati del bundle.",
+          "type_hint": "string"
+        }
+      ]
+    },
+    {
+      "dataset": "custom_indicators.csv",
+      "columns": [
+        {
+          "name": "indicator_key",
+          "description": "Campo del contratto dati del bundle.",
+          "type_hint": "string"
+        },
+        {
+          "name": "indicator_label",
+          "description": "Campo del contratto dati del bundle.",
+          "type_hint": "string"
+        },
+        {
+          "name": "municipality_id",
+          "description": "Codice comune stabile/normalizzato usato nel bundle.",
+          "type_hint": "string"
+        },
+        {
+          "name": "election_key",
+          "description": "Chiave stabile dell'elezione.",
+          "type_hint": "string"
+        },
+        {
+          "name": "election_year",
+          "description": "Anno dell'elezione.",
+          "type_hint": "number"
+        },
+        {
+          "name": "value",
+          "description": "Campo del contratto dati del bundle.",
+          "type_hint": "string"
+        },
+        {
+          "name": "source",
+          "description": "Campo del contratto dati del bundle.",
+          "type_hint": "string"
+        },
+        {
+          "name": "notes",
+          "description": "Campo del contratto dati del bundle.",
+          "type_hint": "string"
+        },
+        {
+          "name": "territorial_mode",
+          "description": "historical o harmonized.",
+          "type_hint": "string"
+        }
+      ]
+    }
+  ]
+}

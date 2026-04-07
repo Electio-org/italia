@@ -1,0 +1,189 @@
+{
+  "generated_by": "preprocess.py",
+  "contracts": [
+    {
+      "dataset": "municipalities_master.csv",
+      "required_columns": [
+        "municipality_id",
+        "name_current",
+        "name_historical",
+        "province_current",
+        "province_code_current",
+        "region",
+        "geometry_id",
+        "valid_from",
+        "valid_to",
+        "active_current",
+        "source_status",
+        "alias_names",
+        "lineage_note",
+        "harmonized_group_id"
+      ],
+      "key_columns": [
+        "municipality_id"
+      ],
+      "validation_rules": [
+        "rispettare lo schema dichiarato nel contratto bundle"
+      ]
+    },
+    {
+      "dataset": "parties_master.csv",
+      "required_columns": [
+        "party_std",
+        "party_display_name",
+        "party_family",
+        "bloc",
+        "color",
+        "aliases",
+        "valid_from",
+        "valid_to",
+        "comparability_note"
+      ],
+      "key_columns": [
+        "party_std"
+      ],
+      "validation_rules": [
+        "rispettare lo schema dichiarato nel contratto bundle"
+      ]
+    },
+    {
+      "dataset": "territorial_lineage.csv",
+      "required_columns": [
+        "municipality_id_stable",
+        "name_current",
+        "name_historical",
+        "valid_from",
+        "valid_to",
+        "parent_ids",
+        "child_ids",
+        "event_type",
+        "merge_event",
+        "split_event",
+        "rename_event",
+        "province_history",
+        "geometry_strategy",
+        "notes"
+      ],
+      "key_columns": [
+        "municipality_id_stable"
+      ],
+      "validation_rules": [
+        "rispettare lo schema dichiarato nel contratto bundle"
+      ]
+    },
+    {
+      "dataset": "municipality_summary.csv",
+      "required_columns": [
+        "election_key",
+        "election_year",
+        "election_date",
+        "municipality_id",
+        "municipality_name",
+        "province",
+        "region",
+        "geometry_id",
+        "territorial_mode",
+        "territorial_status",
+        "turnout_pct",
+        "electors",
+        "voters",
+        "valid_votes",
+        "total_votes",
+        "first_party_std",
+        "first_party_share",
+        "second_party_std",
+        "second_party_share",
+        "first_second_margin",
+        "dominant_block",
+        "comparability_note",
+        "completeness_flag"
+      ],
+      "key_columns": [
+        "election_key",
+        "municipality_id",
+        "territorial_mode"
+      ],
+      "validation_rules": [
+        "completeness_flag deve distinguere turnout_only da party_results_checked",
+        "turnout_pct deve restare tra 0 e 100 quando disponibile",
+        "geometry_id va usato come chiave primaria di join geografico quando disponibile"
+      ]
+    },
+    {
+      "dataset": "municipality_results_long.csv",
+      "required_columns": [
+        "election_key",
+        "election_year",
+        "election_date",
+        "municipality_id",
+        "municipality_name",
+        "province",
+        "region",
+        "party_raw",
+        "party_std",
+        "party_family",
+        "bloc",
+        "votes",
+        "vote_share",
+        "rank",
+        "territorial_mode",
+        "territorial_status",
+        "geometry_id",
+        "comparability_note"
+      ],
+      "key_columns": [
+        "election_key",
+        "municipality_id",
+        "party_std",
+        "territorial_mode"
+      ],
+      "validation_rules": [
+        "vote_share deve restare in [0,100] salvo arrotondamenti minimi",
+        "party_std deve essere la forma standardizzata confrontabile",
+        "comparability_note deve esplicitare fallback e parzialità"
+      ]
+    },
+    {
+      "dataset": "municipality_aliases.csv",
+      "required_columns": [
+        "municipality_id",
+        "alias",
+        "alias_type",
+        "valid_from",
+        "valid_to",
+        "notes"
+      ],
+      "key_columns": [
+        "municipality_id",
+        "alias"
+      ],
+      "validation_rules": [
+        "alias_type è richiesto",
+        "gli alias servono per ricerca e lineage, non come identificatore stabile"
+      ]
+    },
+    {
+      "dataset": "custom_indicators.csv",
+      "required_columns": [
+        "indicator_key",
+        "indicator_label",
+        "municipality_id",
+        "election_key",
+        "election_year",
+        "value",
+        "source",
+        "notes",
+        "territorial_mode"
+      ],
+      "key_columns": [
+        "indicator_key",
+        "municipality_id",
+        "election_key",
+        "territorial_mode"
+      ],
+      "validation_rules": [
+        "rispettare lo schema dichiarato nel contratto bundle"
+      ]
+    }
+  ]
+}

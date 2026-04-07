@@ -1,0 +1,162 @@
+{
+  "parse_log": [
+    {
+      "election_key": "camera_1948",
+      "status": "parsed_empty",
+      "municipality_rows": 0,
+      "party_rows_raw": 0
+    },
+    {
+      "election_key": "camera_1953",
+      "status": "parsed_empty",
+      "municipality_rows": 0,
+      "party_rows_raw": 0
+    },
+    {
+      "election_key": "camera_1958",
+      "status": "parsed_empty",
+      "municipality_rows": 0,
+      "party_rows_raw": 0
+    },
+    {
+      "election_key": "camera_1963",
+      "status": "parsed_empty",
+      "municipality_rows": 0,
+      "party_rows_raw": 0
+    },
+    {
+      "election_key": "camera_1968",
+      "status": "parsed_empty",
+      "municipality_rows": 0,
+      "party_rows_raw": 0
+    },
+    {
+      "election_key": "camera_1972",
+      "status": "parsed_empty",
+      "municipality_rows": 0,
+      "party_rows_raw": 0
+    },
+    {
+      "election_key": "camera_1976",
+      "status": "parsed_empty",
+      "municipality_rows": 0,
+      "party_rows_raw": 0
+    },
+    {
+      "election_key": "camera_1979",
+      "status": "parsed_empty",
+      "municipality_rows": 0,
+      "party_rows_raw": 0
+    },
+    {
+      "election_key": "camera_1983",
+      "status": "parsed_empty",
+      "municipality_rows": 0,
+      "party_rows_raw": 0
+    },
+    {
+      "election_key": "camera_1987",
+      "status": "parsed_empty",
+      "municipality_rows": 0,
+      "party_rows_raw": 0
+    },
+    {
+      "election_key": "camera_1992",
+      "status": "parsed_empty",
+      "municipality_rows": 0,
+      "party_rows_raw": 0
+    },
+    {
+      "election_key": "camera_1994",
+      "status": "parsed_with_data",
+      "municipality_rows": 312,
+      "party_rows_raw": 14202
+    },
+    {
+      "election_key": "camera_1996",
+      "status": "parsed_with_data",
+      "municipality_rows": 312,
+      "party_rows_raw": 9275
+    },
+    {
+      "election_key": "camera_2001",
+      "status": "parsed_with_data",
+      "municipality_rows": 312,
+      "party_rows_raw": 12925
+    },
+    {
+      "election_key": "camera_2006",
+      "status": "parsed_with_data",
+      "municipality_rows": 310,
+      "party_rows_raw": 17301
+    },
+    {
+      "election_key": "camera_2008",
+      "status": "parsed_with_data",
+      "municipality_rows": 310,
+      "party_rows_raw": 18730
+    },
+    {
+      "election_key": "camera_2013",
+      "status": "parsed_with_data",
+      "municipality_rows": 310,
+      "party_rows_raw": 16913
+    },
+    {
+      "election_key": "camera_2018",
+      "status": "parsed_with_data",
+      "municipality_rows": 1516,
+      "party_rows_raw": 22994
+    },
+    {
+      "election_key": "camera_2022",
+      "status": "parsed_with_data",
+      "municipality_rows": 1506,
+      "party_rows_raw": 22185
+    }
+  ],
+  "validations": {
+    "issues": [
+      {
+        "severity": "warning",
+        "check": "vote_share_range",
+        "scope": "municipality_results_long",
+        "details": "Quote fuori range [0,100].",
+        "affected_rows": 1
+      },
+      {
+        "severity": "warning",
+        "check": "share_sum_plausibility",
+        "scope": "municipality_results_long",
+        "details": "Somma quote per comune lontana da 100 ± 10.",
+        "affected_rows": 1358
+      },
+      {
+        "severity": "warning",
+        "check": "turnout_vs_counts",
+        "scope": "municipality_summary",
+        "details": "Affluenza incoerente con votanti/elettori oltre 1.5 punti.",
+        "affected_rows": 4
+      },
+      {
+        "severity": "warning",
+        "check": "missing_province",
+        "scope": "municipality_summary",
+        "details": "Provincia vuota su righe comunali osservate.",
+        "affected_rows": 203
+      },
+      {
+        "severity": "warning",
+        "check": "party_votes_vs_valid_votes",
+        "scope": "derived_consistency",
+        "details": "Somma voti per partito lontana dai voti validi oltre l'8%.",
+        "affected_rows": 1876
+      }
+    ],
+    "issue_count": 5,
+    "readiness_score": 50,
+    "technical_readiness_score": 50,
+    "has_errors": false,
+    "substantive_coverage_score": 42
+  }
+}

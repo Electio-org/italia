@@ -1,0 +1,62 @@
+{
+  "generated_by": "preprocess.py",
+  "release_channel": "static_bundle",
+  "products": [
+    {
+      "product_key": "camera_muni_historical",
+      "title": "Camera Lombardia · comuni storici",
+      "kind": "election_panel",
+      "territorial_mode": "historical",
+      "granularity": "municipality-election",
+      "primary_dataset_key": "municipalitySummary",
+      "companion_dataset_key": "municipalityResultsLong",
+      "join_keys": [
+        "municipality_id",
+        "geometry_id",
+        "election_key"
+      ],
+      "guardrails": [
+        "Usare coverage e completeness_flag prima di interpretare trend forti.",
+        "Le quote di partito possono restare parziali nei bundle incompleti."
+      ]
+    },
+    {
+      "product_key": "geometry_pack_lombardia",
+      "title": "Pacchetto geometrie Lombardia",
+      "kind": "boundary_pack",
+      "granularity": "municipality/province boundary by year",
+      "primary_dataset_key": "geometryPack",
+      "companion_dataset_key": "provinceGeometry",
+      "join_keys": [
+        "geometry_id",
+        "municipality_id"
+      ]
+    },
+    {
+      "product_key": "metadata_layer",
+      "title": "Metadata layer del bundle",
+      "kind": "metadata_bundle",
+      "granularity": "bundle-level",
+      "primary_dataset_key": "datasetRegistry",
+      "companion_dataset_key": "codebook",
+      "extra_dataset_keys": [
+        "usageNotes",
+        "updateLog"
+      ]
+    }
+  ],
+  "clients": [
+    {
+      "client_key": "python_loader",
+      "language": "python",
+      "entrypoint": "clients/python/lce_loader.py",
+      "example": "from clients.python.lce_loader import load_bundle\nbundle = load_bundle('.')\nsummary = bundle.load_dataset('municipalitySummary')"
+    },
+    {
+      "client_key": "r_loader",
+      "language": "r",
+      "entrypoint": "clients/r/lce_loader.R",
+      "example": "source('clients/r/lce_loader.R')\nbundle <- load_lce_bundle('.')\nsummary <- lce_read(bundle, 'municipalitySummary')"
+    }
+  ]
+}

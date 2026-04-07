@@ -1,0 +1,55 @@
+{
+  "generated_by": "preprocess.py",
+  "recipes": [
+    {
+      "recipe_key": "public_overview",
+      "title": "Panoramica pubblica del territorio",
+      "audiences": [
+        "public",
+        "press",
+        "admin"
+      ],
+      "goal": "Aprire il bundle da una vista civica chiara senza perdere coverage e metodo.",
+      "jump_target": "map-wrapper",
+      "settings": {
+        "analysisMode": "explore",
+        "metric": "turnout",
+        "palette": "sequential"
+      },
+      "steps": [
+        "Parti da affluenza e coverage.",
+        "Apri scheda comune e overview.",
+        "Passa ai partiti solo dopo aver letto briefing ed evidenza."
+      ],
+      "guardrails": [
+        "No-data non equivale a valore basso.",
+        "Coverage e comparabilità vanno dichiarati prima delle conclusioni."
+      ]
+    },
+    {
+      "recipe_key": "bundle_audit",
+      "title": "Audit bundle e accesso programmatico",
+      "audiences": [
+        "research",
+        "admin",
+        "press"
+      ],
+      "goal": "Usare il progetto anche come release verificabile e caricabile da codice.",
+      "jump_target": "release-studio-panel",
+      "settings": {
+        "analysisMode": "diagnose",
+        "metric": "stability_index",
+        "palette": "accessible",
+        "showNotes": true
+      },
+      "steps": [
+        "Controlla release, provenance e contracts.",
+        "Apri loader e snippets Python/R.",
+        "Usa audit, codebook e dataset registry insieme."
+      ],
+      "guardrails": [
+        "Integrità tecnica e copertura sostanziale non coincidono."
+      ]
+    }
+  ]
+}

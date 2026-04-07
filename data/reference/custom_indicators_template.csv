@@ -1,0 +1,2 @@
+indicator_key,indicator_label,municipality_id,election_key,election_year,value,source,notes,territorial_mode
+custom_demo,Indicatore demo,MERATE,,2022,12.5,manuale,Esempio di riga per overlay custom,historical

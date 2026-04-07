@@ -1,0 +1,35 @@
+{
+  "generated_by": "preprocess.py",
+  "notes": [
+    {
+      "key": "historical_mode",
+      "title": "Modalità storica",
+      "severity": "info",
+      "text": "Nel bundle corrente la modalità storica è la base osservata. La modalità armonizzata va esposta solo se il bundle contiene righe harmonized vere."
+    },
+    {
+      "key": "geometry_basis",
+      "title": "Base geometrica",
+      "severity": "info",
+      "text": "Geometrie comunali disponibili per gli anni: 1991, 2001, 2014, 2018, 2021, 2026. Se scegli una base geometrica esplicita, stai cambiando la rappresentazione cartografica, non il dato elettorale sottostante."
+    },
+    {
+      "key": "coverage",
+      "title": "Copertura sostanziale",
+      "severity": "warn",
+      "text": "La readiness tecnica può essere alta anche con copertura sostanziale bassa. Bundle attuale: technical=50, substantive=42."
+    },
+    {
+      "key": "shares",
+      "title": "Quote di partito",
+      "severity": "info",
+      "text": "Le quote sono ricalcolate dai voti quando il denominatore è plausibile. Se i risultati di partito sono incompleti, le quote vanno lette come parziali e non come distribuzione esaustiva."
+    },
+    {
+      "key": "province_region",
+      "title": "Contesto provinciale e regionale",
+      "severity": "info",
+      "text": "I confronti con provincia e Lombardia sono calcolati come aggregati pesati sui conteggi disponibili, non come media semplice dei comuni."
+    }
+  ]
+}

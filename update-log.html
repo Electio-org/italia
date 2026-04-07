@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light" />
+  <title>Lombardia Camera Explorer | Aggiornamenti</title>
+  <meta name="description" content="Timeline delle release, footprint della release corrente e stato del bundle Lombardia Camera Explorer." />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="stylesheet" href="vendor/tabler/core/tabler.min.css" />
+  <link rel="stylesheet" href="vendor/tabler/icons/tabler-icons.min.css" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="tabler-theme.css" />
+</head>
+<body data-site-page="update-log">
+  <a href="#main-content" class="skip-link">Salta al contenuto</a>
+  <div class="page page-site">
+    <header class="site-header navbar navbar-expand-lg navbar-light d-print-none" role="banner">
+      <div class="container-xl site-header-inner">
+        <a class="navbar-brand site-brand" href="index.html">
+          <span class="site-brand-monogram">LC</span>
+          <span class="site-brand-copy">
+            <span class="site-brand-mark">Lombardia Camera Explorer</span>
+            <span class="site-brand-subtitle">Piattaforma pubblica per i risultati comunali della Camera in Lombardia</span>
+          </span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#site-nav-menu" aria-controls="site-nav-menu" aria-expanded="false" aria-label="Apri navigazione">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="site-nav-menu">
+          <nav class="navbar-nav ms-auto site-nav" aria-label="Navigazione principale">
+            <a class="nav-link" href="index.html"><i class="ti ti-chart-grid-dots site-nav-icon"></i><span>Dashboard</span></a>
+            <a class="nav-link" href="data-download.html"><i class="ti ti-database-export site-nav-icon"></i><span>Scarica dati</span></a>
+            <a class="nav-link" href="programmatic-access.html"><i class="ti ti-code-circle-2 site-nav-icon"></i><span>Accesso programmatico</span></a>
+            <a class="nav-link" href="usage-notes.html"><i class="ti ti-book-2 site-nav-icon"></i><span>Note d'uso</span></a>
+            <a class="nav-link is-active active" href="update-log.html"><i class="ti ti-history site-nav-icon"></i><span>Aggiornamenti</span></a>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <main id="main-content" class="site-doc-main page-body">
+      <section class="site-doc-hero">
+        <div class="doc-eyebrow">Aggiornamenti</div>
+        <h1>Storia delle release e della disciplina del bundle.</h1>
+        <p class="site-doc-standfirst">Timeline delle modifiche, stato della release corrente e footprint dei file dichiarati. Una piattaforma pubblica credibile deve lasciare una traccia leggibile delle sue versioni.</p>
+        <div id="page-load-error"></div>
+        <div id="update-stat-grid" class="page-stat-grid"></div>
+      </section>
+
+      <section class="doc-section">
+        <div class="doc-section-head">
+          <div>
+            <div class="doc-eyebrow">Current release</div>
+            <h2>Composizione della release corrente</h2>
+          </div>
+          <p class="doc-section-copy">Un colpo d'occhio sul tipo di oggetti che porta con se il bundle attuale.</p>
+        </div>
+        <div id="release-summary-grid" class="doc-card-grid doc-card-grid-4"></div>
+      </section>
+
+      <section class="doc-section">
+        <div class="doc-section-head">
+          <div>
+            <div class="doc-eyebrow">Timeline</div>
+            <h2>Storia recente del progetto</h2>
+          </div>
+          <p class="doc-section-copy">Le modifiche importanti restano consultabili in ordine cronologico e non si perdono dietro la sola interfaccia.</p>
+        </div>
+        <div id="timeline-list" class="timeline-list"></div>
+      </section>
+
+      <section class="doc-section">
+        <div class="doc-section-head">
+          <div>
+            <div class="doc-eyebrow">Release footprint</div>
+            <h2>Scope dei file dichiarati nella release attuale</h2>
+          </div>
+          <p class="doc-section-copy">Questa tabella mostra la release per quello che e: tipi di file, dimensioni e conteggi dichiarati nel manifest di release.</p>
+        </div>
+        <div class="doc-table-wrap">
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th>Dataset</th>
+                <th>Tipo</th>
+                <th>Dimensione</th>
+                <th>Conteggio</th>
+              </tr>
+            </thead>
+            <tbody id="current-release-table-body"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="site-footer-inner">
+        <div class="footer-section">
+          <h3>Progetto</h3>
+          <p>Lombardia Camera Explorer e una piattaforma pubblica per leggere i risultati comunali della Camera in Lombardia con dashboard, download, metodo, release e accesso programmatico.</p>
+        </div>
+        <div class="footer-section">
+          <h3>Risorse</h3>
+          <ul>
+            <li><a href="index.html">Dashboard</a></li>
+          <li><a href="data-download.html">Scarica dati</a></li>
+            <li><a href="programmatic-access.html">Accesso programmatico</a></li>
+            <li><a href="usage-notes.html">Note d'uso</a></li>
+          <li><a href="update-log.html">Aggiornamenti</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Stato del progetto</h3>
+          <p>La piattaforma e gia organizzata come archivio pubblico e cresce insieme alla copertura storica del dato elettorale lombardo.</p>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script src="vendor/tabler/core/tabler.min.js"></script>
+  <script src="tabler-enhance.js"></script>
+  <script type="module" src="site-pages.js"></script>
+</body>
+</html>

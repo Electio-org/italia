@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light" />
+  <title>Lombardia Camera Explorer | Accesso programmatico</title>
+  <meta name="description" content="Loader ufficiali, snippet, citation, recipes e struttura del bundle Lombardia Camera Explorer per uso fuori dal browser." />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="stylesheet" href="vendor/tabler/core/tabler.min.css" />
+  <link rel="stylesheet" href="vendor/tabler/icons/tabler-icons.min.css" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="tabler-theme.css" />
+</head>
+<body data-site-page="programmatic-access">
+  <a href="#main-content" class="skip-link">Salta al contenuto</a>
+  <div class="page page-site">
+    <header class="site-header navbar navbar-expand-lg navbar-light d-print-none" role="banner">
+      <div class="container-xl site-header-inner">
+        <a class="navbar-brand site-brand" href="index.html">
+          <span class="site-brand-monogram">LC</span>
+          <span class="site-brand-copy">
+            <span class="site-brand-mark">Lombardia Camera Explorer</span>
+            <span class="site-brand-subtitle">Piattaforma pubblica per i risultati comunali della Camera in Lombardia</span>
+          </span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#site-nav-menu" aria-controls="site-nav-menu" aria-expanded="false" aria-label="Apri navigazione">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="site-nav-menu">
+          <nav class="navbar-nav ms-auto site-nav" aria-label="Navigazione principale">
+            <a class="nav-link" href="index.html"><i class="ti ti-chart-grid-dots site-nav-icon"></i><span>Dashboard</span></a>
+            <a class="nav-link" href="data-download.html"><i class="ti ti-database-export site-nav-icon"></i><span>Scarica dati</span></a>
+            <a class="nav-link is-active active" href="programmatic-access.html"><i class="ti ti-code-circle-2 site-nav-icon"></i><span>Accesso programmatico</span></a>
+            <a class="nav-link" href="usage-notes.html"><i class="ti ti-book-2 site-nav-icon"></i><span>Note d'uso</span></a>
+            <a class="nav-link" href="update-log.html"><i class="ti ti-history site-nav-icon"></i><span>Aggiornamenti</span></a>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <main id="main-content" class="site-doc-main page-body">
+      <section class="site-doc-hero">
+        <div class="doc-eyebrow">Programmatic access</div>
+        <h1>Usa la release da codice senza perdere il contratto dati.</h1>
+        <p class="site-doc-standfirst">Loader, command line, citation e recipes per lavorare sul bundle fuori dal browser mantenendo la stessa disciplina che alimenta la piattaforma pubblica.</p>
+        <div id="page-load-error"></div>
+        <div id="programmatic-stat-grid" class="page-stat-grid"></div>
+      </section>
+
+      <section class="doc-section">
+        <div class="doc-section-head">
+          <div>
+            <div class="doc-eyebrow">Official clients</div>
+            <h2>Client dichiarati nella release</h2>
+          </div>
+          <p class="doc-section-copy">Gli entrypoint ufficiali del bundle devono stare qui, non in uno snippet perso dentro la documentazione.</p>
+        </div>
+        <div id="client-card-grid" class="doc-card-grid doc-card-grid-2"></div>
+      </section>
+
+      <section class="doc-section">
+        <div class="doc-section-head">
+          <div>
+            <div class="doc-eyebrow">Quickstart</div>
+            <h2>Snippet pronti</h2>
+          </div>
+          <p class="doc-section-copy">Copi e usi subito la release per summary, verify, products, recipes e dataset load.</p>
+        </div>
+        <div class="doc-split-grid">
+          <article class="doc-card">
+            <div class="doc-card-head">
+              <strong>Python</strong>
+              <button type="button" class="ghost-btn small-btn copy-btn" data-copy-target="python-snippet">Copia</button>
+            </div>
+            <pre id="python-snippet" class="doc-code"></pre>
+          </article>
+          <article class="doc-card">
+            <div class="doc-card-head">
+              <strong>R</strong>
+              <button type="button" class="ghost-btn small-btn copy-btn" data-copy-target="r-snippet">Copia</button>
+            </div>
+            <pre id="r-snippet" class="doc-code"></pre>
+          </article>
+        </div>
+        <article class="doc-card doc-card-wide">
+          <div class="doc-card-head">
+            <strong>CLI</strong>
+            <button type="button" class="ghost-btn small-btn copy-btn" data-copy-target="cli-snippet">Copia</button>
+          </div>
+          <pre id="cli-snippet" class="doc-code"></pre>
+        </article>
+      </section>
+
+      <section class="doc-section">
+        <div class="doc-section-head">
+          <div>
+            <div class="doc-eyebrow">Citation</div>
+            <h2>Citazione del progetto</h2>
+          </div>
+          <p class="doc-section-copy">La parte divulgativa e quella research-grade condividono la stessa traccia di attribuzione dichiarata dalla release.</p>
+        </div>
+        <article class="doc-card doc-card-wide">
+          <div class="doc-card-head">
+            <strong>CITATION.cff</strong>
+            <button type="button" class="ghost-btn small-btn copy-btn" data-copy-target="citation-block">Copia</button>
+          </div>
+          <pre id="citation-block" class="doc-code"></pre>
+        </article>
+      </section>
+
+      <section class="doc-section">
+        <div class="doc-section-head">
+          <div>
+            <div class="doc-eyebrow">Recipes</div>
+            <h2>Percorsi machine-readable</h2>
+          </div>
+          <p class="doc-section-copy">Le recipe mostrano quali combinazioni di vista, metrica e pubblico vengono suggerite dalla release.</p>
+        </div>
+        <div class="doc-table-wrap">
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th>Recipe</th>
+                <th>Audience</th>
+                <th>Goal</th>
+                <th>Jump target</th>
+              </tr>
+            </thead>
+            <tbody id="recipe-table-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="doc-section">
+        <div class="doc-section-head">
+          <div>
+            <div class="doc-eyebrow">Bundle contract</div>
+            <h2>Che cosa rende questa release piu di una dashboard</h2>
+          </div>
+          <p class="doc-section-copy">Manifest, products, guides, citation e integrity non sono extra tecnici: sono parte del prodotto dati.</p>
+        </div>
+        <div id="bundle-contract-grid" class="doc-card-grid doc-card-grid-2"></div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="site-footer-inner">
+        <div class="footer-section">
+          <h3>Progetto</h3>
+          <p>Lombardia Camera Explorer e una piattaforma pubblica per leggere i risultati comunali della Camera in Lombardia con dashboard, download, metodo, release e accesso programmatico.</p>
+        </div>
+        <div class="footer-section">
+          <h3>Risorse</h3>
+          <ul>
+            <li><a href="index.html">Dashboard</a></li>
+          <li><a href="data-download.html">Scarica dati</a></li>
+            <li><a href="programmatic-access.html">Accesso programmatico</a></li>
+            <li><a href="usage-notes.html">Note d'uso</a></li>
+          <li><a href="update-log.html">Aggiornamenti</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Stato del progetto</h3>
+          <p>La piattaforma e gia organizzata come archivio pubblico e cresce insieme alla copertura storica del dato elettorale lombardo.</p>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script src="vendor/tabler/core/tabler.min.js"></script>
+  <script src="tabler-enhance.js"></script>
+  <script type="module" src="site-pages.js"></script>
+</body>
+</html>

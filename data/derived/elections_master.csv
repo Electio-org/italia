@@ -1,0 +1,20 @@
+election_key,election_year,election_date,election_label,electoral_system,status,is_complete,comparability_notes,source_notes
+camera_1948,1948,,Camera 1948,,unknown,,,strategy=; trial=; summary_rows=0; result_rows=0
+camera_1953,1953,1953-06-07,Camera 1953,,completed_without_rows,false,derived summary assente nel bundle corrente,strategy=direct_validated; trial=validated; summary_rows=0; result_rows=0
+camera_1958,1958,,Camera 1958,,unknown,,,strategy=; trial=; summary_rows=0; result_rows=0
+camera_1963,1963,,Camera 1963,,unknown,,,strategy=; trial=; summary_rows=0; result_rows=0
+camera_1968,1968,,Camera 1968,,unknown,,,strategy=; trial=; summary_rows=0; result_rows=0
+camera_1972,1972,,Camera 1972,,unknown,,,strategy=; trial=; summary_rows=0; result_rows=0
+camera_1976,1976,,Camera 1976,,unknown,,,strategy=; trial=; summary_rows=0; result_rows=0
+camera_1979,1979,,Camera 1979,,unknown,,,strategy=; trial=; summary_rows=0; result_rows=0
+camera_1983,1983,,Camera 1983,,unknown,,,strategy=; trial=; summary_rows=0; result_rows=0
+camera_1987,1987,,Camera 1987,,unknown,,,strategy=; trial=; summary_rows=0; result_rows=0
+camera_1992,1992,,Camera 1992,,unknown,,,strategy=; trial=; summary_rows=0; result_rows=0
+camera_1994,1994,,Camera 1994,,unknown,,,strategy=; trial=; summary_rows=312; result_rows=12809
+camera_1996,1996,1996-04-21,Camera 1996,,completed,true,,strategy=level_aware_broad; trial=raw_option_urls; summary_rows=312; result_rows=9275
+camera_2001,2001,2001-05-13,Camera 2001,,completed,true,,strategy=level_aware_broad; trial=raw_option_urls; summary_rows=312; result_rows=12925
+camera_2006,2006,2006-04-09,Camera 2006,,completed,true,,strategy=level_aware_broad; trial=raw_option_urls; summary_rows=310; result_rows=17301
+camera_2008,2008,2008-04-13,Camera 2008,,completed,true,,strategy=level_aware_broad; trial=raw_option_urls; summary_rows=310; result_rows=17931
+camera_2013,2013,2013-02-24,Camera 2013,,completed,true,,strategy=level_aware_broad; trial=raw_option_urls; summary_rows=310; result_rows=16913
+camera_2018,2018,2018-03-04,Camera 2018,,completed,true,,strategy=level_aware_broad_resumed_from_discovery; trial=raw_option_urls_resumed; summary_rows=1516; result_rows=22994
+camera_2022,2022,2022-09-25,Camera 2022,,completed,true,,strategy=level_aware_broad_resumed_from_discovery; trial=raw_option_urls_resumed; summary_rows=1506; result_rows=22185
