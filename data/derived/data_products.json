@@ -28,7 +28,7 @@
     },
     {
       "product_key": "geometry_pack_lombardia",
-      "title": "Pacchetto geometrie Lombardia",
+      "title": "Pacchetto geometrie Lombardia - web",
       "kind": "boundary_pack",
       "granularity": "municipality/province boundary by year",
       "primary_dataset_key": "geometryPack",
@@ -38,7 +38,28 @@
         "municipality_id"
       ],
       "intended_use": [
-        "cartografia web e ricerca territoriale con basi annuali dichiarate",
+        "cartografia web ottimizzata con basi annuali dichiarate",
+        "caricamento piu leggero della dashboard pubblica",
+        "join geografico esplicito via geometry_id e municipality_id"
+      ]
+    },
+    {
+      "product_key": "geometry_pack_lombardia_full",
+      "title": "Pacchetto geometrie Lombardia - full",
+      "kind": "boundary_pack_full",
+      "granularity": "municipality/province boundary by year",
+      "primary_dataset_key": "geometryPackFull",
+      "companion_dataset_key": "provinceGeometryFull",
+      "join_keys": [
+        "geometry_id",
+        "municipality_id"
+      ],
+      "guardrails": [
+        "Usare questo pack quando serve fedelta cartografica piena, non per il primo caricamento della UI."
+      ],
+      "intended_use": [
+        "download e ricerca con geometrie complete",
+        "riuso esterno dove la fedelta geometrica conta piu della velocita",
         "join geografico esplicito via geometry_id e municipality_id"
       ]
     },
@@ -52,7 +73,8 @@
       "extra_dataset_keys": [
         "usageNotes",
         "updateLog",
-        "archiveBundleGapReport"
+        "archiveBundleGapReport",
+        "webGeometryReport"
       ],
       "intended_use": [
         "audit della release, codebook, guardrail e provenance",

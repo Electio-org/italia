@@ -1,6 +1,6 @@
 {
   "generated_by": "build_result_shards.py",
-  "release_version": "0.18.0",
+  "release_version": "0.19.0",
   "release_date": "2026-04-07",
   "products": [
     {
@@ -40,7 +40,7 @@
     },
     {
       "product_key": "geometry_pack_lombardia",
-      "title": "Pacchetto geometrie Lombardia",
+      "title": "Pacchetto geometrie Lombardia - web",
       "kind": "boundary_pack",
       "territorial_mode": null,
       "granularity": "municipality/province boundary by year",
@@ -56,7 +56,41 @@
         "municipality_id"
       ],
       "intended_use": [
-        "cartografia web e ricerca territoriale con basi annuali dichiarate",
+        "cartografia web ottimizzata con basi annuali dichiarate",
+        "caricamento piu leggero della dashboard pubblica",
+        "join geografico esplicito via geometry_id e municipality_id"
+      ],
+      "inventory_kind": "boundary_years",
+      "inventory_count": 6,
+      "inventory_preview": [
+        1991,
+        2001,
+        2014,
+        2018
+      ]
+    },
+    {
+      "product_key": "geometry_pack_lombardia_full",
+      "title": "Pacchetto geometrie Lombardia - full",
+      "kind": "boundary_pack_full",
+      "territorial_mode": null,
+      "granularity": "municipality/province boundary by year",
+      "delivery_strategy": null,
+      "manifest_path": "data/products/geometry_pack_lombardia_full/manifest.json",
+      "dataset_count": 2,
+      "primary_dataset_key": "geometryPackFull",
+      "companion_dataset_key": "provinceGeometryFull",
+      "extra_dataset_keys": [],
+      "guardrails": [
+        "Usare questo pack quando serve fedelta cartografica piena, non per il primo caricamento della UI."
+      ],
+      "join_keys": [
+        "geometry_id",
+        "municipality_id"
+      ],
+      "intended_use": [
+        "download e ricerca con geometrie complete",
+        "riuso esterno dove la fedelta geometrica conta piu della velocita",
         "join geografico esplicito via geometry_id e municipality_id"
       ],
       "inventory_kind": "boundary_years",
@@ -76,13 +110,14 @@
       "granularity": "bundle-level",
       "delivery_strategy": null,
       "manifest_path": "data/products/metadata_layer/manifest.json",
-      "dataset_count": 5,
+      "dataset_count": 6,
       "primary_dataset_key": "datasetRegistry",
       "companion_dataset_key": "codebook",
       "extra_dataset_keys": [
         "usageNotes",
         "updateLog",
-        "archiveBundleGapReport"
+        "archiveBundleGapReport",
+        "webGeometryReport"
       ],
       "guardrails": [],
       "join_keys": [],
@@ -91,7 +126,7 @@
         "documentazione machine-readable del bundle"
       ],
       "inventory_kind": "metadata_objects",
-      "inventory_count": 5,
+      "inventory_count": 6,
       "inventory_preview": [
         "datasetRegistry",
         "codebook",

@@ -1,6 +1,6 @@
 {
   "generated_by": "build_result_shards.py",
-  "release_version": "0.18.0",
+  "release_version": "0.19.0",
   "release_date": "2026-04-07",
   "product": {
     "product_key": "metadata_layer",
@@ -14,7 +14,8 @@
     "extra_dataset_keys": [
       "usageNotes",
       "updateLog",
-      "archiveBundleGapReport"
+      "archiveBundleGapReport",
+      "webGeometryReport"
     ],
     "join_keys": [],
     "guardrails": [],
@@ -59,10 +60,10 @@
       "dataset_key": "updateLog",
       "path": "data/derived/update_log.json",
       "kind": "json",
-      "size_bytes": 11269,
+      "size_bytes": 12788,
       "row_count": null,
       "feature_count": null,
-      "sha256": "b2f16911c11fe6a44203130f4b33a4a0fc8012067fa7d6908d3a395dddfc8389"
+      "sha256": "a9361ef8ba522330ce6f5387027a8feb9f543cbd3bb8916aafdd33b2045d7add"
     },
     {
       "role": "extra",
@@ -73,11 +74,21 @@
       "row_count": null,
       "feature_count": null,
       "sha256": "d918c43d62776fa032bac7aa5aa6ea21f2fcf21917e50941f991e19e78c16f95"
+    },
+    {
+      "role": "extra",
+      "dataset_key": "webGeometryReport",
+      "path": "data/derived/web_geometry_report.json",
+      "kind": "json",
+      "size_bytes": 5127,
+      "row_count": null,
+      "feature_count": null,
+      "sha256": "8bb36523291404015e346fbb29cc5b513fc0c420c3096e808b4ccd69bbf5de02"
     }
   ],
   "inventory": {
     "kind": "metadata_objects",
-    "entry_count": 5,
+    "entry_count": 6,
     "entries": [
       {
         "dataset_key": "datasetRegistry",
@@ -107,7 +118,7 @@
         "dataset_key": "updateLog",
         "path": "data/derived/update_log.json",
         "kind": "json",
-        "size_bytes": 11269,
+        "size_bytes": 12788,
         "row_count": null,
         "feature_count": null
       },
@@ -116,6 +127,14 @@
         "path": "data/derived/archive_bundle_gap_report.json",
         "kind": "json",
         "size_bytes": 17606,
+        "row_count": null,
+        "feature_count": null
+      },
+      {
+        "dataset_key": "webGeometryReport",
+        "path": "data/derived/web_geometry_report.json",
+        "kind": "json",
+        "size_bytes": 5127,
         "row_count": null,
         "feature_count": null
       }

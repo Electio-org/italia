@@ -17,7 +17,8 @@ ARCHIVE_GAP_NOTE = "The bundle can also declare a gap report that compares publi
 CANONICAL_REBUILD_NOTE = "Municipality coverage is rebuilt from official Eligendo open-data zip archives across all Camera years plus Assemblea Costituente 1946."
 PRODUCT_SYSTEM_NOTE = "Products are also published through a product catalog plus per-product manifests, not only through the bundle-wide manifest."
 PRODUCT_INVENTORY_NOTE = "Every declared product also exposes a product-level inventory so users can see what is inside before loading the data."
-CURRENT_VERSION = "0.18.0"
+WEB_GEOMETRY_NOTE = "The public app now reads a web-optimized geometry pack, while the full-resolution boundaries remain published as a separate product."
+CURRENT_VERSION = "0.19.0"
 
 
 def sha256_file(path: Path) -> str:
@@ -66,7 +67,7 @@ def ensure_update_log_entry(entries: List[Dict[str, object]]) -> List[Dict[str, 
     return [{
         "version": CURRENT_VERSION,
         "date": "2026-04-07",
-        "title": "Official open-data rebuild with shards, product catalog, and product inventories",
+        "title": "Official open-data rebuild with shards, product catalogs, and web/full geometry packs",
         "changes": [
             "Rebuilt 1946-2022 municipality summary and party results from the official Eligendo open-data zip archives for Assemblea Costituente and Camera.",
             "Shifted the primary source from HTML archive navigation to the national open-data bundles, keeping HTML only as QA and fallback.",
@@ -75,6 +76,7 @@ def ensure_update_log_entry(entries: List[Dict[str, object]]) -> List[Dict[str, 
             "Aligned dataset registry, provenance, and release metadata to the shard-based delivery layout.",
             "Added a product catalog plus per-product manifests so the bundle can be navigated as product families, not only as a flat file list.",
             "Added product-level inventories that declare which election datasets, geometry years, or metadata objects are inside each product.",
+            "Split Lombardia boundary delivery into a web-optimized geometry pack for the public app plus a full-resolution geometry product for heavier downstream use.",
             "Added an official-source-vs-bundle gap report to make residual coverage and geometry-join gaps explicit in the public bundle.",
             "Release manifest paths are now web-relative, so declared downloads stay usable inside the static site."
         ]
@@ -108,9 +110,27 @@ def main() -> None:
         notes.append(PRODUCT_SYSTEM_NOTE)
     if PRODUCT_INVENTORY_NOTE not in notes:
         notes.append(PRODUCT_INVENTORY_NOTE)
+    if WEB_GEOMETRY_NOTE not in notes:
+        notes.append(WEB_GEOMETRY_NOTE)
     project["notes"] = notes
 
     files = manifest.setdefault("files", {})
+    if (derived / "geometry_pack_web.json").exists():
+        files["geometryPack"] = "data/derived/geometry_pack_web.json"
+    if (derived / "geometries_web" / "municipalities_2026.geojson").exists():
+        files["geometry"] = "data/derived/geometries_web/municipalities_2026.geojson"
+    if (derived / "geometries_web" / "provinces_2026.geojson").exists():
+        files["provinceGeometry"] = "data/derived/geometries_web/provinces_2026.geojson"
+    if (derived / "geometry_pack_full.json").exists():
+        files["geometryPackFull"] = "data/derived/geometry_pack_full.json"
+    elif (derived / "geometry_pack.json").exists():
+        files["geometryPackFull"] = "data/derived/geometry_pack.json"
+    if (derived / "geometries" / "municipalities_2026.geojson").exists():
+        files["geometryFull"] = "data/derived/geometries/municipalities_2026.geojson"
+    if (derived / "geometries" / "provinces_2026.geojson").exists():
+        files["provinceGeometryFull"] = "data/derived/geometries/provinces_2026.geojson"
+    if (derived / "web_geometry_report.json").exists():
+        files["webGeometryReport"] = "data/derived/web_geometry_report.json"
     files["productCatalog"] = "data/products/product_catalog.json"
     files["municipalitySummaryByElectionIndex"] = "data/derived/municipality_summary_by_election.json"
     files["municipalityResultsLongByElectionIndex"] = "data/derived/municipality_results_long_by_election.json"
@@ -203,7 +223,13 @@ def main() -> None:
                 "base primaria per confronto territoriale e profili comunali"
             ],
             "geometry_pack_lombardia": [
-                "cartografia web e ricerca territoriale con basi annuali dichiarate",
+                "cartografia web ottimizzata con basi annuali dichiarate",
+                "caricamento piu leggero della dashboard pubblica",
+                "join geografico esplicito via geometry_id e municipality_id"
+            ],
+            "geometry_pack_lombardia_full": [
+                "download e ricerca con geometrie complete",
+                "riuso esterno dove la fedelta geometrica conta piu della velocita",
                 "join geografico esplicito via geometry_id e municipality_id"
             ],
             "metadata_layer": [
@@ -278,6 +304,7 @@ def main() -> None:
     release_date = ((update_log.get("entries") or [{}])[0].get("date") if 'update_log' in locals() else None)
     product_catalog_items: List[Dict[str, object]] = []
     geometry_pack_payload = json.loads((root / files["geometryPack"]).read_text(encoding="utf-8")) if files.get("geometryPack") and (root / files["geometryPack"]).exists() else {}
+    geometry_pack_full_payload = json.loads((root / files["geometryPackFull"]).read_text(encoding="utf-8")) if files.get("geometryPackFull") and (root / files["geometryPackFull"]).exists() else geometry_pack_payload
     product_manifest_step = "pubblicazione del sistema prodotti con catalogo e manifest dedicati per ogni product_key"
     if data_products:
         clients = list(data_products.get("clients") or [])
@@ -344,11 +371,12 @@ def main() -> None:
                         "download_summary": row.get("download_summary"),
                         "download_results": row.get("download_results"),
                     })
-            elif product_key == "geometry_pack_lombardia":
+            elif product_key in {"geometry_pack_lombardia", "geometry_pack_lombardia_full"}:
                 inventory_kind = "boundary_years"
-                municipalities = geometry_pack_payload.get("municipalities") or {}
-                provinces = geometry_pack_payload.get("provinces") or {}
-                years = geometry_pack_payload.get("availableYears") or sorted({*municipalities.keys(), *provinces.keys()}, key=lambda value: int(value))
+                source_pack = geometry_pack_full_payload if product_key == "geometry_pack_lombardia_full" else geometry_pack_payload
+                municipalities = source_pack.get("municipalities") or {}
+                provinces = source_pack.get("provinces") or {}
+                years = source_pack.get("availableYears") or sorted({*municipalities.keys(), *provinces.keys()}, key=lambda value: int(value))
                 for year in years:
                     inventory_entries.append({
                         "geometry_year": int(year),
@@ -450,6 +478,7 @@ def main() -> None:
             provenance["entries"] = entries
             provenance_path.write_text(json.dumps(provenance, ensure_ascii=False, indent=2), encoding="utf-8")
 
+    manifest["files"] = files
     manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
 
     release_manifest = {

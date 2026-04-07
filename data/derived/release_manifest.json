@@ -2,7 +2,7 @@
   "generated_by": "build_result_shards.py",
   "project": {
     "title": "Lombardia Camera Explorer",
-    "version": "0.18.0",
+    "version": "0.19.0",
     "ready_for_real_data": true,
     "notes": [
       "Vote shares are recomputed from votes whenever a plausible denominator is available.",
@@ -18,7 +18,8 @@
       "Municipality coverage is rebuilt from official Eligendo open-data zip archives across all Camera years plus Assemblea Costituente 1946.",
       "Municipality summary rows can also be delivered as per-election shards to reduce initial browser load.",
       "Products are also published through a product catalog plus per-product manifests, not only through the bundle-wide manifest.",
-      "Every declared product also exposes a product-level inventory so users can see what is inside before loading the data."
+      "Every declared product also exposes a product-level inventory so users can see what is inside before loading the data.",
+      "The public app now reads a web-optimized geometry pack, while the full-resolution boundaries remain published as a separate product."
     ]
   },
   "bundle_root": ".",
@@ -186,10 +187,10 @@
       ]
     },
     "geometry": {
-      "path": "data/derived/geometries/municipalities_2026.geojson",
+      "path": "data/derived/geometries_web/municipalities_2026.geojson",
       "kind": "geojson",
-      "size_bytes": 17217658,
-      "sha256": "45bbc8129914182bce2cb1c8df32cf738b46f7e751fc2529c8abe62dd4cbfc5a",
+      "size_bytes": 2306935,
+      "sha256": "17782ba9f94c09c9653e18e7b6490473eaf016253372533b0972c873fe49e7f5",
       "feature_count": 1502
     },
     "dataQualityReport": {
@@ -207,16 +208,16 @@
       "columns": []
     },
     "geometryPack": {
-      "path": "data/derived/geometry_pack.json",
+      "path": "data/derived/geometry_pack_web.json",
       "kind": "json",
-      "size_bytes": 946,
-      "sha256": "f606facba83019a521710b0c62423aca8d50d71dc8231daf3c68c2bcba50b11f"
+      "size_bytes": 994,
+      "sha256": "52ec4a88227ec2d24ab648da01201e628e2a8da34f6009dadcdf6dfcca5e48c2"
     },
     "provinceGeometry": {
-      "path": "data/derived/geometries/provinces_2026.geojson",
+      "path": "data/derived/geometries_web/provinces_2026.geojson",
       "kind": "geojson",
-      "size_bytes": 1692077,
-      "sha256": "03aa143bfcf068f56f6dbefcfc67b08feba5e105c14f5a88b2414940ca3d5b8b",
+      "size_bytes": 150712,
+      "sha256": "567f69a8b891e35a274f5c6ce3588b60f8d8f36d9a8a6acd24b180ff30368cf2",
       "feature_count": 12
     },
     "datasetRegistry": {
@@ -242,16 +243,16 @@
     "updateLog": {
       "path": "data/derived/update_log.json",
       "kind": "json",
-      "size_bytes": 11269,
-      "sha256": "b2f16911c11fe6a44203130f4b33a4a0fc8012067fa7d6908d3a395dddfc8389",
-      "entry_count": 16
+      "size_bytes": 12788,
+      "sha256": "a9361ef8ba522330ce6f5387027a8feb9f543cbd3bb8916aafdd33b2045d7add",
+      "entry_count": 17
     },
     "dataProducts": {
       "path": "data/derived/data_products.json",
       "kind": "json",
-      "size_bytes": 2766,
-      "sha256": "f2fe21399d8578716e51b920d8410d27da9c14f7ffd7e559724338d4dddbc183",
-      "product_count": 3
+      "size_bytes": 3646,
+      "sha256": "c09ad8be95d0d15c7db18fca744c541673d27493696fad8c7159b438bb31c481",
+      "product_count": 4
     },
     "datasetContracts": {
       "path": "data/derived/dataset_contracts.json",
@@ -293,30 +294,63 @@
     "productCatalog": {
       "path": "data/products/product_catalog.json",
       "kind": "json",
-      "size_bytes": 3424,
-      "sha256": "82ba263a80748711b9062f9c4096be57a800eaeb6e152889bcfd73d8d0c8dd69",
-      "product_count": 3
+      "size_bytes": 4686,
+      "sha256": "ef4ee3d81711babd6768a9a6a6357513923b35b1ecab3896c4a7efb661e00dea",
+      "product_count": 4
+    },
+    "geometryPackFull": {
+      "path": "data/derived/geometry_pack_full.json",
+      "kind": "json",
+      "size_bytes": 946,
+      "sha256": "f606facba83019a521710b0c62423aca8d50d71dc8231daf3c68c2bcba50b11f"
+    },
+    "geometryFull": {
+      "path": "data/derived/geometries/municipalities_2026.geojson",
+      "kind": "geojson",
+      "size_bytes": 17217658,
+      "sha256": "45bbc8129914182bce2cb1c8df32cf738b46f7e751fc2529c8abe62dd4cbfc5a",
+      "feature_count": 1502
+    },
+    "provinceGeometryFull": {
+      "path": "data/derived/geometries/provinces_2026.geojson",
+      "kind": "geojson",
+      "size_bytes": 1692077,
+      "sha256": "03aa143bfcf068f56f6dbefcfc67b08feba5e105c14f5a88b2414940ca3d5b8b",
+      "feature_count": 12
+    },
+    "webGeometryReport": {
+      "path": "data/derived/web_geometry_report.json",
+      "kind": "json",
+      "size_bytes": 5127,
+      "sha256": "8bb36523291404015e346fbb29cc5b513fc0c420c3096e808b4ccd69bbf5de02"
     },
     "productManifest:camera_muni_historical": {
       "path": "data/products/camera_muni_historical/manifest.json",
       "kind": "json",
       "size_bytes": 12651,
-      "sha256": "03d90390630fc2eaca5423cbdcb71dea99363b53f7ea37cf50d4655070b24f51",
+      "sha256": "144e8f0d3193fb53fe551b210c477393d0908b06539840fabc24b9ea1943145b",
       "dataset_count": 2
     },
     "productManifest:geometry_pack_lombardia": {
       "path": "data/products/geometry_pack_lombardia/manifest.json",
       "kind": "json",
-      "size_bytes": 3468,
-      "sha256": "c3360e4958ca0c02462659a58017d6b91ab668773f22062a5b0e1988ebccff4f",
+      "size_bytes": 3577,
+      "sha256": "b1059bee33d7c3dcf87fdc1f36e9a88df53840e10b1f87732feb2028b807a025",
+      "dataset_count": 2
+    },
+    "productManifest:geometry_pack_lombardia_full": {
+      "path": "data/products/geometry_pack_lombardia_full/manifest.json",
+      "kind": "json",
+      "size_bytes": 3670,
+      "sha256": "a49174f48a702e15562cd27737951dd60678c940442a226ba5e6b7abbba130b5",
       "dataset_count": 2
     },
     "productManifest:metadata_layer": {
       "path": "data/products/metadata_layer/manifest.json",
       "kind": "json",
-      "size_bytes": 4215,
-      "sha256": "3d9db5a3ee1ce246ce49e49e06767e01d0414c5d82120d9bfd25deaed57d9711",
-      "dataset_count": 5
+      "size_bytes": 4806,
+      "sha256": "f68908253f63db0c6a7f710deb8f08b9a8f05fcfaccb7753a040c8c514721e25",
+      "dataset_count": 6
     }
   },
   "integrity": {
@@ -330,7 +364,9 @@
       "datasetRegistry",
       "electionsMaster",
       "geometry",
+      "geometryFull",
       "geometryPack",
+      "geometryPackFull",
       "municipalitiesMaster",
       "municipalityAliases",
       "municipalityResultsLong",
@@ -341,14 +377,17 @@
       "productCatalog",
       "productManifest:camera_muni_historical",
       "productManifest:geometry_pack_lombardia",
+      "productManifest:geometry_pack_lombardia_full",
       "productManifest:metadata_layer",
       "provenance",
       "provinceGeometry",
+      "provinceGeometryFull",
       "researchRecipes",
       "siteGuides",
       "territorialLineage",
       "updateLog",
-      "usageNotes"
+      "usageNotes",
+      "webGeometryReport"
     ],
     "all_declared_files_present": true
   }

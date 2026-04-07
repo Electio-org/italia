@@ -90,7 +90,15 @@ async function fetchText(path) {
   return response.text();
 }
 
-async function loadBundle() {
+const PAGE_JSON_TARGETS = {
+  'data-download': ['releaseManifest', 'dataProducts', 'productCatalog', 'datasetRegistry', 'usageNotes', 'researchRecipes', 'dataQualityReport', 'archiveBundleGapReport', 'webGeometryReport'],
+  products: ['releaseManifest', 'dataProducts', 'productCatalog'],
+  'programmatic-access': ['releaseManifest', 'dataProducts', 'productCatalog', 'researchRecipes', 'siteGuides'],
+  'usage-notes': ['usageNotes', 'siteGuides', 'codebook', 'datasetContracts', 'provenance', 'datasetRegistry', 'dataQualityReport', 'archiveBundleGapReport'],
+  'update-log': ['updateLog', 'releaseManifest', 'dataQualityReport', 'datasetRegistry'],
+};
+
+async function loadBundle(page = 'dashboard') {
   const manifest = await fetchJson('data/derived/manifest.json');
   const files = manifest.files || {};
   const payload = { manifest };
@@ -108,10 +116,13 @@ async function loadBundle() {
     updateLog: 'updateLog',
     dataQualityReport: 'dataQualityReport',
     archiveBundleGapReport: 'archiveBundleGapReport',
+    webGeometryReport: 'webGeometryReport',
   };
+  const wanted = new Set(PAGE_JSON_TARGETS[page] || Object.keys(jsonTargets));
 
   await Promise.all(
     Object.entries(jsonTargets).map(async ([targetKey, manifestKey]) => {
+      if (!wanted.has(targetKey)) return;
       const rel = files[manifestKey];
       if (!rel) return;
       try {
@@ -122,11 +133,13 @@ async function loadBundle() {
     })
   );
 
-  try {
-    payload.citation = await fetchText('CITATION.cff');
-  } catch (error) {
-    console.error(error);
-    payload.citation = `Lombardia Camera Explorer ${manifest.version || ''}`.trim();
+  if (page === 'programmatic-access') {
+    try {
+      payload.citation = await fetchText('CITATION.cff');
+    } catch (error) {
+      console.error(error);
+      payload.citation = `Lombardia Camera Explorer ${manifest.version || ''}`.trim();
+    }
   }
   return payload;
 }
@@ -184,6 +197,7 @@ function renderDownloadPage(bundle) {
   const quality = bundle.dataQualityReport?.derived_validations || {};
   const archiveGap = bundle.archiveBundleGapReport?.rows || [];
   const archiveGapSummary = bundle.archiveBundleGapReport?.summary || {};
+  const webGeometryTotals = bundle.webGeometryReport?.totals || {};
   const archiveGapByKey = new Map(archiveGap.map((row) => [row.consultation_key || row.election_key, row]));
   const usableElectionRows = registryDatasets.filter((row) => row.election_key);
   const geometryRows = registryDatasets.filter((row) => row.dataset_family === 'geometry_boundary');
@@ -196,6 +210,7 @@ function renderDownloadPage(bundle) {
     ['Prodotti dati', products.length, 'Famiglie pubblicate in questa release'],
     ['Elezioni con copertura', yearsWithCoverage, 'Anni almeno utilizzabili nel bundle attuale'],
     ['Basi geometriche', geometryRows.length, 'Boundary pack disponibili'],
+    ['Geometrie web', webGeometryTotals.byte_reduction_pct != null ? `${webGeometryTotals.byte_reduction_pct}%` : 'n.d.', 'Riduzione di peso del pack web rispetto al full'],
     ['Gap forti vs archivio', archiveGapSummary.bundle_severely_partial_vs_archive ?? archiveGapSummary.bundle_below_archive_positive_tables ?? 'n.d.', 'Elezioni dove il bundle resta molto sotto il canonico'],
     ['Vuote ma non vuote nel canonico', archiveGapSummary.bundle_empty_archive_nonempty ?? 'n.d.', 'Elezioni oggi vuote nel bundle ma non nel piu ampio archivio Lombardia'],
   ];
@@ -910,7 +925,7 @@ async function init() {
   const page = document.body.dataset.sitePage;
   if (!page || page === 'dashboard') return;
   try {
-    const bundle = await loadBundle();
+    const bundle = await loadBundle(page);
     if (page === 'data-download') renderDownloadPage(bundle);
     if (page === 'products') await renderProductsPage(bundle);
     if (page === 'programmatic-access') renderProgrammaticPage(bundle);

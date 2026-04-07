@@ -109,7 +109,7 @@ const DEFAULT_NEXT_ACTIONS = [
   'Usa "Diagnostica" per controllare mismatch dati↔geometrie e limiti di comparabilità.'
 ];
 
-const LOCAL_STORAGE_KEY = 'lombardia_camera_explorer_state_v32';
+const LOCAL_STORAGE_KEY = 'lombardia_camera_explorer_state_v33';
 const DEFAULT_COLLAPSED_PANELS = { comparison: false, table: false, rankings: true, multi_compare: false, province: true, heatmap: false, similarity: false, province_trends: true, patterns: true, group_compare: true, transitions: true, audit: true, map: false, detail: false };
 
 const state = {

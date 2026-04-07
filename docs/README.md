@@ -27,9 +27,11 @@ Oggi espone:
   - risultati comunali storici della Camera e dell'Assemblea Costituente in Lombardia
   - shard annuali per `municipality_summary` e `municipality_results_long`
 - `geometry_pack_lombardia`
-  - geometrie comunali e provinciali per gli anni base dichiarati
+  - geometrie comunali e provinciali web-optimized per gli anni base dichiarati
+- `geometry_pack_lombardia_full`
+  - geometrie comunali e provinciali full-resolution per download e riuso piu pesante
 - `metadata_layer`
-  - dataset registry, codebook, usage notes, update log e gap report
+  - dataset registry, codebook, usage notes, update log, gap report e web geometry report
 
 ## File chiave
 
@@ -38,9 +40,11 @@ Oggi espone:
 - `data/derived/dataset_registry.json`
 - `data/derived/dataset_contracts.json`
 - `data/derived/provenance.json`
+- `data/derived/web_geometry_report.json`
 - `data/products/product_catalog.json`
 - `clients/python/lce_loader.py`
 - `scripts/check_bundle.py`
+- `scripts/build_web_geometry_pack.py`
 
 ## Validazione minima
 

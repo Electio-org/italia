@@ -8,6 +8,7 @@ This repository is the focused home for the Lombardia build: a public-facing exp
 
 - A static election explorer with map, municipality profile, comparison tools, coverage panels, and method-aware guidance.
 - A derived data bundle under `data/derived/` with registry, codebook, usage notes, provenance, contracts, and release metadata.
+- A dual geometry layer: web-optimized boundaries for the public app plus full-resolution boundaries for heavier downstream use.
 - Programmatic loaders for Python and R under `clients/`.
 - Validation scripts for bundle integrity, frontend sanity checks, and loader smoke tests.
 
@@ -64,15 +65,16 @@ The bundle is meant to behave like a small release artifact, not just frontend f
 - `data/derived/dataset_contracts.json`
 - `data/derived/provenance.json`
 - `data/derived/usage_notes.json`
+- `data/derived/web_geometry_report.json`
 - `data/products/product_catalog.json`
 - `data/products/*/manifest.json`
 
 ## Repository layout
 
-- `data/derived/`: derived datasets, geometry pack, registry, contracts, and release metadata
+- `data/derived/`: derived datasets, web/full geometry packs, registry, contracts, and release metadata
 - `clients/python/`: Python loader and tests
 - `clients/r/`: R loader
-- `scripts/`: preprocessing and validation scripts
+- `scripts/`: preprocessing, geometry packaging, and validation scripts
 - `modules/`: frontend modules used by the explorer
 - `vendor/tabler/`: vendor UI shell assets
 - `docs/`: supporting project notes

@@ -1,0 +1,101 @@
+{
+  "generated_by": "build_result_shards.py",
+  "release_version": "0.19.0",
+  "release_date": "2026-04-07",
+  "product": {
+    "product_key": "geometry_pack_lombardia_full",
+    "title": "Pacchetto geometrie Lombardia - full",
+    "kind": "boundary_pack_full",
+    "territorial_mode": null,
+    "granularity": "municipality/province boundary by year",
+    "delivery_strategy": null,
+    "primary_dataset_key": "geometryPackFull",
+    "companion_dataset_key": "provinceGeometryFull",
+    "extra_dataset_keys": [],
+    "join_keys": [
+      "geometry_id",
+      "municipality_id"
+    ],
+    "guardrails": [
+      "Usare questo pack quando serve fedelta cartografica piena, non per il primo caricamento della UI."
+    ],
+    "intended_use": [
+      "download e ricerca con geometrie complete",
+      "riuso esterno dove la fedelta geometrica conta piu della velocita",
+      "join geografico esplicito via geometry_id e municipality_id"
+    ]
+  },
+  "datasets": [
+    {
+      "role": "primary",
+      "dataset_key": "geometryPackFull",
+      "path": "data/derived/geometry_pack_full.json",
+      "kind": "json",
+      "size_bytes": 946,
+      "row_count": null,
+      "feature_count": null,
+      "sha256": "f606facba83019a521710b0c62423aca8d50d71dc8231daf3c68c2bcba50b11f"
+    },
+    {
+      "role": "companion",
+      "dataset_key": "provinceGeometryFull",
+      "path": "data/derived/geometries/provinces_2026.geojson",
+      "kind": "geojson",
+      "size_bytes": 1692077,
+      "row_count": null,
+      "feature_count": 12,
+      "sha256": "03aa143bfcf068f56f6dbefcfc67b08feba5e105c14f5a88b2414940ca3d5b8b"
+    }
+  ],
+  "inventory": {
+    "kind": "boundary_years",
+    "entry_count": 6,
+    "entries": [
+      {
+        "geometry_year": 1991,
+        "municipalities_path": "data/derived/geometries/municipalities_1991.geojson",
+        "provinces_path": "data/derived/geometries/provinces_1991.geojson"
+      },
+      {
+        "geometry_year": 2001,
+        "municipalities_path": "data/derived/geometries/municipalities_2001.geojson",
+        "provinces_path": "data/derived/geometries/provinces_2001.geojson"
+      },
+      {
+        "geometry_year": 2014,
+        "municipalities_path": "data/derived/geometries/municipalities_2014.geojson",
+        "provinces_path": "data/derived/geometries/provinces_2014.geojson"
+      },
+      {
+        "geometry_year": 2018,
+        "municipalities_path": "data/derived/geometries/municipalities_2018.geojson",
+        "provinces_path": "data/derived/geometries/provinces_2018.geojson"
+      },
+      {
+        "geometry_year": 2021,
+        "municipalities_path": "data/derived/geometries/municipalities_2021.geojson",
+        "provinces_path": "data/derived/geometries/provinces_2021.geojson"
+      },
+      {
+        "geometry_year": 2026,
+        "municipalities_path": "data/derived/geometries/municipalities_2026.geojson",
+        "provinces_path": "data/derived/geometries/provinces_2026.geojson"
+      }
+    ]
+  },
+  "clients": [
+    {
+      "client_key": "python_loader",
+      "language": "python",
+      "entrypoint": "clients/python/lce_loader.py",
+      "example": "from clients.python.lce_loader import load_bundle\nbundle = load_bundle('.')\nsummary = bundle.load_dataset('municipalitySummary')"
+    },
+    {
+      "client_key": "r_loader",
+      "language": "r",
+      "entrypoint": "clients/r/lce_loader.R",
+      "example": "source('clients/r/lce_loader.R')\nbundle <- load_lce_bundle('.')\nsummary <- lce_read(bundle, 'municipalitySummary')"
+    }
+  ],
+  "bundle_manifest": "data/derived/manifest.json"
+}

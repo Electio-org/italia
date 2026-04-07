@@ -1,0 +1,159 @@
+{
+  "generated_by": "build_web_geometry_pack.py",
+  "municipality_tolerance": 45.0,
+  "province_tolerance": 80.0,
+  "rows": [
+    {
+      "layer": "municipalities",
+      "year": 1991,
+      "source_path": "data/derived/geometries/municipalities_1991.geojson",
+      "target_path": "data/derived/geometries_web/municipalities_1991.geojson",
+      "tolerance": 45.0,
+      "feature_count": 1546,
+      "points_before": 461762,
+      "points_after": 93809,
+      "bytes_before": 12725307,
+      "bytes_after": 2329835
+    },
+    {
+      "layer": "provinces",
+      "year": 1991,
+      "source_path": "data/derived/geometries/provinces_1991.geojson",
+      "target_path": "data/derived/geometries_web/provinces_1991.geojson",
+      "tolerance": 80.0,
+      "feature_count": 9,
+      "points_before": 43321,
+      "points_after": 6136,
+      "bytes_before": 1161448,
+      "bytes_after": 130414
+    },
+    {
+      "layer": "municipalities",
+      "year": 2001,
+      "source_path": "data/derived/geometries/municipalities_2001.geojson",
+      "target_path": "data/derived/geometries_web/municipalities_2001.geojson",
+      "tolerance": 45.0,
+      "feature_count": 1546,
+      "points_before": 492292,
+      "points_after": 93984,
+      "bytes_before": 13542340,
+      "bytes_after": 2333532
+    },
+    {
+      "layer": "provinces",
+      "year": 2001,
+      "source_path": "data/derived/geometries/provinces_2001.geojson",
+      "target_path": "data/derived/geometries_web/provinces_2001.geojson",
+      "tolerance": 80.0,
+      "feature_count": 11,
+      "points_before": 52510,
+      "points_after": 6757,
+      "bytes_before": 1408267,
+      "bytes_after": 143793
+    },
+    {
+      "layer": "municipalities",
+      "year": 2014,
+      "source_path": "data/derived/geometries/municipalities_2014.geojson",
+      "target_path": "data/derived/geometries_web/municipalities_2014.geojson",
+      "tolerance": 45.0,
+      "feature_count": 1544,
+      "points_before": 496306,
+      "points_after": 94288,
+      "bytes_before": 13651157,
+      "bytes_after": 2339986
+    },
+    {
+      "layer": "provinces",
+      "year": 2014,
+      "source_path": "data/derived/geometries/provinces_2014.geojson",
+      "target_path": "data/derived/geometries_web/provinces_2014.geojson",
+      "tolerance": 80.0,
+      "feature_count": 12,
+      "points_before": 53970,
+      "points_after": 7101,
+      "bytes_before": 1447347,
+      "bytes_after": 151193
+    },
+    {
+      "layer": "municipalities",
+      "year": 2018,
+      "source_path": "data/derived/geometries/municipalities_2018.geojson",
+      "target_path": "data/derived/geometries_web/municipalities_2018.geojson",
+      "tolerance": 45.0,
+      "feature_count": 1516,
+      "points_before": 492202,
+      "points_after": 93546,
+      "bytes_before": 13535144,
+      "bytes_after": 2318274
+    },
+    {
+      "layer": "provinces",
+      "year": 2018,
+      "source_path": "data/derived/geometries/provinces_2018.geojson",
+      "target_path": "data/derived/geometries_web/provinces_2018.geojson",
+      "tolerance": 80.0,
+      "feature_count": 12,
+      "points_before": 53970,
+      "points_after": 7101,
+      "bytes_before": 1447349,
+      "bytes_after": 151195
+    },
+    {
+      "layer": "municipalities",
+      "year": 2021,
+      "source_path": "data/derived/geometries/municipalities_2021.geojson",
+      "target_path": "data/derived/geometries_web/municipalities_2021.geojson",
+      "tolerance": 45.0,
+      "feature_count": 1506,
+      "points_before": 532676,
+      "points_after": 93305,
+      "bytes_before": 14603346,
+      "bytes_after": 2310997
+    },
+    {
+      "layer": "provinces",
+      "year": 2021,
+      "source_path": "data/derived/geometries/provinces_2021.geojson",
+      "target_path": "data/derived/geometries_web/provinces_2021.geojson",
+      "tolerance": 80.0,
+      "feature_count": 12,
+      "points_before": 62839,
+      "points_after": 7074,
+      "bytes_before": 1683874,
+      "bytes_after": 150628
+    },
+    {
+      "layer": "municipalities",
+      "year": 2026,
+      "source_path": "data/derived/geometries/municipalities_2026.geojson",
+      "target_path": "data/derived/geometries_web/municipalities_2026.geojson",
+      "tolerance": 45.0,
+      "feature_count": 1502,
+      "points_before": 640143,
+      "points_after": 93152,
+      "bytes_before": 17217658,
+      "bytes_after": 2306935
+    },
+    {
+      "layer": "provinces",
+      "year": 2026,
+      "source_path": "data/derived/geometries/provinces_2026.geojson",
+      "target_path": "data/derived/geometries_web/provinces_2026.geojson",
+      "tolerance": 80.0,
+      "feature_count": 12,
+      "points_before": 63154,
+      "points_after": 7078,
+      "bytes_before": 1692077,
+      "bytes_after": 150712
+    }
+  ],
+  "totals": {
+    "bytes_before": 94115314,
+    "bytes_after": 14817494,
+    "points_before": 3445145,
+    "points_after": 603331,
+    "byte_reduction_pct": 84.26,
+    "point_reduction_pct": 82.49
+  }
+}

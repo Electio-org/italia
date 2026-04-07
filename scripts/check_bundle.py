@@ -66,6 +66,7 @@ def main() -> int:
         'app.js',
         'site-pages.js',
         'scripts/preprocess.py',
+        'scripts/build_web_geometry_pack.py',
         'scripts/import_archive_gap_report.py',
         'scripts/rebuild_bundle_from_camera_opendata_archives.py',
         'scripts/rebuild_modern_bundle_from_archive.py',
@@ -76,7 +77,7 @@ def main() -> int:
         if not (root / rel).exists():
             issues.append(f'missing:{rel}')
 
-    for rel_script in ['scripts/preprocess.py', 'scripts/import_archive_gap_report.py', 'scripts/rebuild_bundle_from_camera_opendata_archives.py', 'scripts/rebuild_modern_bundle_from_archive.py', 'scripts/rebuild_historical_bundle_from_grouped.py', 'clients/python/lce_loader.py']:
+    for rel_script in ['scripts/preprocess.py', 'scripts/build_web_geometry_pack.py', 'scripts/import_archive_gap_report.py', 'scripts/rebuild_bundle_from_camera_opendata_archives.py', 'scripts/rebuild_modern_bundle_from_archive.py', 'scripts/rebuild_historical_bundle_from_grouped.py', 'clients/python/lce_loader.py']:
         try:
             tmp_pyc = root / f'_tmp_{Path(rel_script).stem}_check.pyc'
             py_compile.compile(str(root / rel_script), cfile=str(tmp_pyc), doraise=True)
@@ -176,7 +177,7 @@ def main() -> int:
     if not geometry.get('features'):
         issues.append('geometry:placeholder_or_missing')
 
-    required_manifest_keys = ['geometryPack', 'dataProducts', 'productCatalog', 'datasetContracts', 'provenance', 'releaseManifest', 'researchRecipes', 'siteGuides', 'municipalitySummaryByElectionIndex', 'municipalityResultsLongByElectionIndex', 'archiveBundleGapReport']
+    required_manifest_keys = ['geometryPack', 'geometryPackFull', 'geometryFull', 'provinceGeometryFull', 'dataProducts', 'productCatalog', 'datasetContracts', 'provenance', 'releaseManifest', 'researchRecipes', 'siteGuides', 'municipalitySummaryByElectionIndex', 'municipalityResultsLongByElectionIndex', 'archiveBundleGapReport', 'webGeometryReport']
     for key in required_manifest_keys:
         rel = files.get(key)
         if not rel:
@@ -271,6 +272,21 @@ def main() -> int:
         if not rows:
             issues.append('archive_gap_report:empty')
 
+    web_geometry_path = root / (files.get('geometry') or '')
+    full_geometry_path = root / (files.get('geometryFull') or '')
+    if web_geometry_path.exists() and full_geometry_path.exists():
+        web_size = web_geometry_path.stat().st_size
+        full_size = full_geometry_path.stat().st_size
+        if web_size >= full_size:
+            issues.append('geometry_web:not_smaller_than_full')
+    web_pack_path = root / (files.get('geometryPack') or '')
+    full_pack_path = root / (files.get('geometryPackFull') or '')
+    if web_pack_path.exists() and full_pack_path.exists():
+        web_pack = json.loads(web_pack_path.read_text(encoding='utf-8'))
+        full_pack = json.loads(full_pack_path.read_text(encoding='utf-8'))
+        if web_pack == full_pack:
+            issues.append('geometry_pack:web_and_full_identical')
+
     citation_path = root / 'CITATION.cff'
     if not citation_path.exists():
         issues.append('citation:missing_cff')
@@ -305,6 +321,17 @@ def main() -> int:
             leaking_paths += 1
     if leaking_paths:
         issues.append(f'elections_master_path_leak:{leaking_paths}')
+
+    metadata_path_leaks = 0
+    for rel in ['data/derived/manifest.json', 'data/derived/release_manifest.json', 'data/derived/web_geometry_report.json', 'data/products/product_catalog.json']:
+        path = root / rel
+        if not path.exists():
+            continue
+        blob = path.read_text(encoding='utf-8')
+        if 'C:\\' in blob or '/Users/' in blob or '/mnt/' in blob or '/home/' in blob:
+            metadata_path_leaks += 1
+    if metadata_path_leaks:
+        issues.append(f'metadata_path_leak:{metadata_path_leaks}')
 
     contradicted = 0
     coverage = {}
