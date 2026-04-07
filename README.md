@@ -1,214 +1,85 @@
-# See docs/README.md
+# Lombardia Camera Explorer
 
+Private preview of a Lombardia-wide election data platform for `Camera dei Deputati` results at municipal level.
 
-## Upgrade UI/analitici inclusi
+This repository is the focused home for the Lombardia build: a public-facing explorer, a structured derived-data bundle, and lightweight programmatic access for research and reuse. The long-term direction is broader, but this repo stays intentionally narrow so the Lombardia layer can become solid, credible, and reusable first.
 
-Questa versione aggiunge già nell'infrastruttura:
+## What is in this repository
 
-- palette politiche e fallback coerenti per partiti / famiglie / blocchi
-- indicatori mappa aggiuntivi: swing, delta turnout, volatilità, cambi di dominanza, concentrazione
-- profilo narrativo automatico del comune
-- confronto comune vs provincia vs Lombardia
-- pannello lineage separato
-- confronto tra due elezioni con liste di crescita/calo
-- permalink della vista corrente
-- export della vista JSON oltre a CSV/JSON del comune
-- ordinamento avanzato della tabella
+- A static election explorer with map, municipality profile, comparison tools, coverage panels, and method-aware guidance.
+- A derived data bundle under `data/derived/` with registry, codebook, usage notes, provenance, contracts, and release metadata.
+- Programmatic loaders for Python and R under `clients/`.
+- Validation scripts for bundle integrity, frontend sanity checks, and loader smoke tests.
 
-Quando inserirai i file derived veri, queste funzioni si accenderanno senza rifare l'architettura.
+## Current scope
 
+- Geography: Lombardia
+- Election family: `Camera dei Deputati`
+- Granularity: primarily municipal, with province and region context layers
+- Product style: public-facing and explorable, but structured as a data product rather than a one-off dashboard
 
-## Novità v3
+## Main entry points
 
-- slider temporale con navigazione precedente/successiva
-- comparatore fino a 4 comuni
-- ranking dinamici top/bottom sul filtro corrente
-- mappa con zoom/pan e reset vista
-- rank del comune selezionato sul campione filtrato
+- `index.html`: main explorer
+- `data-download.html`: bundle files, dataset families, and download-facing view
+- `programmatic-access.html`: Python and R access paths
+- `usage-notes.html`: caveats, comparability, and bundle notes
+- `update-log.html`: release-facing log for the current bundle
 
+## Run locally
 
-## Novità v4
+Requirements:
 
-- preset rapidi per attivare subito letture utili (primo partito, swing, blocchi, affluenza, volatilità)
-- filtri aggiuntivi per completezza dati e stato territoriale
-- memoria locale di comuni recenti e bookmark/comparatore
-- export PNG di mappa, timeline e heatmap
-- pannello province con metriche medie e azioni rapide di filtro
-- heatmap temporale del comune selezionato per partiti/famiglie/blocchi
-- confronto elettorale migliorato con cambi di primo partito cliccabili
-- outline dei comuni nel comparatore anche sulla mappa
-- zoom automatico sul comune selezionato quando la geometria è disponibile
+- Python 3
+- Node.js (used for JS syntax checks)
 
+From the repository root:
 
-## Novità v5
+```powershell
+python -m http.server 8000
+```
 
-- doppia mappa di confronto affiancata tra elezione attiva e anno di confronto
-- bookmark persistenti separati dal comparatore
-- scorciatoie tastiera per ricerca, navigazione temporale e selezione rapida
-- tabella paginata per lavorare meglio su molti comuni
-- diagnostica join dati ↔ geometrie e audit di copertura funzionale
-- barra filtri attivi per lettura più fluida dello stato della vista
-- autoplay della timeline elettorale e scambio rapido tra le due elezioni
+Then open:
 
-## Gap ancora dichiarati
+- `http://127.0.0.1:8000/index.html`
+- `http://127.0.0.1:8000/data-download.html`
 
-- clusterizzazione delle traiettorie non ancora implementata
-- geometrie storiche vere per anno dipendono dai file geografici che inserirai
-- confronto swipe vero e proprio non ancora separato dalla doppia mappa affiancata
+## Validation
 
+Useful local checks:
 
-## Novità v6
+```powershell
+node --check app.js
+node --check site-pages.js
+python -m py_compile scripts\preprocess.py scripts\check_bundle.py clients\python\lce_loader.py
+python -m unittest clients.python.tests.test_loader
+python scripts\check_bundle.py --root .
+```
 
-- comuni simili e cluster leggero basati su traiettoria, affluenza e cambi di leadership
-- small multiples provinciali per leggere pattern territoriali lungo il tempo
-- preprocessore più forte: bootstrap pragmatico da cartelle `_clean` / `_raw` con note metodologiche esplicite
-- export del profilo comune arricchito con cluster e similarità
+The bundle is meant to behave like a small release artifact, not just frontend fixtures. For that reason the repo ships machine-readable metadata such as:
 
+- `data/derived/manifest.json`
+- `data/derived/release_manifest.json`
+- `data/derived/dataset_contracts.json`
+- `data/derived/provenance.json`
+- `data/derived/usage_notes.json`
 
-## v7
+## Repository layout
 
-- Aggiunta una vista **Traiettoria storica del comune** più leggibile e narrativa, con modalità `selezione attiva vs contesto`, `top gruppi nel tempo` e `top partiti nel tempo`.
-- Il grafico usa linee tra elezioni discrete, con etichette finali e anni di confronto evidenziati, evitando smoothing continuo implicito.
+- `data/derived/`: derived datasets, geometry pack, registry, contracts, and release metadata
+- `clients/python/`: Python loader and tests
+- `clients/r/`: R loader
+- `scripts/`: preprocessing and validation scripts
+- `modules/`: frontend modules used by the explorer
+- `vendor/tabler/`: vendor UI shell assets
+- `docs/`: supporting project notes
 
+## Status
 
-## Novità v8
+This is a private working repository for the Lombardia-only platform layer. It is already usable as a structured local bundle and explorer, but it should still be treated as a controlled preview rather than a final public release.
 
-- Swipe compare su geografia condivisa con cursore
-- Traiettoria storica del comune rafforzata con storyboard sintetico
-- Annotazioni locali per comune salvate nel browser
-- Shift+click in mappa per aggiungere/rimuovere comuni dal comparatore
-- Stampa della scheda comune in formato leggibile
+Licensing and publication policy will be finalized before public launch.
 
+## Citation
 
-## Aggiornamenti v9
-
-- nuovi indicatori: scarto vs provincia, scarto vs Lombardia, indice di stabilità
-- audit tecnico/readiness per elezione con export JSON
-- diagnostica mismatch più trasparente
-- traiettoria del comune rafforzata con scarti contestuali e stabilità
-
-
-## Novità v11
-- archetipi e pattern comunali
-- confronto gruppi di comuni nel tempo
-- passaggi tra elezioni con matrice dei blocchi
-- audit/readiness aggiornato
-
-
-## Novità v12
-
-- command palette per comune o azione rapida (`Ctrl/Cmd+K`)
-- focus mode e fullscreen mappa
-- preset territoriali lombardi per navigazione più rapida
-- toast, overlay di caricamento e feedback operativi
-- render isolato per sezione: un errore locale non dovrebbe bloccare tutta l'app
-- audit UI con issue catturate in sessione e indicatori di robustezza
-- passata grafica più forte: glow, gradienti, sticky toolbar, pannelli più polished
-
-
-## Novità v13
-
-- modalità guidate task-first: **Esplora / Confronta / Traiettoria / Diagnostica / Layer esterni**
-- **viste salvate** in locale, richiamabili e cancellabili
-- **insight immediati** cliccabili sul filtro corrente, per orientare l’analisi più in fretta
-- preferenze di **densità** e **contrasto / color-blind mode** salvate localmente
-- legenda più esplicita, toolbar ancora più sticky e feedback visivo più rifinito
-- input principali resi più fluidi con debounce leggero
-- piccoli miglioramenti di accessibilità (`role`, `aria-label`, contrasto più forte, sticky headers tabella)
-
-
-## Novità v14
-
-- onboarding/help con shortcut `?`
-- cronologia vista con indietro/avanti
-- pannelli comprimibili per progressive disclosure
-- jump bar per navigare tra sezioni
-- selection dock persistente
-- pill salute vista più trasparente
-
-
-## Novità v15
-
-- Modalità **Base / Esperto** per ridurre il carico cognitivo e nascondere i controlli tecnici finché non servono.
-- **Affidabilità della vista** e **affidabilità del caso comunale** esposte in UI e nei report export.
-- Quickstart cards per partire subito da comune, confronto o audit.
-- Report HTML del comune più professionale, con metadata, contesto e motivi di comparabilità/fragilità.
-
-
-## v16 hardening
-
-- preprocess corretto: quote ricalcolate dai voti quando c'è un denominatore plausibile
-- validazioni di plausibilità salvate in `data_quality_report.json`
-- path assoluti rimossi dal bundle
-- fallback mappa più onesto quando le geometrie mancano
-- rendering front-end coalesced con `requestRender()` per ridurre rerender inutili
-- duplicate `similarityBundle` / `lightClusterLabel` rimosse
-
-
-
-## Novità v26
-
-- nuovo pannello **Briefing e limiti della vista** con sintesi pronta, guardrail e nota metodologica copiabile
-- scheda comune stampabile molto più forte: key facts, storyline, caveat e serie storica leggibile
-- layer audience-aware ancora più utile per pubblico, ricerca, amministratori e stampa senza togliere profondità
-
-## Novità v25
-- semantica di `completeness_flag` corretta: distingue `turnout_only` da `party_results_checked`
-- province bootstrap riempite per i comuni effettivamente ingestiti
-- `elections_master.csv` ripulito dai path assoluti
-- preprocess capace di leggere sia layout flat sia layout `validated/existing/raw_option_urls`
-- cluster etichettato in UI come euristico/esplorativo
-- nuovo modulo `modules/quality.js` per fiducia/completeness
-- caricamento opzionale di un bundle locale dal browser (cartella con `manifest.json` e file derived)
-- nuovo catalogo dati con coverage matrix e download center del bundle attivo
-
-
-## Novità v25
-
-- bundle più GERDA-like: dataset registry, usage notes, codebook, update log
-- base geometrica selezionabile nel frontend
-- snippets rapidi per caricare i dataset in Python/R
-- manifest aggiornato con file machine-readable aggiuntivi
-
-
-## Novità v27
-
-- domande guidate audience-aware per aprire percorsi di lettura con un click
-- pannello livello di evidenza con guardrail su quanto la vista è davvero usabile
-- citazione pronta della vista e riga minima di riproducibilità
-- contenuti editoriali estratti in `modules/guidance.js` per rendere la base meno monolitica
-
-
-## Novità v28
-
-- base più da **data product**: aggiunto `data_products.json` con famiglie, guardrail e client ufficiali
-- loader ufficiali Python e R per usare il bundle anche fuori dal browser
-- sezione metodologia estesa con data products e accesso ufficiale
-- `check_bundle.py` più severo su loader, manifest e prodotti dati
-
-
-## Novità v29
-
-- aggiunti `release_manifest.json`, `provenance.json` e `dataset_contracts.json`
-- il bundle ora dichiara anche fingerprint SHA-256, conteggi base e identità di release
-- loader Python rafforzato con `verify_integrity()` e test unitari
-- `check_bundle.py` ora controlla anche integrità release, contratti dati e test del loader
-
-## Novità v30
-
-- Hero pubblico più forte, con pathway cards e release metrics sopra la dashboard.
-- Release studio con identity, provenance, citation e snippet ufficiali Python/R.
-- Research recipes machine-readable per accesso pubblico e research-safe senza impoverire il motore dati.
-
-
-## Novità v31
-
-- Aggiunti site guides machine-readable con tre livelli d'uso, explainers e FAQ.
-- Release studio reso visibile nel sito.
-- Nuove sezioni frontali per metodo rapido e accesso più chiaro tra pubblico, briefing e ricerca.
-
-
-## Novità v32
-
-- Home resa più memorabile con manifesto, proof pillars e narrative strip.
-- Front door più forte senza ridurre la parte metodologica, release-first e programmatica.
+If you need a machine-readable citation entry, see `CITATION.cff`.
