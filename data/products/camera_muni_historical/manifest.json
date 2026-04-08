@@ -33,10 +33,10 @@
       "dataset_key": "municipalitySummary",
       "path": "data/derived/municipality_summary.csv",
       "kind": "csv",
-      "size_bytes": 9576337,
-      "row_count": 30316,
+      "size_bytes": 9577331,
+      "row_count": 30315,
       "feature_count": null,
-      "sha256": "33c2747e8ed74908f136c18832617ca02fdc758f4092f235fa7645cf7a5ab267",
+      "sha256": "14c01742a354e3625adc1d8a8ab2ff51c18e73e44c1a67c7cfaee3e721b62772",
       "delivery_strategy": "deferred_by_election",
       "by_election_index": "data/derived/municipality_summary_by_election.json"
     },
@@ -45,10 +45,10 @@
       "dataset_key": "municipalityResultsLong",
       "path": "data/derived/municipality_results_long.csv",
       "kind": "csv",
-      "size_bytes": 99751278,
+      "size_bytes": 97649569,
       "row_count": 371027,
       "feature_count": null,
-      "sha256": "3945676ca675b800a692f0f073afb7d287facdd8a4421f22702f8555444748e4",
+      "sha256": "e2572ba1370ec3032835aea0871a33edf08f95c1f1f8b8214efb710274559f82",
       "delivery_strategy": "deferred_by_election",
       "by_election_index": "data/derived/municipality_results_long_by_election.json"
     }
@@ -76,7 +76,7 @@
         "election_year": 1948,
         "coverage_label": "summary+results",
         "status": "usable",
-        "summary_rows": 1433,
+        "summary_rows": 1432,
         "result_rows": 13769,
         "download_summary": "data/derived/summary_by_election/camera_1948.csv",
         "download_results": "data/derived/results_by_election/camera_1948.csv"

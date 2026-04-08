@@ -33,7 +33,7 @@
       "size_bytes": 12812,
       "row_count": null,
       "feature_count": null,
-      "sha256": "c89c8dd2b073eaf9f3cd882a67a5c220fa9c4f67c5d901e0cfba936bc9200309"
+      "sha256": "d9371f05752b674ac4cbdd9f18ba71a2da4ac88573d54af6a3ef3c0389a83e73"
     },
     {
       "role": "companion",
@@ -73,7 +73,7 @@
       "size_bytes": 17606,
       "row_count": null,
       "feature_count": null,
-      "sha256": "d918c43d62776fa032bac7aa5aa6ea21f2fcf21917e50941f991e19e78c16f95"
+      "sha256": "8bb4552fc83fa7c7f99130ec0a71dbc862af84ed4865ef5aeb769a803437321f"
     },
     {
       "role": "extra",

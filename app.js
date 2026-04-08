@@ -174,7 +174,8 @@ function matchesTerritorialStatus(row) {
 
 function municipalityLabelById(id) {
   if (!id) return 'Comune n/d';
-  const m = state.municipalities.find(d => d.municipality_id === id) || state.summary.find(d => d.municipality_id === id);
+  const m = state.municipalities.find(d => d.municipality_id === id || d.geometry_id === id)
+    || state.summary.find(d => d.municipality_id === id || d.geometry_id === id);
   return m ? `${m.name_current || m.municipality_name}${m.province_current || m.province ? ` (${m.province_current || m.province})` : ''}` : String(id);
 }
 
@@ -220,7 +221,7 @@ function audienceMeta() {
 
 function metricReadableExplanation() {
   switch (state.selectedMetric) {
-    case 'turnout': return "La mappa mostra quanta partecipazione elettorale c'e stata, non quale partito ha vinto.";
+    case 'turnout': return "La mappa mostra quanta partecipazione elettorale c'è stata, non quale partito ha vinto.";
     case 'first_party': return 'La mappa mostra chi arriva primo in ogni comune, non il margine della vittoria.';
     case 'party_share': return `La mappa mostra la quota della selezione attiva (${state.selectedParty || 'partito'}) dove il dato è disponibile.`;
     case 'margin': return 'La mappa mostra il distacco tra primo e secondo: più è alto, più il comune è sbilanciato.';
@@ -1555,18 +1556,22 @@ function buildMunicipalityReportHtml() {
     completeness: row.completeness_flag || '—',
     territorial: row.territorial_status || '—'
   }));
+  const currentProvince = selected?.province_current || currentRow?.province || 'n/d';
   const keyFacts = [
     ['Elezione attiva', electionLabelByKey(state.selectedElection)],
     ['Confronto', state.compareElection ? electionLabelByKey(state.compareElection) : 'nessuno'],
     ['Metrica attiva', metricLabel()],
     ['Selezione attiva', currentSelectionLabel()],
-    ['Provincia', selected?.province_current || currentRow?.province || '—'],
+    ['Provincia corrente', currentProvince],
     ['Affidabilità del caso', trust.label],
     ['Affluenza corrente', currentRow?.turnout_pct != null ? `${fmtPct(currentRow.turnout_pct)}%` : '—'],
     ['Primo partito', currentRow?.first_party_std || '—'],
     ['Quota attiva', currentPartyShare != null ? `${fmtPct(currentPartyShare)}%` : '—'],
     ['Δ quota vs confronto', currentPartyShare != null && compareShare != null ? `${fmtPctSigned(currentPartyShare - compareShare)} pt` : '—']
   ];
+  if (currentRow?.province_observed && currentRow.province_observed !== currentProvince) {
+    keyFacts.splice(5, 0, ['Provincia osservata nella fonte', currentRow.province_observed]);
+  }
   return `<!doctype html>
 <html lang="it">
 <head>
@@ -1802,6 +1807,9 @@ function toggleFocusMode(force = null) {
 function setUILevel(level = 'basic') {
   state.uiLevel = level === 'advanced' ? 'advanced' : 'basic';
   updateBodyAppearance();
+  if (state.uiLevel === 'basic' && document.body.dataset.dashboardView === 'analysis') {
+    switchDashboardSection('dashboard');
+  }
   syncURLState();
   requestRender();
   showToast(`Interfaccia ${state.uiLevel === 'advanced' ? 'esperta' : 'base'} attiva.`, 'success', 1800);
@@ -1848,6 +1856,14 @@ function updateBodyAppearance() {
   if (els.displayModeSummary) {
     els.displayModeSummary.textContent = `Densità ${state.uiDensity === 'compact' ? 'compatta' : 'comfort'} · visione ${state.visionMode === 'default' ? 'standard' : state.visionMode.replace('_', ' ')} · pubblico ${audienceMeta().label.toLowerCase()}.`;
   }
+  if (state.uiLevel === 'basic' && document.body.dataset.dashboardView === 'analysis') {
+    switchDashboardSection('dashboard');
+  }
+}
+
+function switchDashboardSection(view = 'dashboard') {
+  const tab = document.querySelector(`.dashboard-tab[data-section-view="${view}"]`);
+  tab?.click();
 }
 
 function commandEntries(query = '') {
@@ -2428,8 +2444,8 @@ function hideTooltip() {
 
 function selectedMunicipalityRecord() {
   if (!state.selectedMunicipalityId) return null;
-  return state.municipalities.find(d => d.municipality_id === state.selectedMunicipalityId)
-    || state.summary.find(d => d.municipality_id === state.selectedMunicipalityId)
+  return state.municipalities.find(d => d.municipality_id === state.selectedMunicipalityId || d.geometry_id === state.selectedMunicipalityId)
+    || state.summary.find(d => d.municipality_id === state.selectedMunicipalityId || d.geometry_id === state.selectedMunicipalityId)
     || null;
 }
 
@@ -2485,12 +2501,14 @@ function renderDetail() {
     <div class="detail-block">
       <h3>Anagrafica</h3>
       <div class="keyvals">
+        ${currentRow?.province_observed && currentRow.province_observed !== (selected.province_current || currentRow.province || '') ? `<div><span>Provincia osservata</span>${escapeHtml(currentRow.province_observed)}</div>` : ''}
+        <div><span>ID geometrico corrente</span>${escapeHtml(selected.geometry_id || currentRow.geometry_id || 'n/d')}</div>
         <div><span>Nome corrente</span>${escapeHtml(selected.name_current || selected.municipality_name || '—')}</div>
         <div><span>Nome storico</span>${escapeHtml(selected.name_historical || '—')}</div>
         <div><span>Provincia</span>${escapeHtml(selected.province_current || currentRow.province || '—')}</div>
         <div><span>ID stabile</span>${escapeHtml(selected.municipality_id || selected.geometry_id || '—')}</div>
         <div><span>Stato territoriale</span>${escapeHtml(currentRow.territorial_status || '—')}</div>
-        <div><span>Modalità</span>${escapeHtml(currentRow.territorial_mode || state.territorialMode)}</div>
+        <div><span>Modalità territoriale</span>${escapeHtml(currentRow.territorial_mode || state.territorialMode)}</div>
       </div>
     </div>
     <div class="detail-block">
@@ -4867,6 +4885,9 @@ async function init() {
     await loadData(state, { buildIndices: () => buildIndices(state), registerIssue });
     restoreLocalState();
     restoreURLState();
+    const bootParams = new URLSearchParams(location.hash.startsWith('#') ? location.hash.slice(1) : '');
+    if (!bootParams.has('uiLevel')) state.uiLevel = 'basic';
+    if (!bootParams.has('audienceMode')) state.audienceMode = 'public';
     setupControls();
     invalidateDerivedCaches();
     renderStatusPanel();

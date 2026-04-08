@@ -1,9 +1,561 @@
 municipality_id,alias,alias_type,valid_from,valid_to,notes
+012001,Agra,current_name,1946,,bootstrap alias
+012002,Albizzate,current_name,1946,,bootstrap alias
+012003,Angera,current_name,1946,,bootstrap alias
+012004,Arcisate,current_name,1946,,bootstrap alias
+012005,Arsago Seprio,current_name,1946,,bootstrap alias
+012006,Azzate,current_name,1946,,bootstrap alias
+012007,Azzio,current_name,1946,,bootstrap alias
+012008,Barasso,current_name,1946,,bootstrap alias
+012009,Bardello,current_name,1946,,bootstrap alias
+012010,Bedero Valcuvia,current_name,1946,,bootstrap alias
+012011,Besano,current_name,1946,,bootstrap alias
+012012,Besnate,current_name,1946,,bootstrap alias
+012013,Besozzo,current_name,1946,,bootstrap alias
+012014,Biandronno,current_name,1946,,bootstrap alias
+012015,Bisuschio,current_name,1946,,bootstrap alias
+012016,Bodio Lomnago,current_name,1946,,bootstrap alias
+012017,Brebbia,current_name,1946,,bootstrap alias
+012018,Bregano,current_name,1946,,bootstrap alias
+012019,Brenta,current_name,1946,,bootstrap alias
+012020,Brezzo di Bedero,current_name,1946,,bootstrap alias
+012021,Brinzio,current_name,1946,,bootstrap alias
+012022,Brissago-Valtravaglia,current_name,1946,,bootstrap alias
+012023,Brunello,current_name,1946,,bootstrap alias
+012024,Brusimpiano,current_name,1946,,bootstrap alias
+012025,Buguggiate,current_name,1946,,bootstrap alias
+012026,Busto Arsizio,current_name,1946,,bootstrap alias
+012027,Cadegliano-Viconago,current_name,1946,,bootstrap alias
+012028,Cadrezzate,current_name,1946,,bootstrap alias
+012029,Cairate,current_name,1946,,bootstrap alias
+012030,Cantello,current_name,1946,,bootstrap alias
+012031,Caravate,current_name,1946,,bootstrap alias
+012032,Cardano al Campo,current_name,1946,,bootstrap alias
+012033,Carnago,current_name,1946,,bootstrap alias
+012034,Caronno Pertusella,current_name,1946,,bootstrap alias
+012035,Caronno Varesino,current_name,1946,,bootstrap alias
+012036,Casale Litta,current_name,1946,,bootstrap alias
+012037,Casalzuigno,current_name,1946,,bootstrap alias
+012038,Casciago,current_name,1946,,bootstrap alias
+012039,Casorate Sempione,current_name,1946,,bootstrap alias
+012040,Cassano Magnago,current_name,1946,,bootstrap alias
+012041,Cassano Valcuvia,current_name,1946,,bootstrap alias
+012042,Castellanza,current_name,1946,,bootstrap alias
+012043,Castello Cabiaglio,current_name,1946,,bootstrap alias
+012044,Castelseprio,current_name,1946,,bootstrap alias
+012045,Castelveccana,current_name,1946,,bootstrap alias
+012046,Castiglione Olona,current_name,1946,,bootstrap alias
+012047,Castronno,current_name,1946,,bootstrap alias
+012048,Cavaria Con Premezzo,current_name,1946,,bootstrap alias
+012049,Cazzago Brabbia,current_name,1946,,bootstrap alias
+012050,Cislago,current_name,1946,,bootstrap alias
+012051,Cittiglio,current_name,1946,,bootstrap alias
+012052,Clivio,current_name,1946,,bootstrap alias
+012053,Cocquio-Trevisago,current_name,1946,,bootstrap alias
+012054,Comabbio,current_name,1946,,bootstrap alias
+012055,Comerio,current_name,1946,,bootstrap alias
+012056,Cremenaga,current_name,1946,,bootstrap alias
+012057,Crosio della Valle,current_name,1946,,bootstrap alias
+012058,Cuasso al Monte,current_name,1946,,bootstrap alias
+012059,Cugliate-Fabiasco,current_name,1946,,bootstrap alias
+012060,Cunardo,current_name,1946,,bootstrap alias
+012061,Curiglia Con Monteviasco,current_name,1946,,bootstrap alias
+012062,Cuveglio,current_name,1946,,bootstrap alias
+012063,Cuvio,current_name,1946,,bootstrap alias
+012064,Daverio,current_name,1946,,bootstrap alias
+012065,Dumenza,current_name,1946,,bootstrap alias
+012066,Duno,current_name,1946,,bootstrap alias
+012067,Fagnano Olona,current_name,1946,,bootstrap alias
+012068,Ferno,current_name,1946,,bootstrap alias
+012069,Ferrera di Varese,current_name,1946,,bootstrap alias
+012070,Gallarate,current_name,1946,,bootstrap alias
+012071,Galliate Lombardo,current_name,1946,,bootstrap alias
+012072,Gavirate,current_name,1946,,bootstrap alias
+012073,Gazzada Schianno,current_name,1946,,bootstrap alias
+012074,Gemonio,current_name,1946,,bootstrap alias
+012075,Gerenzano,current_name,1946,,bootstrap alias
+012076,Germignaga,current_name,1946,,bootstrap alias
+012077,Golasecca,current_name,1946,,bootstrap alias
+012078,Gorla Maggiore,current_name,1946,,bootstrap alias
+012079,Gorla Minore,current_name,1946,,bootstrap alias
+012080,Gornate Olona,current_name,1946,,bootstrap alias
+012081,Grantola,current_name,1946,,bootstrap alias
+012082,Inarzo,current_name,1946,,bootstrap alias
+012083,Induno Olona,current_name,1946,,bootstrap alias
+012084,Ispra,current_name,1946,,bootstrap alias
+012085,Jerago Con Orago,current_name,1946,,bootstrap alias
+012086,Lavena Ponte Tresa,current_name,1946,,bootstrap alias
+012086,Lavena-Ponte Tresa,historical_name,1946,,bootstrap alias
+012087,Laveno-Mombello,current_name,1946,,bootstrap alias
+012088,Leggiuno,current_name,1946,,bootstrap alias
+012089,Lonate Ceppino,current_name,1946,,bootstrap alias
+012090,Lonate Pozzolo,current_name,1946,,bootstrap alias
+012091,Lozza,current_name,1946,,bootstrap alias
+012092,Luino,current_name,1946,,bootstrap alias
+012093,Luvinate,current_name,1946,,bootstrap alias
+012094,Maccagno,current_name,1946,,bootstrap alias
+012095,Malgesso,current_name,1946,,bootstrap alias
+012096,Malnate,current_name,1946,,bootstrap alias
+012097,Marchirolo,current_name,1946,,bootstrap alias
+012098,Marnate,current_name,1946,,bootstrap alias
+012099,Marzio,current_name,1946,,bootstrap alias
+012100,Masciago Primo,current_name,1946,,bootstrap alias
+012101,Mercallo,current_name,1946,,bootstrap alias
+012102,Mesenzana,current_name,1946,,bootstrap alias
+012103,Montegrino Valtravaglia,current_name,1946,,bootstrap alias
+012103,Montegrino-Valtravaglia,historical_name,1946,,bootstrap alias
+012104,Monvalle,current_name,1946,,bootstrap alias
+012105,Morazzone,current_name,1946,,bootstrap alias
+012106,Mornago,current_name,1946,,bootstrap alias
+012107,Oggiona Con Santo Stefano,current_name,1946,,bootstrap alias
+012108,Olgiate Olona,current_name,1946,,bootstrap alias
+012109,Origgio,current_name,1946,,bootstrap alias
+012110,Orino,current_name,1946,,bootstrap alias
+012110,Orino-Azzio,historical_name,1946,,bootstrap alias
+012111,Osmate,current_name,1946,,bootstrap alias
+012112,Pino sulla Sponda del Lago Maggiore,current_name,1946,,bootstrap alias
+012113,Porto Ceresio,current_name,1946,,bootstrap alias
+012114,Porto Valtravaglia,current_name,1946,,bootstrap alias
+012115,Rancio Valcuvia,current_name,1946,,bootstrap alias
+012116,Ranco,current_name,1946,,bootstrap alias
+012117,Saltrio,current_name,1946,,bootstrap alias
+012118,Samarate,current_name,1946,,bootstrap alias
+012119,Saronno,current_name,1946,,bootstrap alias
+012120,Sesto Calende,current_name,1946,,bootstrap alias
+012121,Solbiate Arno,current_name,1946,,bootstrap alias
+012122,Solbiate Olona,current_name,1946,,bootstrap alias
+012123,Somma Lombardo,current_name,1946,,bootstrap alias
+012124,Sumirago,current_name,1946,,bootstrap alias
+012125,Taino,current_name,1946,,bootstrap alias
+012126,Ternate,current_name,1946,,bootstrap alias
+012127,Tradate,current_name,1946,,bootstrap alias
+012128,Travedona-Monate,current_name,1946,,bootstrap alias
+012129,Tronzano Lago Maggiore,current_name,1946,,bootstrap alias
+012130,Uboldo,current_name,1946,,bootstrap alias
+012131,Valganna,current_name,1946,,bootstrap alias
+012132,Varano Borghi,current_name,1946,,bootstrap alias
+012133,Varese,current_name,1946,,bootstrap alias
+012134,Vedano Olona,current_name,1946,,bootstrap alias
+012135,Veddasca,current_name,1946,,bootstrap alias
+012136,Venegono Inferiore,current_name,1946,,bootstrap alias
+012137,Venegono Superiore,current_name,1946,,bootstrap alias
+012138,Vergiate,current_name,1946,,bootstrap alias
+012139,Viggiu',current_name,1946,,bootstrap alias
+012140,Vizzola Ticino,current_name,1946,,bootstrap alias
+012141,Sangiano,current_name,1946,,bootstrap alias
+012142,Maccagno Con Pino e Veddasca,current_name,1946,,bootstrap alias
+012143,Cadrezzate Con Osmate,current_name,1946,,bootstrap alias
+013003,Albavilla,current_name,1946,,bootstrap alias
+013004,Albese Con Cassano,current_name,1946,,bootstrap alias
+013005,Albiolo,current_name,1946,,bootstrap alias
+013006,Alserio,current_name,1946,,bootstrap alias
+013007,Alzate Brianza,current_name,1946,,bootstrap alias
+013009,Anzano del Parco,current_name,1946,,bootstrap alias
+013010,Appiano Gentile,current_name,1946,,bootstrap alias
+013011,Argegno,current_name,1946,,bootstrap alias
+013012,Arosio,current_name,1946,,bootstrap alias
+013013,Asso,current_name,1946,,bootstrap alias
+013015,Barni,current_name,1946,,bootstrap alias
+013021,Bene Lario,current_name,1946,,bootstrap alias
+013022,Beregazzo Con Figliaro,current_name,1946,,bootstrap alias
+013023,Binago,current_name,1946,,bootstrap alias
+013024,Bizzarone,current_name,1946,,bootstrap alias
+013025,Blessagno,current_name,1946,,bootstrap alias
+013026,Blevio,current_name,1946,,bootstrap alias
+013028,Bregnano,current_name,1946,,bootstrap alias
+013029,Brenna,current_name,1946,,bootstrap alias
+013030,Brienno,current_name,1946,,bootstrap alias
+013032,Brunate,current_name,1946,,bootstrap alias
+013034,Bulgarograsso,current_name,1946,,bootstrap alias
+013035,Cabiate,current_name,1946,,bootstrap alias
+013036,Cadorago,current_name,1946,,bootstrap alias
+013037,Caglio,current_name,1946,,bootstrap alias
+013038,Cagno,current_name,1946,,bootstrap alias
+013040,Campione d'Italia,current_name,1946,,bootstrap alias
+013041,Cantu',current_name,1946,,bootstrap alias
+013042,Canzo,current_name,1946,,bootstrap alias
+013043,Capiago Intimiano,current_name,1946,,bootstrap alias
+013044,Carate Urio,current_name,1946,,bootstrap alias
+013045,Carbonate,current_name,1946,,bootstrap alias
+013046,Carimate,current_name,1946,,bootstrap alias
+013047,Carlazzo,current_name,1946,,bootstrap alias
+013048,Carugo,current_name,1946,,bootstrap alias
+013048,Carugo-Arosio,historical_name,1946,,bootstrap alias
+013050,Casasco d'Intelvi,current_name,1946,,bootstrap alias
+013052,Caslino d'Erba,current_name,1946,,bootstrap alias
+013053,Casnate Con Bernate,current_name,1946,,bootstrap alias
+013055,Cassina Rizzardi,current_name,1946,,bootstrap alias
+013058,Castelmarte,current_name,1946,,bootstrap alias
+013059,Castelnuovo Bozzente,current_name,1946,,bootstrap alias
+013060,Castiglione d'Intelvi,current_name,1946,,bootstrap alias
+013061,Cavallasca,current_name,1946,,bootstrap alias
+013062,Cavargna,current_name,1946,,bootstrap alias
+013063,Cerano d'Intelvi,current_name,1946,,bootstrap alias
+013064,Cermenate,current_name,1946,,bootstrap alias
+013065,Cernobbio,current_name,1946,,bootstrap alias
+013068,Cirimido,current_name,1946,,bootstrap alias
+013070,Civenna,current_name,1946,,bootstrap alias
+013071,Claino Con Osteno,current_name,1946,,bootstrap alias
+013074,Colonno,current_name,1946,,bootstrap alias
+013075,Como,current_name,1946,,bootstrap alias
+013076,Consiglio di Rumo,current_name,1946,,bootstrap alias
+013077,Corrido,current_name,1946,,bootstrap alias
+013083,Cremia,current_name,1946,,bootstrap alias
+013084,Cucciago,current_name,1946,,bootstrap alias
+013085,Cusino,current_name,1946,,bootstrap alias
+013087,Dizzasco,current_name,1946,,bootstrap alias
+013089,Domaso,current_name,1946,,bootstrap alias
+013090,Dongo,current_name,1946,,bootstrap alias
+013092,Dosso del Liro,current_name,1946,,bootstrap alias
+013093,Drezzo,current_name,1946,,bootstrap alias
+013095,Erba,current_name,1946,,bootstrap alias
+013097,Eupilio,current_name,1946,,bootstrap alias
+013098,Faggeto Lario,current_name,1946,,bootstrap alias
+013099,Faloppio,current_name,1946,,bootstrap alias
+013100,Fenegro',current_name,1946,,bootstrap alias
+013101,Figino Serenza,current_name,1946,,bootstrap alias
+013102,Fino Mornasco,current_name,1946,,bootstrap alias
+013106,Garzeno,current_name,1946,,bootstrap alias
+013107,Gera Lario,current_name,1946,,bootstrap alias
+013108,Germasino,current_name,1946,,bootstrap alias
+013109,Gironico,current_name,1946,,bootstrap alias
+013110,Grandate,current_name,1946,,bootstrap alias
+013111,Grandola Ed Uniti,current_name,1946,,bootstrap alias
+013112,Gravedona,current_name,1946,,bootstrap alias
+013113,Griante,current_name,1946,,bootstrap alias
+013114,Guanzate,current_name,1946,,bootstrap alias
+013117,Introzzo,current_name,1946,,bootstrap alias
+013118,Inverigo,current_name,1946,,bootstrap alias
+013119,Laglio,current_name,1946,,bootstrap alias
+013119,Laglio Brienno,historical_name,1946,,bootstrap alias
+013120,Laino,current_name,1946,,bootstrap alias
+013121,Lambrugo,current_name,1946,,bootstrap alias
+013122,Lanzo d'Intelvi,current_name,1946,,bootstrap alias
+013123,Lasnigo,current_name,1946,,bootstrap alias
+013125,Lenno,current_name,1946,,bootstrap alias
+013126,Lezzeno,current_name,1946,,bootstrap alias
+013128,Limido Comasco,current_name,1946,,bootstrap alias
+013129,Lipomo,current_name,1946,,bootstrap alias
+013130,Livo,current_name,1946,,bootstrap alias
+013131,Locate Varesino,current_name,1946,,bootstrap alias
+013133,Lomazzo,current_name,1946,,bootstrap alias
+013134,Longone al Segrino,current_name,1946,,bootstrap alias
+013135,Luisago,current_name,1946,,bootstrap alias
+013136,Lurago d'Erba,current_name,1946,,bootstrap alias
+013137,Lurago Marinone,current_name,1946,,bootstrap alias
+013138,Lurate Caccivio,current_name,1946,,bootstrap alias
+013139,Magreglio,current_name,1946,,bootstrap alias
+013143,Mariano Comense,current_name,1946,,bootstrap alias
+013144,Maslianico,current_name,1946,,bootstrap alias
+013145,Menaggio,current_name,1946,,bootstrap alias
+013147,Merone,current_name,1946,,bootstrap alias
+013148,Mezzegra,current_name,1946,,bootstrap alias
+013152,Moltrasio,current_name,1946,,bootstrap alias
+013153,Monguzzo,current_name,1946,,bootstrap alias
+013154,Montano Lucino,current_name,1946,,bootstrap alias
+013155,Montemezzo,current_name,1946,,bootstrap alias
+013157,Montorfano,current_name,1946,,bootstrap alias
+013159,Mozzate,current_name,1946,,bootstrap alias
+013160,Musso,current_name,1946,,bootstrap alias
+013161,Nesso,current_name,1946,,bootstrap alias
+013163,Novedrate,current_name,1946,,bootstrap alias
+013165,Olgiate Comasco,current_name,1946,,bootstrap alias
+013169,Oltrona di San Mamette,current_name,1946,,bootstrap alias
+013169,Oltrona San Mamette,historical_name,1946,,bootstrap alias
+013170,Orsenigo,current_name,1946,,bootstrap alias
+013172,Ossuccio,current_name,1946,,bootstrap alias
+013175,Pare',current_name,1946,,bootstrap alias
+013178,Peglio,current_name,1946,,bootstrap alias
+013179,Pellio Intelvi,current_name,1946,,bootstrap alias
+013180,Perego,current_name,1946,,bootstrap alias
+013183,Pianello del Lario,current_name,1946,,bootstrap alias
+013183,Pianello Lario,historical_name,1946,,bootstrap alias
+013184,Pigra,current_name,1946,,bootstrap alias
+013185,Plesio,current_name,1946,,bootstrap alias
+013186,Pognana Lario,current_name,1946,,bootstrap alias
+013187,Ponna,current_name,1946,,bootstrap alias
+013188,Ponte Lambro,current_name,1946,,bootstrap alias
+013189,Porlezza,current_name,1946,,bootstrap alias
+013192,Proserpio,current_name,1946,,bootstrap alias
+013193,Pusiano,current_name,1946,,bootstrap alias
+013194,Ramponio Verna,current_name,1946,,bootstrap alias
+013195,Rezzago,current_name,1946,,bootstrap alias
+013197,Rodero,current_name,1946,,bootstrap alias
+013199,Ronago,current_name,1946,,bootstrap alias
+013200,Rovagnate,current_name,1946,,bootstrap alias
+013201,Rovellasca,current_name,1946,,bootstrap alias
+013202,Rovello Porro,current_name,1946,,bootstrap alias
+013203,Sala Comacina,current_name,1946,,bootstrap alias
+013204,San Bartolomeo Val Cavargna,current_name,1946,,bootstrap alias
+013204,San Bartolomeo V.C.,historical_name,1946,,bootstrap alias
+013205,San Fedele Intelvi,current_name,1946,,bootstrap alias
+013206,San Fermo della Battaglia,current_name,1946,,bootstrap alias
+013206,San Fermo D. Battaglia,historical_name,1946,,bootstrap alias
+013207,San Nazzaro Val Cavargna,current_name,1946,,bootstrap alias
+013207,San Nazzaro V.C.,historical_name,1946,,bootstrap alias
+013208,Sant'Abbondio,current_name,1946,,bootstrap alias
+013210,Santa Maria Rezzonico,current_name,1946,,bootstrap alias
+013211,Schignano,current_name,1946,,bootstrap alias
+013212,Senna Comasco,current_name,1946,,bootstrap alias
+013215,Solbiate,current_name,1946,,bootstrap alias
+013216,Sorico,current_name,1946,,bootstrap alias
+013217,Sormano,current_name,1946,,bootstrap alias
+013218,Stazzona,current_name,1946,,bootstrap alias
+013222,Tavernerio,current_name,1946,,bootstrap alias
+013223,Torno,current_name,1946,,bootstrap alias
+013224,Tremenico,current_name,1946,,bootstrap alias
+013225,Tremezzo,current_name,1946,,bootstrap alias
+013226,Trezzone,current_name,1946,,bootstrap alias
+013227,Turate,current_name,1946,,bootstrap alias
+013228,Uggiate-Trevano,current_name,1946,,bootstrap alias
+013228,Uggiate Trevano,historical_name,1946,,bootstrap alias
+013229,Valbrona,current_name,1946,,bootstrap alias
+013232,Valmorea,current_name,1946,,bootstrap alias
+013233,Val Rezzo,current_name,1946,,bootstrap alias
+013233,Valrezzo,historical_name,1946,,bootstrap alias
+013234,Valsolda,current_name,1946,,bootstrap alias
+013236,Veleso,current_name,1946,,bootstrap alias
+013237,Vendrogno,current_name,1946,,bootstrap alias
+013238,Veniano,current_name,1946,,bootstrap alias
+013239,Vercana,current_name,1946,,bootstrap alias
+013240,Verderio Inferiore,current_name,1946,,bootstrap alias
+013241,Verderio Superiore,current_name,1946,,bootstrap alias
+013242,Vertemate Con Minoprio,current_name,1946,,bootstrap alias
+013243,Vestreno,current_name,1946,,bootstrap alias
+013245,Villa Guardia,current_name,1946,,bootstrap alias
+013246,Zelbio,current_name,1946,,bootstrap alias
+013246,Zelbio Veleso,historical_name,1946,,bootstrap alias
+013248,San Siro,current_name,1946,,bootstrap alias
+013249,Gravedona Ed Uniti,current_name,1946,,bootstrap alias
+013250,Bellagio,current_name,1946,,bootstrap alias
+013251,Colverde,current_name,1946,,bootstrap alias
+013252,Tremezzina,current_name,1946,,bootstrap alias
+013253,Alta Valle Intelvi,current_name,1946,,bootstrap alias
+013254,Centro Valle Intelvi,current_name,1946,,bootstrap alias
+013255,Solbiate Con Cagno,current_name,1946,,bootstrap alias
+014001,Albaredo Per San Marco,current_name,1946,,bootstrap alias
+014002,Albosaggia,current_name,1946,,bootstrap alias
+014003,Andalo Valtellino,current_name,1946,,bootstrap alias
+014004,Aprica,current_name,1946,,bootstrap alias
+014005,Ardenno,current_name,1946,,bootstrap alias
+014006,Bema,current_name,1946,,bootstrap alias
+014007,Berbenno di Valtellina,current_name,1946,,bootstrap alias
+014008,Bianzone,current_name,1946,,bootstrap alias
+014009,Bormio,current_name,1946,,bootstrap alias
+014010,Buglio in Monte,current_name,1946,,bootstrap alias
+014011,Caiolo,current_name,1946,,bootstrap alias
+014012,Campodolcino,current_name,1946,,bootstrap alias
+014013,Caspoggio,current_name,1946,,bootstrap alias
+014014,Castello Dell'Acqua,current_name,1946,,bootstrap alias
+014015,Castione Andevenno,current_name,1946,,bootstrap alias
+014016,Cedrasco,current_name,1946,,bootstrap alias
+014017,Cercino,current_name,1946,,bootstrap alias
+014018,Chiavenna,current_name,1946,,bootstrap alias
+014019,Chiesa in Valmalenco,current_name,1946,,bootstrap alias
+014020,Chiuro,current_name,1946,,bootstrap alias
+014021,Cino,current_name,1946,,bootstrap alias
+014022,Civo,current_name,1946,,bootstrap alias
+014023,Colorina,current_name,1946,,bootstrap alias
+014024,Cosio Valtellino,current_name,1946,,bootstrap alias
+014025,Dazio,current_name,1946,,bootstrap alias
+014026,Delebio,current_name,1946,,bootstrap alias
+014027,Dubino,current_name,1946,,bootstrap alias
+014028,Faedo Valtellino,current_name,1946,,bootstrap alias
+014029,Forcola,current_name,1946,,bootstrap alias
+014030,Fusine,current_name,1946,,bootstrap alias
+014031,Gerola Alta,current_name,1946,,bootstrap alias
+014032,Gordona,current_name,1946,,bootstrap alias
+014033,Grosio,current_name,1946,,bootstrap alias
+014034,Grosotto,current_name,1946,,bootstrap alias
+014035,Madesimo,current_name,1946,,bootstrap alias
+014036,Lanzada,current_name,1946,,bootstrap alias
+014037,Livigno,current_name,1946,,bootstrap alias
+014038,Lovero,current_name,1946,,bootstrap alias
+014039,Mantello,current_name,1946,,bootstrap alias
+014040,Mazzo di Valtellina,current_name,1946,,bootstrap alias
+014041,Mello,current_name,1946,,bootstrap alias
+014042,Menarola,current_name,1946,,bootstrap alias
+014043,Mese,current_name,1946,,bootstrap alias
+014044,Montagna in Valtellina,current_name,1946,,bootstrap alias
+014045,Morbegno,current_name,1946,,bootstrap alias
+014046,Novate Mezzola,current_name,1946,,bootstrap alias
+014047,Pedesina,current_name,1946,,bootstrap alias
+014048,Piantedo,current_name,1946,,bootstrap alias
+014049,Piateda,current_name,1946,,bootstrap alias
+014050,Piuro,current_name,1946,,bootstrap alias
+014051,Poggiridenti,current_name,1946,,bootstrap alias
+014052,Ponte in Valtellina,current_name,1946,,bootstrap alias
+014053,Postalesio,current_name,1946,,bootstrap alias
+014054,Prata Camportaccio,current_name,1946,,bootstrap alias
+014055,Rasura,current_name,1946,,bootstrap alias
+014056,Rogolo,current_name,1946,,bootstrap alias
+014057,Samolaco,current_name,1946,,bootstrap alias
+014058,San Giacomo Filippo,current_name,1946,,bootstrap alias
+014059,Sernio,current_name,1946,,bootstrap alias
+014060,Sondalo,current_name,1946,,bootstrap alias
+014061,Sondrio,current_name,1946,,bootstrap alias
+014062,Spriana,current_name,1946,,bootstrap alias
+014063,Talamona,current_name,1946,,bootstrap alias
+014064,Tartano,current_name,1946,,bootstrap alias
+014065,Teglio,current_name,1946,,bootstrap alias
+014066,Tirano,current_name,1946,,bootstrap alias
+014067,Torre di Santa Maria,current_name,1946,,bootstrap alias
+014068,Tovo di Sant'Agata,current_name,1946,,bootstrap alias
+014069,Traona,current_name,1946,,bootstrap alias
+014070,Tresivio,current_name,1946,,bootstrap alias
+014071,Valdidentro,current_name,1946,,bootstrap alias
+014072,Valdisotto,current_name,1946,,bootstrap alias
+014073,Valfurva,current_name,1946,,bootstrap alias
+014074,Val Masino,current_name,1946,,bootstrap alias
+014075,Verceia,current_name,1946,,bootstrap alias
+014076,Vervio,current_name,1946,,bootstrap alias
+014077,Villa di Chiavenna,current_name,1946,,bootstrap alias
+014078,Villa di Tirano,current_name,1946,,bootstrap alias
+015002,Abbiategrasso,current_name,1946,,bootstrap alias
+015005,Albairate,current_name,1946,,bootstrap alias
+015007,Arconate,current_name,1946,,bootstrap alias
+015009,Arese,current_name,1946,,bootstrap alias
+015010,Arluno,current_name,1946,,bootstrap alias
+015011,Assago,current_name,1946,,bootstrap alias
+015012,Bareggio,current_name,1946,,bootstrap alias
+015014,Basiano,current_name,1946,,bootstrap alias
+015015,Basiglio,current_name,1946,,bootstrap alias
+015016,Bellinzago Lombardo,current_name,1946,,bootstrap alias
+015019,Bernate Ticino,current_name,1946,,bootstrap alias
+015022,Besate,current_name,1946,,bootstrap alias
+015024,Binasco,current_name,1946,,bootstrap alias
+015026,Boffalora Sopra Ticino,current_name,1946,,bootstrap alias
+015027,Bollate,current_name,1946,,bootstrap alias
+015032,Bresso,current_name,1946,,bootstrap alias
+015035,Bubbiano,current_name,1946,,bootstrap alias
+015036,Buccinasco,current_name,1946,,bootstrap alias
+015038,Buscate,current_name,1946,,bootstrap alias
+015040,Bussero,current_name,1946,,bootstrap alias
+015041,Busto Garolfo,current_name,1946,,bootstrap alias
+015042,Calvignasco,current_name,1946,,bootstrap alias
+015043,Camairago,current_name,1946,,bootstrap alias
+015044,Cambiago,current_name,1946,,bootstrap alias
+015046,Canegrate,current_name,1946,,bootstrap alias
+015050,Carpiano,current_name,1946,,bootstrap alias
+015051,Carugate,current_name,1946,,bootstrap alias
+015055,Casarile,current_name,1946,,bootstrap alias
+015058,Casorezzo,current_name,1946,,bootstrap alias
+015059,Cassano d'Adda,current_name,1946,,bootstrap alias
+015060,Cassina De' Pecchi,current_name,1946,,bootstrap alias
+015061,Cassinetta di Lugagnano,current_name,1946,,bootstrap alias
+015062,Castano Primo,current_name,1946,,bootstrap alias
+015066,Cavacurta,current_name,1946,,bootstrap alias
+015070,Cernusco sul Naviglio,current_name,1946,,bootstrap alias
+015071,Cerro al Lambro,current_name,1946,,bootstrap alias
+015072,Cerro Maggiore,current_name,1946,,bootstrap alias
+015074,Cesano Boscone,current_name,1946,,bootstrap alias
+015076,Cesate,current_name,1946,,bootstrap alias
+015077,Cinisello Balsamo,current_name,1946,,bootstrap alias
+015078,Cisliano,current_name,1946,,bootstrap alias
+015081,Cologno Monzese,current_name,1946,,bootstrap alias
+015082,Colturano,current_name,1946,,bootstrap alias
+015085,Corbetta,current_name,1946,,bootstrap alias
+015086,Cormano,current_name,1946,,bootstrap alias
+015087,Cornaredo,current_name,1946,,bootstrap alias
+015093,Corsico,current_name,1946,,bootstrap alias
+015096,Cuggiono,current_name,1946,,bootstrap alias
+015097,Cusago,current_name,1946,,bootstrap alias
+015098,Cusano Milanino,current_name,1946,,bootstrap alias
+015099,Dairago,current_name,1946,,bootstrap alias
+015101,Dresano,current_name,1946,,bootstrap alias
+015103,Gaggiano,current_name,1946,,bootstrap alias
+015105,Garbagnate Milanese,current_name,1946,,bootstrap alias
+015106,Gessate,current_name,1946,,bootstrap alias
+015108,Gorgonzola,current_name,1946,,bootstrap alias
+015110,Grezzago,current_name,1946,,bootstrap alias
+015112,Gudo Visconti,current_name,1946,,bootstrap alias
+015113,Inveruno,current_name,1946,,bootstrap alias
+015114,Inzago,current_name,1946,,bootstrap alias
+015115,Lacchiarella,current_name,1946,,bootstrap alias
+015116,Lainate,current_name,1946,,bootstrap alias
+015118,Legnano,current_name,1946,,bootstrap alias
+015122,Liscate,current_name,1946,,bootstrap alias
+015125,Locate di Triulzi,current_name,1946,,bootstrap alias
+015130,Magenta,current_name,1946,,bootstrap alias
+015131,Magnago,current_name,1946,,bootstrap alias
+015134,Marcallo Con Casone,current_name,1946,,bootstrap alias
+015136,Masate,current_name,1946,,bootstrap alias
+015139,Mediglia,current_name,1946,,bootstrap alias
+015140,Melegnano,current_name,1946,,bootstrap alias
+015142,Melzo,current_name,1946,,bootstrap alias
+015144,Mesero,current_name,1946,,bootstrap alias
+015146,Milano,current_name,1946,,bootstrap alias
+015150,Morimondo,current_name,1946,,bootstrap alias
+015151,Motta Visconti,current_name,1946,,bootstrap alias
+015154,Nerviano,current_name,1946,,bootstrap alias
+015155,Nosate,current_name,1946,,bootstrap alias
+015157,Novate Milanese,current_name,1946,,bootstrap alias
+015158,Noviglio,current_name,1946,,bootstrap alias
+015159,Opera,current_name,1946,,bootstrap alias
+015164,Ossona,current_name,1946,,bootstrap alias
+015165,Ozzero,current_name,1946,,bootstrap alias
+015166,Paderno Dugnano,current_name,1946,,bootstrap alias
+015167,Pantigliate,current_name,1946,,bootstrap alias
+015168,Parabiago,current_name,1946,,bootstrap alias
+015169,Paullo,current_name,1946,,bootstrap alias
+015170,Pero,current_name,1946,,bootstrap alias
+015171,Peschiera Borromeo,current_name,1946,,bootstrap alias
+015172,Pessano Con Bornago,current_name,1946,,bootstrap alias
+015173,Pieve Emanuele,current_name,1946,,bootstrap alias
+015175,Pioltello,current_name,1946,,bootstrap alias
+015176,Pogliano Milanese,current_name,1946,,bootstrap alias
+015177,Pozzo d'Adda,current_name,1946,,bootstrap alias
+015178,Pozzuolo Martesana,current_name,1946,,bootstrap alias
+015179,Pregnana Milanese,current_name,1946,,bootstrap alias
+015180,Renate Veduggio,current_name,1946,,bootstrap alias
+015181,Rescaldina,current_name,1946,,bootstrap alias
+015182,Rho,current_name,1946,,bootstrap alias
+015183,Robecchetto Con Induno,current_name,1946,,bootstrap alias
+015184,Robecco sul Naviglio,current_name,1946,,bootstrap alias
+015185,Rodano,current_name,1946,,bootstrap alias
+015188,Rosate,current_name,1946,,bootstrap alias
+015189,Rozzano,current_name,1946,,bootstrap alias
+015191,San Colombano al Lambro,current_name,1946,,bootstrap alias
+015192,San Donato Milanese,current_name,1946,,bootstrap alias
+015194,San Giorgio Su Legnano,current_name,1946,,bootstrap alias
+015195,San Giuliano Milanese,current_name,1946,,bootstrap alias
+015200,Santo Stefano Ticino,current_name,1946,,bootstrap alias
+015201,San Vittore Olona,current_name,1946,,bootstrap alias
+015202,San Zenone al Lambro,current_name,1946,,bootstrap alias
+015204,Sedriano,current_name,1946,,bootstrap alias
+015205,Segrate,current_name,1946,,bootstrap alias
+015206,Senago,current_name,1946,,bootstrap alias
+015209,Sesto San Giovanni,current_name,1946,,bootstrap alias
+015210,Settala,current_name,1946,,bootstrap alias
+015211,Settimo Milanese,current_name,1946,,bootstrap alias
+015213,Solaro,current_name,1946,,bootstrap alias
+015218,Terranova dei P,current_name,1946,,bootstrap alias
+015219,Trezzano Rosa,current_name,1946,,bootstrap alias
+015220,Trezzano sul Naviglio,current_name,1946,,bootstrap alias
+015221,Trezzo Sull'Adda,current_name,1946,,bootstrap alias
+015222,Tribiano,current_name,1946,,bootstrap alias
+015224,Truccazzano,current_name,1946,,bootstrap alias
+015226,Turbigo,current_name,1946,,bootstrap alias
+015229,Vanzago,current_name,1946,,bootstrap alias
+015230,Vaprio d'Adda,current_name,1946,,bootstrap alias
+015235,Vermezzo,current_name,1946,,bootstrap alias
+015236,Vernate,current_name,1946,,bootstrap alias
+015237,Vignate,current_name,1946,,bootstrap alias
+015242,Vimodrone,current_name,1946,,bootstrap alias
+015243,Vittuone,current_name,1946,,bootstrap alias
+015244,Vizzolo Predabissi,current_name,1946,,bootstrap alias
+015246,Zelo Surrigone,current_name,1946,,bootstrap alias
+015247,Zibido San Giacomo,current_name,1946,,bootstrap alias
+015248,Villa Cortese,current_name,1946,,bootstrap alias
+015249,Vanzaghello,current_name,1946,,bootstrap alias
+015250,Baranzate,current_name,1946,,bootstrap alias
+015251,Vermezzo Con Zelo,current_name,1946,,bootstrap alias
 016001,Adrara San Martino,current_name,1946,,bootstrap alias
 016002,Adrara San Rocco,current_name,1946,,bootstrap alias
 016003,Albano Sant'Alessandro,current_name,1946,,bootstrap alias
 016004,Albino,current_name,1946,,bootstrap alias
-alme-con-villa-bergamo,Alme Con Villa,current_name,1946,,bootstrap alias
+016005,Alme',current_name,1946,,bootstrap alias
+016005,Alme' Con Villa,historical_name,1946,,bootstrap alias
 016006,Almenno San Bartolomeo,current_name,1946,,bootstrap alias
 016007,Almenno San Salvatore,current_name,1946,,bootstrap alias
 016008,Alzano Lombardo,current_name,1946,,bootstrap alias
@@ -15,29 +567,35 @@ alme-con-villa-bergamo,Alme Con Villa,current_name,1946,,bootstrap alias
 016014,Averara,current_name,1946,,bootstrap alias
 016015,Aviatico,current_name,1946,,bootstrap alias
 016016,Azzano San Paolo,current_name,1946,,bootstrap alias
+016017,Azzone,current_name,1946,,bootstrap alias
+016018,Bagnatica,current_name,1946,,bootstrap alias
 016019,Barbata,current_name,1946,,bootstrap alias
 016020,Bariano,current_name,1946,,bootstrap alias
 016021,Barzana,current_name,1946,,bootstrap alias
 016022,Bedulita,current_name,1946,,bootstrap alias
 016023,Berbenno,current_name,1946,,bootstrap alias
 016024,Bergamo,current_name,1946,,bootstrap alias
+016025,Berzo San Fermo,current_name,1946,,bootstrap alias
+016026,Bianzano,current_name,1946,,bootstrap alias
 016027,Blello,current_name,1946,,bootstrap alias
 016028,Bolgare,current_name,1946,,bootstrap alias
 016029,Boltiere,current_name,1946,,bootstrap alias
 016030,Bonate Sopra,current_name,1946,,bootstrap alias
 016031,Bonate Sotto,current_name,1946,,bootstrap alias
-borgounito-bergamo,Borgounito,current_name,1946,,bootstrap alias
+016032,Borgo di Terzo,current_name,1946,,bootstrap alias
 016033,Bossico,current_name,1946,,bootstrap alias
 016034,Bottanuco,current_name,1946,,bootstrap alias
-bracca-di-costa-serina-bergamo,Bracca di Costa Serina,current_name,1946,,bootstrap alias
+016035,Bracca,current_name,1946,,bootstrap alias
+016035,Bracca di Costa Serina,historical_name,1946,,bootstrap alias
 016036,Branzi,current_name,1946,,bootstrap alias
 016037,Brembate,current_name,1946,,bootstrap alias
+016038,Brembate di Sopra,current_name,1946,,bootstrap alias
 016039,Brembilla,current_name,1946,,bootstrap alias
 016040,Brignano Gera d'Adda,current_name,1946,,bootstrap alias
 016041,Brumano,current_name,1946,,bootstrap alias
+016042,Brusaporto,current_name,1946,,bootstrap alias
 016043,Calcinate,current_name,1946,,bootstrap alias
 016044,Calcio,current_name,1946,,bootstrap alias
-016045,Calolziocorte,current_name,1946,,bootstrap alias
 016046,Calusco d'Adda,current_name,1946,,bootstrap alias
 016047,Calvenzano,current_name,1946,,bootstrap alias
 016048,Camerata Cornello,current_name,1946,,bootstrap alias
@@ -46,7 +604,6 @@ bracca-di-costa-serina-bergamo,Bracca di Costa Serina,current_name,1946,,bootstr
 016051,Capriate San Gervasio,current_name,1946,,bootstrap alias
 016052,Caprino Bergamasco,current_name,1946,,bootstrap alias
 016053,Caravaggio,current_name,1946,,bootstrap alias
-016054,Carenno,current_name,1946,,bootstrap alias
 016055,Carobbio degli Angeli,current_name,1946,,bootstrap alias
 016056,Carona,current_name,1946,,bootstrap alias
 016057,Carvico,current_name,1946,,bootstrap alias
@@ -59,40 +616,46 @@ bracca-di-costa-serina-bergamo,Bracca di Costa Serina,current_name,1946,,bootstr
 016064,Castione della Presolana,current_name,1946,,bootstrap alias
 016065,Castro,current_name,1946,,bootstrap alias
 016066,Cavernago,current_name,1946,,bootstrap alias
-cenate-d-argon-bergamo,Cenate D Argon,current_name,1946,,bootstrap alias
+016067,Cazzano Sant'Andrea,current_name,1946,,bootstrap alias
+016068,Cenate Sopra,current_name,1946,,bootstrap alias
+016069,Cenate Sotto,current_name,1946,,bootstrap alias
 016070,Cene,current_name,1946,,bootstrap alias
-centrisola-bergamo,Centrisola,current_name,1946,,bootstrap alias
 016071,Cerete,current_name,1946,,bootstrap alias
+016072,Chignolo d'Isola,current_name,1946,,bootstrap alias
 016073,Chiuduno,current_name,1946,,bootstrap alias
 016074,Cisano Bergamasco,current_name,1946,,bootstrap alias
 016075,Ciserano,current_name,1946,,bootstrap alias
 016076,Cividate al Piano,current_name,1946,,bootstrap alias
 016077,Clusone,current_name,1946,,bootstrap alias
+016078,Colere,current_name,1946,,bootstrap alias
 016079,Cologno al Serio,current_name,1946,,bootstrap alias
 016080,Colzate,current_name,1946,,bootstrap alias
 016081,Comun Nuovo,current_name,1946,,bootstrap alias
 016082,Corna Imagna,current_name,1946,,bootstrap alias
 016083,Cortenuova,current_name,1946,,bootstrap alias
-costa-monticelli-bergamo,Costa Monticelli,current_name,1946,,bootstrap alias
+016084,Costa di Mezzate,current_name,1946,,bootstrap alias
 016085,Costa Valle Imagna,current_name,1946,,bootstrap alias
 016086,Costa Volpino,current_name,1946,,bootstrap alias
 016087,Covo,current_name,1946,,bootstrap alias
 016088,Credaro,current_name,1946,,bootstrap alias
-curdomo-bergamo,Curdomo,current_name,1946,,bootstrap alias
+016089,Curno,current_name,1946,,bootstrap alias
 016090,Cusio,current_name,1946,,bootstrap alias
 016091,Dalmine,current_name,1946,,bootstrap alias
-dezzo-di-scalve-bergamo,Dezzo di Scalve,current_name,1946,,bootstrap alias
 016092,Dossena,current_name,1946,,bootstrap alias
 016093,Endine Gaiano,current_name,1946,,bootstrap alias
 016094,Entratico,current_name,1946,,bootstrap alias
-016095,Erve,current_name,1946,,bootstrap alias
 016096,Fara Gera d'Adda,current_name,1946,,bootstrap alias
 016097,Fara Olivana Con Sola,current_name,1946,,bootstrap alias
+016098,Filago,current_name,1946,,bootstrap alias
+016099,Fino del Monte,current_name,1946,,bootstrap alias
+016100,Fiorano al Serio,current_name,1946,,bootstrap alias
 016101,Fontanella,current_name,1946,,bootstrap alias
+016102,Fonteno,current_name,1946,,bootstrap alias
 016103,Foppolo,current_name,1946,,bootstrap alias
 016104,Foresto Sparso,current_name,1946,,bootstrap alias
 016105,Fornovo San Giovanni,current_name,1946,,bootstrap alias
 016106,Fuipiano Valle Imagna,current_name,1946,,bootstrap alias
+016107,Gandellino,current_name,1946,,bootstrap alias
 016108,Gandino,current_name,1946,,bootstrap alias
 016109,Gandosso,current_name,1946,,bootstrap alias
 016110,Gaverina Terme,current_name,1946,,bootstrap alias
@@ -104,29 +667,36 @@ dezzo-di-scalve-bergamo,Dezzo di Scalve,current_name,1946,,bootstrap alias
 016116,Gorno,current_name,1946,,bootstrap alias
 016117,Grassobbio,current_name,1946,,bootstrap alias
 016118,Gromo,current_name,1946,,bootstrap alias
+016119,Grone,current_name,1946,,bootstrap alias
 016120,Grumello del Monte,current_name,1946,,bootstrap alias
 016121,Isola di Fondra,current_name,1946,,bootstrap alias
 016122,Isso,current_name,1946,,bootstrap alias
 016123,Lallio,current_name,1946,,bootstrap alias
 016124,Leffe,current_name,1946,,bootstrap alias
+016125,Lenna,current_name,1946,,bootstrap alias
 016126,Levate,current_name,1946,,bootstrap alias
 016127,Locatello,current_name,1946,,bootstrap alias
 016128,Lovere,current_name,1946,,bootstrap alias
 016129,Lurano,current_name,1946,,bootstrap alias
+016130,Luzzana,current_name,1946,,bootstrap alias
+016131,Madone,current_name,1946,,bootstrap alias
 016132,Mapello,current_name,1946,,bootstrap alias
-marne-bergamo,Marne,current_name,1946,,bootstrap alias
 016133,Martinengo,current_name,1946,,bootstrap alias
 016134,Mezzoldo,current_name,1946,,bootstrap alias
 016135,Misano di Gera d'Adda,current_name,1946,,bootstrap alias
-016138,Monte Marenzo,current_name,1946,,bootstrap alias
+016136,Moio De' Calvi,current_name,1946,,bootstrap alias
+016137,Monasterolo del Castello,current_name,1946,,bootstrap alias
+016139,Montello,current_name,1946,,bootstrap alias
 016140,Morengo,current_name,1946,,bootstrap alias
 016141,Mornico al Serio,current_name,1946,,bootstrap alias
 016142,Mozzanica,current_name,1946,,bootstrap alias
+016143,Mozzo,current_name,1946,,bootstrap alias
 016144,Nembro,current_name,1946,,bootstrap alias
-nossa-bergamo,Nossa,current_name,1946,,bootstrap alias
 016145,Olmo al Brembo,current_name,1946,,bootstrap alias
 016146,Oltre Il Colle,current_name,1946,,bootstrap alias
+016147,Oltressenda Alta,current_name,1946,,bootstrap alias
 016148,Oneta,current_name,1946,,bootstrap alias
+016149,Onore,current_name,1946,,bootstrap alias
 016150,Orio al Serio,current_name,1946,,bootstrap alias
 016151,Ornica,current_name,1946,,bootstrap alias
 016152,Osio Sopra,current_name,1946,,bootstrap alias
@@ -140,30 +710,33 @@ nossa-bergamo,Nossa,current_name,1946,,bootstrap alias
 016160,Pedrengo,current_name,1946,,bootstrap alias
 016161,Peia,current_name,1946,,bootstrap alias
 016162,Pianico,current_name,1946,,bootstrap alias
+016163,Piario,current_name,1946,,bootstrap alias
+016164,Piazza Brembana,current_name,1946,,bootstrap alias
 016165,Piazzatorre,current_name,1946,,bootstrap alias
 016166,Piazzolo,current_name,1946,,bootstrap alias
 016167,Pognano,current_name,1946,,bootstrap alias
+016168,Ponte Nossa,current_name,1946,,bootstrap alias
 016169,Ponteranica,current_name,1946,,bootstrap alias
 016170,Ponte San Pietro,current_name,1946,,bootstrap alias
 016171,Pontida,current_name,1946,,bootstrap alias
 016172,Pontirolo Nuovo,current_name,1946,,bootstrap alias
 016173,Pradalunga,current_name,1946,,bootstrap alias
 016174,Predore,current_name,1946,,bootstrap alias
+016175,Premolo,current_name,1946,,bootstrap alias
 016176,Presezzo,current_name,1946,,bootstrap alias
 016177,Pumenengo,current_name,1946,,bootstrap alias
 016178,Ranica,current_name,1946,,bootstrap alias
 016179,Ranzanico,current_name,1946,,bootstrap alias
 016180,Riva di Solto,current_name,1946,,bootstrap alias
-riviera-d-adda-bergamo,Riviera D Adda,current_name,1946,,bootstrap alias
-rocca-di-colle-bergamo,Rocca di Colle,current_name,1946,,bootstrap alias
 016182,Rogno,current_name,1946,,bootstrap alias
 016183,Romano di Lombardia,current_name,1946,,bootstrap alias
 016184,Roncobello,current_name,1946,,bootstrap alias
 016185,Roncola,current_name,1946,,bootstrap alias
 016186,Rota d'Imagna,current_name,1946,,bootstrap alias
-rovetta-con-fino-bergamo,Rovetta Con Fino,current_name,1946,,bootstrap alias
+016187,Rovetta,current_name,1946,,bootstrap alias
+016187,Rovetta Con Fino,historical_name,1946,,bootstrap alias
 016188,San Giovanni Bianco,current_name,1946,,bootstrap alias
-san-martino-de-calvi-bergamo,San Martino de Calvi,current_name,1946,,bootstrap alias
+016189,San Paolo d'Argon,current_name,1946,,bootstrap alias
 016190,San Pellegrino Terme,current_name,1946,,bootstrap alias
 016191,Santa Brigida,current_name,1946,,bootstrap alias
 016192,Sant'Omobono Imagna,current_name,1946,,bootstrap alias
@@ -177,9 +750,11 @@ san-martino-de-calvi-bergamo,San Martino de Calvi,current_name,1946,,bootstrap a
 016200,Solto Collina,current_name,1946,,bootstrap alias
 016201,Songavazzo,current_name,1946,,bootstrap alias
 016202,Sorisole,current_name,1946,,bootstrap alias
-sotto-il-monte-bergamo,Sotto Il Monte,current_name,1946,,bootstrap alias
+016203,Sotto Il Monte Giovanni Xxiii,current_name,1946,,bootstrap alias
+016203,Sotto Il Monte,historical_name,1946,,bootstrap alias
 016204,Sovere,current_name,1946,,bootstrap alias
-spinone-bergamo,Spinone,current_name,1946,,bootstrap alias
+016205,Spinone al Lago,current_name,1946,,bootstrap alias
+016205,Spinone,historical_name,1946,,bootstrap alias
 016206,Spirano,current_name,1946,,bootstrap alias
 016207,Stezzano,current_name,1946,,bootstrap alias
 016208,Strozza,current_name,1946,,bootstrap alias
@@ -189,7 +764,8 @@ spinone-bergamo,Spinone,current_name,1946,,bootstrap alias
 016212,Telgate,current_name,1946,,bootstrap alias
 016213,Terno d'Isola,current_name,1946,,bootstrap alias
 016214,Torre Boldone,current_name,1946,,bootstrap alias
-016215,Torre de Busi,current_name,1946,,bootstrap alias
+016215,Torre De' Busi,current_name,1946,,bootstrap alias
+016215,Torre de Busi,historical_name,1946,,bootstrap alias
 016216,Torre De' Roveri,current_name,1946,,bootstrap alias
 016217,Torre Pallavicina,current_name,1946,,bootstrap alias
 016218,Trescore Balneario,current_name,1946,,bootstrap alias
@@ -199,35 +775,52 @@ spinone-bergamo,Spinone,current_name,1946,,bootstrap alias
 016222,Urgnano,current_name,1946,,bootstrap alias
 016223,Valbondione,current_name,1946,,bootstrap alias
 016224,Valbrembo,current_name,1946,,bootstrap alias
+016225,Valgoglio,current_name,1946,,bootstrap alias
 016226,Valleve,current_name,1946,,bootstrap alias
+016227,Valnegra,current_name,1946,,bootstrap alias
 016228,Valsecca,current_name,1946,,bootstrap alias
 016229,Valtorta,current_name,1946,,bootstrap alias
 016230,Vedeseta,current_name,1946,,bootstrap alias
-016231,Vercurago,current_name,1946,,bootstrap alias
 016232,Verdellino,current_name,1946,,bootstrap alias
 016233,Verdello,current_name,1946,,bootstrap alias
 016234,Vertova,current_name,1946,,bootstrap alias
 016235,Viadanica,current_name,1946,,bootstrap alias
+016236,Vigano San Martino,current_name,1946,,bootstrap alias
 016237,Vigolo,current_name,1946,,bootstrap alias
 016238,Villa d'Adda,current_name,1946,,bootstrap alias
+016239,Villa d'Alme',current_name,1946,,bootstrap alias
 016240,Villa di Serio,current_name,1946,,bootstrap alias
 016241,Villa d'Ogna,current_name,1946,,bootstrap alias
 016242,Villongo,current_name,1946,,bootstrap alias
 016243,Vilminore di Scalve,current_name,1946,,bootstrap alias
+016244,Zandobbio,current_name,1946,,bootstrap alias
 016245,Zanica,current_name,1946,,bootstrap alias
 016246,Zogno,current_name,1946,,bootstrap alias
+016247,Costa Serina,current_name,1946,,bootstrap alias
+016248,Algua,current_name,1946,,bootstrap alias
+016249,Cornalba,current_name,1946,,bootstrap alias
+016250,Medolago,current_name,1946,,bootstrap alias
+016251,Solza,current_name,1946,,bootstrap alias
+016252,Sant'Omobono Terme,current_name,1946,,bootstrap alias
+016253,Val Brembilla,current_name,1946,,bootstrap alias
 017001,Acquafredda,current_name,1946,,bootstrap alias
 017002,Adro,current_name,1946,,bootstrap alias
 017003,Agnosine,current_name,1946,,bootstrap alias
 017004,Alfianello,current_name,1946,,bootstrap alias
 017005,Anfo,current_name,1946,,bootstrap alias
-angolo-brescia,Angolo,current_name,1946,,bootstrap alias
+017006,Angolo Terme,current_name,1946,,bootstrap alias
+017006,Angolo,historical_name,1946,,bootstrap alias
+017007,Artogne,current_name,1946,,bootstrap alias
+017008,Azzano Mella,current_name,1946,,bootstrap alias
 017009,Bagnolo Mella,current_name,1946,,bootstrap alias
 017010,Bagolino,current_name,1946,,bootstrap alias
 017011,Barbariga,current_name,1946,,bootstrap alias
+017012,Barghe,current_name,1946,,bootstrap alias
 017013,Bassano Bresciano,current_name,1946,,bootstrap alias
 017014,Bedizzole,current_name,1946,,bootstrap alias
 017015,Berlingo,current_name,1946,,bootstrap alias
+017016,Berzo Demo,current_name,1946,,bootstrap alias
+017017,Berzo Inferiore,current_name,1946,,bootstrap alias
 017018,Bienno,current_name,1946,,bootstrap alias
 017019,Bione,current_name,1946,,bootstrap alias
 017020,Borgo San Giacomo,current_name,1946,,bootstrap alias
@@ -236,14 +829,18 @@ angolo-brescia,Angolo,current_name,1946,,bootstrap alias
 017023,Botticino,current_name,1946,,bootstrap alias
 017024,Bovegno,current_name,1946,,bootstrap alias
 017025,Bovezzo,current_name,1946,,bootstrap alias
+017026,Brandico,current_name,1946,,bootstrap alias
+017027,Braone,current_name,1946,,bootstrap alias
 017028,Breno,current_name,1946,,bootstrap alias
 017029,Brescia,current_name,1946,,bootstrap alias
+017030,Brione,current_name,1946,,bootstrap alias
+017031,Caino,current_name,1946,,bootstrap alias
 017032,Calcinato,current_name,1946,,bootstrap alias
 017033,Calvagese della Riviera,current_name,1946,,bootstrap alias
 017034,Calvisano,current_name,1946,,bootstrap alias
 017035,Capo di Ponte,current_name,1946,,bootstrap alias
 017036,Capovalle,current_name,1946,,bootstrap alias
-capriano-azzano-brescia,Capriano Azzano,current_name,1946,,bootstrap alias
+017037,Capriano del Colle,current_name,1946,,bootstrap alias
 017038,Capriolo,current_name,1946,,bootstrap alias
 017039,Carpenedolo,current_name,1946,,bootstrap alias
 017040,Castegnato,current_name,1946,,bootstrap alias
@@ -255,10 +852,13 @@ capriano-azzano-brescia,Capriano Azzano,current_name,1946,,bootstrap alias
 017046,Cazzago San Martino,current_name,1946,,bootstrap alias
 017047,Cedegolo,current_name,1946,,bootstrap alias
 017048,Cellatica,current_name,1946,,bootstrap alias
+017049,Cerveno,current_name,1946,,bootstrap alias
 017050,Ceto,current_name,1946,,bootstrap alias
+017051,Cevo,current_name,1946,,bootstrap alias
 017052,Chiari,current_name,1946,,bootstrap alias
 017053,Cigole,current_name,1946,,bootstrap alias
-cimbergo-paspardo-brescia,Cimbergo Paspardo,current_name,1946,,bootstrap alias
+017054,Cimbergo,current_name,1946,,bootstrap alias
+017054,Cimbergo Paspardo,historical_name,1946,,bootstrap alias
 017055,Cividate Camuno,current_name,1946,,bootstrap alias
 017056,Coccaglio,current_name,1946,,bootstrap alias
 017057,Collebeato,current_name,1946,,bootstrap alias
@@ -269,12 +869,15 @@ cimbergo-paspardo-brescia,Cimbergo Paspardo,current_name,1946,,bootstrap alias
 017062,Corte Franca,current_name,1946,,bootstrap alias
 017063,Corteno Golgi,current_name,1946,,bootstrap alias
 017064,Corzano,current_name,1946,,bootstrap alias
-darfo-brescia,Darfo,current_name,1946,,bootstrap alias
+017065,Darfo Boario Terme,current_name,1946,,bootstrap alias
+017065,Darfo,historical_name,1946,,bootstrap alias
 017066,Dello,current_name,1946,,bootstrap alias
 017067,Desenzano del Garda,current_name,1946,,bootstrap alias
 017068,Edolo,current_name,1946,,bootstrap alias
 017069,Erbusco,current_name,1946,,bootstrap alias
 017070,Esine,current_name,1946,,bootstrap alias
+017071,Fiesse,current_name,1946,,bootstrap alias
+017072,Flero,current_name,1946,,bootstrap alias
 017073,Gambara,current_name,1946,,bootstrap alias
 017074,Gardone Riviera,current_name,1946,,bootstrap alias
 017075,Gardone Val Trompia,current_name,1946,,bootstrap alias
@@ -286,6 +889,7 @@ darfo-brescia,Darfo,current_name,1946,,bootstrap alias
 017081,Gussago,current_name,1946,,bootstrap alias
 017082,Idro,current_name,1946,,bootstrap alias
 017083,Incudine,current_name,1946,,bootstrap alias
+017084,Irma,current_name,1946,,bootstrap alias
 017085,Iseo,current_name,1946,,bootstrap alias
 017086,Isorella,current_name,1946,,bootstrap alias
 017087,Lavenone,current_name,1946,,bootstrap alias
@@ -293,27 +897,40 @@ darfo-brescia,Darfo,current_name,1946,,bootstrap alias
 017089,Limone sul Garda,current_name,1946,,bootstrap alias
 017090,Lodrino,current_name,1946,,bootstrap alias
 017091,Lograto,current_name,1946,,bootstrap alias
-017092,Lonato,current_name,1946,,bootstrap alias
+017092,Lonato del Garda,current_name,1946,,bootstrap alias
+017092,Lonato,historical_name,1946,,bootstrap alias
+017093,Longhena,current_name,1946,,bootstrap alias
+017094,Losine,current_name,1946,,bootstrap alias
 017095,Lozio,current_name,1946,,bootstrap alias
 017096,Lumezzane,current_name,1946,,bootstrap alias
+017097,Maclodio,current_name,1946,,bootstrap alias
+017098,Magasa,current_name,1946,,bootstrap alias
 017099,Mairano,current_name,1946,,bootstrap alias
+017100,Malegno,current_name,1946,,bootstrap alias
 017101,Malonno,current_name,1946,,bootstrap alias
 017102,Manerba del Garda,current_name,1946,,bootstrap alias
 017103,Manerbio,current_name,1946,,bootstrap alias
 017104,Marcheno,current_name,1946,,bootstrap alias
+017105,Marmentino,current_name,1946,,bootstrap alias
 017106,Marone,current_name,1946,,bootstrap alias
 017107,Mazzano,current_name,1946,,bootstrap alias
+017108,Milzano,current_name,1946,,bootstrap alias
+017109,Moniga del Garda,current_name,1946,,bootstrap alias
+017110,Monno,current_name,1946,,bootstrap alias
 017111,Monte Isola,current_name,1946,,bootstrap alias
-monticello-brusati-brescia,Monticello Brusati,current_name,1946,,bootstrap alias
+017112,Monticelli Brusati,current_name,1946,,bootstrap alias
 017113,Montichiari,current_name,1946,,bootstrap alias
+017114,Montirone,current_name,1946,,bootstrap alias
 017115,Mura,current_name,1946,,bootstrap alias
 017116,Muscoline,current_name,1946,,bootstrap alias
 017117,Nave,current_name,1946,,bootstrap alias
+017118,Niardo,current_name,1946,,bootstrap alias
 017119,Nuvolento,current_name,1946,,bootstrap alias
 017120,Nuvolera,current_name,1946,,bootstrap alias
 017121,Odolo,current_name,1946,,bootstrap alias
 017122,Offlaga,current_name,1946,,bootstrap alias
 017123,Ome,current_name,1946,,bootstrap alias
+017124,Ono San Pietro,current_name,1946,,bootstrap alias
 017125,Orzinuovi,current_name,1946,,bootstrap alias
 017126,Orzivecchi,current_name,1946,,bootstrap alias
 017127,Ospitaletto,current_name,1946,,bootstrap alias
@@ -321,35 +938,42 @@ monticello-brusati-brescia,Monticello Brusati,current_name,1946,,bootstrap alias
 017129,Padenghe sul Garda,current_name,1946,,bootstrap alias
 017130,Paderno Franciacorta,current_name,1946,,bootstrap alias
 017131,Paisco Loveno,current_name,1946,,bootstrap alias
+017132,Paitone,current_name,1946,,bootstrap alias
 017133,Palazzolo Sull'Oglio,current_name,1946,,bootstrap alias
 017134,Paratico,current_name,1946,,bootstrap alias
+017135,Paspardo,current_name,1946,,bootstrap alias
 017136,Passirano,current_name,1946,,bootstrap alias
 017137,Pavone del Mella,current_name,1946,,bootstrap alias
-pedergnaga-oriano-brescia,Pedergnaga Oriano,current_name,1946,,bootstrap alias
+017138,San Paolo,current_name,1946,,bootstrap alias
 017139,Pertica Alta,current_name,1946,,bootstrap alias
 017140,Pertica Bassa,current_name,1946,,bootstrap alias
 017141,Pezzaze,current_name,1946,,bootstrap alias
 017142,Pian Camuno,current_name,1946,,bootstrap alias
 017143,Pisogne,current_name,1946,,bootstrap alias
 017144,Polaveno,current_name,1946,,bootstrap alias
-polpenazze-brescia,Polpenazze,current_name,1946,,bootstrap alias
+017145,Polpenazze del Garda,current_name,1946,,bootstrap alias
+017145,Polpenazze,historical_name,1946,,bootstrap alias
 017146,Pompiano,current_name,1946,,bootstrap alias
-poncarale-flero-brescia,Poncarale Flero,current_name,1946,,bootstrap alias
+017147,Poncarale,current_name,1946,,bootstrap alias
+017147,Poncarale Flero,historical_name,1946,,bootstrap alias
 017148,Ponte di Legno,current_name,1946,,bootstrap alias
 017149,Pontevico,current_name,1946,,bootstrap alias
 017150,Pontoglio,current_name,1946,,bootstrap alias
 017151,Pozzolengo,current_name,1946,,bootstrap alias
 017152,Pralboino,current_name,1946,,bootstrap alias
 017153,Preseglie,current_name,1946,,bootstrap alias
+017154,Prestine,current_name,1946,,bootstrap alias
 017155,Prevalle,current_name,1946,,bootstrap alias
 017156,Provaglio d'Iseo,current_name,1946,,bootstrap alias
 017157,Provaglio Val Sabbia,current_name,1946,,bootstrap alias
-puegnago-brescia,Puegnago,current_name,1946,,bootstrap alias
+017158,Puegnago del Garda,current_name,1946,,bootstrap alias
+017158,Puegnago sul Garda,historical_name,1946,,bootstrap alias
 017159,Quinzano d'Oglio,current_name,1946,,bootstrap alias
 017160,Remedello,current_name,1946,,bootstrap alias
 017161,Rezzato,current_name,1946,,bootstrap alias
 017162,Roccafranca,current_name,1946,,bootstrap alias
-017163,Rodengo-Saiano,current_name,1946,,bootstrap alias
+017163,Rodengo Saiano,current_name,1946,,bootstrap alias
+017163,Rodengo-Saiano,historical_name,1946,,bootstrap alias
 017164,Roe' Volciano,current_name,1946,,bootstrap alias
 017165,Roncadelle,current_name,1946,,bootstrap alias
 017166,Rovato,current_name,1946,,bootstrap alias
@@ -361,23 +985,31 @@ puegnago-brescia,Puegnago,current_name,1946,,bootstrap alias
 017172,San Gervasio Bresciano,current_name,1946,,bootstrap alias
 017173,San Zeno Naviglio,current_name,1946,,bootstrap alias
 017174,Sarezzo,current_name,1946,,bootstrap alias
+017175,Saviore Dell'Adamello,current_name,1946,,bootstrap alias
+017176,Sellero,current_name,1946,,bootstrap alias
 017177,Seniga,current_name,1946,,bootstrap alias
 017178,Serle,current_name,1946,,bootstrap alias
 017179,Sirmione,current_name,1946,,bootstrap alias
+017180,Soiano del Lago,current_name,1946,,bootstrap alias
+017181,Sonico,current_name,1946,,bootstrap alias
+017182,Sulzano,current_name,1946,,bootstrap alias
 017183,Tavernole sul Mella,current_name,1946,,bootstrap alias
 017184,Temu',current_name,1946,,bootstrap alias
 017185,Tignale,current_name,1946,,bootstrap alias
 017186,Torbole Casaglia,current_name,1946,,bootstrap alias
-017187,Toscolano Maderno,current_name,1946,,bootstrap alias
+017187,Toscolano-Maderno,current_name,1946,,bootstrap alias
+017187,Toscolano Maderno,historical_name,1946,,bootstrap alias
 017188,Travagliato,current_name,1946,,bootstrap alias
-017189,Tremosine,current_name,1946,,bootstrap alias
+017189,Tremosine sul Garda,current_name,1946,,bootstrap alias
+017189,Tremosine,historical_name,1946,,bootstrap alias
 017190,Trenzano,current_name,1946,,bootstrap alias
 017191,Treviso Bresciano,current_name,1946,,bootstrap alias
 017192,Urago d'Oglio,current_name,1946,,bootstrap alias
-vallio-brescia,Vallio,current_name,1946,,bootstrap alias
-valsaviore-brescia,Valsaviore,current_name,1946,,bootstrap alias
+017193,Vallio Terme,current_name,1946,,bootstrap alias
+017193,Vallio,historical_name,1946,,bootstrap alias
 017194,Valvestino,current_name,1946,,bootstrap alias
 017195,Verolanuova,current_name,1946,,bootstrap alias
+017196,Verolavecchia,current_name,1946,,bootstrap alias
 017197,Vestone,current_name,1946,,bootstrap alias
 017198,Vezza d'Oglio,current_name,1946,,bootstrap alias
 017199,Villa Carcina,current_name,1946,,bootstrap alias
@@ -387,207 +1019,209 @@ valsaviore-brescia,Valsaviore,current_name,1946,,bootstrap alias
 017203,Visano,current_name,1946,,bootstrap alias
 017204,Vobarno,current_name,1946,,bootstrap alias
 017205,Zone,current_name,1946,,bootstrap alias
-013210,Santa Maria Rezzonico,current_name,1946,,bootstrap alias
-013001,Abbadia Lariana,current_name,1946,,bootstrap alias
-013002,Airuno,current_name,1946,,bootstrap alias
-013003,Albavilla,current_name,1946,,bootstrap alias
-013004,Albese Con Cassano,current_name,1946,,bootstrap alias
-013005,Albiolo,current_name,1946,,bootstrap alias
-013006,Alserio,current_name,1946,,bootstrap alias
-013007,Alzate Brianza,current_name,1946,,bootstrap alias
-013008,Annone di Brianza,current_name,1946,,bootstrap alias
-013009,Anzano del Parco,current_name,1946,,bootstrap alias
-013010,Appiano Gentile,current_name,1946,,bootstrap alias
-013011,Argegno,current_name,1946,,bootstrap alias
-013013,Asso,current_name,1946,,bootstrap alias
-013014,Ballabio,current_name,1946,,bootstrap alias
-013016,Barzago,current_name,1946,,bootstrap alias
-013017,Barzano,current_name,1946,,bootstrap alias
-013018,Barzio,current_name,1946,,bootstrap alias
-013019,Bellagio,current_name,1946,,bootstrap alias
-013020,Bellano,current_name,1946,,bootstrap alias
-013023,Binago,current_name,1946,,bootstrap alias
-013024,Bizzarone,current_name,1946,,bootstrap alias
-013025,Blessagno,current_name,1946,,bootstrap alias
-013026,Blevio,current_name,1946,,bootstrap alias
-013027,Bosisio Parini,current_name,1946,,bootstrap alias
-013028,Bregnano,current_name,1946,,bootstrap alias
-013029,Brenna,current_name,1946,,bootstrap alias
-013031,Brivio,current_name,1946,,bootstrap alias
-013033,Bulciago,current_name,1946,,bootstrap alias
-013035,Cabiate,current_name,1946,,bootstrap alias
-013036,Cadorago,current_name,1946,,bootstrap alias
-013038,Cagno,current_name,1946,,bootstrap alias
-013040,Campione d'Italia,current_name,1946,,bootstrap alias
-013041,Cantu',current_name,1946,,bootstrap alias
-013042,Canzo,current_name,1946,,bootstrap alias
-013043,Capiago Intimiano,current_name,1946,,bootstrap alias
-013044,Carate Urio,current_name,1946,,bootstrap alias
-013046,Carimate,current_name,1946,,bootstrap alias
-013047,Carlazzo,current_name,1946,,bootstrap alias
-carugo-arosio-como,Carugo Arosio,current_name,1946,,bootstrap alias
-013049,Casargo,current_name,1946,,bootstrap alias
-013050,Casasco d'Intelvi,current_name,1946,,bootstrap alias
-013051,Casatenovo,current_name,1946,,bootstrap alias
-013052,Caslino d'Erba,current_name,1946,,bootstrap alias
-013053,Casnate Con Bernate,current_name,1946,,bootstrap alias
-013054,Cassago Brianza,current_name,1946,,bootstrap alias
-013055,Cassina Rizzardi,current_name,1946,,bootstrap alias
-013057,Castello di Brianza,current_name,1946,,bootstrap alias
-013058,Castelmarte,current_name,1946,,bootstrap alias
-013060,Castiglione d'Intelvi,current_name,1946,,bootstrap alias
-013062,Cavargna,current_name,1946,,bootstrap alias
-013063,Cerano d'Intelvi,current_name,1946,,bootstrap alias
-013064,Cermenate,current_name,1946,,bootstrap alias
-013065,Cernobbio,current_name,1946,,bootstrap alias
-cernusco-montevecchia-como,Cernusco Montevecchia,current_name,1946,,bootstrap alias
-cesello-brianza-como,Cesello Brianza,current_name,1946,,bootstrap alias
-013068,Cirimido,current_name,1946,,bootstrap alias
-013069,Civate,current_name,1946,,bootstrap alias
-013070,Civenna,current_name,1946,,bootstrap alias
-013071,Claino Con Osteno,current_name,1946,,bootstrap alias
-013072,Colico,current_name,1946,,bootstrap alias
-013073,Colle Brianza,current_name,1946,,bootstrap alias
-013075,Como,current_name,1946,,bootstrap alias
-013077,Corrido,current_name,1946,,bootstrap alias
-013078,Cortenova,current_name,1946,,bootstrap alias
-013079,Costa Masnaga,current_name,1946,,bootstrap alias
-013082,Cremeno,current_name,1946,,bootstrap alias
-013083,Cremia,current_name,1946,,bootstrap alias
-013084,Cucciago,current_name,1946,,bootstrap alias
-013085,Cusino,current_name,1946,,bootstrap alias
-013086,Dervio,current_name,1946,,bootstrap alias
-013087,Dizzasco,current_name,1946,,bootstrap alias
-013088,Dolzago,current_name,1946,,bootstrap alias
-013089,Domaso,current_name,1946,,bootstrap alias
-013090,Dongo,current_name,1946,,bootstrap alias
-013094,Ello,current_name,1946,,bootstrap alias
-013095,Erba,current_name,1946,,bootstrap alias
-013096,Esino Lario,current_name,1946,,bootstrap alias
-013097,Eupilio,current_name,1946,,bootstrap alias
-013098,Faggeto Lario,current_name,1946,,bootstrap alias
-013099,Faloppio,current_name,1946,,bootstrap alias
-013100,Fenegro',current_name,1946,,bootstrap alias
-013101,Figino Serenza,current_name,1946,,bootstrap alias
-013102,Fino Mornasco,current_name,1946,,bootstrap alias
-013103,Galbiate,current_name,1946,,bootstrap alias
-013104,Garbagnate Monastero,current_name,1946,,bootstrap alias
-013105,Garlate,current_name,1946,,bootstrap alias
-013106,Garzeno,current_name,1946,,bootstrap alias
-013107,Gera Lario,current_name,1946,,bootstrap alias
-013109,Gironico,current_name,1946,,bootstrap alias
-013110,Grandate,current_name,1946,,bootstrap alias
-013111,Grandola Ed Uniti,current_name,1946,,bootstrap alias
-013112,Gravedona,current_name,1946,,bootstrap alias
-013113,Griante,current_name,1946,,bootstrap alias
-013114,Guanzate,current_name,1946,,bootstrap alias
-013116,Introbio,current_name,1946,,bootstrap alias
-013117,Introzzo,current_name,1946,,bootstrap alias
-013118,Inverigo,current_name,1946,,bootstrap alias
-isola-comacina-como,Isola Comacina,current_name,1946,,bootstrap alias
-laglio-brienno-como,Laglio Brienno,current_name,1946,,bootstrap alias
-013120,Laino,current_name,1946,,bootstrap alias
-013121,Lambrugo,current_name,1946,,bootstrap alias
-013122,Lanzo d'Intelvi,current_name,1946,,bootstrap alias
-013123,Lasnigo,current_name,1946,,bootstrap alias
-013124,Lecco,current_name,1946,,bootstrap alias
-013126,Lezzeno,current_name,1946,,bootstrap alias
-013127,Lierna,current_name,1946,,bootstrap alias
-lieto-colle-como,Lieto Colle,current_name,1946,,bootstrap alias
-013128,Limido Comasco,current_name,1946,,bootstrap alias
-013129,Lipomo,current_name,1946,,bootstrap alias
-013132,Lomagna,current_name,1946,,bootstrap alias
-013133,Lomazzo,current_name,1946,,bootstrap alias
-013134,Longone al Segrino,current_name,1946,,bootstrap alias
-013135,Luisago,current_name,1946,,bootstrap alias
-013136,Lurago d'Erba,current_name,1946,,bootstrap alias
-013137,Lurago Marinone,current_name,1946,,bootstrap alias
-013138,Lurate Caccivio,current_name,1946,,bootstrap alias
-013140,Malgrate,current_name,1946,,bootstrap alias
-013141,Mandello del Lario,current_name,1946,,bootstrap alias
-013142,Margno,current_name,1946,,bootstrap alias
-013143,Mariano Comense,current_name,1946,,bootstrap alias
-013144,Maslianico,current_name,1946,,bootstrap alias
-013145,Menaggio,current_name,1946,,bootstrap alias
-013146,Merate,current_name,1946,,bootstrap alias
-013147,Merone,current_name,1946,,bootstrap alias
-mirabello-comasco-como,Mirabello Comasco,current_name,1946,,bootstrap alias
-013149,Missaglia,current_name,1946,,bootstrap alias
-013151,Molteno,current_name,1946,,bootstrap alias
-013152,Moltrasio,current_name,1946,,bootstrap alias
-013153,Monguzzo,current_name,1946,,bootstrap alias
-013154,Montano Lucino,current_name,1946,,bootstrap alias
-013155,Montemezzo,current_name,1946,,bootstrap alias
-097054,Monticello,current_name,1946,,bootstrap alias
-013157,Montorfano,current_name,1946,,bootstrap alias
-013158,Morterone,current_name,1946,,bootstrap alias
-013160,Musso,current_name,1946,,bootstrap alias
-013161,Nesso,current_name,1946,,bootstrap alias
-013162,Nibionno,current_name,1946,,bootstrap alias
-013164,Oggiono,current_name,1946,,bootstrap alias
-olgiate-calco-como,Olgiate Calco,current_name,1946,,bootstrap alias
-013165,Olgiate Comasco,current_name,1946,,bootstrap alias
-013167,Olginate,current_name,1946,,bootstrap alias
-013168,Oliveto Lario,current_name,1946,,bootstrap alias
-013169,Oltrona di San Mamette,current_name,1946,,bootstrap alias
-013170,Orsenigo,current_name,1946,,bootstrap alias
-013171,Osnago,current_name,1946,,bootstrap alias
-paderno-robbiate-como,Paderno Robbiate,current_name,1946,,bootstrap alias
-013174,Pagnona,current_name,1946,,bootstrap alias
-013176,Parlasco,current_name,1946,,bootstrap alias
-013177,Pasturo,current_name,1946,,bootstrap alias
-013179,Pellio Intelvi,current_name,1946,,bootstrap alias
-013183,Pianello del Lario,current_name,1946,,bootstrap alias
-013184,Pigra,current_name,1946,,bootstrap alias
-013185,Plesio,current_name,1946,,bootstrap alias
-013186,Pognana Lario,current_name,1946,,bootstrap alias
-013187,Ponna,current_name,1946,,bootstrap alias
-013188,Ponte Lambro,current_name,1946,,bootstrap alias
-013189,Porlezza,current_name,1946,,bootstrap alias
-013190,Premana,current_name,1946,,bootstrap alias
-013191,Primaluna,current_name,1946,,bootstrap alias
-013192,Proserpio,current_name,1946,,bootstrap alias
-013193,Pusiano,current_name,1946,,bootstrap alias
-013194,Ramponio Verna,current_name,1946,,bootstrap alias
-013197,Rodero,current_name,1946,,bootstrap alias
-013198,Rogeno,current_name,1946,,bootstrap alias
-013199,Ronago,current_name,1946,,bootstrap alias
-013201,Rovellasca,current_name,1946,,bootstrap alias
-013202,Rovello Porro,current_name,1946,,bootstrap alias
-013204,San Bartolomeo Val Cavargna,current_name,1946,,bootstrap alias
-013205,San Fedele Intelvi,current_name,1946,,bootstrap alias
-013206,San Fermo della Battaglia,current_name,1946,,bootstrap alias
-santa-maria-di-rovagnate-como,Santa Maria di Rovagnate,current_name,1946,,bootstrap alias
-013211,Schignano,current_name,1946,,bootstrap alias
-013212,Senna Comasco,current_name,1946,,bootstrap alias
-seprio-como,Seprio,current_name,1946,,bootstrap alias
-013213,Sirone,current_name,1946,,bootstrap alias
-013215,Solbiate,current_name,1946,,bootstrap alias
-013216,Sorico,current_name,1946,,bootstrap alias
-013218,Stazzona,current_name,1946,,bootstrap alias
-013219,Sueglio,current_name,1946,,bootstrap alias
-013221,Taceno,current_name,1946,,bootstrap alias
-013222,Tavernerio,current_name,1946,,bootstrap alias
-013223,Torno,current_name,1946,,bootstrap alias
-013224,Tremenico,current_name,1946,,bootstrap alias
-013252,Tremezzina,current_name,1946,,bootstrap alias
-013226,Trezzone,current_name,1946,,bootstrap alias
-013227,Turate,current_name,1946,,bootstrap alias
-013228,Uggiate-Trevano,current_name,1946,,bootstrap alias
-013229,Valbrona,current_name,1946,,bootstrap alias
-013230,Valgreghentino,current_name,1946,,bootstrap alias
-013231,Valmadrera,current_name,1946,,bootstrap alias
-013232,Valmorea,current_name,1946,,bootstrap alias
-013233,Val Rezzo,current_name,1946,,bootstrap alias
-013234,Valsolda,current_name,1946,,bootstrap alias
-013235,Varenna,current_name,1946,,bootstrap alias
-013237,Vendrogno,current_name,1946,,bootstrap alias
-013240,Verderio Inferiore,current_name,1946,,bootstrap alias
-013241,Verderio Superiore,current_name,1946,,bootstrap alias
-013242,Vertemate Con Minoprio,current_name,1946,,bootstrap alias
-013243,Vestreno,current_name,1946,,bootstrap alias
-013245,Villa Guardia,current_name,1946,,bootstrap alias
-013246,Zelbio,current_name,1946,,bootstrap alias
+017206,Piancogno,current_name,1946,,bootstrap alias
+018001,Alagna,current_name,1946,,bootstrap alias
+018002,Albaredo Arnaboldi,current_name,1946,,bootstrap alias
+018003,Albonese,current_name,1946,,bootstrap alias
+018004,Albuzzano,current_name,1946,,bootstrap alias
+018005,Arena Po,current_name,1946,,bootstrap alias
+018006,Badia Pavese,current_name,1946,,bootstrap alias
+018007,Bagnaria,current_name,1946,,bootstrap alias
+018008,Barbianello,current_name,1946,,bootstrap alias
+018009,Bascape',current_name,1946,,bootstrap alias
+018009,Bascapè,historical_name,1946,,bootstrap alias
+018010,Bastida De' Dossi,current_name,1946,,bootstrap alias
+018011,Bastida Pancarana,current_name,1946,,bootstrap alias
+018012,Battuda,current_name,1946,,bootstrap alias
+018013,Belgioioso,current_name,1946,,bootstrap alias
+018014,Bereguardo,current_name,1946,,bootstrap alias
+018015,Borgarello,current_name,1946,,bootstrap alias
+018016,Borgo Priolo,current_name,1946,,bootstrap alias
+018017,Borgoratto Mormorolo,current_name,1946,,bootstrap alias
+018018,Borgo San Siro,current_name,1946,,bootstrap alias
+018019,Bornasco,current_name,1946,,bootstrap alias
+018020,Bosnasco,current_name,1946,,bootstrap alias
+018021,Brallo di Pregola,current_name,1946,,bootstrap alias
+018022,Breme,current_name,1946,,bootstrap alias
+018023,Bressana Bottarone,current_name,1946,,bootstrap alias
+018024,Broni,current_name,1946,,bootstrap alias
+018025,Calvignano,current_name,1946,,bootstrap alias
+018026,Campospinoso,current_name,1946,,bootstrap alias
+018027,Candia Lomellina,current_name,1946,,bootstrap alias
+018028,Canevino,current_name,1946,,bootstrap alias
+018029,Canneto Pavese,current_name,1946,,bootstrap alias
+018030,Carbonara al Ticino,current_name,1946,,bootstrap alias
+018031,Casanova Lonati,current_name,1946,,bootstrap alias
+018032,Casatisma,current_name,1946,,bootstrap alias
+018033,Casei Gerola,current_name,1946,,bootstrap alias
+018034,Casorate Primo,current_name,1946,,bootstrap alias
+018035,Cassolnovo,current_name,1946,,bootstrap alias
+018036,Castana,current_name,1946,,bootstrap alias
+018037,Casteggio,current_name,1946,,bootstrap alias
+018038,Castelletto di Branduzzo,current_name,1946,,bootstrap alias
+018039,Castello d'Agogna,current_name,1946,,bootstrap alias
+018040,Castelnovetto,current_name,1946,,bootstrap alias
+018041,Cava Manara,current_name,1946,,bootstrap alias
+018042,Cecima,current_name,1946,,bootstrap alias
+018043,Ceranova,current_name,1946,,bootstrap alias
+018044,Ceretto Lomellina,current_name,1946,,bootstrap alias
+018044,Cerreto Lomellino,historical_name,1946,,bootstrap alias
+018045,Cergnago,current_name,1946,,bootstrap alias
+018046,Certosa di Pavia,current_name,1946,,bootstrap alias
+018047,Cervesina,current_name,1946,,bootstrap alias
+018048,Chignolo Po,current_name,1946,,bootstrap alias
+018049,Cigognola,current_name,1946,,bootstrap alias
+018050,Cilavegna,current_name,1946,,bootstrap alias
+018051,Codevilla,current_name,1946,,bootstrap alias
+018052,Confienza,current_name,1946,,bootstrap alias
+018053,Copiano,current_name,1946,,bootstrap alias
+018054,Corana,current_name,1946,,bootstrap alias
+018055,Cornale,current_name,1946,,bootstrap alias
+018056,Corteolona,current_name,1946,,bootstrap alias
+018057,Corvino San Quirico,current_name,1946,,bootstrap alias
+018058,Costa De' Nobili,current_name,1946,,bootstrap alias
+018059,Cozzo,current_name,1946,,bootstrap alias
+018060,Cura Carpignano,current_name,1946,,bootstrap alias
+018061,Dorno,current_name,1946,,bootstrap alias
+018062,Ferrera Erbognone,current_name,1946,,bootstrap alias
+018063,Filighera,current_name,1946,,bootstrap alias
+018064,Fortunago,current_name,1946,,bootstrap alias
+018065,Frascarolo,current_name,1946,,bootstrap alias
+018066,Galliavola,current_name,1946,,bootstrap alias
+018067,Gambarana,current_name,1946,,bootstrap alias
+018068,Gambolo',current_name,1946,,bootstrap alias
+018068,Gambolò,historical_name,1946,,bootstrap alias
+018069,Garlasco,current_name,1946,,bootstrap alias
+018070,Genzone,current_name,1946,,bootstrap alias
+018071,Gerenzago,current_name,1946,,bootstrap alias
+018072,Giussago,current_name,1946,,bootstrap alias
+018073,Godiasco Salice Terme,current_name,1946,,bootstrap alias
+018073,Godiasco,historical_name,1946,,bootstrap alias
+018074,Golferenzo,current_name,1946,,bootstrap alias
+018075,Gravellona Lomellina,current_name,1946,,bootstrap alias
+018076,Gropello Cairoli,current_name,1946,,bootstrap alias
+018077,Inverno e Monteleone,current_name,1946,,bootstrap alias
+018078,Landriano,current_name,1946,,bootstrap alias
+018079,Langosco,current_name,1946,,bootstrap alias
+018080,Lardirago,current_name,1946,,bootstrap alias
+018081,Linarolo,current_name,1946,,bootstrap alias
+018082,Lirio,current_name,1946,,bootstrap alias
+018083,Lomello,current_name,1946,,bootstrap alias
+018084,Lungavilla,current_name,1946,,bootstrap alias
+018085,Magherno,current_name,1946,,bootstrap alias
+018086,Marcignago,current_name,1946,,bootstrap alias
+018087,Marzano,current_name,1946,,bootstrap alias
+018088,Mede,current_name,1946,,bootstrap alias
+018089,Menconico,current_name,1946,,bootstrap alias
+018090,Mezzana Bigli,current_name,1946,,bootstrap alias
+018091,Mezzana Rabattone,current_name,1946,,bootstrap alias
+018092,Mezzanino,current_name,1946,,bootstrap alias
+018093,Miradolo Terme,current_name,1946,,bootstrap alias
+018094,Montalto Pavese,current_name,1946,,bootstrap alias
+018095,Montebello della Battaglia,current_name,1946,,bootstrap alias
+018096,Montecalvo Versiggia,current_name,1946,,bootstrap alias
+018097,Montescano,current_name,1946,,bootstrap alias
+018098,Montesegale,current_name,1946,,bootstrap alias
+018099,Monticelli Pavese,current_name,1946,,bootstrap alias
+018100,Montu' Beccaria,current_name,1946,,bootstrap alias
+018100,Montù Beccaria,historical_name,1946,,bootstrap alias
+018101,Mornico Losana,current_name,1946,,bootstrap alias
+018102,Mortara,current_name,1946,,bootstrap alias
+018103,Nicorvo,current_name,1946,,bootstrap alias
+018104,Olevano di Lomellina,current_name,1946,,bootstrap alias
+018105,Oliva Gessi,current_name,1946,,bootstrap alias
+018106,Ottobiano,current_name,1946,,bootstrap alias
+018107,Palestro,current_name,1946,,bootstrap alias
+018108,Pancarana,current_name,1946,,bootstrap alias
+018109,Parona,current_name,1946,,bootstrap alias
+018110,Pavia,current_name,1946,,bootstrap alias
+018111,Pietra De' Giorgi,current_name,1946,,bootstrap alias
+018112,Pieve Albignola,current_name,1946,,bootstrap alias
+018113,Pieve del Cairo,current_name,1946,,bootstrap alias
+018114,Pieve Porto Morone,current_name,1946,,bootstrap alias
+018115,Pinarolo Po,current_name,1946,,bootstrap alias
+018116,Pizzale,current_name,1946,,bootstrap alias
+018117,Ponte Nizza,current_name,1946,,bootstrap alias
+018118,Portalbera,current_name,1946,,bootstrap alias
+018119,Rea,current_name,1946,,bootstrap alias
+018120,Redavalle,current_name,1946,,bootstrap alias
+018121,Retorbido,current_name,1946,,bootstrap alias
+018122,Rivanazzano Terme,current_name,1946,,bootstrap alias
+018122,Rivanazzano,historical_name,1946,,bootstrap alias
+018123,Robbio,current_name,1946,,bootstrap alias
+018124,Robecco Pavese,current_name,1946,,bootstrap alias
+018125,Rocca De' Giorgi,current_name,1946,,bootstrap alias
+018126,Rocca Susella,current_name,1946,,bootstrap alias
+018127,Rognano,current_name,1946,,bootstrap alias
+018128,Romagnese,current_name,1946,,bootstrap alias
+018129,Roncaro,current_name,1946,,bootstrap alias
+018130,Rosasco,current_name,1946,,bootstrap alias
+018131,Rovescala,current_name,1946,,bootstrap alias
+018132,Ruino,current_name,1946,,bootstrap alias
+018133,San Cipriano Po,current_name,1946,,bootstrap alias
+018134,San Damiano al Colle,current_name,1946,,bootstrap alias
+018135,San Genesio Ed Uniti,current_name,1946,,bootstrap alias
+018136,San Giorgio di Lomellina,current_name,1946,,bootstrap alias
+018137,San Martino Siccomario,current_name,1946,,bootstrap alias
+018138,Sannazzaro De' Burgondi,current_name,1946,,bootstrap alias
+018139,Santa Cristina e Bissone,current_name,1946,,bootstrap alias
+018140,Santa Giuletta,current_name,1946,,bootstrap alias
+018141,Sant'Alessio Con Vialone,current_name,1946,,bootstrap alias
+018142,Santa Margherita di Staffora,current_name,1946,,bootstrap alias
+018143,Santa Maria della Versa,current_name,1946,,bootstrap alias
+018144,Sant'Angelo Lomellina,current_name,1946,,bootstrap alias
+018145,San Zenone al Po,current_name,1946,,bootstrap alias
+018146,Sartirana Lomellina,current_name,1946,,bootstrap alias
+018147,Scaldasole,current_name,1946,,bootstrap alias
+018148,Semiana,current_name,1946,,bootstrap alias
+018149,Silvano Pietra,current_name,1946,,bootstrap alias
+018150,Siziano,current_name,1946,,bootstrap alias
+018151,Sommo,current_name,1946,,bootstrap alias
+018152,Spessa,current_name,1946,,bootstrap alias
+018153,Stradella,current_name,1946,,bootstrap alias
+018154,Suardi,current_name,1946,,bootstrap alias
+018155,Torrazza Coste,current_name,1946,,bootstrap alias
+018156,Torre Beretti e Castellaro,current_name,1946,,bootstrap alias
+018157,Torre d'Arese,current_name,1946,,bootstrap alias
+018158,Torre De' Negri,current_name,1946,,bootstrap alias
+018159,Torre d'Isola,current_name,1946,,bootstrap alias
+018160,Torrevecchia Pia,current_name,1946,,bootstrap alias
+018161,Torricella Verzate,current_name,1946,,bootstrap alias
+018162,Travaco' Siccomario,current_name,1946,,bootstrap alias
+018162,Travacò Siccomario,historical_name,1946,,bootstrap alias
+018163,Trivolzio,current_name,1946,,bootstrap alias
+018164,Tromello,current_name,1946,,bootstrap alias
+018165,Trovo,current_name,1946,,bootstrap alias
+018166,Val di Nizza,current_name,1946,,bootstrap alias
+018167,Valeggio,current_name,1946,,bootstrap alias
+018168,Valle Lomellina,current_name,1946,,bootstrap alias
+018169,Valle Salimbene,current_name,1946,,bootstrap alias
+018170,Valverde,current_name,1946,,bootstrap alias
+018171,Varzi,current_name,1946,,bootstrap alias
+018172,Velezzo Lomellina,current_name,1946,,bootstrap alias
+018173,Vellezzo Bellini,current_name,1946,,bootstrap alias
+018174,Verretto,current_name,1946,,bootstrap alias
+018175,Verrua Po,current_name,1946,,bootstrap alias
+018176,Vidigulfo,current_name,1946,,bootstrap alias
+018177,Vigevano,current_name,1946,,bootstrap alias
+018178,Villa Biscossi,current_name,1946,,bootstrap alias
+018179,Villanova d'Ardenghi,current_name,1946,,bootstrap alias
+018180,Villanterio,current_name,1946,,bootstrap alias
+018181,Vistarino,current_name,1946,,bootstrap alias
+018182,Voghera,current_name,1946,,bootstrap alias
+018183,Volpara,current_name,1946,,bootstrap alias
+018184,Zavattarello,current_name,1946,,bootstrap alias
+018185,Zeccone,current_name,1946,,bootstrap alias
+018186,Zeme,current_name,1946,,bootstrap alias
+018186,Zeme Lomellina,historical_name,1946,,bootstrap alias
+018187,Zenevredo,current_name,1946,,bootstrap alias
+018188,Zerbo,current_name,1946,,bootstrap alias
+018189,Zerbolo',current_name,1946,,bootstrap alias
+018189,Zerbolò,historical_name,1946,,bootstrap alias
+018190,Zinasco,current_name,1946,,bootstrap alias
+018191,Cornale e Bastida,current_name,1946,,bootstrap alias
+018192,Corteolona e Genzone,current_name,1946,,bootstrap alias
+018193,Colli Verdi,current_name,1946,,bootstrap alias
 019001,Acquanegra Cremonese,current_name,1946,,bootstrap alias
 019002,Agnadello,current_name,1946,,bootstrap alias
 019003,Annicco,current_name,1946,,bootstrap alias
@@ -598,12 +1232,14 @@ seprio-como,Seprio,current_name,1946,,bootstrap alias
 019008,Ca' d'Andrea,current_name,1946,,bootstrap alias
 019009,Calvatone,current_name,1946,,bootstrap alias
 019010,Camisano,current_name,1946,,bootstrap alias
+019011,Campagnola Cremasca,current_name,1946,,bootstrap alias
 019012,Capergnanica,current_name,1946,,bootstrap alias
 019013,Cappella Cantone,current_name,1946,,bootstrap alias
 019014,Cappella De' Picenardi,current_name,1946,,bootstrap alias
 019015,Capralba,current_name,1946,,bootstrap alias
 019016,Casalbuttano Ed Uniti,current_name,1946,,bootstrap alias
-019017,Casale Cremasco Vidolasco,current_name,1946,,bootstrap alias
+019017,Casale Cremasco-Vidolasco,current_name,1946,,bootstrap alias
+019017,Casale Cremasco Vidolasco,historical_name,1946,,bootstrap alias
 019018,Casaletto Ceredano,current_name,1946,,bootstrap alias
 019019,Casaletto di Sopra,current_name,1946,,bootstrap alias
 019020,Casaletto Vaprio,current_name,1946,,bootstrap alias
@@ -632,6 +1268,7 @@ seprio-como,Seprio,current_name,1946,,bootstrap alias
 019043,Fiesco,current_name,1946,,bootstrap alias
 019044,Formigara,current_name,1946,,bootstrap alias
 019045,Gabbioneta Binanuova,current_name,1946,,bootstrap alias
+019045,Gabbioneta-Binanuova,historical_name,1946,,bootstrap alias
 019046,Gadesco Pieve Delmona,current_name,1946,,bootstrap alias
 019047,Genivolta,current_name,1946,,bootstrap alias
 019048,Gerre De' Caprioli,current_name,1946,,bootstrap alias
@@ -651,22 +1288,25 @@ seprio-como,Seprio,current_name,1946,,bootstrap alias
 019062,Offanengo,current_name,1946,,bootstrap alias
 019063,Olmeneta,current_name,1946,,bootstrap alias
 019064,Ostiano,current_name,1946,,bootstrap alias
-paderno-ossolaro-cremona,Paderno Ossolaro,current_name,1946,,bootstrap alias
+019065,Paderno Ponchielli,current_name,1946,,bootstrap alias
 019066,Palazzo Pignano,current_name,1946,,bootstrap alias
-palvareto-cremona,Palvareto,current_name,1946,,bootstrap alias
 019067,Pandino,current_name,1946,,bootstrap alias
-019068,Persico d'Osimo,current_name,1946,,bootstrap alias
+019068,Persico Dosimo,current_name,1946,,bootstrap alias
+019068,Persico d'Osimo,historical_name,1946,,bootstrap alias
 019069,Pescarolo Ed Uniti,current_name,1946,,bootstrap alias
 019070,Pessina Cremonese,current_name,1946,,bootstrap alias
 019071,Piadena,current_name,1946,,bootstrap alias
+019072,Pianengo,current_name,1946,,bootstrap alias
 019073,Pieranica,current_name,1946,,bootstrap alias
 019074,Pieve d'Olmi,current_name,1946,,bootstrap alias
 019075,Pieve San Giacomo,current_name,1946,,bootstrap alias
 019076,Pizzighettone,current_name,1946,,bootstrap alias
 019077,Pozzaglio Ed Uniti,current_name,1946,,bootstrap alias
+019078,Quintano,current_name,1946,,bootstrap alias
 019079,Ricengo,current_name,1946,,bootstrap alias
 019080,Ripalta Arpina,current_name,1946,,bootstrap alias
 019081,Ripalta Cremasca,current_name,1946,,bootstrap alias
+019082,Ripalta Guerina,current_name,1946,,bootstrap alias
 019083,Rivarolo del Re Ed Uniti,current_name,1946,,bootstrap alias
 019084,Rivolta d'Adda,current_name,1946,,bootstrap alias
 019085,Robecco d'Oglio,current_name,1946,,bootstrap alias
@@ -674,11 +1314,13 @@ palvareto-cremona,Palvareto,current_name,1946,,bootstrap alias
 019087,Salvirola,current_name,1946,,bootstrap alias
 019088,San Bassano,current_name,1946,,bootstrap alias
 019089,San Daniele Po,current_name,1946,,bootstrap alias
+019090,San Giovanni in Croce,current_name,1946,,bootstrap alias
 019091,San Martino del Lago,current_name,1946,,bootstrap alias
 019092,Scandolara Ravara,current_name,1946,,bootstrap alias
 019093,Scandolara Ripa d'Oglio,current_name,1946,,bootstrap alias
 019094,Sergnano,current_name,1946,,bootstrap alias
 019095,Sesto Ed Uniti,current_name,1946,,bootstrap alias
+019096,Solarolo Rainerio,current_name,1946,,bootstrap alias
 019097,Soncino,current_name,1946,,bootstrap alias
 019098,Soresina,current_name,1946,,bootstrap alias
 019099,Sospiro,current_name,1946,,bootstrap alias
@@ -698,6 +1340,7 @@ palvareto-cremona,Palvareto,current_name,1946,,bootstrap alias
 019113,Vescovato,current_name,1946,,bootstrap alias
 019114,Volongo,current_name,1946,,bootstrap alias
 019115,Voltido,current_name,1946,,bootstrap alias
+019116,Piadena Drizzona,current_name,1946,,bootstrap alias
 020001,Acquanegra sul Chiese,current_name,1946,,bootstrap alias
 020002,Asola,current_name,1946,,bootstrap alias
 020003,Bagnolo San Vito,current_name,1946,,bootstrap alias
@@ -706,6 +1349,7 @@ palvareto-cremona,Palvareto,current_name,1946,,bootstrap alias
 020006,Borgofranco sul Po,current_name,1946,,bootstrap alias
 020007,Bozzolo,current_name,1946,,bootstrap alias
 020008,Canneto Sull'Oglio,current_name,1946,,bootstrap alias
+020008,Canneto Sull Oglio,historical_name,1946,,bootstrap alias
 020009,Carbonara di Po,current_name,1946,,bootstrap alias
 020010,Casalmoro,current_name,1946,,bootstrap alias
 020011,Casaloldo,current_name,1946,,bootstrap alias
@@ -754,11 +1398,13 @@ palvareto-cremona,Palvareto,current_name,1946,,bootstrap alias
 020054,Sabbioneta,current_name,1946,,bootstrap alias
 020055,San Benedetto Po,current_name,1946,,bootstrap alias
 020056,San Giacomo delle Segnate,current_name,1946,,bootstrap alias
-020057,San Giorgio di Mantova,current_name,1946,,bootstrap alias
+020057,San Giorgio Bigarello,current_name,1946,,bootstrap alias
+020057,San Giorgio di Mantova,historical_name,1946,,bootstrap alias
 020058,San Giovanni del Dosso,current_name,1946,,bootstrap alias
 020059,San Martino Dall'Argine,current_name,1946,,bootstrap alias
 020060,Schivenoglia,current_name,1946,,bootstrap alias
-020061,Sermide,current_name,1946,,bootstrap alias
+020061,Sermide e Felonica,current_name,1946,,bootstrap alias
+020061,Sermide,historical_name,1946,,bootstrap alias
 020062,Serravalle A Po,current_name,1946,,bootstrap alias
 020063,Solferino,current_name,1946,,bootstrap alias
 020064,Sustinente,current_name,1946,,bootstrap alias
@@ -768,965 +1414,145 @@ palvareto-cremona,Palvareto,current_name,1946,,bootstrap alias
 020068,Villimpenta,current_name,1946,,bootstrap alias
 020069,Virgilio,current_name,1946,,bootstrap alias
 020070,Volta Mantovana,current_name,1946,,bootstrap alias
-015001,Abbadia Cerreto,current_name,1946,,bootstrap alias
-015002,Abbiategrasso,current_name,1946,,bootstrap alias
-015003,Agrate Brianza,current_name,1946,,bootstrap alias
-015004,Aicurzio,current_name,1946,,bootstrap alias
-015005,Albairate,current_name,1946,,bootstrap alias
-015006,Albiate,current_name,1946,,bootstrap alias
-015007,Arconate,current_name,1946,,bootstrap alias
-015008,Arcore,current_name,1946,,bootstrap alias
-015009,Arese,current_name,1946,,bootstrap alias
-015010,Arluno,current_name,1946,,bootstrap alias
-015011,Assago,current_name,1946,,bootstrap alias
-015012,Bareggio,current_name,1946,,bootstrap alias
-015013,Barlassina,current_name,1946,,bootstrap alias
-015014,Basiano,current_name,1946,,bootstrap alias
-015015,Basiglio,current_name,1946,,bootstrap alias
-015016,Bellinzago Lombardo,current_name,1946,,bootstrap alias
-015017,Bellusco,current_name,1946,,bootstrap alias
-015018,Bernareggio,current_name,1946,,bootstrap alias
-015019,Bernate Ticino,current_name,1946,,bootstrap alias
-015020,Bertonico,current_name,1946,,bootstrap alias
-015021,Besana in Brianza,current_name,1946,,bootstrap alias
-015022,Besate,current_name,1946,,bootstrap alias
-015023,Biassono,current_name,1946,,bootstrap alias
-015024,Binasco,current_name,1946,,bootstrap alias
-015025,Boffalora D Adda,current_name,1946,,bootstrap alias
-015026,Boffalora Sopra Ticino,current_name,1946,,bootstrap alias
-015027,Bollate,current_name,1946,,bootstrap alias
-015028,Borghetto Lodigiano,current_name,1946,,bootstrap alias
-015029,Borgo San Giovanni,current_name,1946,,bootstrap alias
-015030,Bovisio-Masciago,current_name,1946,,bootstrap alias
-015031,Brembio,current_name,1946,,bootstrap alias
-015032,Bresso,current_name,1946,,bootstrap alias
-015033,Briosco,current_name,1946,,bootstrap alias
-015034,Brugherio,current_name,1946,,bootstrap alias
-015035,Bubbiano,current_name,1946,,bootstrap alias
-015036,Buccinasco,current_name,1946,,bootstrap alias
-015037,Burago di Molgora,current_name,1946,,bootstrap alias
-015038,Buscate,current_name,1946,,bootstrap alias
-015039,Busnago,current_name,1946,,bootstrap alias
-015040,Bussero,current_name,1946,,bootstrap alias
-015041,Busto Garolfo,current_name,1946,,bootstrap alias
-015042,Calvignasco,current_name,1946,,bootstrap alias
-015043,Camairago,current_name,1946,,bootstrap alias
-015044,Cambiago,current_name,1946,,bootstrap alias
-015045,Camparada,current_name,1946,,bootstrap alias
-015046,Canegrate,current_name,1946,,bootstrap alias
-015047,Caponago,current_name,1946,,bootstrap alias
-015048,Carate Brianza,current_name,1946,,bootstrap alias
-015049,Carnate,current_name,1946,,bootstrap alias
-015050,Carpiano,current_name,1946,,bootstrap alias
-015051,Carugate,current_name,1946,,bootstrap alias
-015052,Casaletto Lodigiano,current_name,1946,,bootstrap alias
-015053,Casalmaiocco,current_name,1946,,bootstrap alias
-015054,Casalpusterlengo,current_name,1946,,bootstrap alias
-015055,Casarile,current_name,1946,,bootstrap alias
-015056,Caselle Landi,current_name,1946,,bootstrap alias
-015057,Caselle Lurani,current_name,1946,,bootstrap alias
-015058,Casorezzo,current_name,1946,,bootstrap alias
-015059,Cassano d'Adda,current_name,1946,,bootstrap alias
-015060,Cassina De' Pecchi,current_name,1946,,bootstrap alias
-015061,Cassinetta di Lugagnano,current_name,1946,,bootstrap alias
-015062,Castano Primo,current_name,1946,,bootstrap alias
-015063,Castelnuovo Bocca D Adda,current_name,1946,,bootstrap alias
-015064,Castiglione D Adda,current_name,1946,,bootstrap alias
-015065,Castiraga Vidardo,current_name,1946,,bootstrap alias
-015066,Cavacurta,current_name,1946,,bootstrap alias
-015067,Cavenago D Adda,current_name,1946,,bootstrap alias
-015068,Cavenago di Brianza,current_name,1946,,bootstrap alias
-015069,Ceriano Laghetto,current_name,1946,,bootstrap alias
-015070,Cernusco sul Naviglio,current_name,1946,,bootstrap alias
-015071,Cerro al Lambro,current_name,1946,,bootstrap alias
-015072,Cerro Maggiore,current_name,1946,,bootstrap alias
-015073,Cervignano D Adda,current_name,1946,,bootstrap alias
-015074,Cesano Boscone,current_name,1946,,bootstrap alias
-015075,Cesano Maderno,current_name,1946,,bootstrap alias
-015076,Cesate,current_name,1946,,bootstrap alias
-015077,Cinisello Balsamo,current_name,1946,,bootstrap alias
-015078,Cisliano,current_name,1946,,bootstrap alias
-015079,Codogno,current_name,1946,,bootstrap alias
-015080,Cogliate,current_name,1946,,bootstrap alias
-015081,Cologno Monzese,current_name,1946,,bootstrap alias
-015082,Colturano,current_name,1946,,bootstrap alias
-015083,Comazzo,current_name,1946,,bootstrap alias
-015084,Concorezzo,current_name,1946,,bootstrap alias
-015085,Corbetta,current_name,1946,,bootstrap alias
-015086,Cormano,current_name,1946,,bootstrap alias
-015087,Cornaredo,current_name,1946,,bootstrap alias
-015088,Cornate d'Adda,current_name,1946,,bootstrap alias
-015089,Cornegliano Laudense,current_name,1946,,bootstrap alias
-015090,Corno Giovine,current_name,1946,,bootstrap alias
-015091,Cornovecchio,current_name,1946,,bootstrap alias
-015092,Correzzana,current_name,1946,,bootstrap alias
-015093,Corsico,current_name,1946,,bootstrap alias
-015094,Corte Palasio,current_name,1946,,bootstrap alias
-015095,Crespiatica,current_name,1946,,bootstrap alias
-015096,Cuggiono,current_name,1946,,bootstrap alias
-015097,Cusago,current_name,1946,,bootstrap alias
-015098,Cusano Milanino,current_name,1946,,bootstrap alias
-015100,Desio,current_name,1946,,bootstrap alias
-015101,Dresano,current_name,1946,,bootstrap alias
-015102,Fombio,current_name,1946,,bootstrap alias
-015103,Gaggiano,current_name,1946,,bootstrap alias
-015104,Galgagnano,current_name,1946,,bootstrap alias
-015105,Garbagnate Milanese,current_name,1946,,bootstrap alias
-015106,Gessate,current_name,1946,,bootstrap alias
-015107,Giussano,current_name,1946,,bootstrap alias
-015108,Gorgonzola,current_name,1946,,bootstrap alias
-015109,Graffignana,current_name,1946,,bootstrap alias
-015110,Grezzago,current_name,1946,,bootstrap alias
-015111,Guardamiglio,current_name,1946,,bootstrap alias
-015112,Gudo Visconti,current_name,1946,,bootstrap alias
-015113,Inveruno,current_name,1946,,bootstrap alias
-015114,Inzago,current_name,1946,,bootstrap alias
-015115,Lacchiarella,current_name,1946,,bootstrap alias
-015116,Lainate,current_name,1946,,bootstrap alias
-015117,Lazzate,current_name,1946,,bootstrap alias
-015118,Legnano,current_name,1946,,bootstrap alias
-015119,Lentate sul Seveso,current_name,1946,,bootstrap alias
-015120,Lesmo,current_name,1946,,bootstrap alias
-015121,Limbiate,current_name,1946,,bootstrap alias
-015122,Liscate,current_name,1946,,bootstrap alias
-015123,Lissone,current_name,1946,,bootstrap alias
-015124,Livraga,current_name,1946,,bootstrap alias
-015125,Locate di Triulzi,current_name,1946,,bootstrap alias
-015126,Lodi,current_name,1946,,bootstrap alias
-015127,Lodi Vecchio,current_name,1946,,bootstrap alias
-015128,Maccastorna,current_name,1946,,bootstrap alias
-015129,Macherio,current_name,1946,,bootstrap alias
-015130,Magenta,current_name,1946,,bootstrap alias
-015131,Magnago,current_name,1946,,bootstrap alias
-015132,Mairago,current_name,1946,,bootstrap alias
-015133,Maleo,current_name,1946,,bootstrap alias
-015134,Marcallo Con Casone,current_name,1946,,bootstrap alias
-015135,Marudo,current_name,1946,,bootstrap alias
-015136,Masate,current_name,1946,,bootstrap alias
-015137,Massalengo,current_name,1946,,bootstrap alias
-015138,Meda,current_name,1946,,bootstrap alias
-015139,Mediglia,current_name,1946,,bootstrap alias
-015140,Melegnano,current_name,1946,,bootstrap alias
-015141,Meleti,current_name,1946,,bootstrap alias
-015142,Melzo,current_name,1946,,bootstrap alias
-015143,Merlino,current_name,1946,,bootstrap alias
-015144,Mesero,current_name,1946,,bootstrap alias
-015145,Mezzago,current_name,1946,,bootstrap alias
-015146,Milano,current_name,1946,,bootstrap alias
-015147,Misinto,current_name,1946,,bootstrap alias
-015148,Montanaso Lombardo,current_name,1946,,bootstrap alias
-015149,Monza,current_name,1946,,bootstrap alias
-015150,Morimondo,current_name,1946,,bootstrap alias
-015151,Motta Visconti,current_name,1946,,bootstrap alias
-015152,Muggio',current_name,1946,,bootstrap alias
-015153,Mulazzano,current_name,1946,,bootstrap alias
-015154,Nerviano,current_name,1946,,bootstrap alias
-015155,Nosate,current_name,1946,,bootstrap alias
-015156,Nova Milanese,current_name,1946,,bootstrap alias
-015157,Novate Milanese,current_name,1946,,bootstrap alias
-015158,Noviglio,current_name,1946,,bootstrap alias
-015159,Opera,current_name,1946,,bootstrap alias
-015160,Orio Litta,current_name,1946,,bootstrap alias
-015161,Ornago,current_name,1946,,bootstrap alias
-015162,Ospedaletto Lodigiano,current_name,1946,,bootstrap alias
-015163,Ossago Lodigiano,current_name,1946,,bootstrap alias
-015164,Ossona,current_name,1946,,bootstrap alias
-015165,Ozzero,current_name,1946,,bootstrap alias
-015166,Paderno Dugnano,current_name,1946,,bootstrap alias
-015167,Pantigliate,current_name,1946,,bootstrap alias
-015168,Parabiago,current_name,1946,,bootstrap alias
-015169,Paullo,current_name,1946,,bootstrap alias
-015170,Pero,current_name,1946,,bootstrap alias
-015171,Peschiera Borromeo,current_name,1946,,bootstrap alias
-015172,Pessano Con Bornago,current_name,1946,,bootstrap alias
-015173,Pieve Emanuele,current_name,1946,,bootstrap alias
-015174,Pieve Fissiraga,current_name,1946,,bootstrap alias
-015175,Pioltello,current_name,1946,,bootstrap alias
-015176,Pogliano Milanese,current_name,1946,,bootstrap alias
-015177,Pozzo d'Adda,current_name,1946,,bootstrap alias
-015178,Pozzuolo Martesana,current_name,1946,,bootstrap alias
-015179,Pregnana Milanese,current_name,1946,,bootstrap alias
-renate-veduggio-milano,Renate Veduggio,current_name,1946,,bootstrap alias
-015181,Rescaldina,current_name,1946,,bootstrap alias
-015182,Rho,current_name,1946,,bootstrap alias
-015183,Robecchetto Con Induno,current_name,1946,,bootstrap alias
-015184,Robecco sul Naviglio,current_name,1946,,bootstrap alias
-015185,Rodano,current_name,1946,,bootstrap alias
-015186,Roncello,current_name,1946,,bootstrap alias
-015187,Ronco Briantino,current_name,1946,,bootstrap alias
-015188,Rosate,current_name,1946,,bootstrap alias
-015189,Rozzano,current_name,1946,,bootstrap alias
-015190,Salerano sul Lambro,current_name,1946,,bootstrap alias
-015191,San Colombano al Lambro,current_name,1946,,bootstrap alias
-015192,San Donato Milanese,current_name,1946,,bootstrap alias
-015193,San Fiorano,current_name,1946,,bootstrap alias
-015194,San Giorgio Su Legnano,current_name,1946,,bootstrap alias
-015195,San Giuliano Milanese,current_name,1946,,bootstrap alias
-015196,San Martino in Strada,current_name,1946,,bootstrap alias
-015197,San Rocco al Porto,current_name,1946,,bootstrap alias
-015198,Sant Angelo Lodigiano,current_name,1946,,bootstrap alias
-015199,Santo Stefano Lodigiano,current_name,1946,,bootstrap alias
-015200,Santo Stefano Ticino,current_name,1946,,bootstrap alias
-015201,San Vittore Olona,current_name,1946,,bootstrap alias
-015202,San Zenone al Lambro,current_name,1946,,bootstrap alias
-015203,Secugnago,current_name,1946,,bootstrap alias
-015204,Sedriano,current_name,1946,,bootstrap alias
-015205,Segrate,current_name,1946,,bootstrap alias
-015206,Senago,current_name,1946,,bootstrap alias
-015207,Senna Lodigiana,current_name,1946,,bootstrap alias
-015208,Seregno,current_name,1946,,bootstrap alias
-015209,Sesto San Giovanni,current_name,1946,,bootstrap alias
-015210,Settala,current_name,1946,,bootstrap alias
-015211,Settimo Milanese,current_name,1946,,bootstrap alias
-015212,Seveso,current_name,1946,,bootstrap alias
-015213,Solaro,current_name,1946,,bootstrap alias
-015214,Somaglia,current_name,1946,,bootstrap alias
-015215,Sordio,current_name,1946,,bootstrap alias
-015216,Sovico,current_name,1946,,bootstrap alias
-015217,Sulbiate,current_name,1946,,bootstrap alias
-terranuova-dei-passerini-milano,Terranuova dei Passerini,current_name,1946,,bootstrap alias
-015219,Trezzano Rosa,current_name,1946,,bootstrap alias
-015220,Trezzano sul Naviglio,current_name,1946,,bootstrap alias
-015221,Trezzo Sull'Adda,current_name,1946,,bootstrap alias
-015222,Tribiano,current_name,1946,,bootstrap alias
-015223,Triuggio,current_name,1946,,bootstrap alias
-015224,Truccazzano,current_name,1946,,bootstrap alias
-015225,Turano Lodigiano,current_name,1946,,bootstrap alias
-015226,Turbigo,current_name,1946,,bootstrap alias
-015227,Usmate Velate,current_name,1946,,bootstrap alias
-015228,Valera Fratta,current_name,1946,,bootstrap alias
-015229,Vanzago,current_name,1946,,bootstrap alias
-015230,Vaprio d'Adda,current_name,1946,,bootstrap alias
-015231,Varedo,current_name,1946,,bootstrap alias
-015232,Vedano al Lambro,current_name,1946,,bootstrap alias
-015234,Verano Brianza,current_name,1946,,bootstrap alias
-015235,Vermezzo,current_name,1946,,bootstrap alias
-015236,Vernate,current_name,1946,,bootstrap alias
-015237,Vignate,current_name,1946,,bootstrap alias
-015238,Villanova del Sillaro,current_name,1946,,bootstrap alias
-015239,Villasanta,current_name,1946,,bootstrap alias
-villavesco-milano,Villavesco,current_name,1946,,bootstrap alias
-015241,Vimercate,current_name,1946,,bootstrap alias
-015242,Vimodrone,current_name,1946,,bootstrap alias
-015243,Vittuone,current_name,1946,,bootstrap alias
-015244,Vizzolo Predabissi,current_name,1946,,bootstrap alias
-015245,Zelo Buon Persico,current_name,1946,,bootstrap alias
-015246,Zelo Surrigone,current_name,1946,,bootstrap alias
-015247,Zibido San Giacomo,current_name,1946,,bootstrap alias
-018001,Alagna,current_name,1946,,bootstrap alias
-018003,Albonese,current_name,1946,,bootstrap alias
-018004,Albuzzano,current_name,1946,,bootstrap alias
-018005,Arena Po,current_name,1946,,bootstrap alias
-018006,Badia Pavese,current_name,1946,,bootstrap alias
-018008,Barbianello,current_name,1946,,bootstrap alias
-018009,Bascape',current_name,1946,,bootstrap alias
-018010,Bastida De' Dossi,current_name,1946,,bootstrap alias
-018011,Bastida Pancarana,current_name,1946,,bootstrap alias
-018012,Battuda,current_name,1946,,bootstrap alias
-018013,Belgioioso,current_name,1946,,bootstrap alias
-018014,Bereguardo,current_name,1946,,bootstrap alias
-018016,Borgo Priolo,current_name,1946,,bootstrap alias
-018017,Borgoratto Mormorolo,current_name,1946,,bootstrap alias
-018018,Borgo San Siro,current_name,1946,,bootstrap alias
-018019,Bornasco,current_name,1946,,bootstrap alias
-018020,Bosnasco,current_name,1946,,bootstrap alias
-018022,Breme,current_name,1946,,bootstrap alias
-018023,Bressana Bottarone,current_name,1946,,bootstrap alias
-018024,Broni,current_name,1946,,bootstrap alias
-018025,Calvignano,current_name,1946,,bootstrap alias
-018026,Campospinoso,current_name,1946,,bootstrap alias
-018027,Candia Lomellina,current_name,1946,,bootstrap alias
-018029,Canneto Pavese,current_name,1946,,bootstrap alias
-018030,Carbonara al Ticino,current_name,1946,,bootstrap alias
-018031,Casanova Lonati,current_name,1946,,bootstrap alias
-018032,Casatisma,current_name,1946,,bootstrap alias
-018033,Casei Gerola,current_name,1946,,bootstrap alias
-018034,Casorate Primo,current_name,1946,,bootstrap alias
-018035,Cassolnovo,current_name,1946,,bootstrap alias
-018036,Castana,current_name,1946,,bootstrap alias
-018037,Casteggio,current_name,1946,,bootstrap alias
-018038,Castelletto di Branduzzo,current_name,1946,,bootstrap alias
-018039,Castello d'Agogna,current_name,1946,,bootstrap alias
-018040,Castelnovetto,current_name,1946,,bootstrap alias
-018041,Cava Manara,current_name,1946,,bootstrap alias
-018045,Cergnago,current_name,1946,,bootstrap alias
-018044,Cerreto Lomellino,current_name,1946,,bootstrap alias
-018046,Certosa di Pavia,current_name,1946,,bootstrap alias
-018047,Cervesina,current_name,1946,,bootstrap alias
-018048,Chignolo Po,current_name,1946,,bootstrap alias
-018049,Cigognola,current_name,1946,,bootstrap alias
-018050,Cilavegna,current_name,1946,,bootstrap alias
-018051,Codevilla,current_name,1946,,bootstrap alias
-018052,Confienza,current_name,1946,,bootstrap alias
-018053,Copiano,current_name,1946,,bootstrap alias
-018054,Corana,current_name,1946,,bootstrap alias
-018055,Cornale,current_name,1946,,bootstrap alias
-018056,Corteolona,current_name,1946,,bootstrap alias
-018057,Corvino San Quirico,current_name,1946,,bootstrap alias
-018058,Costa De' Nobili,current_name,1946,,bootstrap alias
-018059,Cozzo,current_name,1946,,bootstrap alias
-018060,Cura Carpignano,current_name,1946,,bootstrap alias
-018061,Dorno,current_name,1946,,bootstrap alias
-018062,Ferrera Erbognone,current_name,1946,,bootstrap alias
-018063,Filighera,current_name,1946,,bootstrap alias
-018064,Fortunago,current_name,1946,,bootstrap alias
-018065,Frascarolo,current_name,1946,,bootstrap alias
-018066,Galliavola,current_name,1946,,bootstrap alias
-018067,Gambarana,current_name,1946,,bootstrap alias
-018068,Gambolo',current_name,1946,,bootstrap alias
-018069,Garlasco,current_name,1946,,bootstrap alias
-018070,Genzone,current_name,1946,,bootstrap alias
-018071,Gerenzago,current_name,1946,,bootstrap alias
-018072,Giussago,current_name,1946,,bootstrap alias
-018073,Godiasco,current_name,1946,,bootstrap alias
-018074,Golferenzo,current_name,1946,,bootstrap alias
-018075,Gravellona Lomellina,current_name,1946,,bootstrap alias
-018076,Gropello Cairoli,current_name,1946,,bootstrap alias
-018077,Inverno e Monteleone,current_name,1946,,bootstrap alias
-018078,Landriano,current_name,1946,,bootstrap alias
-018079,Langosco,current_name,1946,,bootstrap alias
-018080,Lardirago,current_name,1946,,bootstrap alias
-018081,Linarolo,current_name,1946,,bootstrap alias
-018082,Lirio,current_name,1946,,bootstrap alias
-018083,Lomello,current_name,1946,,bootstrap alias
-018084,Lungavilla,current_name,1946,,bootstrap alias
-018085,Magherno,current_name,1946,,bootstrap alias
-018086,Marcignago,current_name,1946,,bootstrap alias
-018087,Marzano,current_name,1946,,bootstrap alias
-018088,Mede,current_name,1946,,bootstrap alias
-018089,Menconico,current_name,1946,,bootstrap alias
-018090,Mezzana Bigli,current_name,1946,,bootstrap alias
-018091,Mezzana Rabattone,current_name,1946,,bootstrap alias
-018092,Mezzanino,current_name,1946,,bootstrap alias
-018093,Miradolo Terme,current_name,1946,,bootstrap alias
-018094,Montalto Pavese,current_name,1946,,bootstrap alias
-018095,Montebello della Battaglia,current_name,1946,,bootstrap alias
-018096,Montecalvo Versiggia,current_name,1946,,bootstrap alias
-018098,Montesegale,current_name,1946,,bootstrap alias
-018099,Monticelli Pavese,current_name,1946,,bootstrap alias
-018100,Montu' Beccaria,current_name,1946,,bootstrap alias
-018101,Mornico Losana,current_name,1946,,bootstrap alias
-018102,Mortara,current_name,1946,,bootstrap alias
-018103,Nicorvo,current_name,1946,,bootstrap alias
-018104,Olevano di Lomellina,current_name,1946,,bootstrap alias
-018106,Ottobiano,current_name,1946,,bootstrap alias
-018107,Palestro,current_name,1946,,bootstrap alias
-018108,Pancarana,current_name,1946,,bootstrap alias
-018109,Parona,current_name,1946,,bootstrap alias
-018110,Pavia,current_name,1946,,bootstrap alias
-018111,Pietra De' Giorgi,current_name,1946,,bootstrap alias
-018112,Pieve Albignola,current_name,1946,,bootstrap alias
-018113,Pieve del Cairo,current_name,1946,,bootstrap alias
-018114,Pieve Porto Morone,current_name,1946,,bootstrap alias
-018115,Pinarolo Po,current_name,1946,,bootstrap alias
-018116,Pizzale,current_name,1946,,bootstrap alias
-pometo-pavia,Pometo,current_name,1946,,bootstrap alias
-018117,Ponte Nizza,current_name,1946,,bootstrap alias
-018118,Portalbera,current_name,1946,,bootstrap alias
-pregola-pavia,Pregola,current_name,1946,,bootstrap alias
-018120,Redavalle,current_name,1946,,bootstrap alias
-018121,Retorbido,current_name,1946,,bootstrap alias
-018122,Rivanazzano,current_name,1946,,bootstrap alias
-018123,Robbio,current_name,1946,,bootstrap alias
-018124,Robecco Pavese,current_name,1946,,bootstrap alias
-018125,Rocca De' Giorgi,current_name,1946,,bootstrap alias
-018126,Rocca Susella,current_name,1946,,bootstrap alias
-018127,Rognano,current_name,1946,,bootstrap alias
-018128,Romagnese,current_name,1946,,bootstrap alias
-018129,Roncaro,current_name,1946,,bootstrap alias
-018130,Rosasco,current_name,1946,,bootstrap alias
-018131,Rovescala,current_name,1946,,bootstrap alias
-018133,San Cipriano Po,current_name,1946,,bootstrap alias
-018134,San Damiano al Colle,current_name,1946,,bootstrap alias
-018135,San Genesio Ed Uniti,current_name,1946,,bootstrap alias
-018136,San Giorgio di Lomellina,current_name,1946,,bootstrap alias
-018137,San Martino Siccomario,current_name,1946,,bootstrap alias
-018138,Sannazzaro De' Burgondi,current_name,1946,,bootstrap alias
-018139,Santa Cristina e Bissone,current_name,1946,,bootstrap alias
-018140,Santa Giuletta,current_name,1946,,bootstrap alias
-018142,Santa Margherita di Staffora,current_name,1946,,bootstrap alias
-018143,Santa Maria della Versa,current_name,1946,,bootstrap alias
-018144,Sant'Angelo Lomellina,current_name,1946,,bootstrap alias
-018145,San Zenone al Po,current_name,1946,,bootstrap alias
-018146,Sartirana Lomellina,current_name,1946,,bootstrap alias
-018147,Scaldasole,current_name,1946,,bootstrap alias
-018148,Semiana,current_name,1946,,bootstrap alias
-018149,Silvano Pietra,current_name,1946,,bootstrap alias
-018150,Siziano,current_name,1946,,bootstrap alias
-018151,Sommo,current_name,1946,,bootstrap alias
-018152,Spessa,current_name,1946,,bootstrap alias
-018153,Stradella,current_name,1946,,bootstrap alias
-018154,Suardi,current_name,1946,,bootstrap alias
-018155,Torrazza Coste,current_name,1946,,bootstrap alias
-018156,Torre Beretti e Castellaro,current_name,1946,,bootstrap alias
-018159,Torre d'Isola,current_name,1946,,bootstrap alias
-018160,Torrevecchia Pia,current_name,1946,,bootstrap alias
-018162,Travaco' Siccomario,current_name,1946,,bootstrap alias
-018163,Trivolzio,current_name,1946,,bootstrap alias
-018164,Tromello,current_name,1946,,bootstrap alias
-018165,Trovo,current_name,1946,,bootstrap alias
-018166,Val di Nizza,current_name,1946,,bootstrap alias
-018167,Valeggio,current_name,1946,,bootstrap alias
-018168,Valle Lomellina,current_name,1946,,bootstrap alias
-018169,Valle Salimbene,current_name,1946,,bootstrap alias
-018171,Varzi,current_name,1946,,bootstrap alias
-018172,Velezzo Lomellina,current_name,1946,,bootstrap alias
-018173,Vellezzo Bellini,current_name,1946,,bootstrap alias
-018174,Verretto,current_name,1946,,bootstrap alias
-018175,Verrua Po,current_name,1946,,bootstrap alias
-018176,Vidigulfo,current_name,1946,,bootstrap alias
-018177,Vigevano,current_name,1946,,bootstrap alias
-018178,Villa Biscossi,current_name,1946,,bootstrap alias
-018179,Villanova d'Ardenghi,current_name,1946,,bootstrap alias
-018180,Villanterio,current_name,1946,,bootstrap alias
-018181,Vistarino,current_name,1946,,bootstrap alias
-018182,Voghera,current_name,1946,,bootstrap alias
-018183,Volpara,current_name,1946,,bootstrap alias
-018184,Zavattarello,current_name,1946,,bootstrap alias
-018186,Zeme Lomellina,current_name,1946,,bootstrap alias
-018187,Zenevredo,current_name,1946,,bootstrap alias
-018188,Zerbo,current_name,1946,,bootstrap alias
-018189,Zerbolo',current_name,1946,,bootstrap alias
-018190,Zinasco,current_name,1946,,bootstrap alias
-014001,Albaredo Per San Marco,current_name,1946,,bootstrap alias
-014002,Albosaggia,current_name,1946,,bootstrap alias
-014003,Andalo Valtellino,current_name,1946,,bootstrap alias
-014004,Aprica,current_name,1946,,bootstrap alias
-014005,Ardenno,current_name,1946,,bootstrap alias
-014006,Bema,current_name,1946,,bootstrap alias
-014007,Berbenno di Valtellina,current_name,1946,,bootstrap alias
-014008,Bianzone,current_name,1946,,bootstrap alias
-014009,Bormio,current_name,1946,,bootstrap alias
-014010,Buglio in Monte,current_name,1946,,bootstrap alias
-014011,Caiolo,current_name,1946,,bootstrap alias
-014012,Campodolcino,current_name,1946,,bootstrap alias
-014013,Caspoggio,current_name,1946,,bootstrap alias
-014014,Castello Dell'Acqua,current_name,1946,,bootstrap alias
-014015,Castione Andevenno,current_name,1946,,bootstrap alias
-014016,Cedrasco,current_name,1946,,bootstrap alias
-014017,Cercino,current_name,1946,,bootstrap alias
-014018,Chiavenna,current_name,1946,,bootstrap alias
-014019,Chiesa in Valmalenco,current_name,1946,,bootstrap alias
-014020,Chiuro,current_name,1946,,bootstrap alias
-014021,Cino,current_name,1946,,bootstrap alias
-014022,Civo,current_name,1946,,bootstrap alias
-014023,Colorina,current_name,1946,,bootstrap alias
-014024,Cosio Valtellino,current_name,1946,,bootstrap alias
-014025,Dazio,current_name,1946,,bootstrap alias
-014026,Delebio,current_name,1946,,bootstrap alias
-014027,Dubino,current_name,1946,,bootstrap alias
-014028,Faedo Valtellino,current_name,1946,,bootstrap alias
-014029,Forcola,current_name,1946,,bootstrap alias
-014030,Fusine,current_name,1946,,bootstrap alias
-014031,Gerola Alta,current_name,1946,,bootstrap alias
-014032,Gordona,current_name,1946,,bootstrap alias
-014033,Grosio,current_name,1946,,bootstrap alias
-014034,Grosotto,current_name,1946,,bootstrap alias
-isolato-sondrio,Isolato,current_name,1946,,bootstrap alias
-014036,Lanzada,current_name,1946,,bootstrap alias
-014037,Livigno,current_name,1946,,bootstrap alias
-014038,Lovero,current_name,1946,,bootstrap alias
-014039,Mantello,current_name,1946,,bootstrap alias
-014040,Mazzo di Valtellina,current_name,1946,,bootstrap alias
-014041,Mello,current_name,1946,,bootstrap alias
-014042,Menarola,current_name,1946,,bootstrap alias
-014043,Mese,current_name,1946,,bootstrap alias
-014044,Montagna in Valtellina,current_name,1946,,bootstrap alias
-014045,Morbegno,current_name,1946,,bootstrap alias
-014046,Novate Mezzola,current_name,1946,,bootstrap alias
-014047,Pedesina,current_name,1946,,bootstrap alias
-014048,Piantedo,current_name,1946,,bootstrap alias
-014049,Piateda,current_name,1946,,bootstrap alias
-014050,Piuro,current_name,1946,,bootstrap alias
-014051,Poggiridenti,current_name,1946,,bootstrap alias
-014052,Ponte in Valtellina,current_name,1946,,bootstrap alias
-014053,Postalesio,current_name,1946,,bootstrap alias
-014054,Prata Camportaccio,current_name,1946,,bootstrap alias
-014055,Rasura,current_name,1946,,bootstrap alias
-014056,Rogolo,current_name,1946,,bootstrap alias
-014057,Samolaco,current_name,1946,,bootstrap alias
-014058,San Giacomo Filippo,current_name,1946,,bootstrap alias
-014059,Sernio,current_name,1946,,bootstrap alias
-014060,Sondalo,current_name,1946,,bootstrap alias
-014061,Sondrio,current_name,1946,,bootstrap alias
-014062,Spriana,current_name,1946,,bootstrap alias
-014063,Talamona,current_name,1946,,bootstrap alias
-014064,Tartano,current_name,1946,,bootstrap alias
-014065,Teglio,current_name,1946,,bootstrap alias
-014066,Tirano,current_name,1946,,bootstrap alias
-014067,Torre di Santa Maria,current_name,1946,,bootstrap alias
-014068,Tovo di Sant'Agata,current_name,1946,,bootstrap alias
-014069,Traona,current_name,1946,,bootstrap alias
-014070,Tresivio,current_name,1946,,bootstrap alias
-014071,Valdidentro,current_name,1946,,bootstrap alias
-014072,Valdisotto,current_name,1946,,bootstrap alias
-014073,Valfurva,current_name,1946,,bootstrap alias
-014074,Val Masino,current_name,1946,,bootstrap alias
-014075,Verceia,current_name,1946,,bootstrap alias
-014076,Vervio,current_name,1946,,bootstrap alias
-014077,Villa di Chiavenna,current_name,1946,,bootstrap alias
-014078,Villa di Tirano,current_name,1946,,bootstrap alias
-012001,Agra,current_name,1946,,bootstrap alias
-012002,Albizzate,current_name,1946,,bootstrap alias
-012003,Angera,current_name,1946,,bootstrap alias
-012004,Arcisate,current_name,1946,,bootstrap alias
-012005,Arsago Seprio,current_name,1946,,bootstrap alias
-012006,Azzate,current_name,1946,,bootstrap alias
-012009,Bardello,current_name,1946,,bootstrap alias
-012010,Bedero Valcuvia,current_name,1946,,bootstrap alias
-012012,Besnate,current_name,1946,,bootstrap alias
-012013,Besozzo,current_name,1946,,bootstrap alias
-012014,Biandronno,current_name,1946,,bootstrap alias
-012015,Bisuschio,current_name,1946,,bootstrap alias
-012016,Bodio Lomnago,current_name,1946,,bootstrap alias
-012017,Brebbia,current_name,1946,,bootstrap alias
-012018,Bregano,current_name,1946,,bootstrap alias
-012021,Brinzio,current_name,1946,,bootstrap alias
-012022,Brissago-Valtravaglia,current_name,1946,,bootstrap alias
-012024,Brusimpiano,current_name,1946,,bootstrap alias
-012026,Busto Arsizio,current_name,1946,,bootstrap alias
-012027,Cadegliano-Viconago,current_name,1946,,bootstrap alias
-012028,Cadrezzate,current_name,1946,,bootstrap alias
-012029,Cairate,current_name,1946,,bootstrap alias
-012030,Cantello,current_name,1946,,bootstrap alias
-012031,Caravate,current_name,1946,,bootstrap alias
-012032,Cardano al Campo,current_name,1946,,bootstrap alias
-012033,Carnago,current_name,1946,,bootstrap alias
-012034,Caronno Pertusella,current_name,1946,,bootstrap alias
-012035,Caronno Varesino,current_name,1946,,bootstrap alias
-012036,Casale Litta,current_name,1946,,bootstrap alias
-012037,Casalzuigno,current_name,1946,,bootstrap alias
-012038,Casciago,current_name,1946,,bootstrap alias
-012039,Casorate Sempione,current_name,1946,,bootstrap alias
-012040,Cassano Magnago,current_name,1946,,bootstrap alias
-012041,Cassano Valcuvia,current_name,1946,,bootstrap alias
-012042,Castellanza,current_name,1946,,bootstrap alias
-012043,Castello Cabiaglio,current_name,1946,,bootstrap alias
-012045,Castelveccana,current_name,1946,,bootstrap alias
-012046,Castiglione Olona,current_name,1946,,bootstrap alias
-012047,Castronno,current_name,1946,,bootstrap alias
-012048,Cavaria Con Premezzo,current_name,1946,,bootstrap alias
-012049,Cazzago Brabbia,current_name,1946,,bootstrap alias
-012050,Cislago,current_name,1946,,bootstrap alias
-012051,Cittiglio,current_name,1946,,bootstrap alias
-012053,Cocquio-Trevisago,current_name,1946,,bootstrap alias
-012054,Comabbio,current_name,1946,,bootstrap alias
-012055,Comerio,current_name,1946,,bootstrap alias
-012056,Cremenaga,current_name,1946,,bootstrap alias
-012057,Crosio della Valle,current_name,1946,,bootstrap alias
-012058,Cuasso al Monte,current_name,1946,,bootstrap alias
-012060,Cunardo,current_name,1946,,bootstrap alias
-012061,Curiglia Con Monteviasco,current_name,1946,,bootstrap alias
-012063,Cuvio,current_name,1946,,bootstrap alias
-012064,Daverio,current_name,1946,,bootstrap alias
-012065,Dumenza,current_name,1946,,bootstrap alias
-012067,Fagnano Olona,current_name,1946,,bootstrap alias
-012068,Ferno,current_name,1946,,bootstrap alias
-012069,Ferrera di Varese,current_name,1946,,bootstrap alias
-012070,Gallarate,current_name,1946,,bootstrap alias
-012071,Galliate Lombardo,current_name,1946,,bootstrap alias
-012072,Gavirate,current_name,1946,,bootstrap alias
-012073,Gazzada Schianno,current_name,1946,,bootstrap alias
-012074,Gemonio,current_name,1946,,bootstrap alias
-012077,Golasecca,current_name,1946,,bootstrap alias
-012078,Gorla Maggiore,current_name,1946,,bootstrap alias
-012079,Gorla Minore,current_name,1946,,bootstrap alias
-012080,Gornate Olona,current_name,1946,,bootstrap alias
-012084,Ispra,current_name,1946,,bootstrap alias
-012085,Jerago Con Orago,current_name,1946,,bootstrap alias
-012086,Lavena-Ponte Tresa,current_name,1946,,bootstrap alias
-012087,Laveno-Mombello,current_name,1946,,bootstrap alias
-012088,Leggiuno,current_name,1946,,bootstrap alias
-012089,Lonate Ceppino,current_name,1946,,bootstrap alias
-012090,Lonate Pozzolo,current_name,1946,,bootstrap alias
-012091,Lozza,current_name,1946,,bootstrap alias
-012092,Luino,current_name,1946,,bootstrap alias
-012094,Maccagno,current_name,1946,,bootstrap alias
-012095,Malgesso,current_name,1946,,bootstrap alias
-012096,Malnate,current_name,1946,,bootstrap alias
-012098,Marnate,current_name,1946,,bootstrap alias
-012099,Marzio,current_name,1946,,bootstrap alias
-012100,Masciago Primo,current_name,1946,,bootstrap alias
-012101,Mercallo,current_name,1946,,bootstrap alias
-012103,Montegrino-Valtravaglia,current_name,1946,,bootstrap alias
-012104,Monvalle,current_name,1946,,bootstrap alias
-012105,Morazzone,current_name,1946,,bootstrap alias
-012106,Mornago,current_name,1946,,bootstrap alias
-012107,Oggiona Con Santo Stefano,current_name,1946,,bootstrap alias
-012108,Olgiate Olona,current_name,1946,,bootstrap alias
-orino-azzio-varese,Orino-Azzio,current_name,1946,,bootstrap alias
-012111,Osmate,current_name,1946,,bootstrap alias
-012112,Pino sulla Sponda del Lago Maggiore,current_name,1946,,bootstrap alias
-012113,Porto Ceresio,current_name,1946,,bootstrap alias
-012114,Porto Valtravaglia,current_name,1946,,bootstrap alias
-012115,Rancio Valcuvia,current_name,1946,,bootstrap alias
-012118,Samarate,current_name,1946,,bootstrap alias
-012119,Saronno,current_name,1946,,bootstrap alias
-012120,Sesto Calende,current_name,1946,,bootstrap alias
-012121,Solbiate Arno,current_name,1946,,bootstrap alias
-012122,Solbiate Olona,current_name,1946,,bootstrap alias
-012123,Somma Lombardo,current_name,1946,,bootstrap alias
-012124,Sumirago,current_name,1946,,bootstrap alias
-012125,Taino,current_name,1946,,bootstrap alias
-012126,Ternate,current_name,1946,,bootstrap alias
-012127,Tradate,current_name,1946,,bootstrap alias
-012128,Travedona-Monate,current_name,1946,,bootstrap alias
-012129,Tronzano Lago Maggiore,current_name,1946,,bootstrap alias
-012131,Valganna,current_name,1946,,bootstrap alias
-val-marchirolo-varese,Val Marchirolo,current_name,1946,,bootstrap alias
-012132,Varano Borghi,current_name,1946,,bootstrap alias
-012133,Varese,current_name,1946,,bootstrap alias
-012134,Vedano Olona,current_name,1946,,bootstrap alias
-012135,Veddasca,current_name,1946,,bootstrap alias
-012137,Venegono Superiore,current_name,1946,,bootstrap alias
-012138,Vergiate,current_name,1946,,bootstrap alias
-012139,Viggiu',current_name,1946,,bootstrap alias
-012140,Vizzola Ticino,current_name,1946,,bootstrap alias
-018007,Bagnaria,current_name,1946,,bootstrap alias
-012044,Castelseprio,current_name,1946,,bootstrap alias
-016236,Vigano San Martino,current_name,1946,,bootstrap alias
-017176,Sellero,current_name,1946,,bootstrap alias
-017180,Soiano del Lago,current_name,1946,,bootstrap alias
-017182,Sulzano,current_name,1946,,bootstrap alias
-013173,Paderno d'Adda,current_name,1946,,bootstrap alias
-019078,Quintano,current_name,1946,,bootstrap alias
-alme-con-villa-bergamo,Alme' Con Villa,current_name,1946,,bootstrap alias
-016017,Azzone,current_name,1946,,bootstrap alias
-016025,Berzo San Fermo,current_name,1946,,bootstrap alias
-016032,Borgo di Terzo,current_name,1946,,bootstrap alias
-016068,Cenate Sopra,current_name,1946,,bootstrap alias
-016069,Cenate Sotto,current_name,1946,,bootstrap alias
-centrisolo-bergamo,Centrisolo,current_name,1946,,bootstrap alias
-016078,Colere,current_name,1946,,bootstrap alias
-cortenova-bergamo,Cortenova,current_name,1946,,bootstrap alias
-016084,Costa di Mezzate,current_name,1946,,bootstrap alias
-016089,Curno,current_name,1946,,bootstrap alias
-016099,Fino del Monte,current_name,1946,,bootstrap alias
-016100,Fiorano al Serio,current_name,1946,,bootstrap alias
-016119,Grone,current_name,1946,,bootstrap alias
-015025,Boffalora d'Adda,current_name,1946,,bootstrap alias
-015063,Castelnuovo Bocca d'Adda,current_name,1946,,bootstrap alias
-015064,Castiglione d'Adda,current_name,1946,,bootstrap alias
-015067,Cavenago d'Adda,current_name,1946,,bootstrap alias
-015073,Cervignano d'Adda,current_name,1946,,bootstrap alias
-015180,Renate,current_name,1946,,bootstrap alias
-015198,Sant'Angelo Lodigiano,current_name,1946,,bootstrap alias
-018028,Canevino,current_name,1946,,bootstrap alias
-018043,Ceranova,current_name,1946,,bootstrap alias
-018105,Oliva Gessi,current_name,1946,,bootstrap alias
-018132,Ruino,current_name,1946,,bootstrap alias
-018141,Sant'Alessio Con Vialone,current_name,1946,,bootstrap alias
-018185,Zeccone,current_name,1946,,bootstrap alias
-018186,Zeme,current_name,1946,,bootstrap alias
-012076,Germignaga,current_name,1946,,bootstrap alias
-012109,Origgio,current_name,1946,,bootstrap alias
-016130,Luzzana,current_name,1946,,bootstrap alias
-016137,Monasterolo del Castello,current_name,1946,,bootstrap alias
-016143,Mozzo,current_name,1946,,bootstrap alias
-016175,Premolo,current_name,1946,,bootstrap alias
-riviera-d-adda-bergamo,Riviera d'Adda,current_name,1946,,bootstrap alias
-rocca-del-colle-bergamo,Rocca del Colle,current_name,1946,,bootstrap alias
-016187,Rovetta,current_name,1946,,bootstrap alias
-san-martino-de-calvi-bergamo,San Martino De' Calvi,current_name,1946,,bootstrap alias
-016189,San Paolo d'Argon,current_name,1946,,bootstrap alias
-016203,Sotto Il Monte Giovanni Xxiii,current_name,1946,,bootstrap alias
-016205,Spinone al Lago,current_name,1946,,bootstrap alias
-016215,Torre De' Busi,current_name,1946,,bootstrap alias
-017006,Angolo Terme,current_name,1946,,bootstrap alias
-017016,Berzo Demo,current_name,1946,,bootstrap alias
-017017,Berzo Inferiore,current_name,1946,,bootstrap alias
-017026,Brandico,current_name,1946,,bootstrap alias
-017037,Capriano del Colle,current_name,1946,,bootstrap alias
-017049,Cerveno,current_name,1946,,bootstrap alias
-017054,Cimbergo,current_name,1946,,bootstrap alias
-017065,Darfo Boario Terme,current_name,1946,,bootstrap alias
-terranova-dei-p-milano,Terranova dei P,current_name,1946,,bootstrap alias
-018158,Torre De' Negri,current_name,1946,,bootstrap alias
-018161,Torricella Verzate,current_name,1946,,bootstrap alias
-pedergnaga-oriano-brescia,Pedergnaga-Oriano,current_name,1946,,bootstrap alias
-017158,Puegnago sul Garda,current_name,1946,,bootstrap alias
-017108,Milzano,current_name,1946,,bootstrap alias
-017109,Moniga del Garda,current_name,1946,,bootstrap alias
-017110,Monno,current_name,1946,,bootstrap alias
-017112,Monticelli Brusati,current_name,1946,,bootstrap alias
-017093,Longhena,current_name,1946,,bootstrap alias
-017097,Maclodio,current_name,1946,,bootstrap alias
-017098,Magasa,current_name,1946,,bootstrap alias
-017100,Malegno,current_name,1946,,bootstrap alias
-017124,Ono San Pietro,current_name,1946,,bootstrap alias
-017132,Paitone,current_name,1946,,bootstrap alias
-017135,Paspardo,current_name,1946,,bootstrap alias
-017145,Polpenazze del Garda,current_name,1946,,bootstrap alias
-017154,Prestine,current_name,1946,,bootstrap alias
-017193,Vallio Terme,current_name,1946,,bootstrap alias
-097004,Balabio,current_name,1946,,bootstrap alias
-013032,Brunate,current_name,1946,,bootstrap alias
-013037,Caglio,current_name,1946,,bootstrap alias
-carugo-arosio-como,Carugo-Arosio,current_name,1946,,bootstrap alias
-019065,Paderno Ponchielli,current_name,1946,,bootstrap alias
-019090,San Giovanni in Croce,current_name,1946,,bootstrap alias
-019096,Solarolo Rainerio,current_name,1946,,bootstrap alias
-013125,Lenno,current_name,1946,,bootstrap alias
-013148,Mezzegra,current_name,1946,,bootstrap alias
-013195,Rezzago,current_name,1946,,bootstrap alias
-013196,Robbiate,current_name,1946,,bootstrap alias
-013217,Sormano,current_name,1946,,bootstrap alias
-013225,Tremezzo,current_name,1946,,bootstrap alias
-zelbio-veleso-como,Zelbio Veleso,current_name,1946,,bootstrap alias
-016102,Fonteno,current_name,1946,,bootstrap alias
-017027,Braone,current_name,1946,,bootstrap alias
-017030,Brione,current_name,1946,,bootstrap alias
-016131,Madone,current_name,1946,,bootstrap alias
-013074,Colonno,current_name,1946,,bootstrap alias
-013076,Consiglio di Rumo,current_name,1946,,bootstrap alias
-017071,Fiesse,current_name,1946,,bootstrap alias
-013059,Castelnuovo Bozzente,current_name,1946,,bootstrap alias
-013091,Dorio,current_name,1946,,bootstrap alias
-013092,Dosso del Liro,current_name,1946,,bootstrap alias
-017094,Losine,current_name,1946,,bootstrap alias
-016239,Villa d'Alme',current_name,1946,,bootstrap alias
-013066,Cernusco Lombardone,current_name,1946,,bootstrap alias
-013056,Cassina Valsassina,current_name,1946,,bootstrap alias
-016244,Zandobbio,current_name,1946,,bootstrap alias
-013115,Imbersago,current_name,1946,,bootstrap alias
-013119,Laglio,current_name,1946,,bootstrap alias
-017118,Niardo,current_name,1946,,bootstrap alias
-017158,Puegnago del Garda,current_name,1946,,bootstrap alias
-016005,Alme',current_name,1946,,bootstrap alias
-013163,Novedrate,current_name,1946,,bootstrap alias
-013172,Ossuccio,current_name,1946,,bootstrap alias
-013130,Livo,current_name,1946,,bootstrap alias
-013131,Locate Varesino,current_name,1946,,bootstrap alias
-013150,Moggio,current_name,1946,,bootstrap alias
-013012,Arosio,current_name,1946,,bootstrap alias
-013015,Barni,current_name,1946,,bootstrap alias
-013017,Barzano',current_name,1946,,bootstrap alias
-013178,Peglio,current_name,1946,,bootstrap alias
-016038,Brembate di Sopra,current_name,1946,,bootstrap alias
-013139,Magreglio,current_name,1946,,bootstrap alias
-013030,Brienno,current_name,1946,,bootstrap alias
-013034,Bulgarograsso,current_name,1946,,bootstrap alias
-017196,Verolavecchia,current_name,1946,,bootstrap alias
-018002,Albaredo Arnaboldi,current_name,1946,,bootstrap alias
-013203,Sala Comacina,current_name,1946,,bootstrap alias
-017181,Sonico,current_name,1946,,bootstrap alias
-013048,Carugo,current_name,1946,,bootstrap alias
-013207,San Nazzaro Val Cavargna,current_name,1946,,bootstrap alias
-016072,Chignolo d'Isola,current_name,1946,,bootstrap alias
-013021,Bene Lario,current_name,1946,,bootstrap alias
-013022,Beregazzo Con Figliaro,current_name,1946,,bootstrap alias
-013236,Veleso,current_name,1946,,bootstrap alias
-013238,Veniano,current_name,1946,,bootstrap alias
-013239,Vercana,current_name,1946,,bootstrap alias
-018044,Ceretto Lomellina,current_name,1946,,bootstrap alias
-015218,Terranova dei Passerini,current_name,1946,,bootstrap alias
-018097,Montescano,current_name,1946,,bootstrap alias
-020008,Canneto Sull Oglio,current_name,1946,,bootstrap alias
-018157,Torre d'Arese,current_name,1946,,bootstrap alias
-012075,Gerenzano,current_name,1946,,bootstrap alias
-012083,Induno Olona,current_name,1946,,bootstrap alias
-012110,Orino,current_name,1946,,bootstrap alias
-012130,Uboldo,current_name,1946,,bootstrap alias
-013200,Rovagnate,current_name,1946,,bootstrap alias
-016225,Valgoglio,current_name,1946,,bootstrap alias
-016227,Valnegra,current_name,1946,,bootstrap alias
-013208,Sant'Abbondio,current_name,1946,,bootstrap alias
-013209,Santa Maria Hoe',current_name,1946,,bootstrap alias
-013220,Suello,current_name,1946,,bootstrap alias
-017105,Marmentino,current_name,1946,,bootstrap alias
-013244,Vigano',current_name,1946,,bootstrap alias
-016164,Piazza Brembana,current_name,1946,,bootstrap alias
-016168,Ponte Nossa,current_name,1946,,bootstrap alias
-017084,Irma,current_name,1946,,bootstrap alias
-013181,Perledo,current_name,1946,,bootstrap alias
-013182,Pescate,current_name,1946,,bootstrap alias
-017072,Flero,current_name,1946,,bootstrap alias
-013214,Sirtori,current_name,1946,,bootstrap alias
-017051,Cevo,current_name,1946,,bootstrap alias
-017114,Montirone,current_name,1946,,bootstrap alias
-017147,Poncarale,current_name,1946,,bootstrap alias
-013067,Cesana Brianza,current_name,1946,,bootstrap alias
-013039,Calco,current_name,1946,,bootstrap alias
-013045,Carbonate,current_name,1946,,bootstrap alias
-016042,Brusaporto,current_name,1946,,bootstrap alias
-017175,Saviore Dell'Adamello,current_name,1946,,bootstrap alias
-013081,Cremella,current_name,1946,,bootstrap alias
-013080,Crandola Valsassina,current_name,1946,,bootstrap alias
-016018,Bagnatica,current_name,1946,,bootstrap alias
-013061,Cavallasca,current_name,1946,,bootstrap alias
-016026,Bianzano,current_name,1946,,bootstrap alias
-019082,Ripalta Guerina,current_name,1946,,bootstrap alias
-016107,Gandellino,current_name,1946,,bootstrap alias
-013108,Germasino,current_name,1946,,bootstrap alias
-017007,Artogne,current_name,1946,,bootstrap alias
-017008,Azzano Mella,current_name,1946,,bootstrap alias
-017012,Barghe,current_name,1946,,bootstrap alias
-012007,Azzio,current_name,1946,,bootstrap alias
-012008,Barasso,current_name,1946,,bootstrap alias
-013159,Mozzate,current_name,1946,,bootstrap alias
-016136,Moio De' Calvi,current_name,1946,,bootstrap alias
-016125,Lenna,current_name,1946,,bootstrap alias
-monticelli-di-borgogna-bergamo,Monticelli di Borgogna,current_name,1946,,bootstrap alias
-013093,Drezzo,current_name,1946,,bootstrap alias
-019011,Campagnola Cremasca,current_name,1946,,bootstrap alias
-012019,Brenta,current_name,1946,,bootstrap alias
-012081,Grantola,current_name,1946,,bootstrap alias
-012102,Mesenzana,current_name,1946,,bootstrap alias
-012052,Clivio,current_name,1946,,bootstrap alias
-012020,Brezzo di Bedero,current_name,1946,,bootstrap alias
-012023,Brunello,current_name,1946,,bootstrap alias
-012025,Buguggiate,current_name,1946,,bootstrap alias
-019072,Pianengo,current_name,1946,,bootstrap alias
-012093,Luvinate,current_name,1946,,bootstrap alias
-012097,Marchirolo,current_name,1946,,bootstrap alias
-012066,Duno,current_name,1946,,bootstrap alias
-013175,Pare',current_name,1946,,bootstrap alias
-013180,Perego,current_name,1946,,bootstrap alias
-017031,Caino,current_name,1946,,bootstrap alias
-012059,Cugliate-Fabiasco,current_name,1946,,bootstrap alias
-012062,Cuveglio,current_name,1946,,bootstrap alias
-013166,Olgiate Molgora,current_name,1946,,bootstrap alias
-018119,Rea,current_name,1946,,bootstrap alias
-012117,Saltrio,current_name,1946,,bootstrap alias
-012116,Ranco,current_name,1946,,bootstrap alias
-015099,Dairago,current_name,1946,,bootstrap alias
-018170,Valverde,current_name,1946,,bootstrap alias
-018021,Brallo di Pregola,current_name,1946,,bootstrap alias
-018042,Cecima,current_name,1946,,bootstrap alias
-015233,Veduggio Con Colzano,current_name,1946,,bootstrap alias
-012011,Besano,current_name,1946,,bootstrap alias
-016248,Algua,current_name,1946,,bootstrap alias
-016067,Cazzano Sant'Andrea,current_name,1946,,bootstrap alias
-012082,Inarzo,current_name,1946,,bootstrap alias
-costa-di-serina,Costa di Serina,current_name,1946,,bootstrap alias
-016035,Bracca,current_name,1946,,bootstrap alias
-016139,Montello,current_name,1946,,bootstrap alias
-016163,Piario,current_name,1946,,bootstrap alias
-012136,Venegono Inferiore,current_name,1946,,bootstrap alias
-016098,Filago,current_name,1946,,bootstrap alias
-016147,Oltressenda Alta,current_name,1946,,bootstrap alias
-016149,Onore,current_name,1946,,bootstrap alias
-018015,Borgarello,current_name,1946,,bootstrap alias
-013247,Montevecchia,current_name,1946,,bootstrap alias
-017138,San Paolo,current_name,1946,,bootstrap alias
-017206,Piancogno,current_name,1946,,bootstrap alias
-012141,Sangiano,current_name,1946,,bootstrap alias
-016249,Cornalba,current_name,1946,,bootstrap alias
-015240,Tavazzano Con Villavesco,current_name,1946,,bootstrap alias
-015248,Villa Cortese,current_name,1946,,bootstrap alias
-015249,Vanzaghello,current_name,1946,,bootstrap alias
-016251,Solza,current_name,1946,,bootstrap alias
-016250,Medolago,current_name,1946,,bootstrap alias
-014035,Madesimo,current_name,1946,,bootstrap alias
-013156,Monticello Brianza,current_name,1946,,bootstrap alias
-012103,Montegrino Valtravaglia,current_name,1946,,bootstrap alias
-019045,Gabbioneta-Binanuova,current_name,1946,,bootstrap alias
-019068,Persico Dosimo,current_name,1946,,bootstrap alias
-013169,Oltrona San Mamette,current_name,1946,,bootstrap alias
-013206,San Fermo D. Battaglia,current_name,1946,,bootstrap alias
-013228,Uggiate Trevano,current_name,1946,,bootstrap alias
-013183,Pianello Lario,current_name,1946,,bootstrap alias
-013204,San Bartolomeo V.C.,current_name,1946,,bootstrap alias
-013207,San Nazzaro V.C.,current_name,1946,,bootstrap alias
-013233,Valrezzo,current_name,1946,,bootstrap alias
-018162,Travacò Siccomario,current_name,1946,,bootstrap alias
-018009,Bascapè,current_name,1946,,bootstrap alias
-018189,Zerbolò,current_name,1946,,bootstrap alias
-016192,Sant'Omobono Terme,current_name,1946,,bootstrap alias
-013248,San Siro,current_name,1946,,bootstrap alias
-015250,Baranzate,current_name,1946,,bootstrap alias
-018068,Gambolò,current_name,1946,,bootstrap alias
-018100,Montù Beccaria,current_name,1946,,bootstrap alias
+020071,Borgo Virgilio,current_name,1946,,bootstrap alias
+020072,Borgo Mantovano,current_name,1946,,bootstrap alias
+020073,Borgocarbonara,current_name,1946,,bootstrap alias
+097001,Abbadia Lariana,current_name,1946,,bootstrap alias
+097002,Airuno,current_name,1946,,bootstrap alias
+097003,Annone di Brianza,current_name,1946,,bootstrap alias
+097004,Ballabio,current_name,1946,,bootstrap alias
+097004,Balabio,historical_name,1946,,bootstrap alias
+097005,Barzago,current_name,1946,,bootstrap alias
 097006,Barzano',current_name,1946,,bootstrap alias
+097006,Barzano,historical_name,1946,,bootstrap alias
+097007,Barzio,current_name,1946,,bootstrap alias
+097008,Bellano,current_name,1946,,bootstrap alias
+097009,Bosisio Parini,current_name,1946,,bootstrap alias
+097010,Brivio,current_name,1946,,bootstrap alias
+097011,Bulciago,current_name,1946,,bootstrap alias
+097012,Calco,current_name,1946,,bootstrap alias
+097013,Calolziocorte,current_name,1946,,bootstrap alias
+097014,Carenno,current_name,1946,,bootstrap alias
+097015,Casargo,current_name,1946,,bootstrap alias
 097016,Casatenovo,current_name,1946,,bootstrap alias
 097017,Cassago Brianza,current_name,1946,,bootstrap alias
 097018,Cassina Valsassina,current_name,1946,,bootstrap alias
 097019,Castello di Brianza,current_name,1946,,bootstrap alias
 097020,Cernusco Lombardone,current_name,1946,,bootstrap alias
+097021,Cesana Brianza,current_name,1946,,bootstrap alias
+097022,Civate,current_name,1946,,bootstrap alias
+097023,Colico,current_name,1946,,bootstrap alias
+097024,Colle Brianza,current_name,1946,,bootstrap alias
+097025,Cortenova,current_name,1946,,bootstrap alias
 097026,Costa Masnaga,current_name,1946,,bootstrap alias
 097027,Crandola Valsassina,current_name,1946,,bootstrap alias
 097028,Cremella,current_name,1946,,bootstrap alias
 097029,Cremeno,current_name,1946,,bootstrap alias
 097030,Dervio,current_name,1946,,bootstrap alias
+097031,Dolzago,current_name,1946,,bootstrap alias
+097032,Dorio,current_name,1946,,bootstrap alias
+097033,Ello,current_name,1946,,bootstrap alias
+097034,Erve,current_name,1946,,bootstrap alias
 097035,Esino Lario,current_name,1946,,bootstrap alias
 097036,Galbiate,current_name,1946,,bootstrap alias
 097037,Garbagnate Monastero,current_name,1946,,bootstrap alias
 097038,Garlate,current_name,1946,,bootstrap alias
 097039,Imbersago,current_name,1946,,bootstrap alias
 097040,Introbio,current_name,1946,,bootstrap alias
+097041,Introzzo,current_name,1946,,bootstrap alias
+097042,Lecco,current_name,1946,,bootstrap alias
+097043,Lierna,current_name,1946,,bootstrap alias
+097044,Lomagna,current_name,1946,,bootstrap alias
 097045,Malgrate,current_name,1946,,bootstrap alias
 097046,Mandello del Lario,current_name,1946,,bootstrap alias
 097047,Margno,current_name,1946,,bootstrap alias
 097048,Merate,current_name,1946,,bootstrap alias
 097049,Missaglia,current_name,1946,,bootstrap alias
+097050,Moggio,current_name,1946,,bootstrap alias
+097051,Molteno,current_name,1946,,bootstrap alias
+097052,Monte Marenzo,current_name,1946,,bootstrap alias
+097053,Montevecchia,current_name,1946,,bootstrap alias
 097054,Monticello Brianza,current_name,1946,,bootstrap alias
+097054,Monticello,historical_name,1946,,bootstrap alias
 097055,Morterone,current_name,1946,,bootstrap alias
 097056,Nibionno,current_name,1946,,bootstrap alias
 097057,Oggiono,current_name,1946,,bootstrap alias
 097058,Olgiate Molgora,current_name,1946,,bootstrap alias
 097059,Olginate,current_name,1946,,bootstrap alias
-097021,Cesana Brianza,current_name,1946,,bootstrap alias
-097022,Civate,current_name,1946,,bootstrap alias
-097023,Colico,current_name,1946,,bootstrap alias
-097024,Colle Brianza,current_name,1946,,bootstrap alias
-097025,Cortenova,current_name,1946,,bootstrap alias
-097031,Dolzago,current_name,1946,,bootstrap alias
-097032,Dorio,current_name,1946,,bootstrap alias
-097033,Ello,current_name,1946,,bootstrap alias
-097034,Erve,current_name,1946,,bootstrap alias
-097041,Introzzo,current_name,1946,,bootstrap alias
-097042,Lecco,current_name,1946,,bootstrap alias
-097043,Lierna,current_name,1946,,bootstrap alias
-097044,Lomagna,current_name,1946,,bootstrap alias
-097050,Moggio,current_name,1946,,bootstrap alias
-097051,Molteno,current_name,1946,,bootstrap alias
-097052,Monte Marenzo,current_name,1946,,bootstrap alias
-097053,Montevecchia,current_name,1946,,bootstrap alias
 097060,Oliveto Lario,current_name,1946,,bootstrap alias
 097061,Osnago,current_name,1946,,bootstrap alias
 097062,Paderno d'Adda,current_name,1946,,bootstrap alias
 097063,Pagnona,current_name,1946,,bootstrap alias
 097064,Parlasco,current_name,1946,,bootstrap alias
-097001,Abbadia Lariana,current_name,1946,,bootstrap alias
-097007,Barzio,current_name,1946,,bootstrap alias
-097008,Bellano,current_name,1946,,bootstrap alias
-097009,Bosisio Parini,current_name,1946,,bootstrap alias
-097010,Brivio,current_name,1946,,bootstrap alias
-097011,Bulciago,current_name,1946,,bootstrap alias
 097065,Pasturo,current_name,1946,,bootstrap alias
 097066,Perego,current_name,1946,,bootstrap alias
 097067,Perledo,current_name,1946,,bootstrap alias
 097068,Pescate,current_name,1946,,bootstrap alias
+097069,Premana,current_name,1946,,bootstrap alias
+097070,Primaluna,current_name,1946,,bootstrap alias
+097071,Robbiate,current_name,1946,,bootstrap alias
+097072,Rogeno,current_name,1946,,bootstrap alias
 097073,Rovagnate,current_name,1946,,bootstrap alias
 097074,Santa Maria Hoe',current_name,1946,,bootstrap alias
 097075,Sirone,current_name,1946,,bootstrap alias
 097076,Sirtori,current_name,1946,,bootstrap alias
 097077,Sueglio,current_name,1946,,bootstrap alias
 097078,Suello,current_name,1946,,bootstrap alias
+097079,Taceno,current_name,1946,,bootstrap alias
+097081,Tremenico,current_name,1946,,bootstrap alias
+097082,Valgreghentino,current_name,1946,,bootstrap alias
 097083,Valmadrera,current_name,1946,,bootstrap alias
 097084,Varenna,current_name,1946,,bootstrap alias
 097085,Vendrogno,current_name,1946,,bootstrap alias
 097086,Vercurago,current_name,1946,,bootstrap alias
 097087,Verderio Inferiore,current_name,1946,,bootstrap alias
 097088,Verderio Superiore,current_name,1946,,bootstrap alias
+097089,Vestreno,current_name,1946,,bootstrap alias
+097090,Vigano',current_name,1946,,bootstrap alias
+097091,Verderio,current_name,1946,,bootstrap alias
+097092,La Valletta Brianza,current_name,1946,,bootstrap alias
+097093,Valvarrone,current_name,1946,,bootstrap alias
+098001,Abbadia Cerreto,current_name,1946,,bootstrap alias
+098002,Bertonico,current_name,1946,,bootstrap alias
 098003,Boffalora d'Adda,current_name,1946,,bootstrap alias
+098003,Boffalora D Adda,historical_name,1946,,bootstrap alias
 098004,Borghetto Lodigiano,current_name,1946,,bootstrap alias
 098005,Borgo San Giovanni,current_name,1946,,bootstrap alias
 098006,Brembio,current_name,1946,,bootstrap alias
 098007,Camairago,current_name,1946,,bootstrap alias
 098008,Casaletto Lodigiano,current_name,1946,,bootstrap alias
+098009,Casalmaiocco,current_name,1946,,bootstrap alias
+098010,Casalpusterlengo,current_name,1946,,bootstrap alias
+098011,Caselle Landi,current_name,1946,,bootstrap alias
+098012,Caselle Lurani,current_name,1946,,bootstrap alias
+098013,Castelnuovo Bocca d'Adda,current_name,1946,,bootstrap alias
+098013,Castelnuovo Bocca D Adda,historical_name,1946,,bootstrap alias
+098014,Castiglione d'Adda,current_name,1946,,bootstrap alias
+098014,Castiglione D Adda,historical_name,1946,,bootstrap alias
 098015,Castiraga Vidardo,current_name,1946,,bootstrap alias
 098016,Cavacurta,current_name,1946,,bootstrap alias
 098017,Cavenago d'Adda,current_name,1946,,bootstrap alias
+098017,Cavenago D Adda,historical_name,1946,,bootstrap alias
 098018,Cervignano d'Adda,current_name,1946,,bootstrap alias
+098018,Cervignano D Adda,historical_name,1946,,bootstrap alias
 098019,Codogno,current_name,1946,,bootstrap alias
 098020,Comazzo,current_name,1946,,bootstrap alias
+098021,Cornegliano Laudense,current_name,1946,,bootstrap alias
+098022,Corno Giovine,current_name,1946,,bootstrap alias
+098023,Cornovecchio,current_name,1946,,bootstrap alias
+098024,Corte Palasio,current_name,1946,,bootstrap alias
+098025,Crespiatica,current_name,1946,,bootstrap alias
 098026,Fombio,current_name,1946,,bootstrap alias
 098027,Galgagnano,current_name,1946,,bootstrap alias
 098028,Graffignana,current_name,1946,,bootstrap alias
 098029,Guardamiglio,current_name,1946,,bootstrap alias
 098030,Livraga,current_name,1946,,bootstrap alias
 098031,Lodi,current_name,1946,,bootstrap alias
+098032,Lodi Vecchio,current_name,1946,,bootstrap alias
+098033,Maccastorna,current_name,1946,,bootstrap alias
+098034,Mairago,current_name,1946,,bootstrap alias
+098035,Maleo,current_name,1946,,bootstrap alias
+098036,Marudo,current_name,1946,,bootstrap alias
 098037,Massalengo,current_name,1946,,bootstrap alias
 098038,Meleti,current_name,1946,,bootstrap alias
 098039,Merlino,current_name,1946,,bootstrap alias
@@ -1734,88 +1560,117 @@ costa-di-serina,Costa di Serina,current_name,1946,,bootstrap alias
 098041,Mulazzano,current_name,1946,,bootstrap alias
 098042,Orio Litta,current_name,1946,,bootstrap alias
 098043,Ospedaletto Lodigiano,current_name,1946,,bootstrap alias
-098049,San Rocco al Porto,current_name,1946,,bootstrap alias
-098050,Sant'Angelo Lodigiano,current_name,1946,,bootstrap alias
-098051,Santo Stefano Lodigiano,current_name,1946,,bootstrap alias
-098052,Secugnago,current_name,1946,,bootstrap alias
-098053,Senna Lodigiana,current_name,1946,,bootstrap alias
-098054,Somaglia,current_name,1946,,bootstrap alias
-098060,Villanova del Sillaro,current_name,1946,,bootstrap alias
-098061,Zelo Buon Persico,current_name,1946,,bootstrap alias
-097002,Airuno,current_name,1946,,bootstrap alias
-097003,Annone di Brianza,current_name,1946,,bootstrap alias
-097004,Ballabio,current_name,1946,,bootstrap alias
-097005,Barzago,current_name,1946,,bootstrap alias
-097012,Calco,current_name,1946,,bootstrap alias
-097013,Calolziocorte,current_name,1946,,bootstrap alias
-097014,Carenno,current_name,1946,,bootstrap alias
-097015,Casargo,current_name,1946,,bootstrap alias
-097069,Premana,current_name,1946,,bootstrap alias
-097070,Primaluna,current_name,1946,,bootstrap alias
-097071,Robbiate,current_name,1946,,bootstrap alias
-097072,Rogeno,current_name,1946,,bootstrap alias
-097079,Taceno,current_name,1946,,bootstrap alias
-097080,Torre De' Busi,current_name,1946,,bootstrap alias
-097081,Tremenico,current_name,1946,,bootstrap alias
-097082,Valgreghentino,current_name,1946,,bootstrap alias
-097089,Vestreno,current_name,1946,,bootstrap alias
-097090,Vigano',current_name,1946,,bootstrap alias
-098001,Abbadia Cerreto,current_name,1946,,bootstrap alias
-098002,Bertonico,current_name,1946,,bootstrap alias
-098009,Casalmaiocco,current_name,1946,,bootstrap alias
-098010,Casalpusterlengo,current_name,1946,,bootstrap alias
-098011,Caselle Landi,current_name,1946,,bootstrap alias
-098012,Caselle Lurani,current_name,1946,,bootstrap alias
-098013,Castelnuovo Bocca d'Adda,current_name,1946,,bootstrap alias
-098014,Castiglione d'Adda,current_name,1946,,bootstrap alias
-098021,Cornegliano Laudense,current_name,1946,,bootstrap alias
-098022,Corno Giovine,current_name,1946,,bootstrap alias
-098023,Cornovecchio,current_name,1946,,bootstrap alias
-098024,Corte Palasio,current_name,1946,,bootstrap alias
-098025,Crespiatica,current_name,1946,,bootstrap alias
-098032,Lodi Vecchio,current_name,1946,,bootstrap alias
-098033,Maccastorna,current_name,1946,,bootstrap alias
-098034,Mairago,current_name,1946,,bootstrap alias
-098035,Maleo,current_name,1946,,bootstrap alias
-098036,Marudo,current_name,1946,,bootstrap alias
 098044,Ossago Lodigiano,current_name,1946,,bootstrap alias
 098045,Pieve Fissiraga,current_name,1946,,bootstrap alias
 098046,Salerano sul Lambro,current_name,1946,,bootstrap alias
 098047,San Fiorano,current_name,1946,,bootstrap alias
 098048,San Martino in Strada,current_name,1946,,bootstrap alias
+098049,San Rocco al Porto,current_name,1946,,bootstrap alias
+098050,Sant'Angelo Lodigiano,current_name,1946,,bootstrap alias
+098050,Sant Angelo Lodigiano,historical_name,1946,,bootstrap alias
+098051,Santo Stefano Lodigiano,current_name,1946,,bootstrap alias
+098052,Secugnago,current_name,1946,,bootstrap alias
+098053,Senna Lodigiana,current_name,1946,,bootstrap alias
+098054,Somaglia,current_name,1946,,bootstrap alias
 098055,Sordio,current_name,1946,,bootstrap alias
 098056,Tavazzano Con Villavesco,current_name,1946,,bootstrap alias
 098057,Terranova dei Passerini,current_name,1946,,bootstrap alias
 098058,Turano Lodigiano,current_name,1946,,bootstrap alias
 098059,Valera Fratta,current_name,1946,,bootstrap alias
-016247,Costa Serina,current_name,1946,,bootstrap alias
-018073,Godiasco Salice Terme,current_name,1946,,bootstrap alias
-018122,Rivanazzano Terme,current_name,1946,,bootstrap alias
-017092,Lonato del Garda,current_name,1946,,bootstrap alias
-017163,Rodengo Saiano,current_name,1946,,bootstrap alias
-013249,Gravedona Ed Uniti,current_name,1946,,bootstrap alias
-012086,Lavena Ponte Tresa,current_name,1946,,bootstrap alias
-012142,Maccagno Con Pino e Veddasca,current_name,1946,,bootstrap alias
-013253,Alta Valle Intelvi,current_name,1946,,bootstrap alias
-013254,Centro Valle Intelvi,current_name,1946,,bootstrap alias
-013251,Colverde,current_name,1946,,bootstrap alias
-016253,Val Brembilla,current_name,1946,,bootstrap alias
-097092,La Valletta Brianza,current_name,1946,,bootstrap alias
-097091,Verderio,current_name,1946,,bootstrap alias
-097093,Valvarrone,current_name,1946,,bootstrap alias
-017187,Toscolano-Maderno,current_name,1946,,bootstrap alias
-017189,Tremosine sul Garda,current_name,1946,,bootstrap alias
-018191,Cornale e Bastida,current_name,1946,,bootstrap alias
-018192,Corteolona e Genzone,current_name,1946,,bootstrap alias
+098060,Villanova del Sillaro,current_name,1946,,bootstrap alias
+098061,Zelo Buon Persico,current_name,1946,,bootstrap alias
 098062,Castelgerundo,current_name,1946,,bootstrap alias
-019017,Casale Cremasco-Vidolasco,current_name,1946,,bootstrap alias
-020072,Borgo Mantovano,current_name,1946,,bootstrap alias
-020071,Borgo Virgilio,current_name,1946,,bootstrap alias
-020061,Sermide e Felonica,current_name,1946,,bootstrap alias
-015251,Vermezzo Con Zelo,current_name,1946,,bootstrap alias
-012143,Cadrezzate Con Osmate,current_name,1946,,bootstrap alias
-013255,Solbiate Con Cagno,current_name,1946,,bootstrap alias
-018193,Colli Verdi,current_name,1946,,bootstrap alias
-019116,Piadena Drizzona,current_name,1946,,bootstrap alias
-020073,Borgocarbonara,current_name,1946,,bootstrap alias
-020057,San Giorgio Bigarello,current_name,1946,,bootstrap alias
+108001,Agrate Brianza,current_name,1946,,bootstrap alias
+108002,Aicurzio,current_name,1946,,bootstrap alias
+108003,Albiate,current_name,1946,,bootstrap alias
+108004,Arcore,current_name,1946,,bootstrap alias
+108005,Barlassina,current_name,1946,,bootstrap alias
+108006,Bellusco,current_name,1946,,bootstrap alias
+108007,Bernareggio,current_name,1946,,bootstrap alias
+108008,Besana in Brianza,current_name,1946,,bootstrap alias
+108009,Biassono,current_name,1946,,bootstrap alias
+108010,Bovisio-Masciago,current_name,1946,,bootstrap alias
+108011,Briosco,current_name,1946,,bootstrap alias
+108012,Brugherio,current_name,1946,,bootstrap alias
+108013,Burago di Molgora,current_name,1946,,bootstrap alias
+108014,Camparada,current_name,1946,,bootstrap alias
+108015,Carate Brianza,current_name,1946,,bootstrap alias
+108016,Carnate,current_name,1946,,bootstrap alias
+108017,Cavenago di Brianza,current_name,1946,,bootstrap alias
+108018,Ceriano Laghetto,current_name,1946,,bootstrap alias
+108019,Cesano Maderno,current_name,1946,,bootstrap alias
+108020,Cogliate,current_name,1946,,bootstrap alias
+108021,Concorezzo,current_name,1946,,bootstrap alias
+108022,Correzzana,current_name,1946,,bootstrap alias
+108023,Desio,current_name,1946,,bootstrap alias
+108024,Giussano,current_name,1946,,bootstrap alias
+108025,Lazzate,current_name,1946,,bootstrap alias
+108026,Lesmo,current_name,1946,,bootstrap alias
+108027,Limbiate,current_name,1946,,bootstrap alias
+108028,Lissone,current_name,1946,,bootstrap alias
+108029,Macherio,current_name,1946,,bootstrap alias
+108030,Meda,current_name,1946,,bootstrap alias
+108031,Mezzago,current_name,1946,,bootstrap alias
+108032,Misinto,current_name,1946,,bootstrap alias
+108033,Monza,current_name,1946,,bootstrap alias
+108034,Muggio',current_name,1946,,bootstrap alias
+108035,Nova Milanese,current_name,1946,,bootstrap alias
+108036,Ornago,current_name,1946,,bootstrap alias
+108037,Renate,current_name,1946,,bootstrap alias
+108038,Ronco Briantino,current_name,1946,,bootstrap alias
+108039,Seregno,current_name,1946,,bootstrap alias
+108040,Seveso,current_name,1946,,bootstrap alias
+108041,Sovico,current_name,1946,,bootstrap alias
+108042,Sulbiate,current_name,1946,,bootstrap alias
+108043,Triuggio,current_name,1946,,bootstrap alias
+108044,Usmate Velate,current_name,1946,,bootstrap alias
+108045,Varedo,current_name,1946,,bootstrap alias
+108046,Vedano al Lambro,current_name,1946,,bootstrap alias
+108047,Veduggio Con Colzano,current_name,1946,,bootstrap alias
+108048,Verano Brianza,current_name,1946,,bootstrap alias
+108049,Villasanta,current_name,1946,,bootstrap alias
+108050,Vimercate,current_name,1946,,bootstrap alias
+108051,Busnago,current_name,1946,,bootstrap alias
+108052,Caponago,current_name,1946,,bootstrap alias
+108053,Cornate d'Adda,current_name,1946,,bootstrap alias
+108054,Lentate sul Seveso,current_name,1946,,bootstrap alias
+108055,Roncello,current_name,1946,,bootstrap alias
+borgounito-bergamo,Borgounito,current_name,1946,,bootstrap alias
+capriano-azzano-brescia,Capriano Azzano,current_name,1946,,bootstrap alias
+cenate-d-argon-bergamo,Cenate D Argon,current_name,1946,,bootstrap alias
+centrisola-bergamo,Centrisola,current_name,1946,,bootstrap alias
+centrisolo-bergamo,Centrisolo,current_name,1946,,bootstrap alias
+cernusco-montevecchia-como,Cernusco Montevecchia,current_name,1946,,bootstrap alias
+cesello-brianza-como,Cesello Brianza,current_name,1946,,bootstrap alias
+costa-di-serina,Costa di Serina,current_name,1946,,bootstrap alias
+costa-monticelli-bergamo,Costa Monticelli,current_name,1946,,bootstrap alias
+curdomo-bergamo,Curdomo,current_name,1946,,bootstrap alias
+dezzo-di-scalve-bergamo,Dezzo di Scalve,current_name,1946,,bootstrap alias
+isola-comacina-como,Isola Comacina,current_name,1946,,bootstrap alias
+isolato-sondrio,Isolato,current_name,1946,,bootstrap alias
+lieto-colle-como,Lieto Colle,current_name,1946,,bootstrap alias
+marne-bergamo,Marne,current_name,1946,,bootstrap alias
+mirabello-comasco-como,Mirabello Comasco,current_name,1946,,bootstrap alias
+monticelli-di-borgogna-bergamo,Monticelli di Borgogna,current_name,1946,,bootstrap alias
+monticello-brusati-brescia,Monticello Brusati,current_name,1946,,bootstrap alias
+nossa-bergamo,Nossa,current_name,1946,,bootstrap alias
+olgiate-calco-como,Olgiate Calco,current_name,1946,,bootstrap alias
+paderno-ossolaro-cremona,Paderno Ossolaro,current_name,1946,,bootstrap alias
+paderno-robbiate-como,Paderno Robbiate,current_name,1946,,bootstrap alias
+palvareto-cremona,Palvareto,current_name,1946,,bootstrap alias
+pedergnaga-oriano-brescia,Pedergnaga-Oriano,current_name,1946,,bootstrap alias
+pedergnaga-oriano-brescia,Pedergnaga Oriano,historical_name,1946,,bootstrap alias
+pometo-pavia,Pometo,current_name,1946,,bootstrap alias
+pregola-pavia,Pregola,current_name,1946,,bootstrap alias
+riviera-d-adda-bergamo,Riviera d'Adda,current_name,1946,,bootstrap alias
+riviera-d-adda-bergamo,Riviera D Adda,historical_name,1946,,bootstrap alias
+rocca-del-colle-bergamo,Rocca del Colle,current_name,1946,,bootstrap alias
+rocca-di-colle-bergamo,Rocca di Colle,current_name,1946,,bootstrap alias
+san-martino-de-calvi-bergamo,San Martino De' Calvi,current_name,1946,,bootstrap alias
+san-martino-de-calvi-bergamo,San Martino de Calvi,historical_name,1946,,bootstrap alias
+santa-maria-di-rovagnate-como,Santa Maria di Rovagnate,current_name,1946,,bootstrap alias
+seprio-como,Seprio,current_name,1946,,bootstrap alias
+terranuova-dei-passerini-milano,Terranuova dei Passerini,current_name,1946,,bootstrap alias
+val-marchirolo-varese,Val Marchirolo,current_name,1946,,bootstrap alias
+valsaviore-brescia,Valsaviore,current_name,1946,,bootstrap alias
+villavesco-milano,Villavesco,current_name,1946,,bootstrap alias

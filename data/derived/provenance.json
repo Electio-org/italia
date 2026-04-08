@@ -381,21 +381,6 @@
       ]
     },
     {
-      "dataset_key": "archiveBundleGapReport",
-      "path": "data/derived/archive_bundle_gap_report.json",
-      "produced_by": "rebuild_bundle_from_camera_opendata_archives.py",
-      "source_class": "coverage_diagnostics",
-      "transformation_steps": [
-        "derive official municipality coverage directly from the Eligendo open-data zip archives for Camera and Assemblea Costituente",
-        "compare published summary coverage against the same official source",
-        "carry the diagnostics into the static bundle as machine-readable metadata"
-      ],
-      "limitations": [
-        "the report diagnoses residual gaps and unresolved geometry joins but does not harmonize extinct municipalities",
-        "coverage equivalence with the official source does not imply full historical harmonization across boundary changes"
-      ]
-    },
-    {
       "dataset_key": "municipalitySummaryByElectionIndex",
       "path": "data/derived/municipality_summary_by_election.json",
       "produced_by": "build_result_shards.py",
@@ -419,6 +404,21 @@
       ],
       "limitations": [
         "i product manifest non creano nuovi dati: organizzano i dataset esistenti in prodotti piu espliciti"
+      ]
+    },
+    {
+      "dataset_key": "archiveBundleGapReport",
+      "path": "data/derived/archive_bundle_gap_report.json",
+      "produced_by": "rebuild_bundle_from_camera_opendata_archives.py",
+      "source_class": "coverage_diagnostics",
+      "transformation_steps": [
+        "derive official municipality coverage directly from the Eligendo open-data zip archives for Camera and Assemblea Costituente",
+        "compare published summary coverage against the same official source",
+        "carry the diagnostics into the static bundle as machine-readable metadata"
+      ],
+      "limitations": [
+        "the report diagnoses residual gaps and unresolved geometry joins but does not harmonize extinct municipalities",
+        "coverage equivalence with the official source does not imply full historical harmonization across boundary changes"
       ]
     }
   ]

@@ -13,9 +13,9 @@
       "Copy-ready citation and reproducibility lines help make each view shareable and method-aware.",
       "Party results can be delivered both as a monolithic CSV and as per-election shards for faster interactive loading.",
       "Coverage diagnostics now compare the published bundle against the official Eligendo open-data zip archives.",
+      "Municipality summary rows can also be delivered as per-election shards to reduce initial browser load.",
       "The bundle can also declare a gap report that compares published coverage against the official Eligendo open-data archives.",
       "Municipality coverage is rebuilt from official Eligendo open-data zip archives across all Camera years plus Assemblea Costituente 1946.",
-      "Municipality summary rows can also be delivered as per-election shards to reduce initial browser load.",
       "Products are also published through a product catalog plus per-product manifests, not only through the bundle-wide manifest.",
       "Every declared product also exposes a product-level inventory so users can see what is inside before loading the data.",
       "The public app now reads a web-optimized geometry pack, while the full-resolution boundaries remain published as a separate product.",
@@ -47,12 +47,12 @@
     "researchRecipes": "data/derived/research_recipes.json",
     "siteGuides": "data/derived/site_guides.json",
     "archiveBundleGapReport": "data/derived/archive_bundle_gap_report.json",
-    "municipalitySummaryByElectionIndex": "data/derived/municipality_summary_by_election.json",
-    "productCatalog": "data/products/product_catalog.json",
     "geometryPackFull": "data/derived/geometry_pack_full.json",
     "geometryFull": "data/derived/geometries/municipalities_2026.geojson",
     "provinceGeometryFull": "data/derived/geometries/provinces_2026.geojson",
-    "webGeometryReport": "data/derived/web_geometry_report.json"
+    "webGeometryReport": "data/derived/web_geometry_report.json",
+    "productCatalog": "data/products/product_catalog.json",
+    "municipalitySummaryByElectionIndex": "data/derived/municipality_summary_by_election.json"
   },
   "contracts": {
     "geometryJoinPriority": [

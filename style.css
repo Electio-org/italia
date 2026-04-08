@@ -2200,6 +2200,94 @@ body[data-audience-mode="admin"] .reading-guide-panel {
   gap: 14px;
 }
 
+/* v34 simplification pass: the basic UI now behaves like a real guided surface,
+   while the dense research shell stays available in expert mode. */
+body.basic-mode .dashboard-tab[data-section-view="analysis"],
+body.basic-mode .site-hero,
+body.basic-mode .signature-panel,
+body.basic-mode .site-layers-panel,
+body.basic-mode .method-explainers-panel,
+body.basic-mode .pathway-strip,
+body.basic-mode .quickstart-strip,
+body.basic-mode .question-workbench-panel,
+body.basic-mode .reading-guide-panel,
+body.basic-mode .briefing-panel,
+body.basic-mode .evidence-panel,
+body.basic-mode .faq-panel,
+body.basic-mode .release-studio-panel,
+body.basic-mode .insight-strip,
+body.basic-mode .analysis-grid,
+body.basic-mode .insights-grid,
+body.basic-mode .research-grid,
+body.basic-mode .advanced-grid,
+body.basic-mode .transitions-panel,
+body.basic-mode .audit-panel,
+body.basic-mode .compare-map-grid,
+body.basic-mode .swipe-compare-box {
+  display: none !important;
+}
+
+body.basic-mode .dashboard-intro-strip {
+  padding-top: 0;
+  margin-bottom: 6px;
+}
+
+body.basic-mode .dashboard-intro-aside,
+body.basic-mode .dashboard-intro-meta {
+  display: none !important;
+}
+
+body.basic-mode .dashboard-intro-strip h1 {
+  font-size: 2.1rem;
+  max-width: 14ch;
+}
+
+body.basic-mode .dashboard-intro-text {
+  max-width: 72ch;
+  font-size: 1rem;
+}
+
+body.basic-mode .dashboard-section-tabs {
+  max-width: 720px;
+}
+
+body.basic-mode .dashboard-section-tabs .dashboard-tab {
+  min-width: 0;
+  flex: 1 1 0;
+}
+
+body.basic-mode .panel.control-panel > .panel-header .panel-subtitle::after {
+  content: ' In questa vista la provincia e i relativi filtri usano la provincia corrente; la provincia osservata resta visibile nella scheda del comune quando differisce.';
+}
+
+body.basic-mode .comparison-and-table {
+  grid-template-columns: 1fr;
+}
+
+body.basic-mode .comparison-panel .panel-subtitle::after {
+  content: ' La modalita base mostra il confronto essenziale senza mini-mappe aggiuntive.';
+}
+
+body.basic-mode .detail-panel .detail-narrative-grid,
+body.basic-mode .detail-panel .detail-meta-block.detail-chart-block:last-of-type,
+body.basic-mode .detail-panel .annotation-box {
+  display: none !important;
+}
+
+body.basic-mode .detail-panel .detail-lineage-grid {
+  grid-template-columns: 1fr;
+}
+
+body.basic-mode .table-panel .panel-subtitle::after {
+  content: ' La tabella usa province correnti per filtro e lettura pubblica.';
+}
+
+@media (max-width: 900px) {
+  body.basic-mode .dashboard-section-tabs {
+    max-width: none;
+  }
+}
+
 .evidence-list {
   display: grid;
   gap: 10px;
@@ -5142,4 +5230,16 @@ button:hover {
   .doc-split-grid {
     grid-template-columns: 1fr;
   }
+}
+
+
+body.basic-mode .sidebar-tools {
+  display: none !important;
+}
+
+.doc-quicklinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
 }

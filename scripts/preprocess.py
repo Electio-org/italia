@@ -1361,25 +1361,69 @@ def build_summary(turnout_rows: pd.DataFrame, party_rows: pd.DataFrame) -> pd.Da
 
 
 def build_master_tables(summary_rows: pd.DataFrame, party_rows: pd.DataFrame, elections: List[Dict[str, object]]) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
-    municipalities = summary_rows[["municipality_id", "municipality_name", "province"]].drop_duplicates().copy() if not summary_rows.empty else pd.DataFrame(columns=["municipality_id", "municipality_name", "province"])
+    municipalities = (
+        summary_rows[["municipality_id", "municipality_name", "province", "geometry_id", "election_year"]].copy()
+        if not summary_rows.empty
+        else pd.DataFrame(columns=["municipality_id", "municipality_name", "province", "geometry_id", "election_year"])
+    )
     if not municipalities.empty:
         municipalities = municipalities[municipalities["municipality_name"].fillna("").astype(str).str.strip() != ""]
         municipalities = municipalities[municipalities["municipality_id"].notna()]
-        municipalities["name_current"] = municipalities["municipality_name"]
-        municipalities["name_historical"] = ""
-        muni_enrichment = municipalities.apply(lambda r: pd.Series(lookup_geometry_record(r.get("municipality_name", ""), r.get("province", ""))), axis=1)
-        municipalities["province_current"] = municipalities.apply(lambda r: r["province"] if str(r["province"] or "").strip() else muni_enrichment.loc[r.name, "province"], axis=1)
-        municipalities["province_code_current"] = muni_enrichment["province_code"]
-        municipalities["region"] = "Lombardia"
-        municipalities["geometry_id"] = municipalities.apply(lambda r: r["municipality_id"] if re.fullmatch(r"\d{6}", str(r["municipality_id"] or "")) else (muni_enrichment.loc[r.name, "geometry_id"] or r["municipality_id"]), axis=1)
-        municipalities["valid_from"] = min([e["election_year"] for e in elections], default="")
-        municipalities["valid_to"] = ""
-        municipalities["active_current"] = "true"
-        municipalities["source_status"] = "from_clean_ingest_enriched"
-        municipalities["alias_names"] = municipalities["municipality_name"]
-        municipalities["lineage_note"] = "bootstrap municipality master; enrich with lineage for historical harmonization"
-        municipalities["harmonized_group_id"] = municipalities["municipality_id"]
-        municipalities = municipalities[CONTRACTS["municipalities_master.csv"]]
+        municipalities["municipality_id"] = municipalities["municipality_id"].astype(str).str.strip()
+        municipalities["municipality_name"] = municipalities["municipality_name"].astype(str).str.strip()
+        municipalities["province"] = municipalities["province"].fillna("").astype(str).str.strip()
+        municipalities["geometry_id"] = municipalities["geometry_id"].fillna("").astype(str).str.strip()
+        municipalities["election_year"] = pd.to_numeric(municipalities["election_year"], errors="coerce")
+        municipalities = municipalities.sort_values(["municipality_id", "election_year", "municipality_name"], ascending=[True, False, True])
+        muni_enrichment = municipalities.apply(
+            lambda r: pd.Series(lookup_geometry_record(r.get("municipality_name", ""), r.get("province", ""))),
+            axis=1,
+        )
+        municipalities["resolved_geometry_id"] = muni_enrichment["geometry_id"].fillna("")
+        municipalities["resolved_province_current"] = muni_enrichment["province"].fillna("")
+        municipalities["resolved_province_code_current"] = muni_enrichment["province_code"].fillna("")
+        canonical = municipalities.drop_duplicates(subset=["municipality_id"], keep="first").copy()
+        alias_map = (
+            municipalities.groupby("municipality_id")["municipality_name"]
+            .apply(lambda values: "|".join(dict.fromkeys([str(value).strip() for value in values if str(value).strip() and str(value).strip().lower() != "nan"])))
+            .to_dict()
+        )
+        geometry_ids = municipalities.groupby("municipality_id")["resolved_geometry_id"].apply(
+            lambda values: "|".join(dict.fromkeys([str(value).strip() for value in values if str(value).strip()]))
+        ).to_dict()
+        canonical["name_current"] = canonical["municipality_name"]
+        canonical["name_historical"] = canonical.apply(
+            lambda r: next(
+                (
+                    alias for alias in (alias_map.get(r["municipality_id"], "") or "").split("|")
+                    if alias and alias != r["municipality_name"]
+                ),
+                "",
+            ),
+            axis=1,
+        )
+        canonical["province_current"] = canonical.apply(
+            lambda r: str(r.get("resolved_province_current") or "").strip() or str(r.get("province") or "").strip(),
+            axis=1,
+        )
+        canonical["province_code_current"] = canonical["resolved_province_code_current"]
+        canonical["region"] = "Lombardia"
+        canonical["geometry_id"] = canonical.apply(
+            lambda r: str(r.get("resolved_geometry_id") or "").strip() or str(r.get("geometry_id") or "").strip() or str(r.get("municipality_id") or "").strip(),
+            axis=1,
+        )
+        canonical["valid_from"] = min([e["election_year"] for e in elections], default="")
+        canonical["valid_to"] = ""
+        canonical["active_current"] = canonical["geometry_id"].apply(lambda value: "true" if str(value).strip() else "")
+        canonical["source_status"] = "from_clean_ingest_enriched"
+        canonical["alias_names"] = canonical["municipality_id"].map(alias_map).fillna(canonical["municipality_name"])
+        canonical["lineage_note"] = canonical["municipality_id"].map(geometry_ids).fillna("").apply(
+            lambda value: "bootstrap municipality master; current geometry resolved from lookup"
+            if value
+            else "bootstrap municipality master; enrich with lineage for historical harmonization"
+        )
+        canonical["harmonized_group_id"] = canonical["geometry_id"].where(canonical["geometry_id"].astype(str).str.strip() != "", canonical["municipality_id"])
+        municipalities = canonical[CONTRACTS["municipalities_master.csv"]]
     else:
         municipalities = pd.DataFrame(columns=CONTRACTS["municipalities_master.csv"])
 

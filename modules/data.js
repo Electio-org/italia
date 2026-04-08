@@ -62,6 +62,53 @@ function parseCustomIndicatorRows(rows) {
   return parseNumberFields(rows, CUSTOM_INDICATOR_NUMBER_FIELDS);
 }
 
+function buildMunicipalityLookupMaps(municipalities = []) {
+  const byId = new Map();
+  const byGeometry = new Map();
+  municipalities.forEach(record => {
+    const municipalityId = String(record?.municipality_id || '').trim();
+    const geometryId = String(record?.geometry_id || '').trim();
+    if (municipalityId && !byId.has(municipalityId)) byId.set(municipalityId, record);
+    if (geometryId && !byGeometry.has(geometryId)) byGeometry.set(geometryId, record);
+  });
+  return { byId, byGeometry };
+}
+
+function resolveCurrentMunicipalityRecord(row, municipalityMaps) {
+  const geometryId = String(row?.geometry_id || '').trim();
+  const municipalityId = String(row?.municipality_id || '').trim();
+  return municipalityMaps.byGeometry.get(geometryId)
+    || municipalityMaps.byId.get(municipalityId)
+    || null;
+}
+
+function enrichRowWithCurrentTerritory(row, municipalityMaps) {
+  const current = resolveCurrentMunicipalityRecord(row, municipalityMaps);
+  if (!current) return row;
+  const currentProvince = String(current.province_current || '').trim();
+  const currentGeometryId = String(current.geometry_id || '').trim();
+  const currentName = String(current.name_current || '').trim();
+  const observedProvince = String(row?.province || '').trim();
+  const observedGeometryId = String(row?.geometry_id || '').trim();
+  const observedName = String(row?.municipality_name || row?.name_current || '').trim();
+  return {
+    ...row,
+    province_observed: observedProvince,
+    geometry_id_observed: observedGeometryId,
+    municipality_name_observed: observedName,
+    province_current: currentProvince || observedProvince,
+    municipality_name_current: currentName || observedName,
+    geometry_id_current: currentGeometryId || observedGeometryId || String(row?.municipality_id || '').trim(),
+    province: currentProvince || observedProvince,
+    municipality_name: currentName || observedName,
+    geometry_id: currentGeometryId || observedGeometryId || String(row?.municipality_id || '').trim()
+  };
+}
+
+function enrichRowsWithCurrentTerritory(rows, municipalityMaps) {
+  return (rows || []).map(row => enrichRowWithCurrentTerritory(row, municipalityMaps));
+}
+
 function buildDeclaredCoverageByElection(elections, datasetRegistry, summaryRows, resultRows, summaryShardRowCounts = {}, resultShardRowCounts = {}) {
   const map = new Map();
   (elections || []).forEach(election => {
@@ -160,7 +207,13 @@ export function geometryJoinKey(feature) {
 }
 
 export function rowJoinKey(row) {
-  return String(row?.geometry_id || row?.municipality_id || `${normalizeJoinName(row?.municipality_name || row?.name_current)}__${normalizeJoinName(row?.province || '')}` || '').trim() || null;
+  return String(
+    row?.geometry_id
+    || row?.geometry_id_current
+    || row?.municipality_id
+    || `${normalizeJoinName(row?.municipality_name || row?.municipality_name_current || row?.name_current)}__${normalizeJoinName(row?.province_current || row?.province_observed || row?.province || '')}`
+    || ''
+  ).trim() || null;
 }
 
 export function currentGeometryJoinSet(geometry) {
@@ -251,7 +304,10 @@ async function loadFullSummaryOnce(state, { buildIndices, registerIssue = () => 
   if (!rel) return { strategy: 'full', loadedKeys: [], loadedRows: 0, missing: true };
   state.summaryFullLoadPromise = state.summaryResolver(rel)
     .then(rows => {
-      const parsed = parseSummaryRows(rows);
+      const parsed = enrichRowsWithCurrentTerritory(
+        parseSummaryRows(rows),
+        state.municipalityLookupMaps || buildMunicipalityLookupMaps(state.municipalities)
+      );
       state.summary = parsed;
       state.loadedSummaryElectionKeys = new Set(parsed.map(row => row.election_key).filter(Boolean));
       state.summaryFullLoaded = true;
@@ -287,7 +343,13 @@ export async function ensureSummaryForElections(state, electionKeys, { buildIndi
   const tasks = missing.map(key => {
     if (state.summaryLoadPromises?.has(key)) return state.summaryLoadPromises.get(key);
     const promise = state.summaryResolver(shardPaths[key])
-      .then(rows => ({ key, rows: parseSummaryRows(rows) }))
+      .then(rows => ({
+        key,
+        rows: enrichRowsWithCurrentTerritory(
+          parseSummaryRows(rows),
+          state.municipalityLookupMaps || buildMunicipalityLookupMaps(state.municipalities)
+        )
+      }))
       .catch(err => {
         registerIssue(`summary-shard-${key}`, err);
         return { key, rows: [], error: err };
@@ -358,11 +420,12 @@ async function loadBundleWithManifest(state, manifest, resolver, { buildIndices,
   ]);
   state.elections = parseNumberFields(elections, ['election_year']).sort((a, b) => (a.election_year || 0) - (b.election_year || 0));
   state.municipalities = municipalities;
+  state.municipalityLookupMaps = buildMunicipalityLookupMaps(state.municipalities);
   state.parties = parties;
   state.lineage = lineage;
   state.aliases = aliases;
-  state.summary = parseSummaryRows(eagerSummary);
-  state.resultsLong = parseResultsLongRows(eagerResultsLong);
+  state.summary = enrichRowsWithCurrentTerritory(parseSummaryRows(eagerSummary), state.municipalityLookupMaps);
+  state.resultsLong = enrichRowsWithCurrentTerritory(parseResultsLongRows(eagerResultsLong), state.municipalityLookupMaps);
   state.customIndicators = parseCustomIndicatorRows(customIndicators);
   state.qualityReport = qualityReport;
   state.datasetRegistry = datasetRegistry?.datasets || datasetRegistry || [];
@@ -436,7 +499,10 @@ async function loadFullResultsLongOnce(state, { buildIndices, registerIssue = ()
   if (!rel) return { strategy: 'full', loadedKeys: [], loadedRows: 0, missing: true };
   state.resultsFullLoadPromise = state.resultsResolver(rel)
     .then(rows => {
-      const parsed = parseResultsLongRows(rows);
+      const parsed = enrichRowsWithCurrentTerritory(
+        parseResultsLongRows(rows),
+        state.municipalityLookupMaps || buildMunicipalityLookupMaps(state.municipalities)
+      );
       state.resultsLong = parsed;
       state.loadedResultElectionKeys = new Set(parsed.map(row => row.election_key).filter(Boolean));
       state.resultsLongFullLoaded = true;
@@ -472,7 +538,13 @@ export async function ensureResultsForElections(state, electionKeys, { buildIndi
   const tasks = missing.map(key => {
     if (state.resultsLoadPromises?.has(key)) return state.resultsLoadPromises.get(key);
     const promise = state.resultsResolver(shardPaths[key])
-      .then(rows => ({ key, rows: parseResultsLongRows(rows) }))
+      .then(rows => ({
+        key,
+        rows: enrichRowsWithCurrentTerritory(
+          parseResultsLongRows(rows),
+          state.municipalityLookupMaps || buildMunicipalityLookupMaps(state.municipalities)
+        )
+      }))
       .catch(err => {
         registerIssue(`results-long-shard-${key}`, err);
         return { key, rows: [], error: err };

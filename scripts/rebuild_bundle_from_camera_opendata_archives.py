@@ -242,6 +242,7 @@ def electoral_system_for_entry(entry: Dict[str, object]) -> str:
 
 def load_reference_maps(
     output_root: Path,
+    reference_year: Optional[int] = None,
 ) -> Tuple[
     Dict[Tuple[str, str], Dict[str, str]],
     Dict[str, Dict[str, str]],
@@ -249,9 +250,26 @@ def load_reference_maps(
     Dict[str, Dict[str, str]],
 ]:
     geometry_by_name_prov: Dict[Tuple[str, str], Dict[str, str]] = {}
+    geometry_name_candidates: Dict[str, List[Dict[str, str]]] = {}
     geometry_by_name: Dict[str, Dict[str, str]] = {}
+    historical_by_name_prov: Dict[Tuple[str, str], Dict[str, str]] = {}
+    historical_name_candidates: Dict[str, List[Dict[str, str]]] = {}
+    historical_by_name: Dict[str, Dict[str, str]] = {}
     geom_dir = output_root / "data" / "derived" / "geometries"
-    for path in sorted(geom_dir.glob("municipalities_*.geojson")):
+    all_geometry_paths = sorted(geom_dir.glob("municipalities_*.geojson"))
+    geometry_paths = list(all_geometry_paths)
+    if reference_year is not None:
+        eligible = []
+        for path in geometry_paths:
+            match = re.search(r"(\d{4})", path.stem)
+            year = int(match.group(1)) if match else None
+            if year is not None and year <= int(reference_year):
+                eligible.append((year, path))
+        if eligible:
+            geometry_paths = [sorted(eligible, key=lambda item: item[0])[-1][1]]
+    if geometry_paths:
+        geometry_paths = [geometry_paths[-1]]
+    for path in geometry_paths:
         payload = json.loads(path.read_text(encoding="utf-8"))
         for feature in payload.get("features") or []:
             props = feature.get("properties") or {}
@@ -267,9 +285,39 @@ def load_reference_maps(
             }
             key = normalize_lookup_key(name)
             prov_key = normalize_lookup_key(province)
-            geometry_by_name.setdefault(key, record)
+            geometry_name_candidates.setdefault(key, []).append(record)
             geometry_by_name_prov.setdefault((key, prov_key), record)
-    return geometry_by_name_prov, geometry_by_name, {}, {}
+    for key, records in geometry_name_candidates.items():
+        unique_ids = {(row["municipality_id"], row["geometry_id"]) for row in records}
+        if len(unique_ids) == 1 and records:
+            geometry_by_name[key] = records[0]
+    for path in all_geometry_paths:
+        match = re.search(r"(\d{4})", path.stem)
+        path_year = int(match.group(1)) if match else 0
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        for feature in payload.get("features") or []:
+            props = feature.get("properties") or {}
+            name = str(props.get("name_current") or props.get("name") or "").strip()
+            province = str(props.get("province") or "").strip()
+            if not name:
+                continue
+            record = {
+                "municipality_id": str(props.get("municipality_id") or props.get("geometry_id") or "").strip(),
+                "geometry_id": str(props.get("geometry_id") or props.get("municipality_id") or "").strip(),
+                "province": smart_title(province),
+                "name_current": smart_title(name),
+                "_year": path_year,
+            }
+            key = normalize_lookup_key(name)
+            prov_key = normalize_lookup_key(province)
+            historical_name_candidates.setdefault(key, []).append(record)
+            historical_by_name_prov[(key, prov_key)] = record
+    for key, records in historical_name_candidates.items():
+        if records:
+            historical_by_name[key] = sorted(records, key=lambda row: int(row.get("_year") or 0))[-1]
+    for record in list(historical_by_name.values()) + list(historical_by_name_prov.values()):
+        record.pop("_year", None)
+    return geometry_by_name_prov, geometry_by_name, historical_by_name_prov, historical_by_name
 
 
 def resolve_reference(
@@ -291,10 +339,15 @@ def resolve_reference(
         if name_key in MANUAL_REFERENCE_OVERRIDES:
             return MANUAL_REFERENCE_OVERRIDES[name_key], "manual_override"
 
+    if name_key in geometry_by_name:
+        return geometry_by_name[name_key], "geometry_name"
     if (name_key, province_key) in geometry_by_name_prov:
         return geometry_by_name_prov[(name_key, province_key)], "geometry_name_province"
     if (name_key, province_key) in master_by_name_prov:
-        return master_by_name_prov[(name_key, province_key)], "master_name_province"
+        return master_by_name_prov[(name_key, province_key)], "historical_geometry_name_province"
+    if name_key in master_by_name:
+        return master_by_name[name_key], "historical_geometry_name"
+
     if province_key:
         candidates = []
         for (candidate_name, candidate_prov), record in master_by_name_prov.items():
@@ -306,13 +359,7 @@ def resolve_reference(
                     break
         unique_ids = {(row["municipality_id"], row["geometry_id"]) for row in candidates}
         if len(unique_ids) == 1 and candidates:
-            return candidates[0], "master_prefix_province"
-        return None, ""
-
-    if name_key in geometry_by_name:
-        return geometry_by_name[name_key], "geometry_name"
-    if name_key in master_by_name:
-        return master_by_name[name_key], "master_name"
+            return candidates[0], "historical_geometry_prefix_province"
 
     candidates = []
     for key, record in master_by_name.items():
@@ -322,7 +369,7 @@ def resolve_reference(
                 break
     unique_ids = {(row["municipality_id"], row["geometry_id"]) for row in candidates}
     if len(unique_ids) == 1 and candidates:
-        return candidates[0], "master_prefix"
+        return candidates[0], "historical_geometry_prefix"
     return None, ""
 
 
@@ -469,14 +516,14 @@ def main() -> None:
     derived = output_root / "data" / "derived"
     derived.mkdir(parents=True, exist_ok=True)
 
-    preprocess.GEOMETRY_LOOKUP = preprocess.load_geometry_lookup(output_root / "data" / "reference")
-    geometry_by_name_prov, geometry_by_name, master_by_name_prov, master_by_name = load_reference_maps(output_root)
-
     archive_manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     archive_entries = sorted(
         archive_manifest.get("entries") or [],
         key=lambda row: (int(row["year"]), str(row.get("election_type") or "camera")),
     )
+    preprocess.GEOMETRY_LOOKUP = preprocess.load_geometry_lookup(output_root / "data" / "reference")
+    reference_year = max((int(entry["year"]) for entry in archive_entries), default=None)
+    geometry_by_name_prov, geometry_by_name, master_by_name_prov, master_by_name = load_reference_maps(output_root, reference_year=reference_year)
 
     turnout_index: Dict[Tuple[str, str], Dict[str, object]] = {}
     party_rows_raw: List[Dict[str, object]] = []
@@ -517,7 +564,6 @@ def main() -> None:
                 master_by_name_prov,
                 master_by_name,
             )
-
             province = province_raw or smart_title((reference or {}).get("province", ""))
             municipality_id = str((reference or {}).get("municipality_id") or "").strip() or fallback_municipality_id(municipality_name, province)
             geometry_id = str((reference or {}).get("geometry_id") or "").strip()

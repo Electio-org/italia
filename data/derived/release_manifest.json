@@ -14,9 +14,9 @@
       "Copy-ready citation and reproducibility lines help make each view shareable and method-aware.",
       "Party results can be delivered both as a monolithic CSV and as per-election shards for faster interactive loading.",
       "Coverage diagnostics now compare the published bundle against the official Eligendo open-data zip archives.",
+      "Municipality summary rows can also be delivered as per-election shards to reduce initial browser load.",
       "The bundle can also declare a gap report that compares published coverage against the official Eligendo open-data archives.",
       "Municipality coverage is rebuilt from official Eligendo open-data zip archives across all Camera years plus Assemblea Costituente 1946.",
-      "Municipality summary rows can also be delivered as per-election shards to reduce initial browser load.",
       "Products are also published through a product catalog plus per-product manifests, not only through the bundle-wide manifest.",
       "Every declared product also exposes a product-level inventory so users can see what is inside before loading the data.",
       "The public app now reads a web-optimized geometry pack, while the full-resolution boundaries remain published as a separate product.",
@@ -29,7 +29,7 @@
       "path": "data/derived/elections_master.csv",
       "kind": "csv",
       "size_bytes": 8632,
-      "sha256": "ed52d0791324afda3b068488f071556dbf22776287f30c2805f871bc5f37188a",
+      "sha256": "cdbd39c0b181117102befd30203550ea7b98bfb4670f7dce839ad1c4a8827c85",
       "row_count": 20,
       "columns": [
         "election_key",
@@ -46,9 +46,9 @@
     "municipalitiesMaster": {
       "path": "data/derived/municipalities_master.csv",
       "kind": "csv",
-      "size_bytes": 339327,
-      "sha256": "1cec4856da0737db99c3794f8bf18b11d8b2ec89681a6a9265076f703aaf8db0",
-      "row_count": 1821,
+      "size_bytes": 287307,
+      "sha256": "bf3ef95f7c0bbe5c1156ec286bc70bb040c500b7ef18de994820aedeb1bac616",
+      "row_count": 1618,
       "columns": [
         "municipality_id",
         "name_current",
@@ -87,9 +87,9 @@
     "territorialLineage": {
       "path": "data/derived/territorial_lineage.csv",
       "kind": "csv",
-      "size_bytes": 208766,
-      "sha256": "a15350b34502254d549c0b49474a45c14084e8935cb50b6f78e636afbfab0e29",
-      "row_count": 1821,
+      "size_bytes": 185887,
+      "sha256": "36965299a302a7d36ebe8803f81538f8a2b5db43f7978ec44ffedd40e587ec83",
+      "row_count": 1618,
       "columns": [
         "municipality_id_stable",
         "name_current",
@@ -110,9 +110,9 @@
     "municipalitySummary": {
       "path": "data/derived/municipality_summary.csv",
       "kind": "csv",
-      "size_bytes": 9576337,
-      "sha256": "33c2747e8ed74908f136c18832617ca02fdc758f4092f235fa7645cf7a5ab267",
-      "row_count": 30316,
+      "size_bytes": 9577331,
+      "sha256": "14c01742a354e3625adc1d8a8ab2ff51c18e73e44c1a67c7cfaee3e721b62772",
+      "row_count": 30315,
       "columns": [
         "election_key",
         "election_year",
@@ -142,8 +142,8 @@
     "municipalityResultsLong": {
       "path": "data/derived/municipality_results_long.csv",
       "kind": "csv",
-      "size_bytes": 99751278,
-      "sha256": "3945676ca675b800a692f0f073afb7d287facdd8a4421f22702f8555444748e4",
+      "size_bytes": 97649569,
+      "sha256": "e2572ba1370ec3032835aea0871a33edf08f95c1f1f8b8214efb710274559f82",
       "row_count": 371027,
       "columns": [
         "election_key",
@@ -175,9 +175,9 @@
     "municipalityAliases": {
       "path": "data/derived/municipality_aliases.csv",
       "kind": "csv",
-      "size_bytes": 101150,
-      "sha256": "38594a861fef84211b27a1578e13ade1b7613bc1de0734dc05ed9aa351606d0a",
-      "row_count": 1820,
+      "size_bytes": 93038,
+      "sha256": "9ba39e284789ddf1fd36e8e6363170146dbe0fa36c241aec6c86860c76148185",
+      "row_count": 1675,
       "columns": [
         "municipality_id",
         "alias",
@@ -198,7 +198,7 @@
       "path": "data/derived/data_quality_report.json",
       "kind": "json",
       "size_bytes": 8256,
-      "sha256": "ed7d1ed1b589b8b37782c91917ff4aa1b205bff89c39fe4a27fb4279695e231a"
+      "sha256": "986a6ffd5cc9d5ac80f835c670589cffdf2f90f70e9826d9844d6f48facaaf01"
     },
     "customIndicators": {
       "path": "data/derived/custom_indicators.csv",
@@ -225,7 +225,7 @@
       "path": "data/derived/dataset_registry.json",
       "kind": "json",
       "size_bytes": 12812,
-      "sha256": "c89c8dd2b073eaf9f3cd882a67a5c220fa9c4f67c5d901e0cfba936bc9200309",
+      "sha256": "d9371f05752b674ac4cbdd9f18ba71a2da4ac88573d54af6a3ef3c0389a83e73",
       "dataset_count": 26
     },
     "codebook": {
@@ -265,7 +265,7 @@
       "path": "data/derived/provenance.json",
       "kind": "json",
       "size_bytes": 20371,
-      "sha256": "83415555b55670b86dbea1f7d48c8b1c68fede55629ab5f60b4da59e67b2e124",
+      "sha256": "bde7a41dd88e7e1e7bb18464c136eeb8cd138ed9cd3e5e6bbbea96858777d0b2",
       "entry_count": 27
     },
     "researchRecipes": {
@@ -284,20 +284,7 @@
       "path": "data/derived/archive_bundle_gap_report.json",
       "kind": "json",
       "size_bytes": 17606,
-      "sha256": "d918c43d62776fa032bac7aa5aa6ea21f2fcf21917e50941f991e19e78c16f95"
-    },
-    "municipalitySummaryByElectionIndex": {
-      "path": "data/derived/municipality_summary_by_election.json",
-      "kind": "json",
-      "size_bytes": 2169,
-      "sha256": "9ac5879121787927fed800997aad760947b8264947534af39f64a1fcbac3cb94"
-    },
-    "productCatalog": {
-      "path": "data/products/product_catalog.json",
-      "kind": "json",
-      "size_bytes": 4686,
-      "sha256": "cde79a3fcad2799c8f98f46c9a44d113eb6279eeec42a9dbc908be760e6de387",
-      "product_count": 4
+      "sha256": "8bb4552fc83fa7c7f99130ec0a71dbc862af84ed4865ef5aeb769a803437321f"
     },
     "geometryPackFull": {
       "path": "data/derived/geometry_pack_full.json",
@@ -325,11 +312,24 @@
       "size_bytes": 5127,
       "sha256": "8bb36523291404015e346fbb29cc5b513fc0c420c3096e808b4ccd69bbf5de02"
     },
+    "productCatalog": {
+      "path": "data/products/product_catalog.json",
+      "kind": "json",
+      "size_bytes": 4686,
+      "sha256": "cde79a3fcad2799c8f98f46c9a44d113eb6279eeec42a9dbc908be760e6de387",
+      "product_count": 4
+    },
+    "municipalitySummaryByElectionIndex": {
+      "path": "data/derived/municipality_summary_by_election.json",
+      "kind": "json",
+      "size_bytes": 2169,
+      "sha256": "3836f262fd501082f3569af7a288342031838bf9a393beace8d46fd939139db1"
+    },
     "productManifest:camera_muni_historical": {
       "path": "data/products/camera_muni_historical/manifest.json",
       "kind": "json",
       "size_bytes": 12651,
-      "sha256": "bbaaaadf7847dd50fafe5c8a016413a0d1db6ea8998d23e7d2cb3766a43cb032",
+      "sha256": "616f84f21821c743b6b9159bf47e21becc149759089500e1ad1c98120a5f59be",
       "dataset_count": 2
     },
     "productManifest:geometry_pack_lombardia": {
@@ -350,7 +350,7 @@
       "path": "data/products/metadata_layer/manifest.json",
       "kind": "json",
       "size_bytes": 4806,
-      "sha256": "db6d44a4277151d8788533be2d8f6ac1a756fd5d721c8fae173b247c428fb669",
+      "sha256": "842e2052e3106a2838ca6a80ff201cc7413a7ca638d27a7766b3c8a007d0b2ff",
       "dataset_count": 6
     }
   },

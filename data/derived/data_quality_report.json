@@ -12,7 +12,7 @@
       "source_rows": 68172,
       "lombardy_rows": 11905,
       "expected_bundle_rows": 1383,
-      "unresolved_geometry_rows": 394
+      "unresolved_geometry_rows": 264
     },
     {
       "election_key": "camera_1948",
@@ -23,8 +23,8 @@
       "primary_member": "camera-19480418.txt",
       "source_rows": 84192,
       "lombardy_rows": 15901,
-      "expected_bundle_rows": 1433,
-      "unresolved_geometry_rows": 316
+      "expected_bundle_rows": 1432,
+      "unresolved_geometry_rows": 218
     },
     {
       "election_key": "camera_1953",
@@ -36,7 +36,7 @@
       "source_rows": 91272,
       "lombardy_rows": 16894,
       "expected_bundle_rows": 1474,
-      "unresolved_geometry_rows": 197
+      "unresolved_geometry_rows": 175
     },
     {
       "election_key": "camera_1958",
@@ -48,7 +48,7 @@
       "source_rows": 85751,
       "lombardy_rows": 16228,
       "expected_bundle_rows": 1529,
-      "unresolved_geometry_rows": 73
+      "unresolved_geometry_rows": 63
     },
     {
       "election_key": "camera_1963",

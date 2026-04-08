@@ -21,7 +21,7 @@
       "dataset_family": "camera_municipality_historical",
       "election_key": "camera_1948",
       "election_year": 1948,
-      "summary_rows": 1433,
+      "summary_rows": 1432,
       "result_rows": 13769,
       "territorial_mode": "historical",
       "boundary_basis": "auto",
