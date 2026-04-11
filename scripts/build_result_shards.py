@@ -19,7 +19,14 @@ PRODUCT_SYSTEM_NOTE = "Products are also published through a product catalog plu
 PRODUCT_INVENTORY_NOTE = "Every declared product also exposes a product-level inventory so users can see what is inside before loading the data."
 WEB_GEOMETRY_NOTE = "The public app now reads a web-optimized geometry pack, while the full-resolution boundaries remain published as a separate product."
 LOCAL_ASSET_NOTE = "Critical browser libraries are now vendored locally and the public documentation pages load only the metadata they actually need."
-CURRENT_VERSION = "0.20.0"
+CURRENT_VERSION = "0.21.0"
+
+
+def latest_geometry_rel(derived: Path, folder: str, prefix: str, root: Path) -> str:
+    paths = sorted((derived / folder).glob(f"{prefix}_*.geojson"))
+    if not paths:
+        return ""
+    return str(paths[-1].relative_to(root)).replace("\\", "/")
 
 
 def sha256_file(path: Path) -> str:
@@ -68,7 +75,7 @@ def ensure_update_log_entry(entries: List[Dict[str, object]]) -> List[Dict[str, 
     return [{
         "version": CURRENT_VERSION,
         "date": "2026-04-07",
-        "title": "Web/full geometry split, local asset delivery, and lighter public metadata loading",
+        "title": "National Camera bundle, web/full geometry split, and lighter public metadata loading",
         "changes": [
             "Rebuilt 1946-2022 municipality summary and party results from the official Eligendo open-data zip archives for Assemblea Costituente and Camera.",
             "Shifted the primary source from HTML archive navigation to the national open-data bundles, keeping HTML only as QA and fallback.",
@@ -77,7 +84,7 @@ def ensure_update_log_entry(entries: List[Dict[str, object]]) -> List[Dict[str, 
             "Aligned dataset registry, provenance, and release metadata to the shard-based delivery layout.",
             "Added a product catalog plus per-product manifests so the bundle can be navigated as product families, not only as a flat file list.",
             "Added product-level inventories that declare which election datasets, geometry years, or metadata objects are inside each product.",
-            "Split Lombardia boundary delivery into a web-optimized geometry pack for the public app plus a full-resolution geometry product for heavier downstream use.",
+            "Split Italy boundary delivery into a web-optimized geometry pack for the public app plus a full-resolution geometry product for heavier downstream use.",
             "Vendored the critical browser libraries locally so the dashboard no longer depends on public CDNs at runtime.",
             "Trimmed the documentation pages so each route fetches only the metadata layer it actually needs.",
             "Added an official-source-vs-bundle gap report to make residual coverage and geometry-join gaps explicit in the public bundle.",
@@ -100,6 +107,7 @@ def main() -> None:
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     project = manifest.setdefault("project", {})
     project["version"] = CURRENT_VERSION
+    project["title"] = "Italia Camera Explorer"
     notes = list(project.get("notes") or [])
     if EXTRA_NOTE not in notes:
         notes.append(EXTRA_NOTE)
@@ -122,18 +130,22 @@ def main() -> None:
     files = manifest.setdefault("files", {})
     if (derived / "geometry_pack_web.json").exists():
         files["geometryPack"] = "data/derived/geometry_pack_web.json"
-    if (derived / "geometries_web" / "municipalities_2026.geojson").exists():
-        files["geometry"] = "data/derived/geometries_web/municipalities_2026.geojson"
-    if (derived / "geometries_web" / "provinces_2026.geojson").exists():
-        files["provinceGeometry"] = "data/derived/geometries_web/provinces_2026.geojson"
+    web_geometry = latest_geometry_rel(derived, "geometries_web", "municipalities", root)
+    web_province_geometry = latest_geometry_rel(derived, "geometries_web", "provinces", root)
+    if web_geometry:
+        files["geometry"] = web_geometry
+    if web_province_geometry:
+        files["provinceGeometry"] = web_province_geometry
     if (derived / "geometry_pack_full.json").exists():
         files["geometryPackFull"] = "data/derived/geometry_pack_full.json"
     elif (derived / "geometry_pack.json").exists():
         files["geometryPackFull"] = "data/derived/geometry_pack.json"
-    if (derived / "geometries" / "municipalities_2026.geojson").exists():
-        files["geometryFull"] = "data/derived/geometries/municipalities_2026.geojson"
-    if (derived / "geometries" / "provinces_2026.geojson").exists():
-        files["provinceGeometryFull"] = "data/derived/geometries/provinces_2026.geojson"
+    full_geometry = latest_geometry_rel(derived, "geometries", "municipalities", root)
+    full_province_geometry = latest_geometry_rel(derived, "geometries", "provinces", root)
+    if full_geometry:
+        files["geometryFull"] = full_geometry
+    if full_province_geometry:
+        files["provinceGeometryFull"] = full_province_geometry
     if (derived / "web_geometry_report.json").exists():
         files["webGeometryReport"] = "data/derived/web_geometry_report.json"
     files["productCatalog"] = "data/products/product_catalog.json"
@@ -223,16 +235,16 @@ def main() -> None:
         data_products = json.loads(data_products_path.read_text(encoding="utf-8"))
         intended_use_defaults = {
             "camera_muni_historical": [
-                "analisi storica comunale della Camera e dell'Assemblea Costituente in Lombardia",
+                "analisi storica comunale della Camera e dell'Assemblea Costituente in Italia",
                 "dashboard pubblica e download per anno o release",
                 "base primaria per confronto territoriale e profili comunali"
             ],
-            "geometry_pack_lombardia": [
+            "geometry_pack_italy": [
                 "cartografia web ottimizzata con basi annuali dichiarate",
                 "caricamento piu leggero della dashboard pubblica",
                 "join geografico esplicito via geometry_id e municipality_id"
             ],
-            "geometry_pack_lombardia_full": [
+            "geometry_pack_italy_full": [
                 "download e ricerca con geometrie complete",
                 "riuso esterno dove la fedelta geometrica conta piu della velocita",
                 "join geografico esplicito via geometry_id e municipality_id"
@@ -244,7 +256,13 @@ def main() -> None:
         }
         for product in data_products.get("products") or []:
             if product.get("product_key") == "camera_muni_historical":
+                product["title"] = "Camera e Costituente Italia - comuni storici"
                 product["delivery_strategy"] = "summary_and_results_monolith_plus_election_shards"
+                product["intended_use"] = intended_use_defaults["camera_muni_historical"]
+            if product.get("product_key") == "geometry_pack_italy":
+                product["title"] = "Pacchetto geometrie Italia - web"
+            if product.get("product_key") == "geometry_pack_italy_full":
+                product["title"] = "Pacchetto geometrie Italia - full"
             if not (product.get("intended_use") or []):
                 product["intended_use"] = intended_use_defaults.get(str(product.get("product_key") or ""), [])
         data_products_path.write_text(json.dumps(data_products, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -376,9 +394,9 @@ def main() -> None:
                         "download_summary": row.get("download_summary"),
                         "download_results": row.get("download_results"),
                     })
-            elif product_key in {"geometry_pack_lombardia", "geometry_pack_lombardia_full"}:
+            elif product_key in {"geometry_pack_italy", "geometry_pack_italy_full"}:
                 inventory_kind = "boundary_years"
-                source_pack = geometry_pack_full_payload if product_key == "geometry_pack_lombardia_full" else geometry_pack_payload
+                source_pack = geometry_pack_full_payload if product_key == "geometry_pack_italy_full" else geometry_pack_payload
                 municipalities = source_pack.get("municipalities") or {}
                 provinces = source_pack.get("provinces") or {}
                 years = source_pack.get("availableYears") or sorted({*municipalities.keys(), *provinces.keys()}, key=lambda value: int(value))

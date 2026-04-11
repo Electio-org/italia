@@ -1,0 +1,9 @@
+{
+  "generated_by": "build_italy_geometry_pack_from_istat.py",
+  "source_zip": "C:/Users/sim11/Downloads/Limiti2021.zip",
+  "scope": "italy",
+  "year": 2021,
+  "municipalities": 7904,
+  "provinces": 107,
+  "regions": 20
+}

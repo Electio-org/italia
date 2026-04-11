@@ -1,11 +1,11 @@
 {
   "generated_by": "build_result_shards.py",
-  "release_version": "0.20.0",
+  "release_version": "0.21.0",
   "release_date": "2026-04-07",
   "products": [
     {
       "product_key": "camera_muni_historical",
-      "title": "Camera Lombardia - comuni storici",
+      "title": "Camera e Costituente Italia - comuni storici",
       "kind": "election_panel",
       "territorial_mode": "historical",
       "granularity": "municipality-election",
@@ -25,7 +25,7 @@
         "election_key"
       ],
       "intended_use": [
-        "analisi storica comunale della Camera e dell'Assemblea Costituente in Lombardia",
+        "analisi storica comunale della Camera e dell'Assemblea Costituente in Italia",
         "dashboard pubblica e download per anno o release",
         "base primaria per confronto territoriale e profili comunali"
       ],
@@ -39,13 +39,13 @@
       ]
     },
     {
-      "product_key": "geometry_pack_lombardia",
-      "title": "Pacchetto geometrie Lombardia - web",
+      "product_key": "geometry_pack_italy",
+      "title": "Pacchetto geometrie Italia - web",
       "kind": "boundary_pack",
       "territorial_mode": null,
       "granularity": "municipality/province boundary by year",
       "delivery_strategy": null,
-      "manifest_path": "data/products/geometry_pack_lombardia/manifest.json",
+      "manifest_path": "data/products/geometry_pack_italy/manifest.json",
       "dataset_count": 2,
       "primary_dataset_key": "geometryPack",
       "companion_dataset_key": "provinceGeometry",
@@ -61,22 +61,19 @@
         "join geografico esplicito via geometry_id e municipality_id"
       ],
       "inventory_kind": "boundary_years",
-      "inventory_count": 6,
+      "inventory_count": 1,
       "inventory_preview": [
-        1991,
-        2001,
-        2014,
-        2018
+        2021
       ]
     },
     {
-      "product_key": "geometry_pack_lombardia_full",
-      "title": "Pacchetto geometrie Lombardia - full",
+      "product_key": "geometry_pack_italy_full",
+      "title": "Pacchetto geometrie Italia - full",
       "kind": "boundary_pack_full",
       "territorial_mode": null,
       "granularity": "municipality/province boundary by year",
       "delivery_strategy": null,
-      "manifest_path": "data/products/geometry_pack_lombardia_full/manifest.json",
+      "manifest_path": "data/products/geometry_pack_italy_full/manifest.json",
       "dataset_count": 2,
       "primary_dataset_key": "geometryPackFull",
       "companion_dataset_key": "provinceGeometryFull",
@@ -94,12 +91,9 @@
         "join geografico esplicito via geometry_id e municipality_id"
       ],
       "inventory_kind": "boundary_years",
-      "inventory_count": 6,
+      "inventory_count": 1,
       "inventory_preview": [
-        1991,
-        2001,
-        2014,
-        2018
+        2021
       ]
     },
     {

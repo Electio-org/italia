@@ -138,7 +138,7 @@ async function loadBundle(page = 'dashboard') {
       payload.citation = await fetchText('CITATION.cff');
     } catch (error) {
       console.error(error);
-      payload.citation = `Lombardia Camera Explorer ${manifest.version || ''}`.trim();
+  payload.citation = `Italia Camera Explorer ${manifest.version || ''}`.trim();
     }
   }
   return payload;
@@ -212,7 +212,7 @@ function renderDownloadPage(bundle) {
     ['Basi geometriche', geometryRows.length, 'Boundary pack disponibili'],
     ['Geometrie web', webGeometryTotals.byte_reduction_pct != null ? `${webGeometryTotals.byte_reduction_pct}%` : 'n.d.', 'Riduzione di peso del pack web rispetto al full'],
     ['Gap forti vs archivio', archiveGapSummary.bundle_severely_partial_vs_archive ?? archiveGapSummary.bundle_below_archive_positive_tables ?? 'n.d.', 'Elezioni dove il bundle resta molto sotto il canonico'],
-    ['Vuote ma non vuote nel canonico', archiveGapSummary.bundle_empty_archive_nonempty ?? 'n.d.', 'Elezioni oggi vuote nel bundle ma non nel piu ampio archivio Lombardia'],
+    ['Vuote ma non vuote nel canonico', archiveGapSummary.bundle_empty_archive_nonempty ?? 'n.d.', 'Elezioni oggi vuote nel bundle ma non nel piu ampio archivio nazionale'],
   ];
   const statGrid = q('page-stat-grid');
   if (statGrid) {

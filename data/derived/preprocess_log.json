@@ -1,6 +1,7 @@
 {
   "generated_by": "rebuild_bundle_from_camera_opendata_archives.py",
   "source_manifest": "D:/camera_lombardia_only_suite_v5/lombardia_camera_app_v35/data/reference/camera_opendata_archives_manifest.json",
+  "scope": "italy",
   "source_rows": [
     {
       "election_key": "assemblea_costituente_1946",
@@ -10,9 +11,11 @@
       "archive_filename": "assemblea_costituente-19460602.zip",
       "primary_member": "assemblea_costituente-19460602.txt",
       "source_rows": 68172,
-      "lombardy_rows": 11905,
-      "expected_bundle_rows": 1383,
-      "unresolved_geometry_rows": 264
+      "scope": "italy",
+      "included_rows": 68172,
+      "lombardy_rows": 0,
+      "expected_bundle_rows": 7148,
+      "unresolved_geometry_rows": 2196
     },
     {
       "election_key": "camera_1948",
@@ -22,9 +25,11 @@
       "archive_filename": "camera-19480418.zip",
       "primary_member": "camera-19480418.txt",
       "source_rows": 84192,
-      "lombardy_rows": 15901,
-      "expected_bundle_rows": 1432,
-      "unresolved_geometry_rows": 218
+      "scope": "italy",
+      "included_rows": 84192,
+      "lombardy_rows": 0,
+      "expected_bundle_rows": 7618,
+      "unresolved_geometry_rows": 2806
     },
     {
       "election_key": "camera_1953",
@@ -34,9 +39,11 @@
       "archive_filename": "camera-19530607.zip",
       "primary_member": "camera-19530607.txt",
       "source_rows": 91272,
-      "lombardy_rows": 16894,
-      "expected_bundle_rows": 1474,
-      "unresolved_geometry_rows": 175
+      "scope": "italy",
+      "included_rows": 91272,
+      "lombardy_rows": 0,
+      "expected_bundle_rows": 7812,
+      "unresolved_geometry_rows": 3380
     },
     {
       "election_key": "camera_1958",
@@ -46,9 +53,11 @@
       "archive_filename": "camera-19580525.zip",
       "primary_member": "camera-19580525.txt",
       "source_rows": 85751,
-      "lombardy_rows": 16228,
-      "expected_bundle_rows": 1529,
-      "unresolved_geometry_rows": 63
+      "scope": "italy",
+      "included_rows": 85751,
+      "lombardy_rows": 0,
+      "expected_bundle_rows": 7943,
+      "unresolved_geometry_rows": 3109
     },
     {
       "election_key": "camera_1963",
@@ -58,9 +67,11 @@
       "archive_filename": "camera-19630428.zip",
       "primary_member": "camera-19630428.txt",
       "source_rows": 74230,
-      "lombardy_rows": 14211,
-      "expected_bundle_rows": 1539,
-      "unresolved_geometry_rows": 39
+      "scope": "italy",
+      "included_rows": 74230,
+      "lombardy_rows": 0,
+      "expected_bundle_rows": 7997,
+      "unresolved_geometry_rows": 2475
     },
     {
       "election_key": "camera_1968",
@@ -70,9 +81,11 @@
       "archive_filename": "camera-19680519.zip",
       "primary_member": "camera-19680519.txt",
       "source_rows": 77771,
-      "lombardy_rows": 15025,
-      "expected_bundle_rows": 1544,
-      "unresolved_geometry_rows": 18
+      "scope": "italy",
+      "included_rows": 77771,
+      "lombardy_rows": 0,
+      "expected_bundle_rows": 8015,
+      "unresolved_geometry_rows": 2602
     },
     {
       "election_key": "camera_1972",
@@ -82,9 +95,11 @@
       "archive_filename": "camera-19720507.zip",
       "primary_member": "camera-19720507.txt",
       "source_rows": 90169,
-      "lombardy_rows": 17445,
-      "expected_bundle_rows": 1546,
-      "unresolved_geometry_rows": 11
+      "scope": "italy",
+      "included_rows": 90169,
+      "lombardy_rows": 0,
+      "expected_bundle_rows": 8018,
+      "unresolved_geometry_rows": 2960
     },
     {
       "election_key": "camera_1976",
@@ -94,9 +109,11 @@
       "archive_filename": "camera-19760620.zip",
       "primary_member": "camera-19760620.txt",
       "source_rows": 76947,
-      "lombardy_rows": 14353,
-      "expected_bundle_rows": 1546,
-      "unresolved_geometry_rows": 9
+      "scope": "italy",
+      "included_rows": 76947,
+      "lombardy_rows": 0,
+      "expected_bundle_rows": 8028,
+      "unresolved_geometry_rows": 2589
     },
     {
       "election_key": "camera_1979",
@@ -106,9 +123,11 @@
       "archive_filename": "camera-19790603.zip",
       "primary_member": "camera-19790603.txt",
       "source_rows": 95554,
-      "lombardy_rows": 18796,
-      "expected_bundle_rows": 1546,
-      "unresolved_geometry_rows": 11
+      "scope": "italy",
+      "included_rows": 95554,
+      "lombardy_rows": 0,
+      "expected_bundle_rows": 8042,
+      "unresolved_geometry_rows": 3107
     },
     {
       "election_key": "camera_1983",
@@ -118,9 +137,11 @@
       "archive_filename": "camera-19830626.zip",
       "primary_member": "camera-19830626.txt",
       "source_rows": 92862,
-      "lombardy_rows": 18155,
-      "expected_bundle_rows": 1546,
-      "unresolved_geometry_rows": 11
+      "scope": "italy",
+      "included_rows": 92862,
+      "lombardy_rows": 0,
+      "expected_bundle_rows": 8050,
+      "unresolved_geometry_rows": 3100
     },
     {
       "election_key": "camera_1987",
@@ -130,9 +151,11 @@
       "archive_filename": "camera-19870614.zip",
       "primary_member": "Camera-19870614.txt",
       "source_rows": 117345,
-      "lombardy_rows": 22776,
-      "expected_bundle_rows": 1546,
-      "unresolved_geometry_rows": 0
+      "scope": "italy",
+      "included_rows": 117345,
+      "lombardy_rows": 0,
+      "expected_bundle_rows": 8055,
+      "unresolved_geometry_rows": 3853
     },
     {
       "election_key": "camera_1992",
@@ -142,9 +165,11 @@
       "archive_filename": "camera-19920405.zip",
       "primary_member": "camera-19920405.txt",
       "source_rows": 138489,
-      "lombardy_rows": 29204,
-      "expected_bundle_rows": 1546,
-      "unresolved_geometry_rows": 0
+      "scope": "italy",
+      "included_rows": 138489,
+      "lombardy_rows": 0,
+      "expected_bundle_rows": 8063,
+      "unresolved_geometry_rows": 4400
     },
     {
       "election_key": "camera_1994",
@@ -154,9 +179,11 @@
       "archive_filename": "camera-19940327.zip",
       "primary_member": "camera-19940327_Proporzionale.txt",
       "source_rows": 104494,
-      "lombardy_rows": 18644,
-      "expected_bundle_rows": 1546,
-      "unresolved_geometry_rows": 0
+      "scope": "italy",
+      "included_rows": 104494,
+      "lombardy_rows": 0,
+      "expected_bundle_rows": 7990,
+      "unresolved_geometry_rows": 3155
     },
     {
       "election_key": "camera_1996",
@@ -166,9 +193,11 @@
       "archive_filename": "camera-19960421.zip",
       "primary_member": "camera-19960421_Proporzionale.txt",
       "source_rows": 93699,
-      "lombardy_rows": 16451,
-      "expected_bundle_rows": 1545,
-      "unresolved_geometry_rows": 0
+      "scope": "italy",
+      "included_rows": 93699,
+      "lombardy_rows": 0,
+      "expected_bundle_rows": 7988,
+      "unresolved_geometry_rows": 2934
     },
     {
       "election_key": "camera_2001",
@@ -178,9 +207,11 @@
       "archive_filename": "camera-20010513.zip",
       "primary_member": "camera-20010513_Proporzionale.txt",
       "source_rows": 124978,
-      "lombardy_rows": 24533,
-      "expected_bundle_rows": 1544,
-      "unresolved_geometry_rows": 0
+      "scope": "italy",
+      "included_rows": 124978,
+      "lombardy_rows": 0,
+      "expected_bundle_rows": 7986,
+      "unresolved_geometry_rows": 3882
     },
     {
       "election_key": "camera_2006",
@@ -190,9 +221,11 @@
       "archive_filename": "camera-20060409.zip",
       "primary_member": "camera_italia-20060409.txt",
       "source_rows": 142212,
-      "lombardy_rows": 25342,
-      "expected_bundle_rows": 1496,
-      "unresolved_geometry_rows": 0
+      "scope": "italy",
+      "included_rows": 142212,
+      "lombardy_rows": 0,
+      "expected_bundle_rows": 7989,
+      "unresolved_geometry_rows": 4176
     },
     {
       "election_key": "camera_2008",
@@ -202,9 +235,11 @@
       "archive_filename": "camera-20080413.zip",
       "primary_member": "camera_italia-20080413.txt",
       "source_rows": 126059,
-      "lombardy_rows": 23222,
-      "expected_bundle_rows": 1496,
-      "unresolved_geometry_rows": 0
+      "scope": "italy",
+      "included_rows": 126059,
+      "lombardy_rows": 0,
+      "expected_bundle_rows": 7991,
+      "unresolved_geometry_rows": 3807
     },
     {
       "election_key": "camera_2013",
@@ -214,9 +249,11 @@
       "archive_filename": "camera-20130224.zip",
       "primary_member": "camera_italia-20130224.txt",
       "source_rows": 152621,
-      "lombardy_rows": 23488,
-      "expected_bundle_rows": 1489,
-      "unresolved_geometry_rows": 0
+      "scope": "italy",
+      "included_rows": 152621,
+      "lombardy_rows": 0,
+      "expected_bundle_rows": 7982,
+      "unresolved_geometry_rows": 3924
     },
     {
       "election_key": "camera_2018",
@@ -226,9 +263,11 @@
       "archive_filename": "camera-20180304.zip",
       "primary_member": "Camera2018_livComune.txt",
       "source_rows": 133824,
-      "lombardy_rows": 26524,
-      "expected_bundle_rows": 1516,
-      "unresolved_geometry_rows": 0
+      "scope": "italy",
+      "included_rows": 133824,
+      "lombardy_rows": 0,
+      "expected_bundle_rows": 7940,
+      "unresolved_geometry_rows": 1032
     },
     {
       "election_key": "camera_2022",
@@ -238,16 +277,26 @@
       "archive_filename": "camera-20220925.zip",
       "primary_member": "Camera_Italia_LivComune.csv",
       "source_rows": 117591,
-      "lombardy_rows": 23508,
-      "expected_bundle_rows": 1506,
+      "scope": "italy",
+      "included_rows": 117591,
+      "lombardy_rows": 0,
+      "expected_bundle_rows": 7830,
       "unresolved_geometry_rows": 0
     }
   ],
   "validations": {
-    "issues": [],
-    "issue_count": 0,
-    "readiness_score": 100,
-    "technical_readiness_score": 100,
+    "issues": [
+      {
+        "severity": "warning",
+        "check": "missing_province",
+        "scope": "municipality_summary",
+        "details": "Provincia vuota su righe comunali osservate.",
+        "affected_rows": 485
+      }
+    ],
+    "issue_count": 1,
+    "readiness_score": 90,
+    "technical_readiness_score": 90,
     "has_errors": false,
     "substantive_coverage_score": 100
   }

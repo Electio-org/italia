@@ -1,7 +1,7 @@
 {
   "project": {
-    "title": "Lombardia Camera Explorer",
-    "version": "0.20.0",
+    "title": "Italia Camera Explorer",
+    "version": "0.21.0",
     "ready_for_real_data": true,
     "notes": [
       "Vote shares are recomputed from votes whenever a plausible denominator is available.",
@@ -31,11 +31,11 @@
     "municipalityResultsLong": "data/derived/municipality_results_long.csv",
     "municipalityResultsLongByElectionIndex": "data/derived/municipality_results_long_by_election.json",
     "municipalityAliases": "data/derived/municipality_aliases.csv",
-    "geometry": "data/derived/geometries_web/municipalities_2026.geojson",
+    "geometry": "data/derived/geometries_web/municipalities_2021.geojson",
     "dataQualityReport": "data/derived/data_quality_report.json",
     "customIndicators": "data/derived/custom_indicators.csv",
     "geometryPack": "data/derived/geometry_pack_web.json",
-    "provinceGeometry": "data/derived/geometries_web/provinces_2026.geojson",
+    "provinceGeometry": "data/derived/geometries_web/provinces_2021.geojson",
     "datasetRegistry": "data/derived/dataset_registry.json",
     "codebook": "data/derived/codebook.json",
     "usageNotes": "data/derived/usage_notes.json",
@@ -48,8 +48,8 @@
     "siteGuides": "data/derived/site_guides.json",
     "archiveBundleGapReport": "data/derived/archive_bundle_gap_report.json",
     "geometryPackFull": "data/derived/geometry_pack_full.json",
-    "geometryFull": "data/derived/geometries/municipalities_2026.geojson",
-    "provinceGeometryFull": "data/derived/geometries/provinces_2026.geojson",
+    "geometryFull": "data/derived/geometries/municipalities_2021.geojson",
+    "provinceGeometryFull": "data/derived/geometries/provinces_2021.geojson",
     "webGeometryReport": "data/derived/web_geometry_report.json",
     "productCatalog": "data/products/product_catalog.json",
     "municipalitySummaryByElectionIndex": "data/derived/municipality_summary_by_election.json"

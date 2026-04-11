@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Preprocessing infrastructure for Lombardia Camera Explorer.
+Preprocessing infrastructure for Italia Camera Explorer.
 
 Goals for this hardened version:
 - never invent electoral data
@@ -95,7 +95,7 @@ BOOTSTRAP_PROVINCE_BY_MUNICIPALITY = {
     "olgiate molgora": "Lecco",
 }
 
-GEOMETRY_LOOKUP = pd.DataFrame(columns=["normalized_name", "normalized_province", "geometry_id", "province", "province_code"])
+GEOMETRY_LOOKUP = pd.DataFrame(columns=["normalized_name", "normalized_province", "normalized_region", "geometry_id", "province", "province_code", "region", "region_code"])
 
 
 def write_json_file(path: Path, payload: object) -> None:
@@ -107,17 +107,18 @@ def write_json_file(path: Path, payload: object) -> None:
 def load_geometry_lookup(reference_root: Path) -> pd.DataFrame:
     path = reference_root / "municipality_geometry_lookup.csv"
     if not path.exists():
-        return pd.DataFrame(columns=["normalized_name", "normalized_province", "geometry_id", "province", "province_code"])
+        return pd.DataFrame(columns=["normalized_name", "normalized_province", "normalized_region", "geometry_id", "province", "province_code", "region", "region_code"])
     try:
         df = pd.read_csv(path, dtype=str).fillna("")
     except Exception:
-        return pd.DataFrame(columns=["normalized_name", "normalized_province", "geometry_id", "province", "province_code"])
-    expected = ["normalized_name", "normalized_province", "geometry_id", "province", "province_code"]
+        return pd.DataFrame(columns=["normalized_name", "normalized_province", "normalized_region", "geometry_id", "province", "province_code", "region", "region_code"])
+    expected = ["normalized_name", "normalized_province", "normalized_region", "geometry_id", "province", "province_code", "region", "region_code"]
     for col in expected:
         if col not in df.columns:
             df[col] = ""
     df["normalized_name"] = df["normalized_name"].map(normalize_token)
     df["normalized_province"] = df["normalized_province"].map(normalize_token)
+    df["normalized_region"] = df["normalized_region"].map(normalize_token)
     return df[expected].drop_duplicates(subset=["normalized_name", "normalized_province", "geometry_id"])
 
 
@@ -134,11 +135,11 @@ def lookup_geometry_record(municipality_name: str, province: str = "") -> Dict[s
         exact = matches[matches["normalized_province"] == prov_key]
         if not exact.empty:
             row = exact.iloc[0]
-            return {"geometry_id": row.get("geometry_id", ""), "province": row.get("province", province or ""), "province_code": row.get("province_code", "")}
+            return {"geometry_id": row.get("geometry_id", ""), "province": row.get("province", province or ""), "province_code": row.get("province_code", ""), "region": row.get("region", ""), "region_code": row.get("region_code", "")}
     if not matches.empty:
         row = matches.iloc[0]
-        return {"geometry_id": row.get("geometry_id", ""), "province": row.get("province", province or ""), "province_code": row.get("province_code", "")}
-    return {"geometry_id": "", "province": province or "", "province_code": ""}
+        return {"geometry_id": row.get("geometry_id", ""), "province": row.get("province", province or ""), "province_code": row.get("province_code", ""), "region": row.get("region", ""), "region_code": row.get("region_code", "")}
+    return {"geometry_id": "", "province": province or "", "province_code": "", "region": "", "region_code": ""}
 
 
 def slugify(value: str) -> str:
@@ -391,7 +392,7 @@ def write_manifest(output_root: Path) -> None:
     geometry_info = geometry_manifest_files(output_root)
     manifest = {
         "project": {
-            "title": "Lombardia Camera Explorer",
+            "title": "Italia Camera Explorer",
             "version": "0.11.1",
             "ready_for_real_data": True,
             "notes": [
@@ -483,7 +484,7 @@ def build_dataset_registry(output_root: Path, elections: List[Dict[str, object]]
         })
     return {
         "generated_by": "preprocess.py",
-        "project": "Lombardia Camera Explorer",
+        "project": "Italia Camera Explorer",
         "datasets": rows,
         "summary": {
             "technical_readiness": quality.get("derived_validations", {}).get("technical_readiness_score"),
@@ -534,7 +535,7 @@ def build_usage_notes_payload(quality: Dict[str, object], geometry_info: Dict[st
         {"key": "geometry_basis", "title": "Base geometrica", "severity": "info", "text": f"Geometrie comunali disponibili per gli anni: {', '.join(sorted((geometry_info.get('municipalities') or {}).keys(), key=int)) or 'nessuno'}. Se scegli una base geometrica esplicita, stai cambiando la rappresentazione cartografica, non il dato elettorale sottostante."},
         {"key": "coverage", "title": "Copertura sostanziale", "severity": "warn" if (derived.get('substantive_coverage_score') or 0) < 50 else "info", "text": f"La readiness tecnica può essere alta anche con copertura sostanziale bassa. Bundle attuale: technical={derived.get('technical_readiness_score')}, substantive={derived.get('substantive_coverage_score')}."},
         {"key": "shares", "title": "Quote di partito", "severity": "info", "text": "Le quote sono ricalcolate dai voti quando il denominatore è plausibile. Se i risultati di partito sono incompleti, le quote vanno lette come parziali e non come distribuzione esaustiva."},
-        {"key": "province_region", "title": "Contesto provinciale e regionale", "severity": "info", "text": "I confronti con provincia e Lombardia sono calcolati come aggregati pesati sui conteggi disponibili, non come media semplice dei comuni."}
+        {"key": "province_region", "title": "Contesto provinciale e regionale", "severity": "info", "text": "I confronti con provincia e Italia sono calcolati come aggregati pesati sui conteggi disponibili, non come media semplice dei comuni."}
     ]
     return {"generated_by": "preprocess.py", "notes": notes}
 
@@ -546,7 +547,7 @@ def build_data_products_payload() -> Dict[str, object]:
         "products": [
             {
                 "product_key": "camera_muni_historical",
-                "title": "Camera e Costituente Lombardia · comuni storici",
+                "title": "Camera e Costituente Italia - comuni storici",
                 "kind": "election_panel",
                 "territorial_mode": "historical",
                 "granularity": "municipality-election",
@@ -560,8 +561,8 @@ def build_data_products_payload() -> Dict[str, object]:
                 ]
             },
             {
-                "product_key": "geometry_pack_lombardia",
-                "title": "Pacchetto geometrie Lombardia",
+                "product_key": "geometry_pack_italy",
+                "title": "Pacchetto geometrie Italia",
                 "kind": "boundary_pack",
                 "granularity": "municipality/province boundary by year",
                 "primary_dataset_key": "geometryPack",
@@ -1362,9 +1363,9 @@ def build_summary(turnout_rows: pd.DataFrame, party_rows: pd.DataFrame) -> pd.Da
 
 def build_master_tables(summary_rows: pd.DataFrame, party_rows: pd.DataFrame, elections: List[Dict[str, object]]) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     municipalities = (
-        summary_rows[["municipality_id", "municipality_name", "province", "geometry_id", "election_year"]].copy()
+        summary_rows[["municipality_id", "municipality_name", "province", "region", "geometry_id", "election_year"]].copy()
         if not summary_rows.empty
-        else pd.DataFrame(columns=["municipality_id", "municipality_name", "province", "geometry_id", "election_year"])
+        else pd.DataFrame(columns=["municipality_id", "municipality_name", "province", "region", "geometry_id", "election_year"])
     )
     if not municipalities.empty:
         municipalities = municipalities[municipalities["municipality_name"].fillna("").astype(str).str.strip() != ""]
@@ -1372,6 +1373,7 @@ def build_master_tables(summary_rows: pd.DataFrame, party_rows: pd.DataFrame, el
         municipalities["municipality_id"] = municipalities["municipality_id"].astype(str).str.strip()
         municipalities["municipality_name"] = municipalities["municipality_name"].astype(str).str.strip()
         municipalities["province"] = municipalities["province"].fillna("").astype(str).str.strip()
+        municipalities["region"] = municipalities["region"].fillna("").astype(str).str.strip()
         municipalities["geometry_id"] = municipalities["geometry_id"].fillna("").astype(str).str.strip()
         municipalities["election_year"] = pd.to_numeric(municipalities["election_year"], errors="coerce")
         municipalities = municipalities.sort_values(["municipality_id", "election_year", "municipality_name"], ascending=[True, False, True])
@@ -1382,6 +1384,7 @@ def build_master_tables(summary_rows: pd.DataFrame, party_rows: pd.DataFrame, el
         municipalities["resolved_geometry_id"] = muni_enrichment["geometry_id"].fillna("")
         municipalities["resolved_province_current"] = muni_enrichment["province"].fillna("")
         municipalities["resolved_province_code_current"] = muni_enrichment["province_code"].fillna("")
+        municipalities["resolved_region"] = muni_enrichment.get("region", pd.Series("", index=municipalities.index)).fillna("")
         canonical = municipalities.drop_duplicates(subset=["municipality_id"], keep="first").copy()
         alias_map = (
             municipalities.groupby("municipality_id")["municipality_name"]
@@ -1407,7 +1410,10 @@ def build_master_tables(summary_rows: pd.DataFrame, party_rows: pd.DataFrame, el
             axis=1,
         )
         canonical["province_code_current"] = canonical["resolved_province_code_current"]
-        canonical["region"] = "Lombardia"
+        canonical["region"] = canonical.apply(
+            lambda r: str(r.get("resolved_region") or "").strip() or str(r.get("region") or "").strip(),
+            axis=1,
+        )
         canonical["geometry_id"] = canonical.apply(
             lambda r: str(r.get("resolved_geometry_id") or "").strip() or str(r.get("geometry_id") or "").strip() or str(r.get("municipality_id") or "").strip(),
             axis=1,
@@ -1625,7 +1631,7 @@ def finalize_elections_master(elections: List[Dict[str, object]], summary_rows: 
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Prepare derived scaffolding for Lombardia Camera Explorer")
+    parser = argparse.ArgumentParser(description="Prepare derived scaffolding for Italia Camera Explorer")
     parser.add_argument("--source-root", required=True, help="Root with camera_YYYY folders and optional *_clean / *_raw")
     parser.add_argument("--output-root", required=True, help="App project root")
     args = parser.parse_args()

@@ -1,26 +1,11 @@
 {
   "availableYears": [
-    "1991",
-    "2001",
-    "2014",
-    "2018",
-    "2021",
-    "2026"
+    "2021"
   ],
   "municipalities": {
-    "1991": "data/derived/geometries/municipalities_1991.geojson",
-    "2001": "data/derived/geometries/municipalities_2001.geojson",
-    "2014": "data/derived/geometries/municipalities_2014.geojson",
-    "2018": "data/derived/geometries/municipalities_2018.geojson",
-    "2021": "data/derived/geometries/municipalities_2021.geojson",
-    "2026": "data/derived/geometries/municipalities_2026.geojson"
+    "2021": "data/derived/geometries/municipalities_2021.geojson"
   },
   "provinces": {
-    "1991": "data/derived/geometries/provinces_1991.geojson",
-    "2001": "data/derived/geometries/provinces_2001.geojson",
-    "2014": "data/derived/geometries/provinces_2014.geojson",
-    "2018": "data/derived/geometries/provinces_2018.geojson",
-    "2021": "data/derived/geometries/provinces_2021.geojson",
-    "2026": "data/derived/geometries/provinces_2026.geojson"
+    "2021": "data/derived/geometries/provinces_2021.geojson"
   }
 }

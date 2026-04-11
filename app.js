@@ -53,7 +53,7 @@ import {
 import { AUDIENCE_MODES, GLOSSARY_ENTRIES, GUIDED_QUESTION_BANK, DEFAULT_SITE_LAYERS, DEFAULT_METHOD_EXPLAINERS, DEFAULT_FAQ_ITEMS, DEFAULT_SITE_MANIFESTO, DEFAULT_SIGNATURE_PILLARS } from './modules/guidance.js';
 import { createAnalysisModes, DEFAULT_NEXT_ACTIONS, DEFAULT_COLLAPSED_PANELS } from './modules/app-shell.js';
 
-const LOCAL_STORAGE_KEY = 'lombardia_camera_explorer_state_v33';
+const LOCAL_STORAGE_KEY = 'italia_camera_explorer_state_v1';
 
 const state = {
   manifest: null,
@@ -231,7 +231,7 @@ function metricReadableExplanation() {
     case 'dominance_changes': return 'La mappa mostra quante volte cambia il partito dominante nel comune.';
     case 'concentration': return 'La mappa mostra quanto il voto è concentrato su pochi soggetti politici.';
     case 'over_performance_province': return 'La mappa mostra quanto la selezione attiva va meglio o peggio rispetto alla provincia.';
-    case 'over_performance_region': return 'La mappa mostra quanto la selezione attiva va meglio o peggio rispetto alla Lombardia.';
+    case 'over_performance_region': return "La mappa mostra quanto la selezione attiva va meglio o peggio rispetto all'Italia.";
     case 'stability_index': return 'La mappa mostra una sintesi di continuità e stabilità della traiettoria comunale.';
     case 'custom_indicator': return 'La mappa mostra un indicatore esterno caricato nel bundle.';
     default: return 'La mappa mostra la metrica attiva sul filtro corrente.';
@@ -460,7 +460,7 @@ print(summary.head())`;
 function buildProjectCitation() {
   const version = currentReleaseVersion();
   const date = currentReleaseDate();
-  return `Lombardia Camera Explorer, release ${version} (${date}). Bundle statico boundary-aware per l'analisi comunale delle elezioni della Camera e dell'Assemblea Costituente in Lombardia.`;
+  return `Italia Camera Explorer, release ${version} (${date}). Bundle statico boundary-aware per l'analisi comunale delle elezioni della Camera e dell'Assemblea Costituente in Italia.`;
 }
 
 function researchRecipesForAudience() {
@@ -524,7 +524,7 @@ function metricSentenceForRow(row) {
     case 'dominance_changes': return `cambi di dominanza ${formatMetricValue(metricValue)}`;
     case 'concentration': return `concentrazione ${formatMetricValue(metricValue)}`;
     case 'over_performance_province': return `scarto vs provincia ${formatMetricValue(metricValue)}`;
-    case 'over_performance_region': return `scarto vs Lombardia ${formatMetricValue(metricValue)}`;
+    case 'over_performance_region': return `scarto vs Italia ${formatMetricValue(metricValue)}`;
     case 'stability_index': return `stabilità ${formatMetricValue(metricValue)}`;
     case 'custom_indicator': return `${selection} ${formatMetricValue(metricValue)}`;
     default: return `${metricLabel().toLowerCase()} ${formatMetricValue(metricValue)}`;
@@ -571,7 +571,7 @@ function buildViewBriefing(rows = filteredRowsWithMetric(state)) {
   if (currentRow?.comparability_note) caution.push(`Comune selezionato: ${currentRow.comparability_note}`);
   if (!state.geometry?.features?.length) caution.push('Le geometrie attive mancano o non sono caricabili: la lettura spaziale è limitata.');
 
-  if ((state.qualityReport?.derived_validations?.substantive_coverage_score ?? 0) < 40) cannotSay.push('Questa vista non basta per descrivere da sola la storia elettorale completa della Lombardia.');
+  if ((state.qualityReport?.derived_validations?.substantive_coverage_score ?? 0) < 40) cannotSay.push("Questa vista non basta per descrivere da sola la storia elettorale completa dell'Italia.");
   if (state.selectedMetric === 'first_party') cannotSay.push('Il primo partito non misura da solo il margine della vittoria né la distanza dagli inseguitori.');
   if (state.selectedMetric === 'turnout') cannotSay.push("L'affluenza non identifica da sola quali partiti siano forti o deboli.");
   if (state.selectedMetric === 'party_share') cannotSay.push("La quota della selezione attiva non equivale all'intera distribuzione del voto nel comune.");
@@ -1244,7 +1244,7 @@ function currentViewCitation(evidence = buildEvidenceLadder()) {
     ? (customIndicatorMeta(state.selectedCustomIndicator).label || state.selectedCustomIndicator || metricLabel())
     : (state.selectedParty || metricLabel());
   const generated = new Date().toISOString().slice(0, 10);
-  return `Lombardia Camera Explorer, vista "${metricLabel()}" (${selection}) su ${election}${compare}; modalità territoriale ${state.territorialMode}; base geometrica ${state.geometryReferenceYear || 'auto'}; bundle ${bundleVersion}; livello di evidenza ${evidence.badge}; consultato il ${generated}.`;
+  return `Italia Camera Explorer, vista "${metricLabel()}" (${selection}) su ${election}${compare}; modalità territoriale ${state.territorialMode}; base geometrica ${state.geometryReferenceYear || 'auto'}; bundle ${bundleVersion}; livello di evidenza ${evidence.badge}; consultato il ${generated}.`;
 }
 
 function currentReproducibilityLine() {
@@ -1285,7 +1285,7 @@ function renderStatusPanel() {
     <div class="status-banner ${state.geometry?.features?.length ? 'ok' : 'warn'}">
       <strong>${state.geometry?.features?.length ? 'Geometrie ISTAT caricate' : 'Modalità data-first'}</strong>
       <div class="helper-text" style="margin-top:4px">Sorgente attiva: <strong>${sourceText}</strong>.</div>
-      <div class="helper-text" style="margin-top:4px">Confini comunali Lombardia disponibili per: ${geometryYears}. Modalità attiva: ${escapeHtml(state.territorialMode)} · base geometrica: <strong>${escapeHtml(String(state.geometryReferenceYear || 'auto'))}</strong>.</div>
+    <div class="helper-text" style="margin-top:4px">Confini comunali Italia disponibili per: ${geometryYears}. Modalità attiva: ${escapeHtml(state.territorialMode)} · base geometrica: <strong>${escapeHtml(String(state.geometryReferenceYear || 'auto'))}</strong>.</div>
       <div class="helper-text" style="margin-top:4px">Readiness tecnica: ${fmtInt(technical)} · copertura sostanziale: ${fmtInt(substantive)}.</div>
       <div class="helper-text" style="margin-top:4px">${escapeHtml(summaryHydrationSummary())}</div>
       <div class="helper-text" style="margin-top:4px">${escapeHtml(resultsHydrationSummary())}</div>
@@ -1318,7 +1318,7 @@ function datasetFileDescriptors() {
     { key: 'parties', label: 'Parties master', rows: state.parties.length, path: files.partiesMaster, note: 'Normalizzazione partiti/famiglie/blocchi.' },
     { key: 'lineage', label: 'Territorial lineage', rows: state.lineage.length, path: files.territorialLineage, note: 'Lineage territoriale e note di armonizzazione.' },
     { key: 'quality', label: 'Data quality report', rows: (state.qualityReport?.datasets || []).length, path: files.dataQualityReport, note: 'Audit di plausibilità, coverage e readiness.' },
-    { key: 'archiveGap', label: 'Archive bundle gap report', rows: (state.archiveBundleGapReport || []).length, path: files.archiveBundleGapReport, note: 'Confronto esplicito tra bundle pubblicato e archivio canonico Lombardia.' }
+    { key: 'archiveGap', label: 'Archive bundle gap report', rows: (state.archiveBundleGapReport || []).length, path: files.archiveBundleGapReport, note: 'Confronto esplicito tra bundle pubblicato e archivio canonico nazionale.' }
   ].filter(d => d.path);
 }
 
@@ -2026,7 +2026,7 @@ function metricLabel() {
     dominance_changes: 'Cambi dominanza',
     concentration: 'Concentrazione del voto',
     over_performance_province: 'Scarto vs provincia',
-    over_performance_region: 'Scarto vs Lombardia',
+  over_performance_region: 'Scarto vs Italia',
     stability_index: 'Indice di stabilità',
     custom_indicator: customIndicatorMeta(state.selectedCustomIndicator).label || 'Indicatore custom'
   };
@@ -2149,7 +2149,7 @@ function renderOverviewCards(rows) {
   const topLeaderN = leaderCounts[0]?.[1] || 0;
 
   const cards = [
-    { label: 'Comuni visibili', value: fmtInt(rows.length), sub: `${state.selectedProvinceSet.size ? 'province filtrate' : 'tutta la Lombardia / dataset disponibile'}` },
+    { label: 'Comuni visibili', value: fmtInt(rows.length), sub: `${state.selectedProvinceSet.size ? 'province filtrate' : 'tutta Italia / dataset disponibile'}` },
     { label: 'Affluenza media', value: avgTurnout != null ? `${fmtPct(avgTurnout)}%` : '—', sub: 'media dei comuni filtrati' },
     { label: 'Quota media selezione', value: avgPartyShare != null ? `${fmtPct(avgPartyShare)}%` : '—', sub: `${state.selectedParty || 'nessuna selezione'} · ${state.selectedPartyMode}` },
     { label: 'Partito più spesso primo', value: topLeader, sub: `${topLeaderN} comuni in testa` },
@@ -2400,7 +2400,7 @@ function showTooltip(event, feature, row) {
     Primo partito: ${escapeHtml(firstParty)}<br>
     ${escapeHtml(metricLabel())}: ${escapeHtml(metricValueStr)}<br>
     Diff. provincia: ${provinceAvg != null ? `${fmtPctSigned((typeof metricValue === 'number' ? metricValue : null) - provinceAvg)} pt` : '—'}<br>
-    Diff. Lombardia: ${regionAvg != null ? `${fmtPctSigned((typeof metricValue === 'number' ? metricValue : null) - regionAvg)} pt` : '—'}<br>
+        Diff. Italia: ${regionAvg != null ? `${fmtPctSigned((typeof metricValue === 'number' ? metricValue : null) - regionAvg)} pt` : '—'}<br>
     Stato territoriale: ${escapeHtml(row?.territorial_status || '—')}<br>
     <span style="color:#94a3b8">Shift+click per aggiungere/rimuovere nel comparatore</span>
     ${row?.comparability_note ? `<br>Nota: ${escapeHtml(row.comparability_note)}` : ''}
@@ -2418,7 +2418,7 @@ function showTooltip(event, feature, row) {
         <div><span>Primo partito</span><strong>${escapeHtml(firstParty)}</strong></div>
         <div><span>Stato territoriale</span><strong>${escapeHtml(row?.territorial_status || '—')}</strong></div>
         <div><span>Vs provincia</span><strong>${escapeHtml(provinceDelta)}</strong></div>
-        <div><span>Vs Lombardia</span><strong>${escapeHtml(regionDelta)}</strong></div>
+        <div><span>Vs Italia</span><strong>${escapeHtml(regionDelta)}</strong></div>
       </div>
       ${comparabilityNote}
       <div class="tooltip-hint">Shift+click per aggiungere o rimuovere il comune dal comparatore</div>
@@ -2516,10 +2516,10 @@ function renderDetail() {
       <div class="keyvals">
         <div><span>Affluenza comune</span>${currentRow.turnout_pct != null ? `${fmtPct(currentRow.turnout_pct)}%` : '—'}</div>
         <div><span>Vs provincia</span>${currentRow.turnout_pct != null && provinceTurnout != null ? `${fmtPctSigned(currentRow.turnout_pct - provinceTurnout)} pt` : '—'}</div>
-        <div><span>Vs Lombardia</span>${currentRow.turnout_pct != null && regionTurnout != null ? `${fmtPctSigned(currentRow.turnout_pct - regionTurnout)} pt` : '—'}</div>
+        <div><span>Vs Italia</span>${currentRow.turnout_pct != null && regionTurnout != null ? `${fmtPctSigned(currentRow.turnout_pct - regionTurnout)} pt` : '—'}</div>
         <div><span>Primo partito</span>${escapeHtml(currentRow.first_party_std || '—')}</div>
         <div><span>${escapeHtml(state.selectedParty || 'Quota attiva')}</span>${currentPartyShare != null ? `${fmtPct(currentPartyShare)}%` : '—'}</div>
-        <div><span>Vs provincia / Lombardia</span>${currentPartyShare != null ? `${provincePartyShare != null ? fmtPctSigned(currentPartyShare - provincePartyShare) : '—'} / ${regionPartyShare != null ? fmtPctSigned(currentPartyShare - regionPartyShare) : '—'} pt` : '—'}</div>
+        <div><span>Vs provincia / Italia</span>${currentPartyShare != null ? `${provincePartyShare != null ? fmtPctSigned(currentPartyShare - provincePartyShare) : '—'} / ${regionPartyShare != null ? fmtPctSigned(currentPartyShare - regionPartyShare) : '—'} pt` : '—'}</div>
         <div><span>Margine 1°-2°</span>${currentRow.first_second_margin != null ? `${fmtPct(currentRow.first_second_margin)} pt` : '—'}</div>
         <div><span>Delta vs confronto</span>${compareRow ? `${fmtPctSigned((currentPartyShare ?? 0) - (aggregateShareFor(state, compareRow.election_key, state.selectedMunicipalityId, state.selectedParty) ?? 0))} pt` : '—'}</div>
         <div><span>Rank affluenza</span>${turnoutRank != null ? `#${fmtInt(turnoutRank)} / ${fmtInt(state.filteredRows.length)}` : '—'}</div>
@@ -2557,7 +2557,7 @@ function municipalityStoryNotes(profileRows, currentRow, compareRow, lineage, cu
   if (turnoutAvg != null) notes.push(`Affluenza media storica ${fmtPct(turnoutAvg)}%.`);
   if (bestPoint) notes.push(`${state.selectedParty || 'La selezione attiva'} tocca il suo massimo nel ${bestPoint.year} con ${fmtPct(bestPoint.value)}%${worstPoint ? ` (minimo ${worstPoint.year}: ${fmtPct(worstPoint.value)}%)` : ''}.`);
   if (currentPartyShare != null && provincePartyShare != null) notes.push(`Nel ${currentRow.election_year}, il comune è ${fmtPctSigned(currentPartyShare - provincePartyShare)} punti rispetto alla media provinciale sulla selezione attiva.`);
-  if (currentPartyShare != null && regionPartyShare != null) notes.push(`Rispetto alla Lombardia nello stesso anno, il differenziale è ${fmtPctSigned(currentPartyShare - regionPartyShare)} punti.`);
+  if (currentPartyShare != null && regionPartyShare != null) notes.push(`Rispetto all'Italia nello stesso anno, il differenziale è ${fmtPctSigned(currentPartyShare - regionPartyShare)} punti.`);
   if (compareRow && currentRow) {
     const compareShare = aggregateShareFor(state, compareRow.election_key, state.selectedMunicipalityId, state.selectedParty);
     if (currentPartyShare != null && compareShare != null) notes.push(`Tra ${compareRow.election_year} e ${currentRow.election_year} la selezione attiva si muove di ${fmtPctSigned(currentPartyShare - compareShare)} punti.`);
@@ -2598,7 +2598,7 @@ function renderTrajectoryStoryboard(profileRows, currentRow, compareRow) {
     { title: 'Arco osservato', main: `${firstYear || '—'}–${lastYear || '—'}`, sub: `${profileRows.length} elezioni utili · ${leaders.length} leader diversi` },
     { title: 'Segnale selezione attiva', main: trend, sub: currentShare != null ? `oggi ${fmtPct(currentShare)}%${compareShare != null ? ` · vs confronto ${fmtPctSigned(currentShare - compareShare)} pt` : ''}` : 'quota non disponibile' },
     { title: 'Run dominante più lungo', main: run ? run.leader : '—', sub: run ? `${run.from}–${run.to} · ${run.elections} elezioni consecutive` : 'nessun run leggibile' },
-    { title: 'Scarti nel contesto', main: overProv != null ? `${fmtPctSigned(overProv)} pt vs provincia` : 'scarto n/d', sub: overReg != null ? `${fmtPctSigned(overReg)} pt vs Lombardia` : 'scarto regionale n/d' },
+    { title: 'Scarti nel contesto', main: overProv != null ? `${fmtPctSigned(overProv)} pt vs provincia` : 'scarto n/d', sub: overReg != null ? `${fmtPctSigned(overReg)} pt vs Italia` : 'scarto nazionale n/d' },
     { title: 'Fasi storiche', main: segments.map(seg => `${seg.from}–${seg.to}`).join(' · '), sub: segments.map(seg => `${seg.label}: ${seg.dominant}`).join(' · ') }
   ];
   els.trajectoryStoryboard.innerHTML = storyCards.map(card => `<div class="story-card"><h4>${escapeHtml(card.title)}</h4><div class="big">${escapeHtml(card.main)}</div><div class="helper-text">${escapeHtml(card.sub)}</div></div>`).join('');
@@ -2685,7 +2685,7 @@ function buildTrajectorySeries(profileRows) {
         { key: 'Affluenza', data: turnoutSeries, color: '#60a5fa', dash: '4,3' },
         { key: `${state.selectedParty || 'Selezione attiva'} · comune`, data: selectedSeries, color: getGroupColor(state.selectedParty) },
         { key: 'Provincia', data: provinceSeries, color: '#f59e0b', dash: '6,4' },
-        { key: 'Lombardia', data: regionSeries, color: '#94a3b8', dash: '2,5' }
+    { key: 'Italia', data: regionSeries, color: '#94a3b8', dash: '2,5' }
       ].filter(s => s.data.length),
       years
     };
@@ -3979,7 +3979,7 @@ function renderContextCompareChart(profileRows, currentRow) {
   const rows = [
     { label: 'Quota attiva · comune', value: aggregateShareFor(state, currentRow.election_key, currentRow.municipality_id, state.selectedParty), color: getGroupColor(state.selectedParty) },
     { label: 'Quota attiva · provincia', value: state.indices.provinceGroupMaps[state.selectedPartyMode]?.get(`${currentRow.election_key}__${currentRow.province}__${state.selectedParty}`) ?? null, color: '#f59e0b' },
-    { label: 'Quota attiva · Lombardia', value: state.indices.regionGroupMaps[state.selectedPartyMode]?.get(`${currentRow.election_key}__${state.selectedParty}`) ?? null, color: '#94a3b8' },
+      { label: 'Quota attiva · Italia', value: state.indices.regionGroupMaps[state.selectedPartyMode]?.get(`${currentRow.election_key}__${state.selectedParty}`) ?? null, color: '#94a3b8' },
     { label: 'Affluenza · comune', value: currentRow.turnout_pct, color: '#38bdf8' },
     { label: 'Affluenza · provincia', value: state.indices.provinceSummaryMap.get(`${currentRow.election_key}__${currentRow.province}`)?.turnout_pct ?? null, color: '#fb7185' },
     { label: 'Indice stabilità', value: computeStabilityIndex(state, currentRow.municipality_id), color: '#22c55e' }
@@ -4287,7 +4287,7 @@ function renderGroupComparePanel() {
     { key: 'compare', label: 'Comparatore', color: '#38bdf8', values: comparator },
     { key: 'bookmarks', label: 'Bookmark', color: '#f59e0b', values: bookmarks },
     { key: 'province', label: state.selectedProvinceSet.size === 1 ? `Provincia · ${[...state.selectedProvinceSet][0]}` : 'Province filtrate', color: '#a78bfa', values: province },
-    { key: 'region', label: 'Lombardia', color: '#94a3b8', values: region }
+    { key: 'region', label: 'Italia', color: '#94a3b8', values: region }
   ].filter(s => s.values.length);
   if (series.length < 2) {
     els.groupCompareSummary.textContent = 'Aggiungi comuni al comparatore o ai bookmark per vedere una traiettoria media confrontata con il contesto.';

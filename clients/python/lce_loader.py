@@ -20,7 +20,7 @@ def _sha256_file(path: Path) -> str:
 
 
 @dataclass
-class LombardiaCameraBundle:
+class ItaliaCameraBundle:
     root: Path
     manifest: Dict[str, Any]
 
@@ -36,6 +36,7 @@ class LombardiaCameraBundle:
         return (self.root / relpath).resolve()
 
     def read_csv(self, relpath: str, **kwargs) -> pd.DataFrame:
+        kwargs.setdefault("low_memory", False)
         return pd.read_csv(self.resolve(relpath), **kwargs)
 
     def read_json(self, relpath: str) -> Dict[str, Any]:
@@ -48,6 +49,7 @@ class LombardiaCameraBundle:
         path = self.resolve(rel)
         suffix = path.suffix.lower()
         if suffix == '.csv':
+            kwargs.setdefault("low_memory", False)
             return pd.read_csv(path, **kwargs)
         if suffix in {'.json', '.geojson'}:
             return json.loads(path.read_text(encoding='utf-8'))
@@ -183,7 +185,7 @@ class LombardiaCameraBundle:
         citation_path = self.root / 'CITATION.cff'
         if citation_path.exists():
             return citation_path.read_text(encoding='utf-8')
-        return f"Lombardia Camera Explorer, release {self.version}."
+        return f"Italia Camera Explorer, release {self.version}."
 
     def current_release(self) -> Dict[str, Any]:
         release = self.release_manifest()
@@ -221,16 +223,19 @@ def locate_manifest(root: Path) -> Path:
     raise FileNotFoundError('manifest.json non trovato in data/derived o nella root del bundle')
 
 
-def load_bundle(root: str | Path = '.') -> LombardiaCameraBundle:
+LombardiaCameraBundle = ItaliaCameraBundle
+
+
+def load_bundle(root: str | Path = '.') -> ItaliaCameraBundle:
     root_path = Path(root).resolve()
     manifest_path = locate_manifest(root_path)
     manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
     bundle_root = manifest_path.parent.parent.parent if manifest_path.parent.name == 'derived' else manifest_path.parent
-    return LombardiaCameraBundle(root=bundle_root, manifest=manifest)
+    return ItaliaCameraBundle(root=bundle_root, manifest=manifest)
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description='Loader ufficiale Python per il bundle Lombardia Camera Explorer')
+    parser = argparse.ArgumentParser(description='Loader ufficiale Python per il bundle Italia Camera Explorer')
     parser.add_argument('--root', default='.', help='Root del progetto o root del bundle')
     parser.add_argument('--dataset', help='Chiave del dataset da caricare dal manifest')
     parser.add_argument('--head', type=int, default=5, help='Numero di righe da mostrare per i CSV')

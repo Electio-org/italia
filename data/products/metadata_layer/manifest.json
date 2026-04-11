@@ -1,6 +1,6 @@
 {
   "generated_by": "build_result_shards.py",
-  "release_version": "0.20.0",
+  "release_version": "0.21.0",
   "release_date": "2026-04-07",
   "product": {
     "product_key": "metadata_layer",
@@ -30,10 +30,10 @@
       "dataset_key": "datasetRegistry",
       "path": "data/derived/dataset_registry.json",
       "kind": "json",
-      "size_bytes": 12812,
+      "size_bytes": 11346,
       "row_count": null,
       "feature_count": null,
-      "sha256": "d9371f05752b674ac4cbdd9f18ba71a2da4ac88573d54af6a3ef3c0389a83e73"
+      "sha256": "3f555edef2adc81f5512a1a10725f91534a8bcb1a0f3d279dc5b4bd4eb1cbf6d"
     },
     {
       "role": "companion",
@@ -50,40 +50,40 @@
       "dataset_key": "usageNotes",
       "path": "data/derived/usage_notes.json",
       "kind": "json",
-      "size_bytes": 1902,
+      "size_bytes": 1868,
       "row_count": null,
       "feature_count": null,
-      "sha256": "7c2141c609559a3af57aeb7c32ea79e91224ce15e0d659ccb900c1ef2c685798"
+      "sha256": "093e8ea9da64b22995bd77ce68a0f94580e6415a0d02cfb1fc353706cc4938a6"
     },
     {
       "role": "extra",
       "dataset_key": "updateLog",
       "path": "data/derived/update_log.json",
       "kind": "json",
-      "size_bytes": 14535,
+      "size_bytes": 16280,
       "row_count": null,
       "feature_count": null,
-      "sha256": "ac58203eba6dcf07f617307579fc7230c2f60d06cca262c4376d385185105450"
+      "sha256": "b074a1f106121edf557345538447dec491799afbf6a75431ed8d3b40a6b44308"
     },
     {
       "role": "extra",
       "dataset_key": "archiveBundleGapReport",
       "path": "data/derived/archive_bundle_gap_report.json",
       "kind": "json",
-      "size_bytes": 17606,
+      "size_bytes": 18091,
       "row_count": null,
       "feature_count": null,
-      "sha256": "8bb4552fc83fa7c7f99130ec0a71dbc862af84ed4865ef5aeb769a803437321f"
+      "sha256": "aa78f62582d45ddeb769b21ab113637076900de048df58314b6b7d19ddb1433a"
     },
     {
       "role": "extra",
       "dataset_key": "webGeometryReport",
       "path": "data/derived/web_geometry_report.json",
       "kind": "json",
-      "size_bytes": 5127,
+      "size_bytes": 1155,
       "row_count": null,
       "feature_count": null,
-      "sha256": "8bb36523291404015e346fbb29cc5b513fc0c420c3096e808b4ccd69bbf5de02"
+      "sha256": "6a42464ecffb922fedc4ed76f7ad824ca271fe0fe69e97bb8e050b4953938983"
     }
   ],
   "inventory": {
@@ -94,7 +94,7 @@
         "dataset_key": "datasetRegistry",
         "path": "data/derived/dataset_registry.json",
         "kind": "json",
-        "size_bytes": 12812,
+        "size_bytes": 11346,
         "row_count": null,
         "feature_count": null
       },
@@ -110,7 +110,7 @@
         "dataset_key": "usageNotes",
         "path": "data/derived/usage_notes.json",
         "kind": "json",
-        "size_bytes": 1902,
+        "size_bytes": 1868,
         "row_count": null,
         "feature_count": null
       },
@@ -118,7 +118,7 @@
         "dataset_key": "updateLog",
         "path": "data/derived/update_log.json",
         "kind": "json",
-        "size_bytes": 14535,
+        "size_bytes": 16280,
         "row_count": null,
         "feature_count": null
       },
@@ -126,7 +126,7 @@
         "dataset_key": "archiveBundleGapReport",
         "path": "data/derived/archive_bundle_gap_report.json",
         "kind": "json",
-        "size_bytes": 17606,
+        "size_bytes": 18091,
         "row_count": null,
         "feature_count": null
       },
@@ -134,7 +134,7 @@
         "dataset_key": "webGeometryReport",
         "path": "data/derived/web_geometry_report.json",
         "kind": "json",
-        "size_bytes": 5127,
+        "size_bytes": 1155,
         "row_count": null,
         "feature_count": null
       }

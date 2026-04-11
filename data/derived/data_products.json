@@ -4,7 +4,7 @@
   "products": [
     {
       "product_key": "camera_muni_historical",
-      "title": "Camera Lombardia - comuni storici",
+      "title": "Camera e Costituente Italia - comuni storici",
       "kind": "election_panel",
       "territorial_mode": "historical",
       "granularity": "municipality-election",
@@ -21,14 +21,14 @@
       ],
       "delivery_strategy": "summary_and_results_monolith_plus_election_shards",
       "intended_use": [
-        "analisi storica comunale della Camera e dell'Assemblea Costituente in Lombardia",
+        "analisi storica comunale della Camera e dell'Assemblea Costituente in Italia",
         "dashboard pubblica e download per anno o release",
         "base primaria per confronto territoriale e profili comunali"
       ]
     },
     {
-      "product_key": "geometry_pack_lombardia",
-      "title": "Pacchetto geometrie Lombardia - web",
+      "product_key": "geometry_pack_italy",
+      "title": "Pacchetto geometrie Italia - web",
       "kind": "boundary_pack",
       "granularity": "municipality/province boundary by year",
       "primary_dataset_key": "geometryPack",
@@ -44,8 +44,8 @@
       ]
     },
     {
-      "product_key": "geometry_pack_lombardia_full",
-      "title": "Pacchetto geometrie Lombardia - full",
+      "product_key": "geometry_pack_italy_full",
+      "title": "Pacchetto geometrie Italia - full",
       "kind": "boundary_pack_full",
       "granularity": "municipality/province boundary by year",
       "primary_dataset_key": "geometryPackFull",

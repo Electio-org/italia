@@ -1,6 +1,6 @@
-# Lombardia Camera Explorer Docs
+# Italia Camera Explorer Docs
 
-Documentazione sintetica della build Lombardia-oriented.
+Documentazione sintetica della build Italia-oriented.
 
 ## Cosa descrive questa cartella
 
@@ -25,11 +25,11 @@ Oggi espone:
 ## Prodotti attuali
 
 - `camera_muni_historical`
-  - risultati comunali storici della Camera e dell'Assemblea Costituente in Lombardia
+  - risultati comunali storici della Camera e dell'Assemblea Costituente in Italia
   - shard annuali per `municipality_summary` e `municipality_results_long`
-- `geometry_pack_lombardia`
+- `geometry_pack_italy`
   - geometrie comunali e provinciali web-optimized per gli anni base dichiarati
-- `geometry_pack_lombardia_full`
+- `geometry_pack_italy_full`
   - geometrie comunali e provinciali full-resolution per download e riuso piu pesante
 - `metadata_layer`
   - dataset registry, codebook, usage notes, update log, gap report e web geometry report

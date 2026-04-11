@@ -69,14 +69,15 @@ class LoaderTests(unittest.TestCase):
 
     def test_geometry_products_present(self):
         product_keys = {product.get('product_key') for product in (self.bundle.product_catalog().get('products') or [])}
-        self.assertIn('geometry_pack_lombardia', product_keys)
-        self.assertIn('geometry_pack_lombardia_full', product_keys)
+        self.assertIn('geometry_pack_italy', product_keys)
+        self.assertIn('geometry_pack_italy_full', product_keys)
 
     def test_web_geometry_is_lighter_than_full(self):
-        web_manifest = self.bundle.product_manifest('geometry_pack_lombardia')
-        full_manifest = self.bundle.product_manifest('geometry_pack_lombardia_full')
-        web_entry = next((item for item in (web_manifest.get('inventory', {}).get('entries') or []) if str(item.get('geometry_year')) == '2026'), {})
-        full_entry = next((item for item in (full_manifest.get('inventory', {}).get('entries') or []) if str(item.get('geometry_year')) == '2026'), {})
+        web_manifest = self.bundle.product_manifest('geometry_pack_italy')
+        full_manifest = self.bundle.product_manifest('geometry_pack_italy_full')
+        year = str((web_manifest.get('inventory', {}).get('entries') or [{}])[0].get('geometry_year') or '')
+        web_entry = next((item for item in (web_manifest.get('inventory', {}).get('entries') or []) if str(item.get('geometry_year')) == year), {})
+        full_entry = next((item for item in (full_manifest.get('inventory', {}).get('entries') or []) if str(item.get('geometry_year')) == year), {})
         web_size = self.bundle.resolve(web_entry['municipalities_path']).stat().st_size
         full_size = self.bundle.resolve(full_entry['municipalities_path']).stat().st_size
         self.assertLess(web_size, full_size)

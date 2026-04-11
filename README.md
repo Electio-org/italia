@@ -1,8 +1,8 @@
-# Lombardia Camera Explorer
+# Italia Camera Explorer
 
-Private preview of a Lombardia-wide election data platform for `Camera dei Deputati` and `Assemblea Costituente` results at municipal level.
+Private preview of an Italy-wide election data platform for `Camera dei Deputati` and `Assemblea Costituente` results at municipal level.
 
-This repository is the focused home for the Lombardia build: a public-facing explorer, a structured derived-data bundle, and lightweight programmatic access for research and reuse. The long-term direction is broader, but this repo stays intentionally narrow so the Lombardia layer can become solid, credible, and reusable first.
+This repository is the focused home for the national build: a public-facing explorer, a structured derived-data bundle, and lightweight programmatic access for research and reuse. The project now publishes the all-Italy Camera layer from official Eligendo open-data archives.
 
 ## What is in this repository
 
@@ -14,7 +14,7 @@ This repository is the focused home for the Lombardia build: a public-facing exp
 
 ## Current scope
 
-- Geography: Lombardia
+- Geography: Italy
 - Election family: `Camera dei Deputati` plus `Assemblea Costituente 1946`
 - Granularity: primarily municipal, with province and region context layers
 - Product style: public-facing and explorable, but structured as a data product rather than a one-off dashboard
@@ -83,7 +83,7 @@ The bundle is meant to behave like a small release artifact, not just frontend f
 
 ## Status
 
-This is a private working repository for the Lombardia-only platform layer. It is already usable as a structured local bundle and explorer, but it should still be treated as a controlled preview rather than a final public release.
+This is a private working repository for the national platform layer. It is already usable as a structured local bundle and explorer, but it should still be treated as a controlled preview rather than a final public release.
 
 Licensing and publication policy will be finalized before public launch.
 

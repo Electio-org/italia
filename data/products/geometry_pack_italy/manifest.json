@@ -1,0 +1,74 @@
+{
+  "generated_by": "build_result_shards.py",
+  "release_version": "0.21.0",
+  "release_date": "2026-04-07",
+  "product": {
+    "product_key": "geometry_pack_italy",
+    "title": "Pacchetto geometrie Italia - web",
+    "kind": "boundary_pack",
+    "territorial_mode": null,
+    "granularity": "municipality/province boundary by year",
+    "delivery_strategy": null,
+    "primary_dataset_key": "geometryPack",
+    "companion_dataset_key": "provinceGeometry",
+    "extra_dataset_keys": [],
+    "join_keys": [
+      "geometry_id",
+      "municipality_id"
+    ],
+    "guardrails": [],
+    "intended_use": [
+      "cartografia web ottimizzata con basi annuali dichiarate",
+      "caricamento piu leggero della dashboard pubblica",
+      "join geografico esplicito via geometry_id e municipality_id"
+    ]
+  },
+  "datasets": [
+    {
+      "role": "primary",
+      "dataset_key": "geometryPack",
+      "path": "data/derived/geometry_pack_web.json",
+      "kind": "json",
+      "size_bytes": 234,
+      "row_count": null,
+      "feature_count": null,
+      "sha256": "c603acd3f583fbe3f889e840ea2ed2f41558bda49078c18781c1713ea0ca9203"
+    },
+    {
+      "role": "companion",
+      "dataset_key": "provinceGeometry",
+      "path": "data/derived/geometries_web/provinces_2021.geojson",
+      "kind": "geojson",
+      "size_bytes": 913343,
+      "row_count": null,
+      "feature_count": 107,
+      "sha256": "a264019f6028d5810ceafc2be250df9a534c254fdf83a191c6db033ac751e842"
+    }
+  ],
+  "inventory": {
+    "kind": "boundary_years",
+    "entry_count": 1,
+    "entries": [
+      {
+        "geometry_year": 2021,
+        "municipalities_path": "data/derived/geometries_web/municipalities_2021.geojson",
+        "provinces_path": "data/derived/geometries_web/provinces_2021.geojson"
+      }
+    ]
+  },
+  "clients": [
+    {
+      "client_key": "python_loader",
+      "language": "python",
+      "entrypoint": "clients/python/lce_loader.py",
+      "example": "from clients.python.lce_loader import load_bundle\nbundle = load_bundle('.')\nsummary = bundle.load_dataset('municipalitySummary')"
+    },
+    {
+      "client_key": "r_loader",
+      "language": "r",
+      "entrypoint": "clients/r/lce_loader.R",
+      "example": "source('clients/r/lce_loader.R')\nbundle <- load_lce_bundle('.')\nsummary <- lce_read(bundle, 'municipalitySummary')"
+    }
+  ],
+  "bundle_manifest": "data/derived/manifest.json"
+}

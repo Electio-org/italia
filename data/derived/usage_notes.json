@@ -11,13 +11,13 @@
       "key": "geometry_basis",
       "title": "Base geometrica",
       "severity": "info",
-      "text": "Geometrie comunali disponibili per gli anni: 1991, 2001, 2014, 2018, 2021, 2026. Se scegli una base geometrica esplicita, stai cambiando la rappresentazione cartografica, non il dato elettorale sottostante."
+      "text": "Geometrie comunali disponibili per gli anni: 2021. Se scegli una base geometrica esplicita, stai cambiando la rappresentazione cartografica, non il dato elettorale sottostante."
     },
     {
       "key": "coverage",
       "title": "Copertura sostanziale",
       "severity": "info",
-      "text": "La readiness tecnica può essere alta anche con copertura sostanziale bassa. Bundle attuale: technical=100, substantive=100."
+      "text": "La readiness tecnica può essere alta anche con copertura sostanziale bassa. Bundle attuale: technical=90, substantive=100."
     },
     {
       "key": "shares",
@@ -29,7 +29,7 @@
       "key": "province_region",
       "title": "Contesto provinciale e regionale",
       "severity": "info",
-      "text": "I confronti con provincia e Lombardia sono calcolati come aggregati pesati sui conteggi disponibili, non come media semplice dei comuni."
+      "text": "I confronti con provincia e Italia sono calcolati come aggregati pesati sui conteggi disponibili, non come media semplice dei comuni."
     },
     {
       "key": "official_opendata_source",

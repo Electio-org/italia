@@ -6,10 +6,12 @@ import csv
 import io
 import json
 import re
+import time
 import unicodedata
 import zipfile
 from pathlib import Path
 from typing import Dict, Iterable, List, Optional, Tuple
+from difflib import SequenceMatcher
 
 import pandas as pd
 
@@ -35,9 +37,61 @@ LOMBARDY_PROVINCES = {
     "varese",
 }
 
+ITALY_REGIONS = {
+    "piemonte": "Piemonte",
+    "valle d aosta": "Valle d'Aosta",
+    "valle d aosta vallee d aoste": "Valle d'Aosta",
+    "lombardia": "Lombardia",
+    "trentino alto adige": "Trentino-Alto Adige",
+    "trentino alto adige sudtirol": "Trentino-Alto Adige",
+    "veneto": "Veneto",
+    "friuli venezia giulia": "Friuli-Venezia Giulia",
+    "liguria": "Liguria",
+    "emilia romagna": "Emilia-Romagna",
+    "toscana": "Toscana",
+    "umbria": "Umbria",
+    "marche": "Marche",
+    "lazio": "Lazio",
+    "abruzzo": "Abruzzo",
+    "molise": "Molise",
+    "campania": "Campania",
+    "puglia": "Puglia",
+    "basilicata": "Basilicata",
+    "calabria": "Calabria",
+    "sicilia": "Sicilia",
+    "sardegna": "Sardegna",
+}
+
 MANUAL_NAME_ALIASES = {
     "balabio": "Ballabio",
     "cerreto lomellino": "Ceretto Lomellina",
+    "andriano andrian": "Andriano",
+    "montagna montan": "Montagna",
+    "postal burgstall": "Postal",
+    "salorno sulla strada del vino salurn an der weinstrasse": "Salorno sulla Strada del Vino",
+    "braies prags": "Braies",
+    "corvara in badia corvara": "Corvara in Badia",
+    "ponte gardena waidbruck": "Ponte Gardena",
+    "prato allo stelvio prad am stilfser joch": "Prato allo Stelvio",
+    "renon ritten": "Renon",
+    "rio di pusteria muhlbach": "Rio di Pusteria",
+    "rio di pusteria m hlbach": "Rio di Pusteria",
+    "san leonardo in passiria st leonhard in passeier": "San Leonardo in Passiria",
+    "san lorenzo di sebato st lorenzen": "San Lorenzo di Sebato",
+    "ionadi": "Jonadi",
+    "baiardo": "Bajardo",
+    "san remo": "Sanremo",
+    "sannicandro garganico": "San Nicandro Garganico",
+    "castel mola": "Castelmola",
+    "montecompatri": "Monte Compatri",
+    "santo stino di livenza": "San Stino di Livenza",
+    "negrar": "Negrar di Valpolicella",
+    "cerreto langhe": "Cerretto Langhe",
+    "cerreto delle langhe": "Cerretto Langhe",
+    "donnaz": "Donnas",
+    "emar se": "Emarese",
+    "f nis": "Fenis",
+    "verr s": "Verres",
 }
 
 MANUAL_REFERENCE_OVERRIDES = {
@@ -63,6 +117,32 @@ MASTER_COLUMNS = preprocess.CONTRACTS["municipalities_master.csv"]
 PARTY_MASTER_COLUMNS = preprocess.CONTRACTS["parties_master.csv"]
 LINEAGE_COLUMNS = preprocess.CONTRACTS["territorial_lineage.csv"]
 ALIASES_COLUMNS = preprocess.CONTRACTS["municipality_aliases.csv"]
+
+NEEDED_ARCHIVE_COLUMNS = {
+    "CIRCOSCRIZIONE",
+    "CIRC-REG",
+    "PROVINCIA",
+    "COMUNE",
+    "ELETTORI",
+    "ELETTORITOT",
+    "ELETTORITOTALI",
+    "VOTANTI",
+    "VOTANTITOT",
+    "NUMVOTANTITOTALI",
+    "VOTI_LISTA",
+    "VOTILISTA",
+    "LISTA",
+    "DESCRLISTA",
+    "COLLEGIOUNINOMINALE",
+    "COLLUNINOM",
+    "COLLEGIO",
+    "COLLEGIOPLURINOMINALE",
+    "COLLPLURI",
+}
+
+
+def log_step(message: str) -> None:
+    print(f"[{time.strftime('%H:%M:%S')}] {message}", flush=True)
 
 
 def write_json(path: Path, payload: object) -> None:
@@ -97,6 +177,63 @@ def normalize_lookup_key(value: str) -> str:
     text = "".join(ch for ch in text if not unicodedata.combining(ch))
     text = re.sub(r"[^a-zA-Z0-9]+", " ", text.lower())
     return re.sub(r"\s+", " ", text).strip()
+
+
+def compact_lookup_key(value: str) -> str:
+    return normalize_lookup_key(value).replace(" ", "")
+
+
+def normalize_region_label(value: str) -> str:
+    key = normalize_lookup_key(value)
+    return ITALY_REGIONS.get(key, smart_title(value))
+
+
+def candidate_lookup_keys(value: str) -> List[str]:
+    raw = fix_mojibake(value).strip()
+    keys: List[str] = []
+
+    def add(candidate: str) -> None:
+        key = normalize_lookup_key(candidate)
+        if key and key not in keys:
+            keys.append(key)
+        compact = key.replace(" ", "")
+        if compact and len(compact) >= 5 and compact not in keys:
+            keys.append(compact)
+
+    add(raw)
+    if "/" in raw:
+        for part in raw.split("/"):
+            add(part)
+    alias = MANUAL_NAME_ALIASES.get(normalize_lookup_key(raw))
+    if alias:
+        add(alias)
+    return keys
+
+
+def register_reference_alias(
+    by_name_prov: Dict[Tuple[str, str], Dict[str, str]],
+    by_name_region: Dict[Tuple[str, str], Dict[str, str]],
+    candidates_by_name: Dict[str, List[Dict[str, str]]],
+    name: str,
+    province_key: str,
+    region_key: str,
+    record: Dict[str, str],
+) -> None:
+    for key in candidate_lookup_keys(name):
+        candidates_by_name.setdefault(key, []).append(record)
+        by_name_prov.setdefault((key, province_key), record)
+        if region_key:
+            by_name_region.setdefault((key, region_key), record)
+
+
+def region_from_circ_raw(value: str) -> str:
+    key = normalize_lookup_key(value)
+    if not key:
+        return ""
+    for region_key, region_label in sorted(ITALY_REGIONS.items(), key=lambda item: len(item[0]), reverse=True):
+        if key == region_key or key.startswith(region_key) or f" {region_key} " in f" {key} ":
+            return region_label
+    return ""
 
 
 def smart_title(value: str) -> str:
@@ -245,14 +382,18 @@ def load_reference_maps(
     reference_year: Optional[int] = None,
 ) -> Tuple[
     Dict[Tuple[str, str], Dict[str, str]],
+    Dict[Tuple[str, str], Dict[str, str]],
     Dict[str, Dict[str, str]],
+    Dict[Tuple[str, str], Dict[str, str]],
     Dict[Tuple[str, str], Dict[str, str]],
     Dict[str, Dict[str, str]],
 ]:
     geometry_by_name_prov: Dict[Tuple[str, str], Dict[str, str]] = {}
+    geometry_by_name_region: Dict[Tuple[str, str], Dict[str, str]] = {}
     geometry_name_candidates: Dict[str, List[Dict[str, str]]] = {}
     geometry_by_name: Dict[str, Dict[str, str]] = {}
     historical_by_name_prov: Dict[Tuple[str, str], Dict[str, str]] = {}
+    historical_by_name_region: Dict[Tuple[str, str], Dict[str, str]] = {}
     historical_name_candidates: Dict[str, List[Dict[str, str]]] = {}
     historical_by_name: Dict[str, Dict[str, str]] = {}
     geom_dir = output_root / "data" / "derived" / "geometries"
@@ -275,18 +416,20 @@ def load_reference_maps(
             props = feature.get("properties") or {}
             name = str(props.get("name_current") or props.get("name") or "").strip()
             province = str(props.get("province") or "").strip()
+            region = str(props.get("region") or "").strip()
             if not name:
                 continue
             record = {
                 "municipality_id": str(props.get("municipality_id") or props.get("geometry_id") or "").strip(),
                 "geometry_id": str(props.get("geometry_id") or props.get("municipality_id") or "").strip(),
                 "province": smart_title(province),
+                "region": smart_title(region),
                 "name_current": smart_title(name),
             }
             key = normalize_lookup_key(name)
             prov_key = normalize_lookup_key(province)
-            geometry_name_candidates.setdefault(key, []).append(record)
-            geometry_by_name_prov.setdefault((key, prov_key), record)
+            region_key = normalize_lookup_key(region)
+            register_reference_alias(geometry_by_name_prov, geometry_by_name_region, geometry_name_candidates, name, prov_key, region_key, record)
     for key, records in geometry_name_candidates.items():
         unique_ids = {(row["municipality_id"], row["geometry_id"]) for row in records}
         if len(unique_ids) == 1 and records:
@@ -299,77 +442,97 @@ def load_reference_maps(
             props = feature.get("properties") or {}
             name = str(props.get("name_current") or props.get("name") or "").strip()
             province = str(props.get("province") or "").strip()
+            region = str(props.get("region") or "").strip()
             if not name:
                 continue
             record = {
                 "municipality_id": str(props.get("municipality_id") or props.get("geometry_id") or "").strip(),
                 "geometry_id": str(props.get("geometry_id") or props.get("municipality_id") or "").strip(),
                 "province": smart_title(province),
+                "region": smart_title(region),
                 "name_current": smart_title(name),
                 "_year": path_year,
             }
             key = normalize_lookup_key(name)
             prov_key = normalize_lookup_key(province)
-            historical_name_candidates.setdefault(key, []).append(record)
-            historical_by_name_prov[(key, prov_key)] = record
+            region_key = normalize_lookup_key(region)
+            register_reference_alias(historical_by_name_prov, historical_by_name_region, historical_name_candidates, name, prov_key, region_key, record)
     for key, records in historical_name_candidates.items():
         if records:
             historical_by_name[key] = sorted(records, key=lambda row: int(row.get("_year") or 0))[-1]
     for record in list(historical_by_name.values()) + list(historical_by_name_prov.values()):
         record.pop("_year", None)
-    return geometry_by_name_prov, geometry_by_name, historical_by_name_prov, historical_by_name
+    for record in historical_by_name_region.values():
+        record.pop("_year", None)
+    return geometry_by_name_prov, geometry_by_name_region, geometry_by_name, historical_by_name_prov, historical_by_name_region, historical_by_name
 
 
 def resolve_reference(
     municipality_name: str,
     province: str,
+    region: str,
     geometry_by_name_prov: Dict[Tuple[str, str], Dict[str, str]],
+    geometry_by_name_region: Dict[Tuple[str, str], Dict[str, str]],
     geometry_by_name: Dict[str, Dict[str, str]],
     master_by_name_prov: Dict[Tuple[str, str], Dict[str, str]],
+    master_by_name_region: Dict[Tuple[str, str], Dict[str, str]],
     master_by_name: Dict[str, Dict[str, str]],
 ) -> Tuple[Optional[Dict[str, str]], str]:
     name_key = normalize_lookup_key(municipality_name)
     province_key = normalize_lookup_key(province)
-    if name_key in MANUAL_REFERENCE_OVERRIDES:
-        return MANUAL_REFERENCE_OVERRIDES[name_key], "manual_override"
-    alias = MANUAL_NAME_ALIASES.get(name_key)
-    if alias:
-        municipality_name = alias
-        name_key = normalize_lookup_key(alias)
-        if name_key in MANUAL_REFERENCE_OVERRIDES:
-            return MANUAL_REFERENCE_OVERRIDES[name_key], "manual_override"
-
-    if name_key in geometry_by_name:
-        return geometry_by_name[name_key], "geometry_name"
-    if (name_key, province_key) in geometry_by_name_prov:
-        return geometry_by_name_prov[(name_key, province_key)], "geometry_name_province"
-    if (name_key, province_key) in master_by_name_prov:
-        return master_by_name_prov[(name_key, province_key)], "historical_geometry_name_province"
-    if name_key in master_by_name:
-        return master_by_name[name_key], "historical_geometry_name"
+    region_key = normalize_lookup_key(region)
+    for candidate_key in candidate_lookup_keys(municipality_name):
+        if candidate_key in MANUAL_REFERENCE_OVERRIDES:
+            return MANUAL_REFERENCE_OVERRIDES[candidate_key], "manual_override"
+        if (candidate_key, province_key) in geometry_by_name_prov:
+            return geometry_by_name_prov[(candidate_key, province_key)], "geometry_name_province"
+        if (candidate_key, region_key) in geometry_by_name_region:
+            return geometry_by_name_region[(candidate_key, region_key)], "geometry_name_region"
+        if candidate_key in geometry_by_name:
+            return geometry_by_name[candidate_key], "geometry_name"
+        if (candidate_key, province_key) in master_by_name_prov:
+            return master_by_name_prov[(candidate_key, province_key)], "historical_geometry_name_province"
+        if (candidate_key, region_key) in master_by_name_region:
+            return master_by_name_region[(candidate_key, region_key)], "historical_geometry_name_region"
+        if candidate_key in master_by_name:
+            return master_by_name[candidate_key], "historical_geometry_name"
 
     if province_key:
         candidates = []
-        for (candidate_name, candidate_prov), record in master_by_name_prov.items():
-            if candidate_prov != province_key:
-                continue
-            if candidate_name.startswith(name_key) or name_key.startswith(candidate_name):
-                candidates.append(record)
-                if len(candidates) > 3:
-                    break
+        for candidate_key in candidate_lookup_keys(municipality_name):
+            for (candidate_name, candidate_prov), record in master_by_name_prov.items():
+                if candidate_prov != province_key:
+                    continue
+                if candidate_name.startswith(candidate_key) or candidate_key.startswith(candidate_name):
+                    candidates.append(record)
+                    if len(candidates) > 3:
+                        break
         unique_ids = {(row["municipality_id"], row["geometry_id"]) for row in candidates}
         if len(unique_ids) == 1 and candidates:
             return candidates[0], "historical_geometry_prefix_province"
 
     candidates = []
-    for key, record in master_by_name.items():
-        if key.startswith(name_key) or name_key.startswith(key):
-            candidates.append(record)
-            if len(candidates) > 3:
-                break
+    for candidate_key in candidate_lookup_keys(municipality_name):
+        for key, record in master_by_name.items():
+            if key.startswith(candidate_key) or candidate_key.startswith(key):
+                candidates.append(record)
+                if len(candidates) > 3:
+                    break
     unique_ids = {(row["municipality_id"], row["geometry_id"]) for row in candidates}
     if len(unique_ids) == 1 and candidates:
         return candidates[0], "historical_geometry_prefix"
+
+    if region_key:
+        fuzzy = []
+        for (candidate_name, candidate_region), record in geometry_by_name_region.items():
+            if candidate_region != region_key or abs(len(candidate_name) - len(name_key)) > 8:
+                continue
+            score = SequenceMatcher(None, name_key, candidate_name).ratio()
+            if score >= 0.91:
+                fuzzy.append((score, record))
+        unique_ids = {(row["municipality_id"], row["geometry_id"]) for _, row in fuzzy}
+        if len(unique_ids) == 1 and fuzzy:
+            return sorted(fuzzy, key=lambda item: item[0], reverse=True)[0][1], "geometry_name_region_fuzzy"
     return None, ""
 
 
@@ -384,7 +547,9 @@ def read_archive_rows(entry: Dict[str, object]) -> Tuple[str, List[Dict[str, str
         cleaned = {}
         for key, value in row.items():
             clean_key = str(key or "").strip().strip('"')
-            clean_value = fix_mojibake(str(value or "")).strip().strip('"')
+            if clean_key not in NEEDED_ARCHIVE_COLUMNS:
+                continue
+            clean_value = str(value or "").strip().strip('"')
             cleaned[clean_key] = clean_value
         rows.append(cleaned)
     return member, rows
@@ -505,10 +670,48 @@ def build_gap_report(
         write_json(provenance_path, provenance)
 
 
+def normalize_official_party_rows_fast(turnout_rows: pd.DataFrame, party_rows: pd.DataFrame) -> pd.DataFrame:
+    if party_rows.empty:
+        return pd.DataFrame(columns=RESULT_COLUMNS)
+    base = party_rows.copy()
+    for col in ["votes", "election_year"]:
+        base[col] = pd.to_numeric(base[col], errors="coerce")
+    denom = (
+        turnout_rows[["election_key", "municipality_id", "valid_votes", "voters"]]
+        .drop_duplicates(subset=["election_key", "municipality_id"])
+        .copy()
+    )
+    denom["valid_votes"] = pd.to_numeric(denom["valid_votes"], errors="coerce")
+    denom["voters"] = pd.to_numeric(denom["voters"], errors="coerce")
+    base = base.merge(denom, on=["election_key", "municipality_id"], how="left")
+    party_sum = base.groupby(["election_key", "municipality_id"])["votes"].sum(min_count=1).rename("sum_party_votes").reset_index()
+    base = base.merge(party_sum, on=["election_key", "municipality_id"], how="left")
+    valid_ok = (
+        base["valid_votes"].notna()
+        & base["sum_party_votes"].notna()
+        & (base["valid_votes"] > 0)
+        & (base["sum_party_votes"] <= base["valid_votes"] * 1.05)
+        & (base["sum_party_votes"] >= base["valid_votes"] * 0.5)
+    )
+    base["share_denominator"] = base["sum_party_votes"]
+    base.loc[valid_ok, "share_denominator"] = base.loc[valid_ok, "valid_votes"]
+    base["share_method"] = "share_recomputed_from_party_sum"
+    base.loc[valid_ok, "share_method"] = "share_recomputed_from_valid_votes"
+    base["vote_share"] = (base["votes"] / base["share_denominator"] * 100).where(base["share_denominator"].notna() & (base["share_denominator"] > 0))
+    base["comparability_note"] = base.apply(
+        lambda r: f"{r['comparability_note']}|{r['share_method']}" if str(r.get("comparability_note") or "").strip() else r["share_method"],
+        axis=1,
+    )
+    base = base[base["vote_share"].notna() | base["votes"].notna()].copy()
+    base["rank"] = base.groupby(["election_key", "municipality_id"])["vote_share"].rank(method="dense", ascending=False)
+    return base[RESULT_COLUMNS]
+
+
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Rebuild the Lombardia Camera Explorer bundle from official Eligendo open-data zip archives, including Assemblea Costituente 1946.")
+    parser = argparse.ArgumentParser(description="Rebuild the Camera/Costituente Explorer bundle from official Eligendo open-data zip archives.")
     parser.add_argument("--manifest", default=str(DEFAULT_MANIFEST), help="Path to camera_opendata_archives_manifest.json")
     parser.add_argument("--output-root", default=str(DEFAULT_OUTPUT_ROOT), help="Root of lombardia_camera_app_v35")
+    parser.add_argument("--scope", choices=["italy", "lombardia"], default="italy", help="Territorial scope to publish")
     args = parser.parse_args()
 
     manifest_path = Path(args.manifest).resolve()
@@ -523,50 +726,83 @@ def main() -> None:
     )
     preprocess.GEOMETRY_LOOKUP = preprocess.load_geometry_lookup(output_root / "data" / "reference")
     reference_year = max((int(entry["year"]) for entry in archive_entries), default=None)
-    geometry_by_name_prov, geometry_by_name, master_by_name_prov, master_by_name = load_reference_maps(output_root, reference_year=reference_year)
+    log_step(f"loading reference maps for scope={args.scope}")
+    geometry_by_name_prov, geometry_by_name_region, geometry_by_name, master_by_name_prov, master_by_name_region, master_by_name = load_reference_maps(output_root, reference_year=reference_year)
+    province_region_by_key = {
+        normalize_lookup_key(record.get("province", "")): normalize_region_label(record.get("region", ""))
+        for record in geometry_by_name_prov.values()
+        if str(record.get("province") or "").strip() and str(record.get("region") or "").strip()
+    }
+    log_step("reference maps loaded")
 
     turnout_index: Dict[Tuple[str, str], Dict[str, object]] = {}
-    party_rows_raw: List[Dict[str, object]] = []
+    turnout_segment_index: Dict[Tuple[str, str, str], Dict[str, Optional[int]]] = {}
+    party_vote_index: Dict[Tuple[str, str, str], Dict[str, object]] = {}
     elections: List[Dict[str, object]] = []
     source_audit_rows: List[Dict[str, object]] = []
+    reference_cache: Dict[Tuple[str, str, str], Tuple[Optional[Dict[str, str]], str]] = {}
+    party_meta_cache: Dict[str, Dict[str, str]] = {}
+    context_province_candidates: Dict[Tuple[str, str, str], set[str]] = {}
 
     for entry in archive_entries:
         year = int(entry["year"])
         election_type = str(entry.get("election_type") or "camera").strip().lower()
         election_key = consultation_key_for_entry(entry)
         election_date = iso_date_from_archive(str(entry.get("election_date") or ""))
+        log_step(f"reading {election_key}")
         primary_member, rows = read_archive_rows(entry)
+        log_step(f"processing {election_key}: {len(rows)} source rows")
 
-        lombardy_rows = 0
+        included_rows = 0
         unresolved_geometry_rows = 0
         municipality_ids: set[str] = set()
 
         for row in rows:
             province_raw = smart_title(first_nonempty(row, ["PROVINCIA"]))
             circ_raw = smart_title(first_nonempty(row, ["CIRCOSCRIZIONE", "CIRC-REG"]))
+            region_raw = region_from_circ_raw(circ_raw)
             observed_name, municipality_name = canonical_observed_name(first_nonempty(row, ["COMUNE"]))
             if not municipality_name:
                 continue
+            segment_key = first_nonempty(row, ["COLLEGIOUNINOMINALE", "COLLUNINOM", "COLLEGIO", "COLLEGIOPLURINOMINALE", "COLLPLURI"]) or "__whole__"
+            context_key = (election_key, normalize_lookup_key(circ_raw), normalize_lookup_key(segment_key))
 
-            include_row = False
-            if province_raw:
-                include_row = normalize_lookup_key(province_raw) in LOMBARDY_PROVINCES
-            elif circ_raw:
-                include_row = "lombardia" in normalize_lookup_key(circ_raw)
+            include_row = args.scope == "italy"
+            if args.scope == "lombardia":
+                if province_raw:
+                    include_row = normalize_lookup_key(province_raw) in LOMBARDY_PROVINCES
+                elif circ_raw:
+                    include_row = "lombardia" in normalize_lookup_key(circ_raw)
             if not include_row:
                 continue
 
-            reference, resolution_method = resolve_reference(
-                municipality_name,
-                province_raw,
-                geometry_by_name_prov,
-                geometry_by_name,
-                master_by_name_prov,
-                master_by_name,
-            )
+            reference_key = (normalize_lookup_key(municipality_name), normalize_lookup_key(province_raw), normalize_lookup_key(region_raw))
+            if reference_key in reference_cache:
+                reference, resolution_method = reference_cache[reference_key]
+            else:
+                reference, resolution_method = resolve_reference(
+                    municipality_name,
+                    province_raw,
+                    region_raw,
+                    geometry_by_name_prov,
+                    geometry_by_name_region,
+                    geometry_by_name,
+                    master_by_name_prov,
+                    master_by_name_region,
+                    master_by_name,
+                )
+                reference_cache[reference_key] = (reference, resolution_method)
             province = province_raw or smart_title((reference or {}).get("province", ""))
+            region = normalize_region_label(
+                str((reference or {}).get("region", ""))
+                or region_raw
+                or province_region_by_key.get(normalize_lookup_key(province), "")
+                or ("Lombardia" if args.scope == "lombardia" else "")
+            )
             municipality_id = str((reference or {}).get("municipality_id") or "").strip() or fallback_municipality_id(municipality_name, province)
             geometry_id = str((reference or {}).get("geometry_id") or "").strip()
+            if province:
+                context_province_candidates.setdefault(context_key, set()).add(province)
 
             notes = ["official_eligendo_opendata_zip"]
             if observed_name != municipality_name:
@@ -592,7 +828,7 @@ def main() -> None:
                     "municipality_id": municipality_id,
                     "municipality_name": municipality_name,
                     "province": province,
-                    "region": "Lombardia",
+                    "region": region,
                     "geometry_id": geometry_id,
                     "territorial_mode": "historical",
                     "territorial_status": "observed_opendata_zip",
@@ -603,6 +839,7 @@ def main() -> None:
                     "total_votes": voters,
                     "comparability_note": "|".join(notes),
                     "completeness_flag": "official_opendata_turnout_and_lists",
+                    "_context_key": context_key,
                 }
                 turnout_index[turnout_key] = bucket
             else:
@@ -621,20 +858,30 @@ def main() -> None:
                     bucket["geometry_id"] = geometry_id
 
             municipality_ids.add(municipality_id)
-            lombardy_rows += 1
+            included_rows += 1
+            segment_bucket = turnout_segment_index.setdefault((election_key, municipality_id, segment_key), {"electors": electors, "voters": voters})
+            for field, value in (("electors", electors), ("voters", voters)):
+                if value is not None:
+                    previous = segment_bucket.get(field)
+                    segment_bucket[field] = value if previous in (None, "", 0) else max(int(previous), int(value))
 
             if votes is None or votes <= 0 or not party_label:
                 continue
-            meta = preprocess.infer_party_meta(party_label)
-            party_rows_raw.append(
-                {
+            meta = party_meta_cache.get(party_label)
+            if meta is None:
+                meta = preprocess.infer_party_meta(party_label)
+                party_meta_cache[party_label] = meta
+            party_key = (election_key, municipality_id, meta["display"])
+            party_bucket = party_vote_index.get(party_key)
+            if party_bucket is None:
+                party_vote_index[party_key] = {
                     "election_key": election_key,
                     "election_year": year,
                     "election_date": election_date,
                     "municipality_id": municipality_id,
                     "municipality_name": municipality_name,
                     "province": province,
-                    "region": "Lombardia",
+                    "region": region,
                     "party_raw": party_label,
                     "party_std": meta["display"],
                     "party_family": meta["family"],
@@ -646,8 +893,16 @@ def main() -> None:
                     "territorial_status": "observed_opendata_zip",
                     "geometry_id": geometry_id,
                     "comparability_note": "|".join(notes + ([resolution_method] if resolution_method else [])),
+                    "_context_key": context_key,
                 }
-            )
+            else:
+                party_bucket["votes"] = int(party_bucket.get("votes") or 0) + int(votes)
+                party_bucket["votes_raw_text"] = str(party_bucket["votes"])
+                merged_notes = [part for part in str(party_bucket.get("comparability_note") or "").split("|") if part]
+                for note in notes + ([resolution_method] if resolution_method else []):
+                    if note and note not in merged_notes:
+                        merged_notes.append(note)
+                party_bucket["comparability_note"] = "|".join(merged_notes)
 
         source_audit_rows.append(
             {
@@ -658,7 +913,9 @@ def main() -> None:
                 "archive_filename": str(entry["filename"]),
                 "primary_member": primary_member,
                 "source_rows": len(rows),
-                "lombardy_rows": lombardy_rows,
+                "scope": args.scope,
+                "included_rows": included_rows,
+                "lombardy_rows": included_rows if args.scope == "lombardia" else 0,
                 "expected_bundle_rows": len(municipality_ids),
                 "unresolved_geometry_rows": unresolved_geometry_rows,
             }
@@ -674,15 +931,55 @@ def main() -> None:
                 "status": "completed",
                 "is_complete": "true",
                 "comparability_notes": f"official_eligendo_opendata_zip; election_type={election_type}; primary_member={primary_member}; unresolved_geometry_rows={unresolved_geometry_rows}",
-                "source_notes": f"source=eligendo_opendata_zip; election_type={election_type}; archive={entry['filename']}; primary_member={primary_member}; source_rows={len(rows)}; lombardy_rows={lombardy_rows}; unique_municipalities={len(municipality_ids)}",
+                "source_notes": f"source=eligendo_opendata_zip; scope={args.scope}; election_type={election_type}; archive={entry['filename']}; primary_member={primary_member}; source_rows={len(rows)}; included_rows={included_rows}; unique_municipalities={len(municipality_ids)}",
             }
         )
+        log_step(f"done {election_key}: included_rows={included_rows}, municipalities={len(municipality_ids)}, unresolved_geometry={unresolved_geometry_rows}")
 
+    context_province_map = {key: next(iter(values)) for key, values in context_province_candidates.items() if len(values) == 1}
+    for bucket in turnout_index.values():
+        if not str(bucket.get("province") or "").strip():
+            inferred = context_province_map.get(bucket.get("_context_key"))
+            if inferred:
+                bucket["province"] = inferred
+                notes = [part for part in str(bucket.get("comparability_note") or "").split("|") if part]
+                if "province_inferred_from_collegio_context" not in notes:
+                    notes.append("province_inferred_from_collegio_context")
+                bucket["comparability_note"] = "|".join(notes)
+    for bucket in party_vote_index.values():
+        if not str(bucket.get("province") or "").strip():
+            inferred = context_province_map.get(bucket.get("_context_key"))
+            if inferred:
+                bucket["province"] = inferred
+                notes = [part for part in str(bucket.get("comparability_note") or "").split("|") if part]
+                if "province_inferred_from_collegio_context" not in notes:
+                    notes.append("province_inferred_from_collegio_context")
+                bucket["comparability_note"] = "|".join(notes)
+
+    log_step("building turnout dataframe")
     turnout_rows = pd.DataFrame(turnout_index.values())
     if turnout_rows.empty:
-        raise SystemExit("Nessuna riga Lombardia trovata negli zip open data.")
+        raise SystemExit(f"Nessuna riga {args.scope} trovata negli zip open data.")
 
-    party_rows_raw_df = pd.DataFrame(party_rows_raw)
+    log_step("aggregating turnout segments")
+    segment_totals: Dict[Tuple[str, str], Dict[str, int]] = {}
+    for (election_key, municipality_id, _segment_key), values in turnout_segment_index.items():
+        total = segment_totals.setdefault((election_key, municipality_id), {"electors": 0, "voters": 0})
+        for field in ("electors", "voters"):
+            value = values.get(field)
+            if value is not None:
+                total[field] += int(value)
+    for key, bucket in turnout_index.items():
+        totals = segment_totals.get(key)
+        if totals:
+            bucket["electors"] = totals["electors"] or None
+            bucket["voters"] = totals["voters"] or None
+            bucket["total_votes"] = totals["voters"] or bucket.get("total_votes")
+
+    turnout_rows = pd.DataFrame(turnout_index.values())
+    log_step(f"building party dataframe: party groups={len(party_vote_index)}")
+    party_rows_raw_df = pd.DataFrame(party_vote_index.values())
+    log_step("merging valid vote totals")
     valid_votes = (
         party_rows_raw_df.groupby(["election_key", "municipality_id"])["votes"].sum(min_count=1).reset_index(name="valid_votes")
         if not party_rows_raw_df.empty
@@ -724,10 +1021,14 @@ def main() -> None:
     if party_rows_raw_df.empty:
         party_rows = pd.DataFrame(columns=RESULT_COLUMNS)
     else:
-        party_rows = preprocess.normalize_party_rows(turnout_rows.copy(), party_rows_raw_df.copy())
+        log_step("normalizing party rows")
+        party_rows = normalize_official_party_rows_fast(turnout_rows.copy(), party_rows_raw_df.copy())
 
+    log_step("building summary")
     summary_rows = preprocess.build_summary(turnout_rows.copy(), party_rows.copy())
+    log_step("building master tables")
     municipalities, parties, lineage, aliases = preprocess.build_master_tables(summary_rows, party_rows, elections)
+    log_step("finalizing elections and validations")
     elections = preprocess.finalize_elections_master(elections, summary_rows, party_rows)
     validations = preprocess.validate_derived(summary_rows, party_rows)
 
@@ -743,6 +1044,7 @@ def main() -> None:
         "derived_validations": validations,
     }
 
+    log_step("writing derived csv/json files")
     for filename, headers in preprocess.CONTRACTS.items():
         preprocess.ensure_contract_csv(derived / filename, headers)
 
@@ -759,11 +1061,13 @@ def main() -> None:
         {
             "generated_by": "rebuild_bundle_from_camera_opendata_archives.py",
             "source_manifest": str(manifest_path).replace("\\", "/"),
+            "scope": args.scope,
             "source_rows": source_audit_rows,
             "validations": validations,
         },
     )
 
+    log_step("writing shards, geometry pack, manifest and metadata")
     preprocess.write_results_long_shards(output_root, party_rows)
     preprocess.write_geometry_pack(output_root)
     preprocess.write_manifest(output_root)
