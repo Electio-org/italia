@@ -143,6 +143,7 @@ const state = {
   mapCanvasRender: null,
   mapCanvasTransform: null,
   mapCanvasMoveFrame: null,
+  mapCanvasZoomFrame: null,
   mapZoomTarget: null,
   lastAutoZoomMunicipality: null
 };
@@ -482,7 +483,9 @@ function electionLabelByKey(key) {
 }
 
 function metricNeedsPartyResults() {
-  return ['party_share', 'swing_compare', 'concentration', 'over_performance_province', 'over_performance_region'].includes(state.selectedMetric);
+  if (state.selectedMetric === 'concentration') return true;
+  return Boolean(state.selectedParty)
+    && ['party_share', 'swing_compare', 'over_performance_province', 'over_performance_region'].includes(state.selectedMetric);
 }
 
 function currentSelectionLabel() {
@@ -786,7 +789,7 @@ function readControls() {
   syncActiveGeometry(state, registerIssue).then(() => {
     requestRender();
     ensureVisibleSummary({ silent: true });
-    ensureVisibleResults({ silent: !metricNeedsPartyResults() });
+    if (metricNeedsPartyResults()) ensureVisibleResults({ silent: false });
   }).catch(err => registerIssue('geometry-sync', err));
   syncURLState();
 }
@@ -2144,8 +2147,13 @@ function renderLegend(scaleInfo) {
 function renderOverviewCards(rows) {
   const avgTurnout = mean(rows.map(r => r.turnout_pct));
   const avgPartyShare = mean(rows.map(r => r.__party_share));
-  const avgVolatility = mean(rows.map(r => r.__volatility));
-  const avgStability = mean(rows.map(r => computeStabilityIndex(state, r.municipality_id)));
+  const shouldShowHeavyHistory = state.resultsLong.length && (
+    ['volatility', 'stability_index'].includes(state.selectedMetric)
+    || ['compare', 'diagnose', 'trajectory'].includes(state.analysisMode || '')
+    || state.uiLevel === 'advanced'
+  );
+  const avgVolatility = shouldShowHeavyHistory ? mean(rows.map(r => r.__volatility ?? computeVolatility(state, r.municipality_id))) : null;
+  const avgStability = shouldShowHeavyHistory ? mean(rows.map(r => computeStabilityIndex(state, r.municipality_id))) : null;
   const completeCount = rows.filter(r => matchesCompletenessFlag(r.completeness_flag, 'non_partial')).length;
   const completeRate = rows.length ? completeCount / rows.length * 100 : null;
   const leaderCounts = d3.rollups(rows.filter(r => r.first_party_std), v => v.length, d => d.first_party_std).sort((a, b) => b[1] - a[1]);
@@ -2358,10 +2366,34 @@ function buildCanvasMapCache(projection) {
       bounds
     };
   };
+  const items = (state.geometry?.features || []).map(toItem).filter(Boolean);
+  const provinceItems = (state.provinceGeometry?.features || []).map(toItem).filter(Boolean);
+  const hitGridCellSize = 32;
+  const hitGrid = new Map();
+  const addToGrid = (cellKey, index) => {
+    if (!hitGrid.has(cellKey)) hitGrid.set(cellKey, []);
+    hitGrid.get(cellKey).push(index);
+  };
+  items.forEach((item, index) => {
+    const [[x0, y0], [x1, y1]] = item.bounds || [[NaN, NaN], [NaN, NaN]];
+    if (![x0, y0, x1, y1].every(Number.isFinite)) return;
+    const minCol = Math.max(0, Math.floor(x0 / hitGridCellSize));
+    const maxCol = Math.max(minCol, Math.floor(x1 / hitGridCellSize));
+    const minRow = Math.max(0, Math.floor(y0 / hitGridCellSize));
+    const maxRow = Math.max(minRow, Math.floor(y1 / hitGridCellSize));
+    for (let row = minRow; row <= maxRow; row += 1) {
+      for (let col = minCol; col <= maxCol; col += 1) {
+        addToGrid(`${col}:${row}`, index);
+      }
+    }
+  });
   state.mapCanvasCache = {
     key,
-    items: (state.geometry?.features || []).map(toItem).filter(Boolean),
-    provinceItems: (state.provinceGeometry?.features || []).map(toItem).filter(Boolean)
+    items,
+    provinceItems,
+    hitGrid,
+    hitGridCellSize,
+    itemsByKey: new Map(items.map(item => [item.key, item]))
   };
   return state.mapCanvasCache;
 }
@@ -2449,6 +2481,15 @@ function drawCanvasMap(transform = state.mapCanvasTransform || d3.zoomIdentity) 
   ctx.globalAlpha = 1;
 }
 
+function drawCanvasMapSoon(transform = state.mapCanvasTransform || d3.zoomIdentity) {
+  state.mapCanvasTransform = transform;
+  if (state.mapCanvasZoomFrame) return;
+  state.mapCanvasZoomFrame = window.requestAnimationFrame(() => {
+    state.mapCanvasZoomFrame = null;
+    drawCanvasMap(state.mapCanvasTransform);
+  });
+}
+
 function canvasEventPoint(event) {
   const canvas = els.mapCanvas;
   if (!canvas) return null;
@@ -2468,8 +2509,13 @@ function hitTestCanvasMap(event) {
   const point = canvasEventPoint(event);
   if (!ctx || !point) return null;
   const pad = 1.5 / Math.max(1, state.mapCanvasTransform?.k || 1);
-  for (let i = render.cache.items.length - 1; i >= 0; i -= 1) {
-    const item = render.cache.items[i];
+  const cellSize = render.cache.hitGridCellSize || 32;
+  const cellKey = `${Math.max(0, Math.floor(point.x / cellSize))}:${Math.max(0, Math.floor(point.y / cellSize))}`;
+  const candidateIndexes = render.cache.hitGrid?.get(cellKey);
+  const candidates = candidateIndexes?.length ? candidateIndexes : render.cache.items.map((_item, index) => index);
+  for (let i = candidates.length - 1; i >= 0; i -= 1) {
+    const item = render.cache.items[candidates[i]];
+    if (!item) continue;
     const [[x0, y0], [x1, y1]] = item.bounds || [[Infinity, Infinity], [-Infinity, -Infinity]];
     if (point.x < x0 - pad || point.x > x1 + pad || point.y < y0 - pad || point.y > y1 + pad) continue;
     if (ctx.isPointInPath(item.path, point.x, point.y)) {
@@ -3696,7 +3742,7 @@ function enableMapZoom() {
     if (!state.mapCanvasZoomBehavior) {
       state.mapCanvasZoomBehavior = d3.zoom()
         .scaleExtent([1, 9])
-        .on('zoom', event => drawCanvasMap(event.transform));
+        .on('zoom', event => drawCanvasMapSoon(event.transform));
       canvas.call(state.mapCanvasZoomBehavior);
     }
     state.mapZoomBehavior = state.mapCanvasZoomBehavior;
@@ -3728,7 +3774,7 @@ function zoomToSelectedMunicipality() {
   let bounds = null;
   if (state.mapZoomTarget === 'canvas' && state.mapCanvasRender?.cache?.items?.length) {
     const key = rowJoinKey(row);
-    bounds = state.mapCanvasRender.cache.items.find(item => item.key === key)?.bounds || null;
+    bounds = state.mapCanvasRender.cache.itemsByKey?.get(key)?.bounds || null;
   } else {
     const feature = state.geometry.features.find(f => geometryJoinKey(f) === rowJoinKey(row));
     if (!feature) return;
@@ -4836,7 +4882,7 @@ function renderViewTrustPill() {
 
 function renderAll() {
   ensureVisibleSummary({ silent: true });
-  ensureVisibleResults({ silent: true });
+  if (metricNeedsPartyResults()) ensureVisibleResults({ silent: true });
   cancelDeferredRender();
   state.renderCycle += 1;
   const renderToken = state.renderCycle;

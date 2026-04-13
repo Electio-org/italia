@@ -169,8 +169,9 @@
     "municipalityResultsLongByElectionIndex": {
       "path": "data/derived/municipality_results_long_by_election.json",
       "kind": "json",
-      "size_bytes": 2202,
-      "sha256": "c17b97ddf3889078c1003146e074cd9b71c36f14da95f3b2c7439ce9853ffd82"
+      "size_bytes": 3911,
+      "sha256": "3ae5f4f2bb8718bbafd359aa2a6ff3eff680ee259b6ce49561f74a56dc877d88",
+      "shard_count": 20
     },
     "municipalityAliases": {
       "path": "data/derived/municipality_aliases.csv",
@@ -190,8 +191,8 @@
     "geometry": {
       "path": "data/derived/geometries_web/municipalities_2021.geojson",
       "kind": "geojson",
-      "size_bytes": 6842278,
-      "sha256": "2155cf49d6837c1bbc61965274e18e2c2b2885e8f3191ba83b603687b266b4cf",
+      "size_bytes": 3450075,
+      "sha256": "b7a486b762f011163a549a5d8c2fba2ccda5211f6e17503fb616df27ea1dc22b",
       "feature_count": 7904
     },
     "dataQualityReport": {
@@ -206,19 +207,29 @@
       "size_bytes": 110,
       "sha256": "69d5c837f9587e368dba01adea4e9bb63f255edf7e2c448a5f7c61d707404aab",
       "row_count": 0,
-      "columns": []
+      "columns": [
+        "indicator_key",
+        "indicator_label",
+        "municipality_id",
+        "election_key",
+        "election_year",
+        "value",
+        "source",
+        "notes",
+        "territorial_mode"
+      ]
     },
     "geometryPack": {
       "path": "data/derived/geometry_pack_web.json",
       "kind": "json",
-      "size_bytes": 234,
-      "sha256": "c603acd3f583fbe3f889e840ea2ed2f41558bda49078c18781c1713ea0ca9203"
+      "size_bytes": 913,
+      "sha256": "431e38eaf441db40da4cff63b13a4efab34dd5e556fc9ef909ab6e0dc9f77c22"
     },
     "provinceGeometry": {
       "path": "data/derived/geometries_web/provinces_2021.geojson",
       "kind": "geojson",
-      "size_bytes": 456761,
-      "sha256": "8452728762347d78f25852f4c3bb615c9509c5dadccf2df69b02d2c9a08510a1",
+      "size_bytes": 122576,
+      "sha256": "dc4eb4f349c269d275e08202d7608c2b688af9b831e12ae48d8abfd312ebbf6c",
       "feature_count": 107
     },
     "datasetRegistry": {
@@ -309,8 +320,8 @@
     "webGeometryReport": {
       "path": "data/derived/web_geometry_report.json",
       "kind": "json",
-      "size_bytes": 1155,
-      "sha256": "49585f51c7804b161d9d85dda465272e811ac81f6d5f7784350bf11d4be6240b"
+      "size_bytes": 1156,
+      "sha256": "cbadf09d3d488b6a7be15e6a3bad644bbefd06744197d442b75de4b6be441a1b"
     },
     "productCatalog": {
       "path": "data/products/product_catalog.json",
@@ -322,8 +333,9 @@
     "municipalitySummaryByElectionIndex": {
       "path": "data/derived/municipality_summary_by_election.json",
       "kind": "json",
-      "size_bytes": 2169,
-      "sha256": "41f420f4ede49d2090a48c57173b748f12aa369485898d7b1fdc9bf550bb22cd"
+      "size_bytes": 3877,
+      "sha256": "1f05ef0f7783c73be1b81e6acde1c53825cb4fc6417ae30063ef33dc17a3e1cb",
+      "shard_count": 20
     },
     "productManifest:camera_muni_historical": {
       "path": "data/products/camera_muni_historical/manifest.json",
@@ -336,7 +348,7 @@
       "path": "data/products/geometry_pack_italy/manifest.json",
       "kind": "json",
       "size_bytes": 2461,
-      "sha256": "9b637e9cfde07cd0be9b904fb5d1694f90d44e7826028e4b22c455237b398b17",
+      "sha256": "d1e1067e42a69428bcd964d5fd5ce3fc75804c6a79b056d6f9a1d0c7989b187e",
       "dataset_count": 2
     },
     "productManifest:geometry_pack_italy_full": {
@@ -350,8 +362,14 @@
       "path": "data/products/metadata_layer/manifest.json",
       "kind": "json",
       "size_bytes": 4806,
-      "sha256": "c9795b2990574c3417b466e3401c8921d1789950339787ac282248f093ccf135",
+      "sha256": "927b2582a242474fcf6ea7e4afdccb5478523f4424b88f184f70e394fd872826",
       "dataset_count": 6
+    },
+    "webCompressionReport": {
+      "path": "data/derived/web_compression_report.json",
+      "kind": "json",
+      "size_bytes": 945,
+      "sha256": "4954cc403fda670ac6ea6fb9b371b350ae71938dd75fe0930c26e0f3e9bc51e9"
     }
   },
   "integrity": {
@@ -388,6 +406,7 @@
       "territorialLineage",
       "updateLog",
       "usageNotes",
+      "webCompressionReport",
       "webGeometryReport"
     ],
     "all_declared_files_present": true

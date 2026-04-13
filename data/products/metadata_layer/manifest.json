@@ -80,10 +80,10 @@
       "dataset_key": "webGeometryReport",
       "path": "data/derived/web_geometry_report.json",
       "kind": "json",
-      "size_bytes": 1155,
+      "size_bytes": 1156,
       "row_count": null,
       "feature_count": null,
-      "sha256": "49585f51c7804b161d9d85dda465272e811ac81f6d5f7784350bf11d4be6240b"
+      "sha256": "cbadf09d3d488b6a7be15e6a3bad644bbefd06744197d442b75de4b6be441a1b"
     }
   ],
   "inventory": {
@@ -134,7 +134,7 @@
         "dataset_key": "webGeometryReport",
         "path": "data/derived/web_geometry_report.json",
         "kind": "json",
-        "size_bytes": 1155,
+        "size_bytes": 1156,
         "row_count": null,
         "feature_count": null
       }

@@ -224,21 +224,28 @@ export function filteredRowsWithMetric(state, { matchesCompleteness = () => true
   const cacheKey = ['rowsWithMetric', state.selectedElection || '', state.compareElection || '', state.selectedMetric || '', state.selectedPartyMode || '', state.selectedParty || '', state.selectedCustomIndicator || '', state.territorialMode || '', provincesKey, state.selectedCompleteness || '', state.selectedTerritorialStatus || '', state.minSharePct || 0, state.summary.length, state.resultsLong.length, geometryKey].join('__');
   if (cacheKey in state.selectorCaches) return state.selectorCaches[cacheKey];
   const geometryKeys = currentGeometryJoinSet(state.geometry);
+  const needsPartyShare = Boolean(state.selectedParty) && (state.selectedMetric === 'party_share' || state.minSharePct > 0 || ['party_desc', 'swing_desc'].includes(state.tableSort || ''));
+  const needsSwing = Boolean(state.selectedParty && state.compareElection) && (state.selectedMetric === 'swing_compare' || ['swing_desc'].includes(state.tableSort || ''));
+  const needsVolatility = ['volatility', 'stability_index'].includes(state.selectedMetric) || ['volatility_desc'].includes(state.tableSort || '') || ['compare', 'diagnose'].includes(state.analysisMode || '');
+  const needsDominance = state.selectedMetric === 'dominance_changes' || ['dominance_changes_desc'].includes(state.tableSort || '') || ['compare', 'diagnose'].includes(state.analysisMode || '');
   const rows = getSelectedRows(state, { matchesCompleteness, matchesTerritorialStatus }).map(row => {
     const joinKey = rowJoinKey(row);
     const geometry_match = joinKey ? geometryKeys.has(joinKey) : false;
+    const metricValue = getMetricValue(state, row);
+    const partyShare = needsPartyShare ? aggregateShareFor(state, row.election_key, row.municipality_id, state.selectedParty) : null;
+    const swingCompare = needsSwing ? (() => {
+      const current = aggregateShareFor(state, row.election_key, row.municipality_id, state.selectedParty);
+      const compare = aggregateShareFor(state, state.compareElection, row.municipality_id, state.selectedParty);
+      return current != null && compare != null ? current - compare : null;
+    })() : null;
     return {
       ...row,
       geometry_match,
-      __metric_value: getMetricValue(state, row),
-      __party_share: aggregateShareFor(state, row.election_key, row.municipality_id, state.selectedParty),
-      __swing_compare: state.compareElection ? (() => {
-        const current = aggregateShareFor(state, row.election_key, row.municipality_id, state.selectedParty);
-        const compare = aggregateShareFor(state, state.compareElection, row.municipality_id, state.selectedParty);
-        return current != null && compare != null ? current - compare : null;
-      })() : null,
-      __volatility: computeVolatility(state, row.municipality_id),
-      __dominance_changes: computeDominanceChanges(state, row.municipality_id)
+      __metric_value: metricValue,
+      __party_share: state.selectedMetric === 'party_share' ? metricValue : partyShare,
+      __swing_compare: state.selectedMetric === 'swing_compare' ? metricValue : swingCompare,
+      __volatility: state.selectedMetric === 'volatility' ? metricValue : (needsVolatility ? computeVolatility(state, row.municipality_id) : null),
+      __dominance_changes: state.selectedMetric === 'dominance_changes' ? metricValue : (needsDominance ? computeDominanceChanges(state, row.municipality_id) : null)
     };
   }).filter(row => (row.__party_share ?? 0) >= state.minSharePct || state.selectedMetric !== 'party_share');
   state.selectorCaches[cacheKey] = rows;

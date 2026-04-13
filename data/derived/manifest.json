@@ -51,6 +51,7 @@
     "geometryFull": "data/derived/geometries/municipalities_2021.geojson",
     "provinceGeometryFull": "data/derived/geometries/provinces_2021.geojson",
     "webGeometryReport": "data/derived/web_geometry_report.json",
+    "webCompressionReport": "data/derived/web_compression_report.json",
     "productCatalog": "data/products/product_catalog.json",
     "municipalitySummaryByElectionIndex": "data/derived/municipality_summary_by_election.json"
   },

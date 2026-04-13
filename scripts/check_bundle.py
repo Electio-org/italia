@@ -71,6 +71,7 @@ def main() -> int:
         'vendor/topojson-client/topojson-client.min.js',
         'scripts/preprocess.py',
         'scripts/build_web_geometry_pack.py',
+        'scripts/build_web_compressed_assets.py',
         'scripts/import_archive_gap_report.py',
         'scripts/rebuild_bundle_from_camera_opendata_archives.py',
         'scripts/rebuild_modern_bundle_from_archive.py',
@@ -192,7 +193,7 @@ def main() -> int:
     if not geometry.get('features'):
         issues.append('geometry:placeholder_or_missing')
 
-    required_manifest_keys = ['geometryPack', 'geometryPackFull', 'geometryFull', 'provinceGeometryFull', 'dataProducts', 'productCatalog', 'datasetContracts', 'provenance', 'releaseManifest', 'researchRecipes', 'siteGuides', 'municipalitySummaryByElectionIndex', 'municipalityResultsLongByElectionIndex', 'archiveBundleGapReport', 'webGeometryReport']
+    required_manifest_keys = ['geometryPack', 'geometryPackFull', 'geometryFull', 'provinceGeometryFull', 'dataProducts', 'productCatalog', 'datasetContracts', 'provenance', 'releaseManifest', 'researchRecipes', 'siteGuides', 'municipalitySummaryByElectionIndex', 'municipalityResultsLongByElectionIndex', 'archiveBundleGapReport', 'webGeometryReport', 'webCompressionReport']
     for key in required_manifest_keys:
         rel = files.get(key)
         if not rel:

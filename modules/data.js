@@ -5,15 +5,31 @@ const RESULTS_LONG_NUMBER_FIELDS = ['election_year', 'votes', 'vote_share', 'ran
 const CUSTOM_INDICATOR_NUMBER_FIELDS = ['election_year', 'value'];
 
 export async function fetchTextFile(path) {
+  const isGzip = String(path || '').endsWith('.gz');
   const res = await fetch(path);
-  if (!res.ok) throw new Error(`Impossibile caricare ${path}`);
+  if (!res.ok) {
+    if (isGzip) return fetchTextFile(String(path).replace(/\.gz$/, ''));
+    throw new Error(`Impossibile caricare ${path}`);
+  }
+  if (isGzip) {
+    if (typeof DecompressionStream !== 'function') {
+      return fetchTextFile(String(path).replace(/\.gz$/, ''));
+    }
+    return decompressGzipBlob(await res.blob());
+  }
   return res.text();
 }
 
 export async function fetchJsonFile(path) {
+  if (String(path || '').endsWith('.gz')) return JSON.parse(await fetchTextFile(path));
   const res = await fetch(path);
   if (!res.ok) throw new Error(`Impossibile caricare ${path}`);
   return res.json();
+}
+
+async function decompressGzipBlob(blob) {
+  const stream = blob.stream().pipeThrough(new DecompressionStream('gzip'));
+  return new Response(stream).text();
 }
 
 export function parseCsvText(text) {
@@ -181,8 +197,13 @@ export function buildLocalBundleResolver(fileList) {
   files.forEach(file => localFileCandidates(file).forEach(candidate => { if (!map.has(candidate)) map.set(candidate, file); }));
   const has = path => map.has(normalizeBundlePath(path));
   const text = async path => {
-    const hit = map.get(normalizeBundlePath(path));
+    const normalized = normalizeBundlePath(path);
+    const hit = map.get(normalized);
     if (!hit) throw new Error(`File locale non trovato: ${path}`);
+    if (normalized.endsWith('.gz')) {
+      if (typeof DecompressionStream !== 'function') throw new Error(`Il browser non supporta DecompressionStream per ${path}`);
+      return decompressGzipBlob(hit);
+    }
     return hit.text();
   };
   const json = async path => JSON.parse(await text(path));

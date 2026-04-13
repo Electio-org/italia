@@ -1154,9 +1154,10 @@
   </div>
 
   <script>
-  document.addEventListener('DOMContentLoaded', () => {
+  (() => {
     const tabs = Array.from(document.querySelectorAll('.dashboard-tab'));
     const sections = Array.from(document.querySelectorAll('.section-view'));
+    if (!tabs.length || !sections.length) return;
     const setView = (view) => {
       tabs.forEach((tab) => {
         const active = tab.dataset.sectionView === view;
@@ -1169,8 +1170,8 @@
       document.body.dataset.dashboardView = view;
     };
     tabs.forEach((tab) => tab.addEventListener('click', () => setView(tab.dataset.sectionView)));
-    setView('dashboard');
-  });
+    setView(document.body.dataset.dashboardView || 'dashboard');
+  })();
 </script>
 <script src="vendor/tabler/core/tabler.min.js"></script>
 <script src="tabler-enhance.js"></script>
