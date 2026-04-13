@@ -1168,6 +1168,7 @@
         section.classList.toggle('hidden-by-view', !section.classList.contains(`section-view-${view}`));
       });
       document.body.dataset.dashboardView = view;
+      document.dispatchEvent(new CustomEvent('dashboard-view-change', { detail: { view } }));
     };
     tabs.forEach((tab) => tab.addEventListener('click', () => setView(tab.dataset.sectionView)));
     setView(document.body.dataset.dashboardView || 'dashboard');

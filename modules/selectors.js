@@ -1,75 +1,129 @@
 import { safeNumber, mean } from './shared.js';
 import { currentGeometryJoinSet, rowJoinKey } from './data.js';
 
-export function buildIndices(state) {
-  state.indices.summaryByMunicipality = d3.group(state.summary, d => d.municipality_id);
-  state.indices.resultsByElectionMunicipality = d3.group(state.resultsLong, d => d.election_key, d => d.municipality_id);
-  state.indices.summaryMap = new Map(state.summary.map(r => [`${r.election_key}__${r.municipality_id}`, r]));
-  state.indices.summaryCountByElection = d3.rollup(state.summary, v => v.length, d => d.election_key);
-  state.indices.resultCountByElection = d3.rollup(state.resultsLong, v => v.length, d => d.election_key);
-  state.indices.resultsMap = new Map();
-  state.resultsLong.forEach(r => {
-    const key = `${r.election_key}__${r.municipality_id}`;
-    if (!state.indices.resultsMap.has(key)) state.indices.resultsMap.set(key, []);
-    state.indices.resultsMap.get(key).push(r);
-  });
-  state.indices.lineageMap = new Map(state.lineage.map(r => [r.municipality_id_stable || r.municipality_id || r.municipality_id_current, r]));
+const GROUP_MODES = ['party_std', 'party_family', 'bloc'];
 
-  const provinceAcc = new Map();
-  const regionAcc = new Map();
-  state.summary.forEach(r => {
-    const electors = safeNumber(r.electors) || 0;
-    const voters = safeNumber(r.voters) || 0;
-    const validVotes = safeNumber(r.valid_votes) || 0;
-    if (r.province) {
-      const key = `${r.election_key}__${r.province}`;
-      const acc = provinceAcc.get(key) || { electors: 0, voters: 0, valid_votes: 0, n: 0, turnout_values: [] };
-      acc.electors += electors;
-      acc.voters += voters;
-      acc.valid_votes += validVotes;
-      acc.n += 1;
-      if (Number.isFinite(safeNumber(r.turnout_pct))) acc.turnout_values.push(safeNumber(r.turnout_pct));
-      provinceAcc.set(key, acc);
-    }
-    const rKey = `${r.election_key}`;
-    const rAcc = regionAcc.get(rKey) || { electors: 0, voters: 0, valid_votes: 0, n: 0, turnout_values: [] };
-    rAcc.electors += electors;
-    rAcc.voters += voters;
-    rAcc.valid_votes += validVotes;
-    rAcc.n += 1;
-    if (Number.isFinite(safeNumber(r.turnout_pct))) rAcc.turnout_values.push(safeNumber(r.turnout_pct));
-    regionAcc.set(rKey, rAcc);
-  });
-  state.indices.provinceSummaryMap = new Map([...provinceAcc.entries()].map(([k, acc]) => [k, { turnout_pct: acc.electors > 0 ? (acc.voters / acc.electors) * 100 : mean(acc.turnout_values), n: acc.n, electors: acc.electors, voters: acc.voters, valid_votes: acc.valid_votes }]));
-  state.indices.regionSummaryMap = new Map([...regionAcc.entries()].map(([k, acc]) => [k, { turnout_pct: acc.electors > 0 ? (acc.voters / acc.electors) * 100 : mean(acc.turnout_values), n: acc.n, electors: acc.electors, voters: acc.voters, valid_votes: acc.valid_votes }]));
+function emptyIndexState(state) {
+  state.indices = {
+    summaryByMunicipality: new Map(),
+    resultsByElectionMunicipality: new Map(),
+    summaryMap: new Map(),
+    summaryCountByElection: new Map(),
+    resultCountByElection: new Map(),
+    resultsMap: new Map(),
+    lineageMap: new Map((state.lineage || []).map(r => [r.municipality_id_stable || r.municipality_id || r.municipality_id_current, r])),
+    provinceSummaryMap: new Map(),
+    regionSummaryMap: new Map(),
+    provinceGroupMaps: { party_std: new Map(), party_family: new Map(), bloc: new Map() },
+    regionGroupMaps: { party_std: new Map(), party_family: new Map(), bloc: new Map() },
+    __provinceAcc: new Map(),
+    __regionAcc: new Map(),
+    __provinceVotes: { party_std: new Map(), party_family: new Map(), bloc: new Map() },
+    __regionVotes: { party_std: new Map(), party_family: new Map(), bloc: new Map() }
+  };
+}
 
-  state.indices.provinceGroupMaps = { party_std: new Map(), party_family: new Map(), bloc: new Map() };
-  state.indices.regionGroupMaps = { party_std: new Map(), party_family: new Map(), bloc: new Map() };
-  ['party_std', 'party_family', 'bloc'].forEach(mode => {
-    const field = mode === 'bloc' ? 'bloc' : mode;
-    const provinceVotes = new Map();
-    const regionVotes = new Map();
-    state.resultsLong.forEach(r => {
-      const group = r[field] || 'N/D';
-      const votes = safeNumber(r.votes) || 0;
-      if (r.province) {
-        const key = `${r.election_key}__${r.province}__${group}`;
-        provinceVotes.set(key, (provinceVotes.get(key) || 0) + votes);
-      }
-      const regionKey = `${r.election_key}__${group}`;
-      regionVotes.set(regionKey, (regionVotes.get(regionKey) || 0) + votes);
-    });
-    provinceVotes.forEach((votes, key) => {
+function pushGrouped(map, key, row) {
+  if (!key) return;
+  if (!map.has(key)) map.set(key, []);
+  map.get(key).push(row);
+}
+
+function incrementCount(map, key, by = 1) {
+  if (!key) return;
+  map.set(key, (map.get(key) || 0) + by);
+}
+
+function summaryStats(acc) {
+  return {
+    turnout_pct: acc.electors > 0 ? (acc.voters / acc.electors) * 100 : mean(acc.turnout_values),
+    n: acc.n,
+    electors: acc.electors,
+    voters: acc.voters,
+    valid_votes: acc.valid_votes
+  };
+}
+
+function addToSummaryAcc(map, key, row) {
+  if (!key) return null;
+  const acc = map.get(key) || { electors: 0, voters: 0, valid_votes: 0, n: 0, turnout_values: [] };
+  acc.electors += safeNumber(row.electors) || 0;
+  acc.voters += safeNumber(row.voters) || 0;
+  acc.valid_votes += safeNumber(row.valid_votes) || 0;
+  acc.n += 1;
+  const turnout = safeNumber(row.turnout_pct);
+  if (Number.isFinite(turnout)) acc.turnout_values.push(turnout);
+  map.set(key, acc);
+  return acc;
+}
+
+function recomputeVoteShareMaps(state) {
+  GROUP_MODES.forEach(mode => {
+    state.indices.__provinceVotes[mode].forEach((votes, key) => {
       const [electionKey, province] = key.split('__');
       const denom = state.indices.provinceSummaryMap.get(`${electionKey}__${province}`)?.valid_votes || 0;
       state.indices.provinceGroupMaps[mode].set(key, denom > 0 ? (votes / denom) * 100 : null);
     });
-    regionVotes.forEach((votes, key) => {
+    state.indices.__regionVotes[mode].forEach((votes, key) => {
       const electionKey = key.split('__')[0];
       const denom = state.indices.regionSummaryMap.get(electionKey)?.valid_votes || 0;
       state.indices.regionGroupMaps[mode].set(key, denom > 0 ? (votes / denom) * 100 : null);
     });
   });
+}
+
+export function appendRowsToIndices(state, { summaryRows = [], resultRows = [], rebuild = false } = {}) {
+  if (rebuild || !state.indices?.summaryByMunicipality || !state.indices?.__provinceAcc) {
+    emptyIndexState(state);
+    summaryRows = state.summary || [];
+    resultRows = state.resultsLong || [];
+  }
+
+  const touchedSummary = summaryRows.length > 0;
+  summaryRows.forEach(row => {
+    pushGrouped(state.indices.summaryByMunicipality, row.municipality_id, row);
+    state.indices.summaryMap.set(`${row.election_key}__${row.municipality_id}`, row);
+    incrementCount(state.indices.summaryCountByElection, row.election_key);
+    if (row.province) {
+      const provinceKey = `${row.election_key}__${row.province}`;
+      state.indices.provinceSummaryMap.set(provinceKey, summaryStats(addToSummaryAcc(state.indices.__provinceAcc, provinceKey, row)));
+    }
+    const regionKey = `${row.election_key}`;
+    state.indices.regionSummaryMap.set(regionKey, summaryStats(addToSummaryAcc(state.indices.__regionAcc, regionKey, row)));
+  });
+
+  resultRows.forEach(row => {
+    const resultKey = `${row.election_key}__${row.municipality_id}`;
+    pushGrouped(state.indices.resultsMap, resultKey, row);
+    if (!state.indices.resultsByElectionMunicipality.has(row.election_key)) {
+      state.indices.resultsByElectionMunicipality.set(row.election_key, new Map());
+    }
+    pushGrouped(state.indices.resultsByElectionMunicipality.get(row.election_key), row.municipality_id, row);
+    incrementCount(state.indices.resultCountByElection, row.election_key);
+    GROUP_MODES.forEach(mode => {
+      const field = mode === 'bloc' ? 'bloc' : mode;
+      const group = row[field] || 'N/D';
+      const votes = safeNumber(row.votes) || 0;
+      if (row.province) {
+        const provinceKey = `${row.election_key}__${row.province}__${group}`;
+        const total = (state.indices.__provinceVotes[mode].get(provinceKey) || 0) + votes;
+        state.indices.__provinceVotes[mode].set(provinceKey, total);
+        const denom = state.indices.provinceSummaryMap.get(`${row.election_key}__${row.province}`)?.valid_votes || 0;
+        state.indices.provinceGroupMaps[mode].set(provinceKey, denom > 0 ? (total / denom) * 100 : null);
+      }
+      const regionKey = `${row.election_key}__${group}`;
+      const total = (state.indices.__regionVotes[mode].get(regionKey) || 0) + votes;
+      state.indices.__regionVotes[mode].set(regionKey, total);
+      const denom = state.indices.regionSummaryMap.get(row.election_key)?.valid_votes || 0;
+      state.indices.regionGroupMaps[mode].set(regionKey, denom > 0 ? (total / denom) * 100 : null);
+    });
+  });
+
+  if (touchedSummary && (state.resultsLong || []).length) recomputeVoteShareMaps(state);
+}
+
+export function buildIndices(state) {
+  appendRowsToIndices(state, { rebuild: true });
 }
 
 export function getSummaryRow(state, electionKey, municipalityId) {

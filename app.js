@@ -22,6 +22,7 @@ import {
 import {
   loadData,
   loadDataFromLocalFiles,
+  loadDeferredBundleMetadata,
   ensureSummaryForElections,
   ensureResultsForElections,
   geometryJoinKey,
@@ -48,7 +49,8 @@ import {
   getMetricValue,
   inferTurnoutTier,
   getSelectedRows,
-  filteredRowsWithMetric
+  filteredRowsWithMetric,
+  appendRowsToIndices
 } from './modules/selectors.js';
 import { AUDIENCE_MODES, GLOSSARY_ENTRIES, GUIDED_QUESTION_BANK, DEFAULT_SITE_LAYERS, DEFAULT_METHOD_EXPLAINERS, DEFAULT_FAQ_ITEMS, DEFAULT_SITE_MANIFESTO, DEFAULT_SIGNATURE_PILLARS } from './modules/guidance.js';
 import { createAnalysisModes, DEFAULT_NEXT_ACTIONS, DEFAULT_COLLAPSED_PANELS } from './modules/app-shell.js';
@@ -270,7 +272,8 @@ function resultsHydrationSummary() {
 }
 
 function visibleElectionKeysForSummary() {
-  const keys = new Set([state.selectedElection, state.compareElection].filter(Boolean));
+  const keys = new Set([state.selectedElection].filter(Boolean));
+  if (shouldHydrateCompareSummaryNow()) keys.add(state.compareElection);
   const needsHistory = ['volatility', 'dominance_changes', 'stability_index', 'concentration'].includes(state.selectedMetric)
     || ['trajectory', 'similarity', 'archetypes', 'group_compare'].includes(state.analysisMode)
     || state.uiLevel === 'research';
@@ -284,7 +287,10 @@ function visibleElectionKeysForSummary() {
 }
 
 function visibleElectionKeysForResults() {
-  const keys = new Set([state.selectedElection, state.compareElection].filter(Boolean));
+  const keys = new Set([state.selectedElection].filter(Boolean));
+  if (state.compareElection && (metricNeedsCompare() || state.analysisMode === 'compare' || state.selectedMunicipalityId)) {
+    keys.add(state.compareElection);
+  }
   const needsHistory = ['volatility', 'dominance_changes', 'stability_index', 'concentration'].includes(state.selectedMetric)
     || state.analysisMode === 'trajectory'
     || state.uiLevel === 'research';
@@ -312,7 +318,7 @@ function applySummaryHydrationOutcome(report, { silent = true } = {}) {
 
 function ensureVisibleSummary({ silent = true } = {}) {
   return ensureSummaryForElections(state, visibleElectionKeysForSummary(), {
-    buildIndices: () => buildIndices(state),
+    buildIndices: updateIndices,
     registerIssue
   }).then(report => {
     applySummaryHydrationOutcome(report, { silent });
@@ -335,7 +341,7 @@ function applyResultsHydrationOutcome(report, { silent = true } = {}) {
 
 function ensureVisibleResults({ silent = true } = {}) {
   return ensureResultsForElections(state, visibleElectionKeysForResults(), {
-    buildIndices: () => buildIndices(state),
+    buildIndices: updateIndices,
     registerIssue
   }).then(report => {
     applyResultsHydrationOutcome(report, { silent });
@@ -364,7 +370,7 @@ function scheduleBackgroundResultsHydration() {
     }
     idle(async () => {
       const report = await ensureResultsForElections(state, remaining.slice(0, 1), {
-        buildIndices: () => buildIndices(state),
+        buildIndices: updateIndices,
         registerIssue
       });
       applyResultsHydrationOutcome(report, { silent: true });
@@ -395,7 +401,7 @@ function scheduleBackgroundSummaryHydration() {
     }
     idle(async () => {
       const report = await ensureSummaryForElections(state, remaining.slice(0, 1), {
-        buildIndices: () => buildIndices(state),
+        buildIndices: updateIndices,
         registerIssue
       });
       applySummaryHydrationOutcome(report, { silent: true });
@@ -486,6 +492,42 @@ function metricNeedsPartyResults() {
   if (state.selectedMetric === 'concentration') return true;
   return Boolean(state.selectedParty)
     && ['party_share', 'swing_compare', 'over_performance_province', 'over_performance_region'].includes(state.selectedMetric);
+}
+
+function shouldHydratePartyResultsNow() {
+  if (state.selectedMunicipalityId) return true;
+  if (metricNeedsPartyResults()) return true;
+  if (state.analysisMode === 'trajectory') return true;
+  if (state.analysisMode === 'compare' && state.compareElection && state.selectedParty) return true;
+  return false;
+}
+
+function shouldHydrateCompareSummaryNow() {
+  if (!state.compareElection || state.compareElection === state.selectedElection) return false;
+  return Boolean(state.selectedMunicipalityId)
+    || metricNeedsCompare()
+    || state.analysisMode === 'compare'
+    || document.body.dataset.dashboardView === 'profile';
+}
+
+function updateIndices(delta = {}) {
+  if (delta?.summaryRows?.length || delta?.resultRows?.length) {
+    appendRowsToIndices(state, delta);
+    return;
+  }
+  buildIndices(state);
+}
+
+function ensureDeferredMetadata({ silent = true } = {}) {
+  return loadDeferredBundleMetadata(state, { buildIndices: updateIndices, registerIssue }).then(report => {
+    if (report?.loaded) {
+      invalidateDerivedCaches();
+      renderStatusPanel();
+      requestRender();
+      if (!silent) showToast('Metadata, usage notes e release studio caricati.', 'success', 1800);
+    }
+    return report;
+  });
 }
 
 function currentSelectionLabel() {
@@ -580,7 +622,7 @@ function buildViewBriefing(rows = filteredRowsWithMetric(state)) {
   if (currentRow?.comparability_note) caution.push(`Comune selezionato: ${currentRow.comparability_note}`);
   if (!state.geometry?.features?.length) caution.push('Le geometrie attive mancano o non sono caricabili: la lettura spaziale è limitata.');
 
-  if ((state.qualityReport?.derived_validations?.substantive_coverage_score ?? 0) < 40) cannotSay.push("Questa vista non basta per descrivere da sola la storia elettorale completa dell'Italia.");
+  if (state.qualityReport?.derived_validations && (state.qualityReport.derived_validations.substantive_coverage_score ?? 0) < 40) cannotSay.push("Questa vista non basta per descrivere da sola la storia elettorale completa dell'Italia.");
   if (state.selectedMetric === 'first_party') cannotSay.push('Il primo partito non misura da solo il margine della vittoria né la distanza dagli inseguitori.');
   if (state.selectedMetric === 'turnout') cannotSay.push("L'affluenza non identifica da sola quali partiti siano forti o deboli.");
   if (state.selectedMetric === 'party_share') cannotSay.push("La quota della selezione attiva non equivale all'intera distribuzione del voto nel comune.");
@@ -637,6 +679,7 @@ function selectMunicipality(id, options = {}) {
   state.selectedMunicipalityId = id;
   rememberMunicipality(id);
   if (options.updateSearch !== false && els.municipalitySearch) els.municipalitySearch.value = municipalityLabelById(id);
+  if (!state.deferredMetadataLoaded) ensureDeferredMetadata({ silent: true });
   updateMunicipalityNoteUI();
   syncURLState();
 }
@@ -789,7 +832,7 @@ function readControls() {
   syncActiveGeometry(state, registerIssue).then(() => {
     requestRender();
     ensureVisibleSummary({ silent: true });
-    if (metricNeedsPartyResults()) ensureVisibleResults({ silent: false });
+    if (shouldHydratePartyResultsNow()) ensureVisibleResults({ silent: false });
   }).catch(err => registerIssue('geometry-sync', err));
   syncURLState();
 }
@@ -1384,7 +1427,7 @@ async function activateLocalBundle(fileList) {
   if (!fileList?.length) return;
   setLoading(true, 'Caricamento bundle locale…');
   try {
-    await loadDataFromLocalFiles(state, fileList, { buildIndices: () => buildIndices(state), registerIssue });
+    await loadDataFromLocalFiles(state, fileList, { buildIndices: updateIndices, registerIssue });
     invalidateDerivedCaches();
     setupControls();
     renderStatusPanel();
@@ -2184,7 +2227,7 @@ function renderWarnings(rows) {
   if (derivedValidation?.issue_count) {
     messages.push(`Audit derived: ${derivedValidation.issue_count} issue di plausibilità rilevate nel preprocess. Controlla il pannello audit prima di interpretare la vista come definitiva.`);
   }
-  if ((derivedValidation?.substantive_coverage_score ?? 0) < 50) {
+  if (derivedValidation && (derivedValidation.substantive_coverage_score ?? 0) < 50) {
     messages.push(`Copertura sostanziale ancora bassa (${fmtInt(derivedValidation?.substantive_coverage_score)}): molte elezioni note non hanno ancora righe utili nel bundle corrente.`);
   }
   if (!state.summary.length || !state.resultsLong.length) messages.push("I dataset derived elettorali sono ancora vuoti o incompleti: l'app mostra infrastruttura, controlli e logica, ma non inventa risultati.");
@@ -3998,6 +4041,9 @@ function resetFilters() {
 }
 
 function bindEvents() {
+  document.addEventListener('dashboard-view-change', event => {
+    if (event.detail?.view === 'method') ensureDeferredMetadata({ silent: false });
+  });
   [els.electionSelect, els.compareElectionSelect, els.provinceSelect, els.areaPresetSelect, els.metricSelect, els.partySelect, els.customIndicatorSelect, els.partyModeSelect, els.territorialModeSelect, els.completenessSelect, els.territorialStatusSelect, els.sameScaleCheckbox, els.paletteSelect, els.tableSortSelect, els.showNotesCheckbox, els.trajectoryModeSelect, els.densitySelect, els.visionModeSelect].filter(Boolean).forEach(el => {
     el.addEventListener('change', () => {
       if (el === els.partyModeSelect) refreshPartySelector();
@@ -4738,7 +4784,7 @@ function renderInsightFeed() {
     const flips = rows.filter(r => (r.__dominance_changes || 0) >= 2).sort((a,b)=>(b.__dominance_changes||0)-(a.__dominance_changes||0))[0];
     if (flips) insights.push({ mid: flips.municipality_id, text: `${flips.municipality_name} mostra molti cambi di dominanza (${fmtInt(flips.__dominance_changes)}).` });
   }
-  if ((state.qualityReport?.derived_validations?.substantive_coverage_score ?? 0) < 50) insights.push({ text: 'Copertura storica ancora parziale: usa i confronti come esplorazione, non come base definitiva.' });
+  if (state.qualityReport?.derived_validations && (state.qualityReport.derived_validations.substantive_coverage_score ?? 0) < 50) insights.push({ text: 'Copertura storica ancora parziale: usa i confronti come esplorazione, non come base definitiva.' });
   if (!insights.length) {
     els.insightFeed.innerHTML = '<div class="helper-text">Gli insight compariranno qui quando il filtro corrente rende visibili pattern leggibili.</div>';
     return;
@@ -4882,7 +4928,7 @@ function renderViewTrustPill() {
 
 function renderAll() {
   ensureVisibleSummary({ silent: true });
-  if (metricNeedsPartyResults()) ensureVisibleResults({ silent: true });
+  if (shouldHydratePartyResultsNow()) ensureVisibleResults({ silent: true });
   cancelDeferredRender();
   state.renderCycle += 1;
   const renderToken = state.renderCycle;
@@ -5144,7 +5190,7 @@ async function init() {
 
   try {
     setLoading(true, 'Caricamento dataset, geometrie e indici…');
-    await loadData(state, { buildIndices: () => buildIndices(state), registerIssue });
+    await loadData(state, { buildIndices: updateIndices, registerIssue });
     restoreLocalState();
     restoreURLState();
     const bootParams = new URLSearchParams(location.hash.startsWith('#') ? location.hash.slice(1) : '');

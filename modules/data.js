@@ -36,9 +36,25 @@ export function parseCsvText(text) {
   return Papa.parse(text, { header: true, skipEmptyLines: true }).data;
 }
 
+export function parseCsvTextAsync(text) {
+  const useWorker = typeof window !== 'undefined'
+    && typeof Worker !== 'undefined'
+    && String(text || '').length > 2_000_000;
+  if (!useWorker) return Promise.resolve(parseCsvText(text));
+  return new Promise((resolve, reject) => {
+    Papa.parse(text, {
+      header: true,
+      skipEmptyLines: true,
+      worker: true,
+      complete: result => resolve(result.data || []),
+      error: error => reject(error)
+    });
+  }).catch(() => parseCsvText(text));
+}
+
 export async function fetchCsvFile(path) {
   const text = await fetchTextFile(path);
-  return parseCsvText(text);
+  return parseCsvTextAsync(text);
 }
 
 export function parseGeometryObject(obj) {
@@ -207,7 +223,7 @@ export function buildLocalBundleResolver(fileList) {
     return hit.text();
   };
   const json = async path => JSON.parse(await text(path));
-  const csv = async path => parseCsvText(await text(path));
+  const csv = async path => parseCsvTextAsync(await text(path));
   const geometry = async path => parseGeometryObject(await json(path));
   return { has, text, json, csv, geometry, fileCount: files.length };
 }
@@ -333,7 +349,7 @@ async function loadFullSummaryOnce(state, { buildIndices, registerIssue = () => 
       state.loadedSummaryElectionKeys = new Set(parsed.map(row => row.election_key).filter(Boolean));
       state.summaryFullLoaded = true;
       state.summaryHydrationComplete = true;
-      if (typeof buildIndices === 'function') buildIndices();
+      if (typeof buildIndices === 'function') buildIndices({ rebuild: true });
       return { strategy: 'full', loadedKeys: [...state.loadedSummaryElectionKeys], loadedRows: parsed.length };
     })
     .catch(err => {
@@ -393,7 +409,7 @@ export async function ensureSummaryForElections(state, electionKeys, { buildIndi
   });
   if (fresh.length) state.summary = state.summary.concat(fresh);
   if (fresh.length || loadedKeys.length) {
-    if (typeof buildIndices === 'function') buildIndices();
+    if (typeof buildIndices === 'function') buildIndices({ summaryRows: fresh });
   }
   if (state.summaryDeclaredRows && state.summary.length >= state.summaryDeclaredRows) {
     state.summaryHydrationComplete = true;
@@ -408,30 +424,15 @@ async function loadBundleWithManifest(state, manifest, resolver, { buildIndices,
   const deferredResultsStrategy = String(manifest.loading?.municipalityResultsLong?.strategy || '');
   const preferDeferredSummary = Boolean(files.municipalitySummaryByElectionIndex || deferredSummaryStrategy.includes('deferred'));
   const preferDeferredResults = Boolean(files.municipalityResultsLongByElectionIndex || deferredResultsStrategy.includes('deferred'));
-  const [elections, municipalities, parties, lineage, eagerSummary, summaryShardIndex, eagerResultsLong, resultsShardIndex, aliases, customIndicators, qualityReport, geometryPack, datasetRegistry, codebook, usageNotes, updateLog, dataProducts, datasetContracts, provenance, releaseManifest, researchRecipes, siteGuides, archiveGapReport] = await Promise.all([
+  const [elections, municipalities, parties, eagerSummary, summaryShardIndex, eagerResultsLong, resultsShardIndex, geometryPack] = await Promise.all([
     resolver.csv(files.electionsMaster),
     resolver.csv(files.municipalitiesMaster),
     resolver.csv(files.partiesMaster),
-    resolver.csv(files.territorialLineage),
     !preferDeferredSummary && files.municipalitySummary ? resolver.csv(files.municipalitySummary).catch(() => []) : Promise.resolve([]),
     files.municipalitySummaryByElectionIndex ? resolver.json(files.municipalitySummaryByElectionIndex).catch(() => null) : Promise.resolve(null),
     !preferDeferredResults && files.municipalityResultsLong ? resolver.csv(files.municipalityResultsLong).catch(() => []) : Promise.resolve([]),
     files.municipalityResultsLongByElectionIndex ? resolver.json(files.municipalityResultsLongByElectionIndex).catch(() => null) : Promise.resolve(null),
-    resolver.csv(files.municipalityAliases),
-    resolver.csv(files.customIndicators),
-    resolver.json(files.dataQualityReport),
-    files.geometryPack ? resolver.json(files.geometryPack).catch(() => null) : Promise.resolve(null),
-    files.datasetRegistry ? resolver.json(files.datasetRegistry).catch(() => null) : Promise.resolve(null),
-    files.codebook ? resolver.json(files.codebook).catch(() => null) : Promise.resolve(null),
-    files.usageNotes ? resolver.json(files.usageNotes).catch(() => null) : Promise.resolve(null),
-    files.updateLog ? resolver.json(files.updateLog).catch(() => null) : Promise.resolve(null),
-    files.dataProducts ? resolver.json(files.dataProducts).catch(() => null) : Promise.resolve(null),
-    files.datasetContracts ? resolver.json(files.datasetContracts).catch(() => null) : Promise.resolve(null),
-    files.provenance ? resolver.json(files.provenance).catch(() => null) : Promise.resolve(null),
-    files.releaseManifest ? resolver.json(files.releaseManifest).catch(() => null) : Promise.resolve(null),
-    files.researchRecipes ? resolver.json(files.researchRecipes).catch(() => null) : Promise.resolve(null),
-    files.siteGuides ? resolver.json(files.siteGuides).catch(() => null) : Promise.resolve(null),
-    files.archiveBundleGapReport ? resolver.json(files.archiveBundleGapReport).catch(() => null) : Promise.resolve(null)
+    files.geometryPack ? resolver.json(files.geometryPack).catch(() => null) : Promise.resolve(null)
   ]);
   const needsFallbackGeometry = !geometryPack && files.geometry;
   const needsFallbackProvinceGeometry = !geometryPack && files.provinceGeometry;
@@ -443,25 +444,29 @@ async function loadBundleWithManifest(state, manifest, resolver, { buildIndices,
   state.municipalities = municipalities;
   state.municipalityLookupMaps = buildMunicipalityLookupMaps(state.municipalities);
   state.parties = parties;
-  state.lineage = lineage;
-  state.aliases = aliases;
+  state.lineage = [];
+  state.aliases = [];
   state.summary = enrichRowsWithCurrentTerritory(parseSummaryRows(eagerSummary), state.municipalityLookupMaps);
   state.resultsLong = enrichRowsWithCurrentTerritory(parseResultsLongRows(eagerResultsLong), state.municipalityLookupMaps);
-  state.customIndicators = parseCustomIndicatorRows(customIndicators);
-  state.qualityReport = qualityReport;
-  state.datasetRegistry = datasetRegistry?.datasets || datasetRegistry || [];
-  state.codebook = codebook || null;
-  state.usageNotes = usageNotes?.notes || usageNotes || [];
-  state.updateLog = updateLog?.entries || updateLog || [];
-  state.dataProducts = dataProducts || null;
-  state.datasetContracts = datasetContracts || null;
-  state.provenance = provenance || null;
-  state.releaseManifest = releaseManifest || null;
-  state.researchRecipes = researchRecipes?.recipes || researchRecipes || [];
-  state.siteGuides = siteGuides || null;
-  state.archiveBundleGapReport = archiveGapReport?.rows || archiveGapReport || [];
-  state.archiveBundleGapSummary = archiveGapReport?.summary || null;
+  state.customIndicators = [];
+  state.qualityReport = null;
+  state.datasetRegistry = [];
+  state.codebook = null;
+  state.usageNotes = [];
+  state.updateLog = [];
+  state.dataProducts = null;
+  state.datasetContracts = null;
+  state.provenance = null;
+  state.releaseManifest = null;
+  state.researchRecipes = [];
+  state.siteGuides = null;
+  state.archiveBundleGapReport = [];
+  state.archiveBundleGapSummary = null;
   state.archiveGapByElection = new Map((state.archiveBundleGapReport || []).map(row => [row?.consultation_key || row?.election_key, row]).filter(([key]) => key));
+  state.deferredMetadataResolver = resolver;
+  state.deferredMetadataFiles = files;
+  state.deferredMetadataLoaded = false;
+  state.deferredMetadataPromise = null;
   state.geometryPack = geometryPack || buildSyntheticGeometryPack(files.geometry, files.provinceGeometry);
   state.geometryFallback = mainGeometry || { type: 'FeatureCollection', features: [] };
   state.provinceGeometryFallback = provinceGeometry || { type: 'FeatureCollection', features: [] };
@@ -503,12 +508,74 @@ async function loadBundleWithManifest(state, manifest, resolver, { buildIndices,
   state.resultsHydrationStarted = false;
   state.summaryHydrationComplete = state.summaryFullLoaded;
   state.resultsHydrationComplete = state.resultsLongFullLoaded;
-  if (typeof buildIndices === 'function') buildIndices();
+  if (typeof buildIndices === 'function') buildIndices({ rebuild: true });
   const defaults = defaultElectionSequence(state);
   state.selectedElection = state.selectedElection || defaults.at(-1)?.election_key || state.elections.at(-1)?.election_key || null;
   state.compareElection = state.compareElection || state.selectedElection || defaults.at(-2)?.election_key || null;
-  await ensureSummaryForElections(state, [state.selectedElection, state.compareElection].filter(Boolean), { buildIndices, registerIssue });
+  await ensureSummaryForElections(state, [state.selectedElection].filter(Boolean), { buildIndices, registerIssue });
   await syncActiveGeometry(state, registerIssue);
+}
+
+export async function loadDeferredBundleMetadata(state, { buildIndices, registerIssue = () => {} } = {}) {
+  if (state.deferredMetadataLoaded) return { loaded: false, alreadyLoaded: true };
+  if (state.deferredMetadataPromise) return state.deferredMetadataPromise;
+  const files = state.deferredMetadataFiles || state.manifest?.files || {};
+  const resolver = state.deferredMetadataResolver;
+  if (!resolver) return { loaded: false, missingResolver: true };
+  state.deferredMetadataPromise = Promise.all([
+    files.territorialLineage ? resolver.csv(files.territorialLineage).catch(() => []) : Promise.resolve([]),
+    files.municipalityAliases ? resolver.csv(files.municipalityAliases).catch(() => []) : Promise.resolve([]),
+    files.customIndicators ? resolver.csv(files.customIndicators).catch(() => []) : Promise.resolve([]),
+    files.dataQualityReport ? resolver.json(files.dataQualityReport).catch(() => null) : Promise.resolve(null),
+    files.datasetRegistry ? resolver.json(files.datasetRegistry).catch(() => null) : Promise.resolve(null),
+    files.codebook ? resolver.json(files.codebook).catch(() => null) : Promise.resolve(null),
+    files.usageNotes ? resolver.json(files.usageNotes).catch(() => null) : Promise.resolve(null),
+    files.updateLog ? resolver.json(files.updateLog).catch(() => null) : Promise.resolve(null),
+    files.dataProducts ? resolver.json(files.dataProducts).catch(() => null) : Promise.resolve(null),
+    files.datasetContracts ? resolver.json(files.datasetContracts).catch(() => null) : Promise.resolve(null),
+    files.provenance ? resolver.json(files.provenance).catch(() => null) : Promise.resolve(null),
+    files.releaseManifest ? resolver.json(files.releaseManifest).catch(() => null) : Promise.resolve(null),
+    files.researchRecipes ? resolver.json(files.researchRecipes).catch(() => null) : Promise.resolve(null),
+    files.siteGuides ? resolver.json(files.siteGuides).catch(() => null) : Promise.resolve(null),
+    files.archiveBundleGapReport ? resolver.json(files.archiveBundleGapReport).catch(() => null) : Promise.resolve(null)
+  ]).then(([lineage, aliases, customIndicators, qualityReport, datasetRegistry, codebook, usageNotes, updateLog, dataProducts, datasetContracts, provenance, releaseManifest, researchRecipes, siteGuides, archiveGapReport]) => {
+    state.lineage = lineage || [];
+    state.aliases = aliases || [];
+    state.customIndicators = parseCustomIndicatorRows(customIndicators || []);
+    state.qualityReport = qualityReport;
+    state.datasetRegistry = datasetRegistry?.datasets || datasetRegistry || [];
+    state.codebook = codebook || null;
+    state.usageNotes = usageNotes?.notes || usageNotes || [];
+    state.updateLog = updateLog?.entries || updateLog || [];
+    state.dataProducts = dataProducts || null;
+    state.datasetContracts = datasetContracts || null;
+    state.provenance = provenance || null;
+    state.releaseManifest = releaseManifest || null;
+    state.researchRecipes = researchRecipes?.recipes || researchRecipes || [];
+    state.siteGuides = siteGuides || null;
+    state.archiveBundleGapReport = archiveGapReport?.rows || archiveGapReport || [];
+    state.archiveBundleGapSummary = archiveGapReport?.summary || null;
+    state.archiveGapByElection = new Map((state.archiveBundleGapReport || []).map(row => [row?.consultation_key || row?.election_key, row]).filter(([key]) => key));
+    state.declaredCoverageByElection = buildDeclaredCoverageByElection(
+      state.elections,
+      state.datasetRegistry,
+      state.summary,
+      state.resultsLong,
+      state.summaryShardIndex?.row_counts || {},
+      state.resultsLongShardIndex?.row_counts || {}
+    );
+    state.summaryDeclaredRows = Array.from(state.declaredCoverageByElection.values()).reduce((sum, row) => sum + (row.summary || 0), 0);
+    state.resultsLongDeclaredRows = Array.from(state.declaredCoverageByElection.values()).reduce((sum, row) => sum + (row.results || 0), 0);
+    state.deferredMetadataLoaded = true;
+    if (typeof buildIndices === 'function') buildIndices({ rebuild: true });
+    return { loaded: true };
+  }).catch(err => {
+    registerIssue('deferred-metadata-load', err);
+    return { loaded: false, error: err };
+  }).finally(() => {
+    state.deferredMetadataPromise = null;
+  });
+  return state.deferredMetadataPromise;
 }
 
 async function loadFullResultsLongOnce(state, { buildIndices, registerIssue = () => {} } = {}) {
@@ -528,7 +595,7 @@ async function loadFullResultsLongOnce(state, { buildIndices, registerIssue = ()
       state.loadedResultElectionKeys = new Set(parsed.map(row => row.election_key).filter(Boolean));
       state.resultsLongFullLoaded = true;
       state.resultsHydrationComplete = true;
-      if (typeof buildIndices === 'function') buildIndices();
+      if (typeof buildIndices === 'function') buildIndices({ rebuild: true });
       return { strategy: 'full', loadedKeys: [...state.loadedResultElectionKeys], loadedRows: parsed.length };
     })
     .catch(err => {
@@ -588,7 +655,7 @@ export async function ensureResultsForElections(state, electionKeys, { buildIndi
   });
   if (fresh.length) state.resultsLong = state.resultsLong.concat(fresh);
   if (fresh.length || loadedKeys.length) {
-    if (typeof buildIndices === 'function') buildIndices();
+    if (typeof buildIndices === 'function') buildIndices({ resultRows: fresh });
   }
   if (state.resultsLongDeclaredRows && state.resultsLong.length >= state.resultsLongDeclaredRows) {
     state.resultsHydrationComplete = true;
