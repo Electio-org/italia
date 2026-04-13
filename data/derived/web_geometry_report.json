@@ -1,39 +1,39 @@
 {
   "generated_by": "build_web_geometry_pack.py",
-  "municipality_tolerance": 80.0,
-  "province_tolerance": 140.0,
+  "municipality_tolerance": 180.0,
+  "province_tolerance": 320.0,
   "rows": [
     {
       "layer": "municipalities",
       "year": 2021,
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_web/municipalities_2021.geojson",
-      "tolerance": 80.0,
+      "tolerance": 180.0,
       "feature_count": 7904,
       "points_before": 6850421,
-      "points_after": 428792,
+      "points_after": 221505,
       "bytes_before": 242685924,
-      "bytes_after": 11232991
+      "bytes_after": 6842278
     },
     {
       "layer": "provinces",
       "year": 2021,
       "source_path": "data/derived/geometries/provinces_2021.geojson",
       "target_path": "data/derived/geometries_web/provinces_2021.geojson",
-      "tolerance": 140.0,
+      "tolerance": 320.0,
       "feature_count": 107,
       "points_before": 1342846,
-      "points_after": 42015,
+      "points_after": 20450,
       "bytes_before": 47202067,
-      "bytes_after": 913343
+      "bytes_after": 456761
     }
   ],
   "totals": {
     "bytes_before": 289887991,
-    "bytes_after": 12146334,
+    "bytes_after": 7299039,
     "points_before": 8193267,
-    "points_after": 470807,
-    "byte_reduction_pct": 95.81,
-    "point_reduction_pct": 94.25
+    "points_after": 241955,
+    "byte_reduction_pct": 97.48,
+    "point_reduction_pct": 97.05
   }
 }

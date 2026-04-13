@@ -60,10 +60,10 @@
       "dataset_key": "updateLog",
       "path": "data/derived/update_log.json",
       "kind": "json",
-      "size_bytes": 16280,
+      "size_bytes": 16272,
       "row_count": null,
       "feature_count": null,
-      "sha256": "b074a1f106121edf557345538447dec491799afbf6a75431ed8d3b40a6b44308"
+      "sha256": "4b0a7978fd6c4ef3c63d56d4c075b6e1b35ea2a3d3da8a7291d343dd7c0d9d85"
     },
     {
       "role": "extra",
@@ -83,7 +83,7 @@
       "size_bytes": 1155,
       "row_count": null,
       "feature_count": null,
-      "sha256": "6a42464ecffb922fedc4ed76f7ad824ca271fe0fe69e97bb8e050b4953938983"
+      "sha256": "49585f51c7804b161d9d85dda465272e811ac81f6d5f7784350bf11d4be6240b"
     }
   ],
   "inventory": {
@@ -118,7 +118,7 @@
         "dataset_key": "updateLog",
         "path": "data/derived/update_log.json",
         "kind": "json",
-        "size_bytes": 16280,
+        "size_bytes": 16272,
         "row_count": null,
         "feature_count": null
       },

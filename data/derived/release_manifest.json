@@ -190,8 +190,8 @@
     "geometry": {
       "path": "data/derived/geometries_web/municipalities_2021.geojson",
       "kind": "geojson",
-      "size_bytes": 11232991,
-      "sha256": "4ea79bcb8d5919eb32e8c557e33ea5ca20448b6a7477a7ca80dfc221fb0ff3db",
+      "size_bytes": 6842278,
+      "sha256": "2155cf49d6837c1bbc61965274e18e2c2b2885e8f3191ba83b603687b266b4cf",
       "feature_count": 7904
     },
     "dataQualityReport": {
@@ -217,8 +217,8 @@
     "provinceGeometry": {
       "path": "data/derived/geometries_web/provinces_2021.geojson",
       "kind": "geojson",
-      "size_bytes": 913343,
-      "sha256": "a264019f6028d5810ceafc2be250df9a534c254fdf83a191c6db033ac751e842",
+      "size_bytes": 456761,
+      "sha256": "8452728762347d78f25852f4c3bb615c9509c5dadccf2df69b02d2c9a08510a1",
       "feature_count": 107
     },
     "datasetRegistry": {
@@ -244,8 +244,8 @@
     "updateLog": {
       "path": "data/derived/update_log.json",
       "kind": "json",
-      "size_bytes": 16280,
-      "sha256": "b074a1f106121edf557345538447dec491799afbf6a75431ed8d3b40a6b44308",
+      "size_bytes": 16272,
+      "sha256": "4b0a7978fd6c4ef3c63d56d4c075b6e1b35ea2a3d3da8a7291d343dd7c0d9d85",
       "entry_count": 19
     },
     "dataProducts": {
@@ -310,7 +310,7 @@
       "path": "data/derived/web_geometry_report.json",
       "kind": "json",
       "size_bytes": 1155,
-      "sha256": "6a42464ecffb922fedc4ed76f7ad824ca271fe0fe69e97bb8e050b4953938983"
+      "sha256": "49585f51c7804b161d9d85dda465272e811ac81f6d5f7784350bf11d4be6240b"
     },
     "productCatalog": {
       "path": "data/products/product_catalog.json",
@@ -336,7 +336,7 @@
       "path": "data/products/geometry_pack_italy/manifest.json",
       "kind": "json",
       "size_bytes": 2461,
-      "sha256": "757094494e732b37217e686c1f42e15741efda87f9972eb3d7bc9eef4abcbede",
+      "sha256": "9b637e9cfde07cd0be9b904fb5d1694f90d44e7826028e4b22c455237b398b17",
       "dataset_count": 2
     },
     "productManifest:geometry_pack_italy_full": {
@@ -350,7 +350,7 @@
       "path": "data/products/metadata_layer/manifest.json",
       "kind": "json",
       "size_bytes": 4806,
-      "sha256": "807ddf4db39694a81f3c035a75a779cdd2901ca9b50bd1393e4b92d456c0bad7",
+      "sha256": "c9795b2990574c3417b466e3401c8921d1789950339787ac282248f093ccf135",
       "dataset_count": 6
     }
   },

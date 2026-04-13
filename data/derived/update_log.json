@@ -32,7 +32,7 @@
         "Aligned dataset registry, provenance, and release metadata to the shard-based delivery layout.",
         "Added a product catalog plus per-product manifests so the bundle can be navigated as product families, not only as a flat file list.",
         "Added product-level inventories that declare which election datasets, geometry years, or metadata objects are inside each product.",
-        "Split Lombardia boundary delivery into a web-optimized geometry pack for the public app plus a full-resolution geometry product for heavier downstream use.",
+        "Split Italy boundary delivery into a web-optimized geometry pack for the public app plus a full-resolution geometry product for heavier downstream use.",
         "Vendored the critical browser libraries locally so the dashboard no longer depends on public CDNs at runtime.",
         "Trimmed the documentation pages so each route fetches only the metadata layer it actually needs.",
         "Added an official-source-vs-bundle gap report to make residual coverage and geometry-join gaps explicit in the public bundle.",
@@ -51,7 +51,7 @@
         "Aligned dataset registry, provenance, and release metadata to the shard-based delivery layout.",
         "Added a product catalog plus per-product manifests so the bundle can be navigated as product families, not only as a flat file list.",
         "Added product-level inventories that declare which election datasets, geometry years, or metadata objects are inside each product.",
-        "Split Lombardia boundary delivery into a web-optimized geometry pack for the public app plus a full-resolution geometry product for heavier downstream use.",
+        "Split Italy boundary delivery into a web-optimized geometry pack for the public app plus a full-resolution geometry product for heavier downstream use.",
         "Added an official-source-vs-bundle gap report to make residual coverage and geometry-join gaps explicit in the public bundle.",
         "Release manifest paths are now web-relative, so declared downloads stay usable inside the static site."
       ]

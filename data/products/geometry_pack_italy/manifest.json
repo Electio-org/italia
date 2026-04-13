@@ -39,10 +39,10 @@
       "dataset_key": "provinceGeometry",
       "path": "data/derived/geometries_web/provinces_2021.geojson",
       "kind": "geojson",
-      "size_bytes": 913343,
+      "size_bytes": 456761,
       "row_count": null,
       "feature_count": 107,
-      "sha256": "a264019f6028d5810ceafc2be250df9a534c254fdf83a191c6db033ac751e842"
+      "sha256": "8452728762347d78f25852f4c3bb615c9509c5dadccf2df69b02d2c9a08510a1"
     }
   ],
   "inventory": {

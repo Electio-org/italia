@@ -138,7 +138,13 @@ const state = {
   resultsHydrationComplete: false,
   archiveBundleGapReport: [],
   archiveBundleGapSummary: null,
-  archiveGapByElection: new Map()
+  archiveGapByElection: new Map(),
+  mapCanvasCache: null,
+  mapCanvasRender: null,
+  mapCanvasTransform: null,
+  mapCanvasMoveFrame: null,
+  mapZoomTarget: null,
+  lastAutoZoomMunicipality: null
 };
 
 state.geometryPack = null;
@@ -266,7 +272,7 @@ function visibleElectionKeysForSummary() {
   const keys = new Set([state.selectedElection, state.compareElection].filter(Boolean));
   const needsHistory = ['volatility', 'dominance_changes', 'stability_index', 'concentration'].includes(state.selectedMetric)
     || ['trajectory', 'similarity', 'archetypes', 'group_compare'].includes(state.analysisMode)
-    || Boolean(state.selectedMunicipalityId);
+    || state.uiLevel === 'research';
   if (needsHistory) {
     state.elections.forEach(election => {
       const coverage = electionCoverageFor(state, election.election_key);
@@ -280,7 +286,7 @@ function visibleElectionKeysForResults() {
   const keys = new Set([state.selectedElection, state.compareElection].filter(Boolean));
   const needsHistory = ['volatility', 'dominance_changes', 'stability_index', 'concentration'].includes(state.selectedMetric)
     || state.analysisMode === 'trajectory'
-    || Boolean(state.selectedMunicipalityId);
+    || state.uiLevel === 'research';
   if (needsHistory) {
     state.elections.forEach(election => {
       const coverage = electionCoverageFor(state, election.election_key);
@@ -1380,8 +1386,6 @@ async function activateLocalBundle(fileList) {
     setupControls();
     renderStatusPanel();
     requestRender();
-    scheduleBackgroundSummaryHydration();
-    scheduleBackgroundResultsHydration();
     showToast('Bundle locale caricato nel browser.');
   } catch (err) {
     registerIssue('local-bundle', err);
@@ -2244,6 +2248,22 @@ function renderMap() {
   const features = state.geometry.features;
   const anySelection = Boolean(state.selectedMunicipalityId);
 
+  if (els.mapCanvas && typeof Path2D === 'function') {
+    svg.classed('is-canvas-backed', true);
+    renderCanvasMap({ rows, rowByJoinKey, scaleInfo, projection, anySelection });
+    enableMapZoom();
+    if (state.selectedMunicipalityId && state.lastAutoZoomMunicipality !== state.selectedMunicipalityId) {
+      zoomToSelectedMunicipality();
+      state.lastAutoZoomMunicipality = state.selectedMunicipalityId;
+    } else if (!state.selectedMunicipalityId) {
+      state.lastAutoZoomMunicipality = null;
+    }
+    state.lastMapRenderKey = renderKey;
+    return;
+  }
+
+  svg.classed('is-canvas-backed', false);
+
   const zoomLayer = svg.append('g').attr('class', 'map-zoom-layer');
 
   if (state.provinceGeometry?.features?.length) {
@@ -2306,8 +2326,157 @@ function renderMap() {
     });
 
   enableMapZoom();
-  if (state.selectedMunicipalityId) zoomToSelectedMunicipality();
+  if (state.selectedMunicipalityId && state.lastAutoZoomMunicipality !== state.selectedMunicipalityId) {
+    zoomToSelectedMunicipality();
+    state.lastAutoZoomMunicipality = state.selectedMunicipalityId;
+  } else if (!state.selectedMunicipalityId) {
+    state.lastAutoZoomMunicipality = null;
+  }
   state.lastMapRenderKey = renderKey;
+}
+
+function canvasGeometryCacheKey(projection) {
+  const years = state.geometryPack?.availableYears?.join(',') || '';
+  const geometryYear = state.geometryReferenceYear || 'auto';
+  const featureCount = state.geometry?.features?.length || 0;
+  const provinceCount = state.provinceGeometry?.features?.length || 0;
+  return `${geometryYear}|${years}|${featureCount}|${provinceCount}|${projection?.constructor?.name || 'projection'}`;
+}
+
+function buildCanvasMapCache(projection) {
+  const key = canvasGeometryCacheKey(projection);
+  if (state.mapCanvasCache?.key === key) return state.mapCanvasCache;
+  const path = d3.geoPath(projection);
+  const toItem = feature => {
+    const d = path(feature);
+    if (!d) return null;
+    const bounds = path.bounds(feature);
+    return {
+      feature,
+      key: geometryJoinKey(feature),
+      path: new Path2D(d),
+      bounds
+    };
+  };
+  state.mapCanvasCache = {
+    key,
+    items: (state.geometry?.features || []).map(toItem).filter(Boolean),
+    provinceItems: (state.provinceGeometry?.features || []).map(toItem).filter(Boolean)
+  };
+  return state.mapCanvasCache;
+}
+
+function setupCanvasMapHandlers() {
+  const canvas = els.mapCanvas;
+  if (!canvas || canvas.__italiaMapHandlers) return;
+  canvas.__italiaMapHandlers = true;
+  canvas.addEventListener('mousemove', event => {
+    if (state.mapCanvasMoveFrame) return;
+    state.mapCanvasMoveFrame = window.requestAnimationFrame(() => {
+      state.mapCanvasMoveFrame = null;
+      const hit = hitTestCanvasMap(event);
+      if (hit) showTooltip(event, hit.item.feature, hit.row);
+      else hideTooltip();
+    });
+  });
+  canvas.addEventListener('mouseleave', hideTooltip);
+  canvas.addEventListener('click', event => {
+    const hit = hitTestCanvasMap(event);
+    const row = hit?.row;
+    if (!row?.municipality_id) return;
+    if (event.shiftKey) {
+      toggleCompareMunicipality(row.municipality_id);
+      return;
+    }
+    selectMunicipality(row.municipality_id, { updateSearch: true });
+    requestRender();
+  });
+}
+
+function resizeCanvasBackingStore(canvas) {
+  if (!canvas) return null;
+  const width = 960;
+  const height = 680;
+  if (canvas.width !== width) canvas.width = width;
+  if (canvas.height !== height) canvas.height = height;
+  return canvas.getContext('2d', { alpha: true });
+}
+
+function renderCanvasMap({ rows, rowByJoinKey, scaleInfo, projection, anySelection }) {
+  const canvas = els.mapCanvas;
+  const ctx = resizeCanvasBackingStore(canvas);
+  if (!canvas || !ctx) return;
+  setupCanvasMapHandlers();
+  const cache = buildCanvasMapCache(projection);
+  const transform = state.mapCanvasTransform || d3.zoomIdentity;
+  state.mapCanvasRender = { cache, rowByJoinKey, scaleInfo, anySelection };
+  drawCanvasMap(transform);
+}
+
+function drawCanvasMap(transform = state.mapCanvasTransform || d3.zoomIdentity) {
+  const canvas = els.mapCanvas;
+  const ctx = resizeCanvasBackingStore(canvas);
+  const render = state.mapCanvasRender;
+  if (!canvas || !ctx || !render) return;
+  state.mapCanvasTransform = transform;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.save();
+  ctx.translate(transform.x, transform.y);
+  ctx.scale(transform.k, transform.k);
+  const strokeScale = 1 / Math.max(1, transform.k);
+
+  render.cache.provinceItems.forEach(item => {
+    ctx.strokeStyle = '#64748b';
+    ctx.globalAlpha = 0.58;
+    ctx.lineWidth = 0.8 * strokeScale;
+    ctx.stroke(item.path);
+  });
+
+  render.cache.items.forEach(item => {
+    const row = render.rowByJoinKey.get(item.key);
+    const mid = row?.municipality_id;
+    const selected = mid && mid === state.selectedMunicipalityId;
+    const compared = mid && state.compareMunicipalityIds.includes(mid);
+    const faded = render.anySelection && mid && !selected && !compared;
+    ctx.globalAlpha = faded ? 0.32 : 1;
+    ctx.fillStyle = row ? render.scaleInfo.colorFor(row.__metric_value) : '#cbd5e1';
+    ctx.fill(item.path);
+    ctx.strokeStyle = selected ? '#0f172a' : compared ? municipalityColor(mid) : '#f8fafc';
+    ctx.lineWidth = (selected ? 2.2 : compared ? 1.5 : 0.38) * strokeScale;
+    ctx.stroke(item.path);
+  });
+  ctx.restore();
+  ctx.globalAlpha = 1;
+}
+
+function canvasEventPoint(event) {
+  const canvas = els.mapCanvas;
+  if (!canvas) return null;
+  const rect = canvas.getBoundingClientRect();
+  const x = (event.clientX - rect.left) * (canvas.width / Math.max(1, rect.width));
+  const y = (event.clientY - rect.top) * (canvas.height / Math.max(1, rect.height));
+  const transform = state.mapCanvasTransform || d3.zoomIdentity;
+  const [ux, uy] = transform.invert([x, y]);
+  return { x: ux, y: uy };
+}
+
+function hitTestCanvasMap(event) {
+  const render = state.mapCanvasRender;
+  const canvas = els.mapCanvas;
+  if (!render || !canvas) return null;
+  const ctx = canvas.getContext('2d');
+  const point = canvasEventPoint(event);
+  if (!ctx || !point) return null;
+  const pad = 1.5 / Math.max(1, state.mapCanvasTransform?.k || 1);
+  for (let i = render.cache.items.length - 1; i >= 0; i -= 1) {
+    const item = render.cache.items[i];
+    const [[x0, y0], [x1, y1]] = item.bounds || [[Infinity, Infinity], [-Infinity, -Infinity]];
+    if (point.x < x0 - pad || point.x > x1 + pad || point.y < y0 - pad || point.y > y1 + pad) continue;
+    if (ctx.isPointInPath(item.path, point.x, point.y)) {
+      return { item, row: render.rowByJoinKey.get(item.key) || null };
+    }
+  }
+  return null;
 }
 
 function getProvinceMetricAverage(row) {
@@ -3522,16 +3691,33 @@ function renderProvinceSmallMultiples() {
 }
 
 function enableMapZoom() {
+  if (els.mapCanvas && state.mapCanvasRender) {
+    const canvas = d3.select(els.mapCanvas);
+    if (!state.mapCanvasZoomBehavior) {
+      state.mapCanvasZoomBehavior = d3.zoom()
+        .scaleExtent([1, 9])
+        .on('zoom', event => drawCanvasMap(event.transform));
+      canvas.call(state.mapCanvasZoomBehavior);
+    }
+    state.mapZoomBehavior = state.mapCanvasZoomBehavior;
+    state.mapZoomTarget = 'canvas';
+    return;
+  }
   const svg = d3.select('#map-svg');
   const base = svg.select('g.map-zoom-layer');
   if (base.empty()) return;
   const zoom = d3.zoom().scaleExtent([1, 8]).on('zoom', (event) => base.attr('transform', event.transform));
   svg.call(zoom);
   state.mapZoomBehavior = zoom;
+  state.mapZoomTarget = 'svg';
 }
 
 function resetMapZoom() {
   if (!state.mapZoomBehavior) return;
+  if (state.mapZoomTarget === 'canvas' && els.mapCanvas) {
+    d3.select(els.mapCanvas).transition().duration(180).call(state.mapZoomBehavior.transform, d3.zoomIdentity);
+    return;
+  }
   d3.select('#map-svg').transition().duration(250).call(state.mapZoomBehavior.transform, d3.zoomIdentity);
 }
 
@@ -3539,10 +3725,18 @@ function zoomToSelectedMunicipality() {
   if (!state.mapZoomBehavior || !state.selectedMunicipalityId || !state.geometry?.features?.length) return;
   const row = state.summary.find(d => d.municipality_id === state.selectedMunicipalityId) || state.municipalities.find(d => d.municipality_id === state.selectedMunicipalityId);
   if (!row) return;
-  const feature = state.geometry.features.find(f => geometryJoinKey(f) === rowJoinKey(row));
-  if (!feature) return;
-  const path = d3.geoPath(makeGeoProjection(state.geometry, 960, 680));
-  const [[x0, y0], [x1, y1]] = path.bounds(feature);
+  let bounds = null;
+  if (state.mapZoomTarget === 'canvas' && state.mapCanvasRender?.cache?.items?.length) {
+    const key = rowJoinKey(row);
+    bounds = state.mapCanvasRender.cache.items.find(item => item.key === key)?.bounds || null;
+  } else {
+    const feature = state.geometry.features.find(f => geometryJoinKey(f) === rowJoinKey(row));
+    if (!feature) return;
+    const path = d3.geoPath(makeGeoProjection(state.geometry, 960, 680));
+    bounds = path.bounds(feature);
+  }
+  if (!bounds) return;
+  const [[x0, y0], [x1, y1]] = bounds;
   if (![x0, y0, x1, y1].every(Number.isFinite)) return;
   const width = 960;
   const height = 680;
@@ -3552,6 +3746,10 @@ function zoomToSelectedMunicipality() {
   const y = (y0 + y1) / 2;
   const scale = Math.max(1, Math.min(8, 0.8 / Math.max(dx / width, dy / height)));
   const transform = d3.zoomIdentity.translate(width / 2, height / 2).scale(scale).translate(-x, -y);
+  if (state.mapZoomTarget === 'canvas' && els.mapCanvas) {
+    d3.select(els.mapCanvas).transition().duration(220).call(state.mapZoomBehavior.transform, transform);
+    return;
+  }
   d3.select('#map-svg').transition().duration(350).call(state.mapZoomBehavior.transform, transform);
 }
 
@@ -3584,6 +3782,19 @@ function serializeSvgToPng(svgNode, filename = 'chart.png') {
     });
   };
   img.src = url;
+}
+
+function downloadCanvasAsPng(canvas, filename = 'map.png') {
+  if (!canvas) return;
+  canvas.toBlob(blob => {
+    if (!blob) return;
+    const pngUrl = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = pngUrl;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(pngUrl);
+  });
 }
 
 function exportCSV(rows, filename = 'filtered_table.csv') {
@@ -3843,7 +4054,11 @@ function bindEvents() {
     showToast('Profilo comune esportato in JSON.');
   });
   els.exportStateBtn.addEventListener('click', () => { exportJSON({ view: currentViewState(), filtered_rows: state.filteredRows }, `view_${state.selectedElection || 'all'}.json`); showToast('Vista corrente esportata in JSON.'); });
-  els.exportMapPngBtn?.addEventListener('click', () => { serializeSvgToPng(q('map-svg'), `map_${state.selectedElection || 'all'}.png`); showToast('Snapshot mappa avviato.'); });
+  els.exportMapPngBtn?.addEventListener('click', () => {
+    if (els.mapCanvas && state.mapCanvasRender) downloadCanvasAsPng(els.mapCanvas, `map_${state.selectedElection || 'all'}.png`);
+    else serializeSvgToPng(q('map-svg'), `map_${state.selectedElection || 'all'}.png`);
+    showToast('Snapshot mappa avviato.');
+  });
   els.exportTimelinePngBtn?.addEventListener('click', () => { serializeSvgToPng(q('timeline-chart'), `timeline_${state.selectedMunicipalityId || 'none'}.png`); showToast('Snapshot timeline avviato.'); });
   els.exportHeatmapPngBtn?.addEventListener('click', () => { serializeSvgToPng(q('heatmap-chart'), `heatmap_${state.selectedMunicipalityId || 'none'}.png`); showToast('Snapshot heatmap avviato.'); });
   els.exportAuditBtn?.addEventListener('click', () => { exportJSON(auditPayload(), `audit_${state.selectedElection || 'all'}.json`); showToast('Audit esportato.'); });
@@ -4647,7 +4862,7 @@ function renderAll() {
     { scope: 'release-studio', fn: renderReleaseStudioPanel, target: '#release-studio-panel' },
     { scope: 'data-package', fn: renderDataPackagePanel, target: '.data-package-panel' },
     { scope: 'methodology', fn: renderMethodologyPanels, target: '#usage-notes-panel' },
-    { scope: 'map', fn: renderMap, target: '#map-svg' },
+    { scope: 'map', fn: renderMap, target: '#map-canvas' },
     { scope: 'filter-chips', fn: renderActiveFilterChips, target: () => els.activeFilterChips },
     { scope: 'detail', fn: renderDetail, target: () => els.municipalityProfile },
     { scope: 'comparison-panel', fn: renderComparisonPanel, target: () => els.comparisonPanelContent },
@@ -4722,6 +4937,7 @@ async function init() {
     downloadGuidePanel: q('download-guide-panel'),
     updateLogPanel: q('update-log-panel'),
     legend: q('legend'),
+    mapCanvas: q('map-canvas'),
     mapEmptyState: q('map-empty-state'),
     tooltip: q('tooltip'),
     municipalityProfile: q('municipality-profile'),
@@ -4897,8 +5113,6 @@ async function init() {
     updateBodyAppearance();
     toggleFocusMode(state.focusMode);
     requestRender();
-    scheduleBackgroundSummaryHydration();
-    scheduleBackgroundResultsHydration();
     setLoading(false);
     if (!state.onboardingDismissed && new URLSearchParams(window.location.search).get('onboarding') === '1') openOnboarding();
     showToast('Explorer pronto. Controlla audit e metodo se i dati sono parziali.', 'success', 2600);
