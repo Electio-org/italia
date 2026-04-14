@@ -66,6 +66,11 @@ const LOCAL_STORAGE_KEY = 'italia_camera_explorer_state_v1';
 const MAP_MAX_ZOOM = 160;
 const DETAIL_ZOOM_THRESHOLD = 7;
 const MUNICIPALITY_FOCUS_FILL = 0.96;
+const DETAIL_PREFETCH_CONCURRENCY = 2;
+const DETAIL_PREFETCH_IDLE_TIMEOUT_MS = 2200;
+const DETAIL_PREFETCH_RETRY_MS = 900;
+const DETAIL_PREFETCH_HEAVY_PAUSE_MS = 1800;
+const DETAIL_PREFETCH_LIGHT_PAUSE_MS = 450;
 const MAP_HOVER_INTENT_MS = 120;
 const MAP_HOVER_EXPAND_MS = 250;
 const MAP_HOVER_STATIONARY_PX = 2;
@@ -186,6 +191,15 @@ const state = {
   detailGeometryWantedKey: null,
   detailGeometryLoadingKey: null,
   detailGeometryLoadPromise: null,
+  detailGeometryPrefetchQueue: [],
+  detailGeometryPrefetchQueuedKeys: new Set(),
+  detailGeometryPrefetchedKeys: new Set(),
+  detailGeometryPrefetchActive: 0,
+  detailGeometryPrefetchCompleteYear: null,
+  detailGeometryPrefetchIdleHandle: null,
+  detailGeometryPrefetchBound: false,
+  detailGeometryPrefetchPausedUntil: 0,
+  detailGeometryLastInteractionAt: 0,
   lastAutoZoomMunicipality: null
 };
 
@@ -201,6 +215,9 @@ state.municipalityBoundaryLoadingYear = null;
 state.municipalityBoundaryLoadPromise = null;
 state.municipalityBoundaryIdleHandle = null;
 state.detailGeometryCache = {};
+state.detailGeometryPrefetchQueue = [];
+state.detailGeometryPrefetchQueuedKeys = new Set();
+state.detailGeometryPrefetchedKeys = new Set();
 const ANALYSIS_MODES = createAnalysisModes(state);
 
 function escapeHtml(value) {
@@ -366,6 +383,144 @@ function idle(callback, timeout = 600) {
   return window.requestIdleCallback
     ? window.requestIdleCallback(callback, { timeout })
     : window.setTimeout(() => callback({ didTimeout: false, timeRemaining: () => 0 }), Math.min(timeout, 350));
+}
+
+function detailPrefetchCacheKey(year, province) {
+  return `${year}__${normalizeTextToken(province) || String(province || '').trim()}`;
+}
+
+function markDetailPrefetchInteraction(pauseMs = DETAIL_PREFETCH_LIGHT_PAUSE_MS) {
+  const now = performance.now();
+  state.detailGeometryLastInteractionAt = now;
+  state.detailGeometryPrefetchPausedUntil = Math.max(state.detailGeometryPrefetchPausedUntil || 0, now + pauseMs);
+}
+
+function detailPrefetchShouldPause() {
+  const now = performance.now();
+  return document.hidden
+    || state.mapRefreshPending
+    || Boolean(state.renderQueued)
+    || now < (state.detailGeometryPrefetchPausedUntil || 0);
+}
+
+function prioritizedDetailPrefetchProvince() {
+  const selected = state.selectedMunicipalityId
+    ? (getSummaryRow(state, state.selectedElection, state.selectedMunicipalityId)
+      || state.mapReadyRows.find(d => d.election_key === state.selectedElection && d.municipality_id === state.selectedMunicipalityId)
+      || state.municipalities.find(d => d.municipality_id === state.selectedMunicipalityId || d.geometry_id === state.selectedMunicipalityId))
+    : null;
+  return selected?.province || selected?.province_current || state.mapCanvasLastHit?.row?.province || state.mapCanvasLastHit?.row?.province_current || '';
+}
+
+function resetDetailPrefetchQueueForYear(year) {
+  state.detailGeometryPrefetchYear = String(year || '');
+  state.detailGeometryPrefetchQueue = [];
+  state.detailGeometryPrefetchQueuedKeys = new Set();
+  state.detailGeometryPrefetchCompleteYear = null;
+}
+
+function seedDetailPrefetchQueue(year = currentMapGeometryYear()) {
+  const yearKey = String(year || '');
+  const byProvince = state.geometryPack?.detailMunicipalities?.[yearKey] || {};
+  if (!yearKey || !Object.keys(byProvince).length) return false;
+  if (state.detailGeometryPrefetchYear !== yearKey) resetDetailPrefetchQueueForYear(yearKey);
+  const priorityProvince = normalizeTextToken(prioritizedDetailPrefetchProvince());
+  const entries = Object.keys(byProvince)
+    .map(province => ({
+      year: yearKey,
+      province,
+      key: detailPrefetchCacheKey(yearKey, province),
+      priority: normalizeTextToken(province) === priorityProvince ? 0 : 1
+    }))
+    .sort((a, b) => a.priority - b.priority || a.province.localeCompare(b.province, 'it'));
+  entries.forEach(entry => {
+    if (state.detailGeometryPrefetchQueuedKeys.has(entry.key) || state.detailGeometryPrefetchedKeys.has(entry.key)) return;
+    if (state.detailGeometryCache?.[entry.key]) {
+      state.detailGeometryPrefetchedKeys.add(entry.key);
+      return;
+    }
+    state.detailGeometryPrefetchQueuedKeys.add(entry.key);
+    state.detailGeometryPrefetchQueue.push(entry);
+  });
+  state.detailGeometryPrefetchQueue.forEach(entry => {
+    entry.priority = normalizeTextToken(entry.province) === priorityProvince ? 0 : 1;
+  });
+  state.detailGeometryPrefetchQueue.sort((a, b) => a.priority - b.priority || a.province.localeCompare(b.province, 'it'));
+  return Boolean(state.detailGeometryPrefetchQueue.length);
+}
+
+function scheduleDetailGeometryPrefetch({ delay = 0 } = {}) {
+  if (state.detailGeometryPrefetchIdleHandle) return;
+  const scheduleRun = () => {
+    state.detailGeometryPrefetchIdleHandle = idle(deadline => {
+      state.detailGeometryPrefetchIdleHandle = null;
+      pumpDetailGeometryPrefetch(deadline);
+    }, DETAIL_PREFETCH_IDLE_TIMEOUT_MS);
+  };
+  if (delay > 0) {
+    state.detailGeometryPrefetchIdleHandle = window.setTimeout(() => {
+      state.detailGeometryPrefetchIdleHandle = null;
+      scheduleRun();
+    }, delay);
+  } else {
+    scheduleRun();
+  }
+}
+
+function pumpDetailGeometryPrefetch(deadline = { didTimeout: false, timeRemaining: () => 0 }) {
+  const year = currentMapGeometryYear();
+  const yearKey = String(year || '');
+  if (!yearKey || state.detailGeometryPrefetchCompleteYear === yearKey) return;
+  if (detailPrefetchShouldPause()) {
+    scheduleDetailGeometryPrefetch({ delay: DETAIL_PREFETCH_RETRY_MS });
+    return;
+  }
+  seedDetailPrefetchQueue(yearKey);
+  let started = 0;
+  while (
+    state.detailGeometryPrefetchActive < DETAIL_PREFETCH_CONCURRENCY
+    && state.detailGeometryPrefetchQueue.length
+    && (deadline.didTimeout || deadline.timeRemaining() > 8 || started === 0)
+  ) {
+    const entry = state.detailGeometryPrefetchQueue.shift();
+    if (!entry || state.detailGeometryCache?.[entry.key] || state.detailGeometryPrefetchedKeys.has(entry.key)) {
+      if (entry?.key) state.detailGeometryPrefetchedKeys.add(entry.key);
+      continue;
+    }
+    started += 1;
+    state.detailGeometryPrefetchActive += 1;
+    state.detailGeometryPrefetchedKeys.add(entry.key);
+    ensureDetailGeometryForProvince(state, entry.year, entry.province, registerIssue)
+      .catch(error => {
+        state.detailGeometryPrefetchedKeys.delete(entry.key);
+        registerIssue(`detail-prefetch-${entry.key}`, error);
+      })
+      .finally(() => {
+        state.detailGeometryPrefetchActive = Math.max(0, state.detailGeometryPrefetchActive - 1);
+        if (state.detailGeometryPrefetchQueue.length || state.detailGeometryPrefetchActive) {
+          scheduleDetailGeometryPrefetch({ delay: 120 });
+        } else if (String(currentMapGeometryYear() || '') === yearKey) {
+          state.detailGeometryPrefetchCompleteYear = yearKey;
+        }
+      });
+  }
+  if (state.detailGeometryPrefetchQueue.length && state.detailGeometryPrefetchActive < DETAIL_PREFETCH_CONCURRENCY) {
+    scheduleDetailGeometryPrefetch({ delay: 180 });
+  }
+}
+
+function bindDetailPrefetchActivityGuards() {
+  if (state.detailGeometryPrefetchBound) return;
+  state.detailGeometryPrefetchBound = true;
+  const heavy = () => markDetailPrefetchInteraction(DETAIL_PREFETCH_HEAVY_PAUSE_MS);
+  window.addEventListener('wheel', heavy, { passive: true });
+  window.addEventListener('pointerdown', heavy, { passive: true });
+  window.addEventListener('touchstart', heavy, { passive: true });
+  window.addEventListener('keydown', heavy);
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) heavy();
+    else scheduleDetailGeometryPrefetch({ delay: DETAIL_PREFETCH_RETRY_MS });
+  });
 }
 
 function applySummaryHydrationOutcome(report, { silent = true } = {}) {
@@ -776,12 +931,14 @@ function rememberMunicipality(id) {
 
 function selectMunicipality(id, options = {}) {
   if (!id) return;
+  markDetailPrefetchInteraction(DETAIL_PREFETCH_HEAVY_PAUSE_MS);
   state.selectedMunicipalityId = id;
   rememberMunicipality(id);
   if (options.updateSearch !== false && els.municipalitySearch) els.municipalitySearch.value = municipalityLabelById(id);
   updateMunicipalityNoteUI();
   syncURLState();
   ensureDetailGeometryForMunicipality(id, { reason: 'selection' });
+  scheduleDetailGeometryPrefetch({ delay: DETAIL_PREFETCH_RETRY_MS });
 }
 
 function detailGeometryRequestForMunicipality(municipalityId = state.selectedMunicipalityId) {
@@ -2779,9 +2936,13 @@ function renderMap() {
     })
     .attr('cursor', 'pointer')
     .on('mouseenter', (event, feature) => scheduleHoverTooltip(event, feature, rowByJoinKey.get(geometryJoinKey(feature))))
-    .on('mousemove', (event, feature) => scheduleHoverTooltip(event, feature, rowByJoinKey.get(geometryJoinKey(feature))))
+    .on('mousemove', (event, feature) => {
+      markDetailPrefetchInteraction(DETAIL_PREFETCH_LIGHT_PAUSE_MS);
+      scheduleHoverTooltip(event, feature, rowByJoinKey.get(geometryJoinKey(feature)));
+    })
     .on('mouseleave', () => hideTooltip())
     .on('click', (event, feature) => {
+      markDetailPrefetchInteraction(DETAIL_PREFETCH_HEAVY_PAUSE_MS);
       const row = rowByJoinKey.get(geometryJoinKey(feature));
       if (row?.municipality_id) {
         if (event.shiftKey) {
@@ -2912,6 +3073,7 @@ function setupCanvasMapHandlers() {
   if (!canvas || canvas.__italiaMapHandlers) return;
   canvas.__italiaMapHandlers = true;
   canvas.addEventListener('mousemove', event => {
+    markDetailPrefetchInteraction(DETAIL_PREFETCH_LIGHT_PAUSE_MS);
     if (state.mapTooltipPinned) return;
     state.mapCanvasLastPointerEvent = event;
     if (state.mapCanvasMoveFrame) return;
@@ -2935,6 +3097,7 @@ function setupCanvasMapHandlers() {
     hideTooltip();
   });
   canvas.addEventListener('click', event => {
+    markDetailPrefetchInteraction(DETAIL_PREFETCH_HEAVY_PAUSE_MS);
     const hit = hitTestCanvasMap(event);
     const row = hit?.row;
     if (!row?.municipality_id) return;
@@ -4446,6 +4609,7 @@ function enableMapZoom() {
       state.mapCanvasZoomBehavior = d3.zoom()
         .scaleExtent([1, MAP_MAX_ZOOM])
         .on('zoom', event => {
+          markDetailPrefetchInteraction(DETAIL_PREFETCH_HEAVY_PAUSE_MS);
           drawCanvasMapSoon(event.transform);
           ensureDetailGeometryForCurrentFocus(event.transform);
         });
@@ -4459,6 +4623,7 @@ function enableMapZoom() {
   const base = svg.select('g.map-zoom-layer');
   if (base.empty()) return;
   const zoom = d3.zoom().scaleExtent([1, MAP_MAX_ZOOM]).on('zoom', (event) => {
+    markDetailPrefetchInteraction(DETAIL_PREFETCH_HEAVY_PAUSE_MS);
     base.attr('transform', event.transform);
     ensureDetailGeometryForCurrentFocus(event.transform);
   });
@@ -5909,6 +6074,8 @@ async function init() {
     toggleFocusMode(state.focusMode);
     requestRender();
     scheduleLikelyDatasetPrefetch();
+    bindDetailPrefetchActivityGuards();
+    window.requestAnimationFrame(() => scheduleDetailGeometryPrefetch({ delay: 900 }));
     setLoading(false);
     if (!state.onboardingDismissed && new URLSearchParams(window.location.search).get('onboarding') === '1') openOnboarding();
     showToast('Explorer pronto. Controlla audit e metodo se i dati sono parziali.', 'success', 2600);

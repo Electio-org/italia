@@ -4,26 +4,44 @@ const SUMMARY_NUMBER_FIELDS = ['election_year', 'turnout_pct', 'electors', 'vote
 const RESULTS_LONG_NUMBER_FIELDS = ['election_year', 'votes', 'vote_share', 'rank'];
 const CUSTOM_INDICATOR_NUMBER_FIELDS = ['election_year', 'value'];
 const MAP_READY_NUMBER_FIELDS = SUMMARY_NUMBER_FIELDS;
+const STATIC_ASSET_CACHE_NAME = 'italia-camera-static-assets-v1';
 
-export async function fetchTextFile(path) {
+async function fetchWithPersistentCache(path) {
+  if (typeof caches === 'undefined' || typeof Request === 'undefined') return fetch(path);
+  try {
+    const request = new Request(path, { method: 'GET' });
+    const cache = await caches.open(STATIC_ASSET_CACHE_NAME);
+    const cached = await cache.match(request);
+    if (cached) return cached.clone();
+    const response = await fetch(path, { cache: 'force-cache', priority: 'low' });
+    if (response.ok) {
+      cache.put(request, response.clone()).catch(() => {});
+    }
+    return response;
+  } catch {
+    return fetch(path, { cache: 'force-cache', priority: 'low' });
+  }
+}
+
+export async function fetchTextFile(path, options = {}) {
   const isGzip = String(path || '').endsWith('.gz');
-  const res = await fetch(path);
+  const res = options.persistentCache ? await fetchWithPersistentCache(path) : await fetch(path);
   if (!res.ok) {
-    if (isGzip) return fetchTextFile(String(path).replace(/\.gz$/, ''));
+    if (isGzip) return fetchTextFile(String(path).replace(/\.gz$/, ''), options);
     throw new Error(`Impossibile caricare ${path}`);
   }
   if (isGzip) {
     if (typeof DecompressionStream !== 'function') {
-      return fetchTextFile(String(path).replace(/\.gz$/, ''));
+      return fetchTextFile(String(path).replace(/\.gz$/, ''), options);
     }
     return decompressGzipBlob(await res.blob());
   }
   return res.text();
 }
 
-export async function fetchJsonFile(path) {
-  if (String(path || '').endsWith('.gz')) return JSON.parse(await fetchTextFile(path));
-  const res = await fetch(path);
+export async function fetchJsonFile(path, options = {}) {
+  if (String(path || '').endsWith('.gz')) return JSON.parse(await fetchTextFile(path, options));
+  const res = options.persistentCache ? await fetchWithPersistentCache(path) : await fetch(path);
   if (!res.ok) throw new Error(`Impossibile caricare ${path}`);
   return res.json();
 }
@@ -66,8 +84,8 @@ export function parseGeometryObject(obj) {
   return obj;
 }
 
-export async function fetchGeometryFile(path) {
-  const obj = await fetchJsonFile(path);
+export async function fetchGeometryFile(path, options = {}) {
+  const obj = await fetchJsonFile(path, options);
   return parseGeometryObject(obj);
 }
 
@@ -349,7 +367,7 @@ export async function ensureDetailGeometryForProvince(state, year, province, reg
   state.detailGeometryCache = state.detailGeometryCache || {};
   const cacheKey = `${year}__${normalizeJoinName(provinceKey)}`;
   if (!state.detailGeometryCache[cacheKey]) {
-    state.detailGeometryCache[cacheKey] = state.geometryResolver(path).then(geometry => ({
+    state.detailGeometryCache[cacheKey] = state.geometryResolver(path, { persistentCache: true }).then(geometry => ({
       ...(geometry || { type: 'FeatureCollection', features: [] }),
       __detailKey: cacheKey,
       __detailProvince: provinceKey,
@@ -613,6 +631,14 @@ async function loadBundleWithManifest(state, manifest, resolver, { buildIndices,
   state.municipalityBoundaryLoadPromise = null;
   state.municipalityBoundaryIdleHandle = null;
   state.detailGeometryCache = {};
+  state.detailGeometryPrefetchQueue = [];
+  state.detailGeometryPrefetchQueuedKeys = new Set();
+  state.detailGeometryPrefetchedKeys = new Set();
+  state.detailGeometryPrefetchActive = 0;
+  state.detailGeometryPrefetchCompleteYear = null;
+  state.detailGeometryPrefetchIdleHandle = null;
+  state.detailGeometryPrefetchPausedUntil = 0;
+  state.detailGeometryLastInteractionAt = 0;
   state.detailGeometry = null;
   state.detailGeometryKey = null;
   state.detailGeometryWantedKey = null;
@@ -620,7 +646,7 @@ async function loadBundleWithManifest(state, manifest, resolver, { buildIndices,
   state.dataSource = source;
   state.dataSourceLabel = source === 'local' ? `Bundle locale (${resolver.fileCount || 0} file)` : 'Bundle incorporato';
   state.summaryResolver = path => resolver.csv(path);
-  state.geometryResolver = path => resolver.geometry(path);
+  state.geometryResolver = (path, options = {}) => resolver.geometry(path, options);
   state.resultsResolver = path => resolver.csv(path);
   state.mapReadyResolver = path => resolver.json(path);
   state.summaryShardIndex = summaryShardIndex || null;
