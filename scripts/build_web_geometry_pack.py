@@ -235,7 +235,7 @@ def main() -> None:
     parser.add_argument("--root", default=".", help="Project root")
     parser.add_argument("--municipality-tolerance", type=float, default=1100.0, help="Simplification tolerance for municipality boundaries")
     parser.add_argument("--province-tolerance", type=float, default=2000.0, help="Simplification tolerance for province boundaries")
-    parser.add_argument("--detail-municipality-tolerance", type=float, default=150.0, help="Simplification tolerance for province chunk detail geometry")
+    parser.add_argument("--detail-municipality-tolerance", type=float, default=35.0, help="Simplification tolerance for province chunk detail geometry")
     args = parser.parse_args()
 
     root = Path(args.root).resolve()
