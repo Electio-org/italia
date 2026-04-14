@@ -3268,12 +3268,14 @@ button:hover { border-color:var(--accent); background:#f7fbff; transform:none; }
 .advanced-sidebar-details { margin-top:14px; border-top:1px solid var(--line-soft); padding-top:14px; }
 .advanced-sidebar-details summary { cursor:pointer; color:#1f3552; font-weight:600; margin-bottom:12px; }
 .advanced-sidebar-grid { margin-top:14px; }
+.advanced-sidebar-details:not([open]) .advanced-sidebar-grid { display: none !important; }
 .compact-time-nav { background:#f8fafc; border:1px solid var(--line-soft); border-radius:14px; padding:12px; margin-bottom:8px; }
 .time-nav-actions { gap:8px; flex-wrap:wrap; }
 .time-nav-actions .small-btn { width:auto; }
 .map-and-detail { display:grid; grid-template-columns:minmax(0,1.45fr) minmax(320px,0.9fr); gap:18px; align-items:start; }
 .map-panel .panel-header, .detail-panel .panel-header { align-items:flex-start; }
 .map-panel .panel-header h2, .detail-panel .panel-header h2 { font-size:1.1rem; }
+.profile-header-actions { display:flex; align-items:center; justify-content:flex-end; gap:8px; margin-left:auto; }
 .map-header-actions { gap:10px; align-items:flex-start; }
 #legend { min-width:160px; }
 #map-wrapper { min-height:620px; background:#f7f9fc; border:1px solid var(--line-soft); border-radius:16px; overflow:hidden; }
@@ -4478,10 +4480,28 @@ button:hover {
   overflow: hidden;
 }
 
+.tooltip.is-pinned {
+  border-color: rgba(37, 99, 235, 0.42);
+  box-shadow: 0 16px 38px rgba(37, 99, 235, 0.18);
+}
+
 .tooltip-card {
   display: grid;
   gap: 10px;
   padding: 14px;
+}
+
+.tooltip.is-pinned .tooltip-card::before {
+  content: "Comune selezionato";
+  width: fit-content;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  color: #1d4ed8;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0;
 }
 
 .tooltip-header {
@@ -5252,7 +5272,7 @@ button:hover {
 
 
 body.basic-mode .sidebar-tools {
-  display: none !important;
+  display: block;
 }
 
 .doc-quicklinks {
@@ -5260,4 +5280,129 @@ body.basic-mode .sidebar-tools {
   flex-wrap: wrap;
   gap: 10px;
   margin-top: 18px;
+}
+
+/* Emergency usability restore: keep the first dashboard screen focused on data. */
+body.basic-mode #dashboard-intro {
+  display: none !important;
+}
+
+body.basic-mode .map-and-detail {
+  order: 2;
+}
+
+body.basic-mode #overview-cards {
+  order: 3;
+}
+
+body.basic-mode .map-panel {
+  min-height: 0;
+}
+
+body.basic-mode .brand-facts {
+  display: none !important;
+}
+
+body.basic-mode .brand p {
+  margin-bottom: 0;
+}
+
+.primary-control-row {
+  display: grid;
+  gap: 10px;
+}
+
+.election-primary-control,
+.primary-metric-control {
+  display: grid;
+  gap: 6px;
+}
+
+.primary-party-control {
+  display: none !important;
+  gap: 6px;
+}
+
+body.party-share-mode .primary-party-control {
+  display: grid !important;
+}
+
+.control-refresh-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  margin-top: 8px;
+  padding: 6px 9px;
+  border: 1px solid rgba(37, 99, 235, 0.16);
+  border-radius: 8px;
+  background: rgba(37, 99, 235, 0.06);
+  color: #1d3557;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.control-refresh-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: #2563eb;
+  animation: control-refresh-pulse 900ms ease-in-out infinite;
+}
+
+.is-control-loading {
+  cursor: wait;
+}
+
+@keyframes control-refresh-pulse {
+  0%, 100% { opacity: 0.35; transform: scale(0.82); }
+  50% { opacity: 1; transform: scale(1); }
+}
+
+body.basic-mode .toolbar.panel.compact,
+body.basic-mode .dashboard-section-tabs {
+  display: none !important;
+}
+
+body.basic-mode .panel.control-panel > .panel-header .panel-subtitle::after {
+  content: none !important;
+}
+
+.advanced-sidebar-details {
+  margin-top: 12px;
+}
+
+.advanced-sidebar-details > summary {
+  list-style: none;
+  cursor: pointer;
+  color: #1d3557;
+  font-weight: 700;
+}
+
+.advanced-sidebar-details > summary::-webkit-details-marker {
+  display: none;
+}
+
+.advanced-sidebar-details > summary::after {
+  content: "Apri";
+  float: right;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.advanced-sidebar-details[open] > summary::after {
+  content: "Chiudi";
+}
+
+.sidebar-tools[open] > .quick-actions-panel,
+.sidebar-tools[open] > .modes-panel,
+.sidebar-tools[open] > .audience-panel,
+.sidebar-tools[open] > .preferences-panel,
+.sidebar-tools[open] > .saved-views-panel,
+.sidebar-tools[open] > .recent-panel,
+.sidebar-tools[open] > .status-panel,
+.sidebar-tools[open] > .local-bundle-panel,
+.sidebar-tools[open] > .external-panel {
+  display: block !important;
 }

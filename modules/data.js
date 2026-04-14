@@ -3,6 +3,7 @@ import { safeNumber } from './shared.js';
 const SUMMARY_NUMBER_FIELDS = ['election_year', 'turnout_pct', 'electors', 'voters', 'valid_votes', 'total_votes', 'first_party_share', 'second_party_share', 'first_second_margin'];
 const RESULTS_LONG_NUMBER_FIELDS = ['election_year', 'votes', 'vote_share', 'rank'];
 const CUSTOM_INDICATOR_NUMBER_FIELDS = ['election_year', 'value'];
+const MAP_READY_NUMBER_FIELDS = SUMMARY_NUMBER_FIELDS;
 
 export async function fetchTextFile(path) {
   const isGzip = String(path || '').endsWith('.gz');
@@ -90,8 +91,46 @@ function parseResultsLongRows(rows) {
   return parseNumberFields(rows, RESULTS_LONG_NUMBER_FIELDS);
 }
 
+function normalizeMapReadyShares(shares = {}) {
+  const out = { party_std: {}, party_family: {}, bloc: {} };
+  Object.keys(out).forEach(mode => {
+    Object.entries(shares?.[mode] || {}).forEach(([key, value]) => {
+      const label = String(key || '').trim();
+      const number = safeNumber(value);
+      if (label && number != null) out[mode][label] = number;
+    });
+  });
+  return out;
+}
+
+function parseMapReadyRows(payload) {
+  const rows = Array.isArray(payload) ? payload : (payload?.rows || []);
+  return parseNumberFields(rows, MAP_READY_NUMBER_FIELDS).map(row => ({
+    ...row,
+    shares: normalizeMapReadyShares(row.shares || {})
+  }));
+}
+
 function parseCustomIndicatorRows(rows) {
   return parseNumberFields(rows, CUSTOM_INDICATOR_NUMBER_FIELDS);
+}
+
+function normalizeMunicipalitySearchRows(rows = []) {
+  return (Array.isArray(rows) ? rows : []).map(row => {
+    const municipalityId = String(row?.municipality_id || '').trim();
+    const label = String(row?.label || row?.name_current || row?.municipality_name || row?.name_historical || municipalityId).trim();
+    const province = String(row?.province || row?.province_current || '').trim();
+    const geometryId = String(row?.geometry_id || row?.geometry_id_current || municipalityId).trim();
+    return municipalityId ? {
+      municipality_id: municipalityId,
+      label,
+      province,
+      geometry_id: geometryId,
+      name_current: label,
+      municipality_name: label,
+      province_current: province
+    } : null;
+  }).filter(Boolean);
 }
 
 function buildMunicipalityLookupMaps(municipalities = []) {
@@ -289,6 +328,40 @@ export async function ensureGeometry(state, kind, year, registerIssue = () => {}
   return state.geometryCache[kind][year];
 }
 
+function detailProvinceKey(state, year, province) {
+  const byProvince = state.geometryPack?.detailMunicipalities?.[String(year)] || {};
+  const raw = String(province || '').trim();
+  if (!raw) return null;
+  if (byProvince[raw]) return raw;
+  const normalized = normalizeJoinName(raw);
+  return Object.keys(byProvince).find(key => normalizeJoinName(key) === normalized) || null;
+}
+
+export function detailGeometryPathForProvince(state, year, province) {
+  const key = detailProvinceKey(state, year, province);
+  return key ? state.geometryPack?.detailMunicipalities?.[String(year)]?.[key] || null : null;
+}
+
+export async function ensureDetailGeometryForProvince(state, year, province, registerIssue = () => {}) {
+  const provinceKey = detailProvinceKey(state, year, province);
+  const path = provinceKey ? state.geometryPack?.detailMunicipalities?.[String(year)]?.[provinceKey] : null;
+  if (!year || !provinceKey || !path || typeof state.geometryResolver !== 'function') return null;
+  state.detailGeometryCache = state.detailGeometryCache || {};
+  const cacheKey = `${year}__${normalizeJoinName(provinceKey)}`;
+  if (!state.detailGeometryCache[cacheKey]) {
+    state.detailGeometryCache[cacheKey] = state.geometryResolver(path).then(geometry => ({
+      ...(geometry || { type: 'FeatureCollection', features: [] }),
+      __detailKey: cacheKey,
+      __detailProvince: provinceKey,
+      __detailYear: String(year),
+    })).catch(err => {
+      registerIssue(`geometry-detail-${year}-${provinceKey}`, err);
+      return { type: 'FeatureCollection', features: [], __detailKey: cacheKey, __detailProvince: provinceKey, __detailYear: String(year) };
+    });
+  }
+  return state.detailGeometryCache[cacheKey];
+}
+
 export async function syncActiveGeometry(state, registerIssue = () => {}) {
   if (!state.geometryPack) {
     state.geometry = state.geometry || state.geometryFallback || { type: 'FeatureCollection', features: [] };
@@ -312,6 +385,11 @@ export async function syncActiveGeometry(state, registerIssue = () => {}) {
   state.geometryCompareB = gB || state.geometryCompareA;
   state.geometrySwipe = state.territorialMode === 'harmonized' ? (gS || state.geometryCompareA) : (yearA === yearB ? state.geometryCompareA : (gS || state.geometryCompareA));
   state.provinceGeometry = pA || state.provinceGeometryFallback || { type: 'FeatureCollection', features: [] };
+  if (state.detailGeometryKey && !String(state.detailGeometryKey).startsWith(`${yearA}__`)) {
+    state.detailGeometry = null;
+    state.detailGeometryKey = null;
+    state.detailGeometryWantedKey = null;
+  }
 }
 
 export function electionCoverageFor(state, electionKey) {
@@ -417,6 +495,58 @@ export async function ensureSummaryForElections(state, electionKeys, { buildIndi
   return { strategy: 'by_election', loadedKeys, loadedRows: fresh.length };
 }
 
+export async function ensureMapReadyForElections(state, electionKeys, { buildIndices, registerIssue = () => {} } = {}) {
+  const wanted = [...new Set((electionKeys || []).filter(Boolean))];
+  if (!wanted.length || !state.manifest?.files) return { strategy: state.mapReadyLoadStrategy || 'none', loadedKeys: [], loadedRows: 0 };
+  if (state.mapReadyLoadStrategy !== 'by_election') return { strategy: state.mapReadyLoadStrategy || 'none', loadedKeys: [], loadedRows: 0, missing: true };
+
+  const shardPaths = state.mapReadyShardPaths || {};
+  const missing = wanted.filter(key => !state.loadedMapReadyElectionKeys?.has(key));
+  if (!missing.length) return { strategy: 'by_election', loadedKeys: [], loadedRows: 0, alreadyLoaded: true };
+  if (missing.some(key => !shardPaths[key])) {
+    return { strategy: 'by_election', loadedKeys: [], loadedRows: 0, missing: true };
+  }
+
+  const tasks = missing.map(key => {
+    if (state.mapReadyLoadPromises?.has(key)) return state.mapReadyLoadPromises.get(key);
+    const promise = state.mapReadyResolver(shardPaths[key])
+      .then(payload => ({
+        key,
+        rows: enrichRowsWithCurrentTerritory(
+          parseMapReadyRows(payload),
+          state.municipalityLookupMaps || buildMunicipalityLookupMaps(state.municipalities)
+        )
+      }))
+      .catch(err => {
+        registerIssue(`map-ready-shard-${key}`, err);
+        return { key, rows: [], error: err };
+      })
+      .finally(() => {
+        state.mapReadyLoadPromises?.delete(key);
+      });
+    state.mapReadyLoadPromises?.set(key, promise);
+    return promise;
+  });
+
+  const chunks = await Promise.all(tasks);
+  const fresh = [];
+  const loadedKeys = [];
+  chunks.forEach(chunk => {
+    if (!chunk?.key || state.loadedMapReadyElectionKeys?.has(chunk.key)) return;
+    state.loadedMapReadyElectionKeys?.add(chunk.key);
+    loadedKeys.push(chunk.key);
+    if (chunk.rows?.length) fresh.push(...chunk.rows);
+  });
+  if (fresh.length) state.mapReadyRows = (state.mapReadyRows || []).concat(fresh);
+  if (fresh.length || loadedKeys.length) {
+    if (typeof buildIndices === 'function') buildIndices({ mapReadyRows: fresh });
+  }
+  if (state.mapReadyDeclaredRows && (state.mapReadyRows || []).length >= state.mapReadyDeclaredRows) {
+    state.mapReadyHydrationComplete = true;
+  }
+  return { strategy: 'by_election', loadedKeys, loadedRows: fresh.length };
+}
+
 async function loadBundleWithManifest(state, manifest, resolver, { buildIndices, registerIssue = () => {}, source = 'embedded' } = {}) {
   state.manifest = manifest;
   const files = manifest.files || {};
@@ -424,14 +554,16 @@ async function loadBundleWithManifest(state, manifest, resolver, { buildIndices,
   const deferredResultsStrategy = String(manifest.loading?.municipalityResultsLong?.strategy || '');
   const preferDeferredSummary = Boolean(files.municipalitySummaryByElectionIndex || deferredSummaryStrategy.includes('deferred'));
   const preferDeferredResults = Boolean(files.municipalityResultsLongByElectionIndex || deferredResultsStrategy.includes('deferred'));
-  const [elections, municipalities, parties, eagerSummary, summaryShardIndex, eagerResultsLong, resultsShardIndex, geometryPack] = await Promise.all([
+  const [elections, municipalitySearchIndex, municipalitiesFallback, parties, eagerSummary, summaryShardIndex, eagerResultsLong, resultsShardIndex, mapReadyShardIndex, geometryPack] = await Promise.all([
     resolver.csv(files.electionsMaster),
-    resolver.csv(files.municipalitiesMaster),
+    files.municipalitySearchIndex ? resolver.json(files.municipalitySearchIndex).catch(() => []) : Promise.resolve([]),
+    !files.municipalitySearchIndex && files.municipalitiesMaster ? resolver.csv(files.municipalitiesMaster).catch(() => []) : Promise.resolve([]),
     resolver.csv(files.partiesMaster),
     !preferDeferredSummary && files.municipalitySummary ? resolver.csv(files.municipalitySummary).catch(() => []) : Promise.resolve([]),
     files.municipalitySummaryByElectionIndex ? resolver.json(files.municipalitySummaryByElectionIndex).catch(() => null) : Promise.resolve(null),
     !preferDeferredResults && files.municipalityResultsLong ? resolver.csv(files.municipalityResultsLong).catch(() => []) : Promise.resolve([]),
     files.municipalityResultsLongByElectionIndex ? resolver.json(files.municipalityResultsLongByElectionIndex).catch(() => null) : Promise.resolve(null),
+    files.mapReadyByElectionIndex ? resolver.json(files.mapReadyByElectionIndex).catch(() => null) : Promise.resolve(null),
     files.geometryPack ? resolver.json(files.geometryPack).catch(() => null) : Promise.resolve(null)
   ]);
   const needsFallbackGeometry = !geometryPack && files.geometry;
@@ -440,14 +572,18 @@ async function loadBundleWithManifest(state, manifest, resolver, { buildIndices,
     needsFallbackGeometry ? resolver.geometry(files.geometry).catch(() => null) : Promise.resolve(null),
     needsFallbackProvinceGeometry ? resolver.geometry(files.provinceGeometry).catch(() => null) : Promise.resolve(null)
   ]);
+  const slimMunicipalities = normalizeMunicipalitySearchRows(municipalitySearchIndex || []);
   state.elections = parseNumberFields(elections, ['election_year']).sort((a, b) => (a.election_year || 0) - (b.election_year || 0));
-  state.municipalities = municipalities;
+  state.municipalities = slimMunicipalities.length ? slimMunicipalities : (municipalitiesFallback || []);
+  state.municipalitiesAreSlim = slimMunicipalities.length > 0;
+  state.municipalitySearchIndex = normalizeMunicipalitySearchRows(state.municipalities);
   state.municipalityLookupMaps = buildMunicipalityLookupMaps(state.municipalities);
   state.parties = parties;
   state.lineage = [];
   state.aliases = [];
   state.summary = enrichRowsWithCurrentTerritory(parseSummaryRows(eagerSummary), state.municipalityLookupMaps);
   state.resultsLong = enrichRowsWithCurrentTerritory(parseResultsLongRows(eagerResultsLong), state.municipalityLookupMaps);
+  state.mapReadyRows = [];
   state.customIndicators = [];
   state.qualityReport = null;
   state.datasetRegistry = [];
@@ -471,27 +607,40 @@ async function loadBundleWithManifest(state, manifest, resolver, { buildIndices,
   state.geometryFallback = mainGeometry || { type: 'FeatureCollection', features: [] };
   state.provinceGeometryFallback = provinceGeometry || { type: 'FeatureCollection', features: [] };
   state.geometryCache = {};
+  state.detailGeometryCache = {};
+  state.detailGeometry = null;
+  state.detailGeometryKey = null;
+  state.detailGeometryWantedKey = null;
+  state.detailGeometryLoadingKey = null;
   state.dataSource = source;
   state.dataSourceLabel = source === 'local' ? `Bundle locale (${resolver.fileCount || 0} file)` : 'Bundle incorporato';
   state.summaryResolver = path => resolver.csv(path);
   state.geometryResolver = path => resolver.geometry(path);
   state.resultsResolver = path => resolver.csv(path);
+  state.mapReadyResolver = path => resolver.json(path);
   state.summaryShardIndex = summaryShardIndex || null;
   state.summaryShardPaths = summaryShardIndex?.shards || null;
   state.resultsLongShardIndex = resultsShardIndex || null;
   state.resultsLongShardPaths = resultsShardIndex?.shards || null;
+  state.mapReadyShardIndex = mapReadyShardIndex || null;
+  state.mapReadyShardPaths = mapReadyShardIndex?.shards || null;
   state.summaryLoadStrategy = state.summaryShardPaths && Object.keys(state.summaryShardPaths).length
     ? 'by_election'
     : (files.municipalitySummary ? 'full' : 'none');
   state.resultsLongLoadStrategy = state.resultsLongShardPaths && Object.keys(state.resultsLongShardPaths).length
     ? 'by_election'
     : (files.municipalityResultsLong ? 'full' : 'none');
+  state.mapReadyLoadStrategy = state.mapReadyShardPaths && Object.keys(state.mapReadyShardPaths).length
+    ? 'by_election'
+    : 'none';
   state.summaryFullLoaded = state.summaryLoadStrategy === 'full';
   state.resultsLongFullLoaded = state.resultsLongLoadStrategy === 'full';
   state.loadedSummaryElectionKeys = new Set(state.summary.map(row => row.election_key).filter(Boolean));
   state.loadedResultElectionKeys = new Set(state.resultsLong.map(row => row.election_key).filter(Boolean));
+  state.loadedMapReadyElectionKeys = new Set();
   state.summaryLoadPromises = new Map();
   state.resultsLoadPromises = new Map();
+  state.mapReadyLoadPromises = new Map();
   state.summaryFullLoadPromise = null;
   state.resultsFullLoadPromise = null;
   state.declaredCoverageByElection = buildDeclaredCoverageByElection(
@@ -504,14 +653,22 @@ async function loadBundleWithManifest(state, manifest, resolver, { buildIndices,
   );
   state.summaryDeclaredRows = Array.from(state.declaredCoverageByElection.values()).reduce((sum, row) => sum + (row.summary || 0), 0);
   state.resultsLongDeclaredRows = Array.from(state.declaredCoverageByElection.values()).reduce((sum, row) => sum + (row.results || 0), 0);
+  state.mapReadyDeclaredRows = Object.values(mapReadyShardIndex?.row_counts || {}).reduce((sum, count) => sum + (safeNumber(count) || 0), 0);
   state.summaryHydrationStarted = false;
   state.resultsHydrationStarted = false;
+  state.mapReadyHydrationStarted = false;
   state.summaryHydrationComplete = state.summaryFullLoaded;
   state.resultsHydrationComplete = state.resultsLongFullLoaded;
+  state.mapReadyHydrationComplete = !state.mapReadyDeclaredRows;
   if (typeof buildIndices === 'function') buildIndices({ rebuild: true });
   const defaults = defaultElectionSequence(state);
   state.selectedElection = state.selectedElection || defaults.at(-1)?.election_key || state.elections.at(-1)?.election_key || null;
-  state.compareElection = state.compareElection || state.selectedElection || defaults.at(-2)?.election_key || null;
+  const selectedDefaultIndex = defaults.findIndex(d => d.election_key === state.selectedElection);
+  const defaultCompareElection = selectedDefaultIndex > 0
+    ? defaults[selectedDefaultIndex - 1]?.election_key
+    : defaults.find(d => d.election_key !== state.selectedElection)?.election_key;
+  state.compareElection = state.compareElection || defaultCompareElection || null;
+  await ensureMapReadyForElections(state, [state.selectedElection].filter(Boolean), { buildIndices, registerIssue });
   await ensureSummaryForElections(state, [state.selectedElection].filter(Boolean), { buildIndices, registerIssue });
   await syncActiveGeometry(state, registerIssue);
 }
@@ -523,6 +680,7 @@ export async function loadDeferredBundleMetadata(state, { buildIndices, register
   const resolver = state.deferredMetadataResolver;
   if (!resolver) return { loaded: false, missingResolver: true };
   state.deferredMetadataPromise = Promise.all([
+    files.municipalitiesMaster && state.municipalitiesAreSlim ? resolver.csv(files.municipalitiesMaster).catch(() => null) : Promise.resolve(null),
     files.territorialLineage ? resolver.csv(files.territorialLineage).catch(() => []) : Promise.resolve([]),
     files.municipalityAliases ? resolver.csv(files.municipalityAliases).catch(() => []) : Promise.resolve([]),
     files.customIndicators ? resolver.csv(files.customIndicators).catch(() => []) : Promise.resolve([]),
@@ -538,7 +696,16 @@ export async function loadDeferredBundleMetadata(state, { buildIndices, register
     files.researchRecipes ? resolver.json(files.researchRecipes).catch(() => null) : Promise.resolve(null),
     files.siteGuides ? resolver.json(files.siteGuides).catch(() => null) : Promise.resolve(null),
     files.archiveBundleGapReport ? resolver.json(files.archiveBundleGapReport).catch(() => null) : Promise.resolve(null)
-  ]).then(([lineage, aliases, customIndicators, qualityReport, datasetRegistry, codebook, usageNotes, updateLog, dataProducts, datasetContracts, provenance, releaseManifest, researchRecipes, siteGuides, archiveGapReport]) => {
+  ]).then(([municipalitiesMaster, lineage, aliases, customIndicators, qualityReport, datasetRegistry, codebook, usageNotes, updateLog, dataProducts, datasetContracts, provenance, releaseManifest, researchRecipes, siteGuides, archiveGapReport]) => {
+    if (municipalitiesMaster?.length) {
+      state.municipalities = municipalitiesMaster;
+      state.municipalityLookupMaps = buildMunicipalityLookupMaps(state.municipalities);
+      state.municipalitySearchIndex = normalizeMunicipalitySearchRows(state.municipalities);
+      state.summary = enrichRowsWithCurrentTerritory(state.summary, state.municipalityLookupMaps);
+      state.resultsLong = enrichRowsWithCurrentTerritory(state.resultsLong, state.municipalityLookupMaps);
+      state.mapReadyRows = enrichRowsWithCurrentTerritory(state.mapReadyRows || [], state.municipalityLookupMaps);
+      state.municipalitiesAreSlim = false;
+    }
     state.lineage = lineage || [];
     state.aliases = aliases || [];
     state.customIndicators = parseCustomIndicatorRows(customIndicators || []);

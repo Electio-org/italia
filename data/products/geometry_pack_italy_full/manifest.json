@@ -31,20 +31,20 @@
       "dataset_key": "geometryPackFull",
       "path": "data/derived/geometry_pack_full.json",
       "kind": "json",
-      "size_bytes": 226,
+      "size_bytes": 329,
       "row_count": null,
       "feature_count": null,
-      "sha256": "7593babafb263b6b25887235e2f420ed645a54d82a883ab0abb76910d9f6bf9a"
+      "sha256": "a771903ec43e5b72154ab722d39c279739746648bb6142f65e0ed4b3c9e68d0c"
     },
     {
       "role": "companion",
       "dataset_key": "provinceGeometryFull",
-      "path": "data/derived/geometries/provinces_2021.geojson",
+      "path": "data/derived/geometries/provinces_2026.geojson",
       "kind": "geojson",
-      "size_bytes": 47202067,
+      "size_bytes": 1692077,
       "row_count": null,
-      "feature_count": 107,
-      "sha256": "2488e26c6ef0d0c683824301316977a606e97761e4a690cc4228bf5320f5d64b"
+      "feature_count": 12,
+      "sha256": "03aa143bfcf068f56f6dbefcfc67b08feba5e105c14f5a88b2414940ca3d5b8b"
     }
   ],
   "inventory": {

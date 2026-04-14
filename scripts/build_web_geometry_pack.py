@@ -4,9 +4,12 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import re
+import unicodedata
+from collections import defaultdict
 from copy import deepcopy
 from pathlib import Path
-from typing import Dict, Iterable, List, Sequence, Tuple
+from typing import DefaultDict, Dict, Iterable, List, Sequence, Tuple
 
 
 Point = Sequence[float]
@@ -134,9 +137,7 @@ def feature_point_count(feature: Dict[str, object]) -> int:
     return 0
 
 
-def simplify_feature_collection(path: Path, out_path: Path, bundle_root: Path, tolerance: float) -> Dict[str, object]:
-    payload = json.loads(path.read_text(encoding="utf-8"))
-    features = payload.get("features") or []
+def simplify_features(features: List[Dict[str, object]], tolerance: float) -> Tuple[List[Dict[str, object]], int, int]:
     before_points = sum(feature_point_count(feature) for feature in features)
     simplified_features = []
     for feature in features:
@@ -144,22 +145,89 @@ def simplify_feature_collection(path: Path, out_path: Path, bundle_root: Path, t
         out_feature["geometry"] = simplify_geometry(feature.get("geometry") or {}, tolerance)
         simplified_features.append(out_feature)
     after_points = sum(feature_point_count(feature) for feature in simplified_features)
+    return simplified_features, before_points, after_points
+
+
+def write_simplified_feature_collection(
+    payload: Dict[str, object],
+    features: List[Dict[str, object]],
+    source_path: Path,
+    out_path: Path,
+    bundle_root: Path,
+    tolerance: float,
+) -> Dict[str, object]:
+    simplified_features, before_points, after_points = simplify_features(features, tolerance)
     simplified_payload = {
         **payload,
         "features": simplified_features,
     }
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(json.dumps(simplified_payload, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    before_payload = {**payload, "features": features}
+    before_bytes = len(json.dumps(before_payload, ensure_ascii=False, separators=(",", ":")).encode("utf-8"))
     return {
-        "source_path": str(path.relative_to(bundle_root)).replace("\\", "/"),
+        "source_path": str(source_path.relative_to(bundle_root)).replace("\\", "/"),
         "target_path": str(out_path.relative_to(bundle_root)).replace("\\", "/"),
         "tolerance": tolerance,
         "feature_count": len(features),
         "points_before": before_points,
         "points_after": after_points,
-        "bytes_before": path.stat().st_size,
+        "bytes_before": before_bytes,
         "bytes_after": out_path.stat().st_size,
     }
+
+
+def simplify_feature_collection(path: Path, out_path: Path, bundle_root: Path, tolerance: float) -> Dict[str, object]:
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    features = payload.get("features") or []
+    return write_simplified_feature_collection(payload, features, path, out_path, bundle_root, tolerance)
+
+
+def province_name_for_feature(feature: Dict[str, object]) -> str:
+    props = feature.get("properties") or {}
+    return str(
+        props.get("province")
+        or props.get("province_name")
+        or props.get("province_current")
+        or props.get("provincia")
+        or props.get("province_code")
+        or "unknown"
+    ).strip() or "unknown"
+
+
+def slugify(value: str) -> str:
+    normalized = unicodedata.normalize("NFKD", str(value or "unknown"))
+    ascii_value = normalized.encode("ascii", "ignore").decode("ascii")
+    slug = re.sub(r"[^a-zA-Z0-9]+", "_", ascii_value).strip("_").lower()
+    return slug or "unknown"
+
+
+def write_detail_chunks_by_province(
+    path: Path,
+    out_dir: Path,
+    bundle_root: Path,
+    year_key: str,
+    tolerance: float,
+) -> Tuple[Dict[str, str], List[Dict[str, object]]]:
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    features = payload.get("features") or []
+    by_province: DefaultDict[str, List[Dict[str, object]]] = defaultdict(list)
+    for feature in features:
+        by_province[province_name_for_feature(feature)].append(feature)
+
+    chunks: Dict[str, str] = {}
+    rows: List[Dict[str, object]] = []
+    for province in sorted(by_province):
+        chunk_rel = Path("data/derived/geometries_detail_by_province") / year_key / f"municipalities_{year_key}_{slugify(province)}.geojson"
+        chunk_path = bundle_root / chunk_rel
+        rows.append({
+            "layer": "municipalities_detail",
+            "year": int(year_key),
+            "province": province,
+            **write_simplified_feature_collection(payload, by_province[province], path, chunk_path, bundle_root, tolerance),
+        })
+        chunks[province] = str(chunk_rel).replace("\\", "/")
+    return chunks, rows
 
 
 def main() -> None:
@@ -167,6 +235,7 @@ def main() -> None:
     parser.add_argument("--root", default=".", help="Project root")
     parser.add_argument("--municipality-tolerance", type=float, default=1100.0, help="Simplification tolerance for municipality boundaries")
     parser.add_argument("--province-tolerance", type=float, default=2000.0, help="Simplification tolerance for province boundaries")
+    parser.add_argument("--detail-municipality-tolerance", type=float, default=150.0, help="Simplification tolerance for province chunk detail geometry")
     args = parser.parse_args()
 
     root = Path(args.root).resolve()
@@ -179,7 +248,12 @@ def main() -> None:
 
     web_geom_dir = derived / "geometries_web"
     report_rows = []
-    web_pack = {"availableYears": list(full_pack.get("availableYears") or []), "municipalities": {}, "provinces": {}}
+    web_pack = {
+        "availableYears": list(full_pack.get("availableYears") or []),
+        "municipalities": {},
+        "provinces": {},
+        "detailMunicipalities": {},
+    }
 
     for year in full_pack.get("availableYears") or []:
         year_key = str(year)
@@ -195,6 +269,16 @@ def main() -> None:
                 **simplify_feature_collection(in_path, out_path, root, args.municipality_tolerance),
             })
             web_pack["municipalities"][year_key] = str(out_rel).replace("\\", "/")
+            chunks, chunk_rows = write_detail_chunks_by_province(
+                in_path,
+                derived / "geometries_detail_by_province" / year_key,
+                root,
+                year_key,
+                args.detail_municipality_tolerance,
+            )
+            if chunks:
+                web_pack["detailMunicipalities"][year_key] = chunks
+                report_rows.extend(chunk_rows)
         if prov_rel:
             in_path = root / prov_rel
             out_rel = Path("data/derived/geometries_web") / f"provinces_{year_key}.geojson"
@@ -221,6 +305,7 @@ def main() -> None:
         "generated_by": "build_web_geometry_pack.py",
         "municipality_tolerance": args.municipality_tolerance,
         "province_tolerance": args.province_tolerance,
+        "detail_municipality_tolerance": args.detail_municipality_tolerance,
         "rows": report_rows,
         "totals": totals,
     }

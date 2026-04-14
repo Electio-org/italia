@@ -29,20 +29,20 @@
       "dataset_key": "geometryPack",
       "path": "data/derived/geometry_pack_web.json",
       "kind": "json",
-      "size_bytes": 234,
+      "size_bytes": 914,
       "row_count": null,
       "feature_count": null,
-      "sha256": "c603acd3f583fbe3f889e840ea2ed2f41558bda49078c18781c1713ea0ca9203"
+      "sha256": "a8128340eabfb41fedea47061b92e29b837ed5341ddf5158c3b6dbdf028e0a33"
     },
     {
       "role": "companion",
       "dataset_key": "provinceGeometry",
       "path": "data/derived/geometries_web/provinces_2021.geojson",
       "kind": "geojson",
-      "size_bytes": 122576,
+      "size_bytes": 256926,
       "row_count": null,
       "feature_count": 107,
-      "sha256": "dc4eb4f349c269d275e08202d7608c2b688af9b831e12ae48d8abfd312ebbf6c"
+      "sha256": "a627b0fc5a80b6847fa5236764b227816017b128c941e65449b9632f426465bd"
     }
   ],
   "inventory": {
@@ -51,8 +51,8 @@
     "entries": [
       {
         "geometry_year": 2021,
-        "municipalities_path": "data/derived/geometries_web/municipalities_2021.geojson",
-        "provinces_path": "data/derived/geometries_web/provinces_2021.geojson"
+        "municipalities_path": "data/derived/geometries_web/municipalities_2021.geojson.gz",
+        "provinces_path": "data/derived/geometries_web/provinces_2021.geojson.gz"
       }
     ]
   },

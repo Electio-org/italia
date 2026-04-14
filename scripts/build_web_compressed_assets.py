@@ -28,18 +28,38 @@ def gz_rel(path_rel: str, root: Path) -> str:
     return rel(gzip_file(path), root)
 
 
+def uncompressed_rel(path_rel: str, root: Path) -> str:
+    path_rel = str(path_rel)
+    if path_rel.endswith(".gz") and (root / path_rel[:-3]).exists():
+        return path_rel[:-3]
+    return path_rel
+
+
+def gzip_geometry_rel(path_rel: str, root: Path) -> tuple[str, str, int, int]:
+    source_rel = uncompressed_rel(path_rel, root)
+    source = root / source_rel
+    if source_rel.endswith(".gz"):
+        gz_path = source
+        source_for_size = root / source_rel[:-3] if (root / source_rel[:-3]).exists() else source
+    else:
+        gz_path = gzip_file(source)
+        source_for_size = source
+    return source_rel, rel(gz_path, root), source_for_size.stat().st_size, gz_path.stat().st_size
+
+
 def gzip_shards(index_path: Path, root: Path) -> dict[str, object]:
     index = json.loads(index_path.read_text(encoding="utf-8"))
-    shards = index.get("shards") or {}
+    shards = index.get("shards_uncompressed") or index.get("shards") or {}
+    shards = {key: uncompressed_rel(path, root) for key, path in shards.items()}
     compressed = {}
     original_bytes = 0
     compressed_bytes = 0
     for key, shard_rel in shards.items():
-        shard_path = root / shard_rel
-        gz_path = gzip_file(shard_path)
-        original_bytes += shard_path.stat().st_size
-        compressed_bytes += gz_path.stat().st_size
-        compressed[key] = rel(gz_path, root)
+        source_rel, gz_path_rel, source_bytes, gz_bytes = gzip_geometry_rel(shard_rel, root)
+        shards[key] = source_rel
+        original_bytes += source_bytes
+        compressed_bytes += gz_bytes
+        compressed[key] = gz_path_rel
     index["shards_uncompressed"] = shards
     index["shards"] = compressed
     index["compression"] = {
@@ -61,17 +81,31 @@ def main() -> None:
     geometry_compression = []
     for family in ["municipalities", "provinces"]:
         for year, path_rel in list((geometry_pack.get(family) or {}).items()):
-            source = root / path_rel
-            gz_path = gzip_file(source)
-            geometry_pack[family][year] = rel(gz_path, root)
+            source_rel, gz_path_rel, original_bytes, compressed_bytes = gzip_geometry_rel(path_rel, root)
+            geometry_pack[family][year] = gz_path_rel
             geometry_compression.append({
                 "family": family,
                 "year": year,
-                "source": path_rel,
-                "gzip": rel(gz_path, root),
-                "original_bytes": source.stat().st_size,
-                "compressed_bytes": gz_path.stat().st_size,
+                "source": source_rel,
+                "gzip": gz_path_rel,
+                "original_bytes": original_bytes,
+                "compressed_bytes": compressed_bytes,
             })
+    for year, province_paths in list((geometry_pack.get("detailMunicipalities") or {}).items()):
+        compressed_province_paths = {}
+        for province, path_rel in list((province_paths or {}).items()):
+            source_rel, gz_path_rel, original_bytes, compressed_bytes = gzip_geometry_rel(path_rel, root)
+            compressed_province_paths[province] = gz_path_rel
+            geometry_compression.append({
+                "family": "detailMunicipalities",
+                "year": year,
+                "province": province,
+                "source": source_rel,
+                "gzip": gz_path_rel,
+                "original_bytes": original_bytes,
+                "compressed_bytes": compressed_bytes,
+            })
+        geometry_pack.setdefault("detailMunicipalities", {})[year] = compressed_province_paths
     geometry_pack["compression"] = {
         "format": "gzip",
         "rows": geometry_compression,

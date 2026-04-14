@@ -16,6 +16,969 @@
       "gzip": "data/derived/geometries_web/provinces_2021.geojson.gz",
       "original_bytes": 122576,
       "compressed_bytes": 41292
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Agrigento",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_agrigento.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_agrigento.geojson.gz",
+      "original_bytes": 57655,
+      "compressed_bytes": 18374
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Alessandria",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_alessandria.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_alessandria.geojson.gz",
+      "original_bytes": 156888,
+      "compressed_bytes": 43348
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Ancona",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_ancona.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_ancona.geojson.gz",
+      "original_bytes": 47514,
+      "compressed_bytes": 13995
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Aosta",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_aosta.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_aosta.geojson.gz",
+      "original_bytes": 65657,
+      "compressed_bytes": 17432
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Arezzo",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_arezzo.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_arezzo.geojson.gz",
+      "original_bytes": 45154,
+      "compressed_bytes": 14078
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Ascoli Piceno",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_ascoli_piceno.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_ascoli_piceno.geojson.gz",
+      "original_bytes": 33789,
+      "compressed_bytes": 9969
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Asti",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_asti.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_asti.geojson.gz",
+      "original_bytes": 84454,
+      "compressed_bytes": 22180
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Avellino",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_avellino.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_avellino.geojson.gz",
+      "original_bytes": 102189,
+      "compressed_bytes": 27758
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Bari",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_bari.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_bari.geojson.gz",
+      "original_bytes": 66283,
+      "compressed_bytes": 20571
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Barletta-Andria-Trani",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_barletta_andria_trani.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_barletta_andria_trani.geojson.gz",
+      "original_bytes": 18417,
+      "compressed_bytes": 6069
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Belluno",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_belluno.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_belluno.geojson.gz",
+      "original_bytes": 65764,
+      "compressed_bytes": 19464
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Benevento",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_benevento.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_benevento.geojson.gz",
+      "original_bytes": 68950,
+      "compressed_bytes": 19283
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Bergamo",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_bergamo.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_bergamo.geojson.gz",
+      "original_bytes": 159336,
+      "compressed_bytes": 37704
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Biella",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_biella.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_biella.geojson.gz",
+      "original_bytes": 56411,
+      "compressed_bytes": 14998
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Bologna",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_bologna.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_bologna.geojson.gz",
+      "original_bytes": 71089,
+      "compressed_bytes": 22504
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Bolzano",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_bolzano.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_bolzano.geojson.gz",
+      "original_bytes": 132542,
+      "compressed_bytes": 39746
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Brescia",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_brescia.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_brescia.geojson.gz",
+      "original_bytes": 169913,
+      "compressed_bytes": 44260
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Brindisi",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_brindisi.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_brindisi.geojson.gz",
+      "original_bytes": 30729,
+      "compressed_bytes": 9675
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Cagliari",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_cagliari.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_cagliari.geojson.gz",
+      "original_bytes": 21109,
+      "compressed_bytes": 6575
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Caltanissetta",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_caltanissetta.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_caltanissetta.geojson.gz",
+      "original_bytes": 30161,
+      "compressed_bytes": 9879
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Campobasso",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_campobasso.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_campobasso.geojson.gz",
+      "original_bytes": 75820,
+      "compressed_bytes": 21487
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Caserta",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_caserta.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_caserta.geojson.gz",
+      "original_bytes": 89132,
+      "compressed_bytes": 24583
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Catania",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_catania.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_catania.geojson.gz",
+      "original_bytes": 66415,
+      "compressed_bytes": 20147
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Catanzaro",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_catanzaro.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_catanzaro.geojson.gz",
+      "original_bytes": 83570,
+      "compressed_bytes": 24017
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Chieti",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_chieti.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_chieti.geojson.gz",
+      "original_bytes": 84699,
+      "compressed_bytes": 23225
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Como",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_como.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_como.geojson.gz",
+      "original_bytes": 96131,
+      "compressed_bytes": 23354
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Cosenza",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_cosenza.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_cosenza.geojson.gz",
+      "original_bytes": 158312,
+      "compressed_bytes": 46189
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Cremona",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_cremona.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_cremona.geojson.gz",
+      "original_bytes": 99852,
+      "compressed_bytes": 25925
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Crotone",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_crotone.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_crotone.geojson.gz",
+      "original_bytes": 37405,
+      "compressed_bytes": 11495
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Cuneo",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_cuneo.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_cuneo.geojson.gz",
+      "original_bytes": 200754,
+      "compressed_bytes": 56118
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Enna",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_enna.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_enna.geojson.gz",
+      "original_bytes": 38658,
+      "compressed_bytes": 12955
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Fermo",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_fermo.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_fermo.geojson.gz",
+      "original_bytes": 30408,
+      "compressed_bytes": 8346
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Ferrara",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_ferrara.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_ferrara.geojson.gz",
+      "original_bytes": 31006,
+      "compressed_bytes": 9881
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Firenze",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_firenze.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_firenze.geojson.gz",
+      "original_bytes": 53150,
+      "compressed_bytes": 16757
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Foggia",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_foggia.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_foggia.geojson.gz",
+      "original_bytes": 94929,
+      "compressed_bytes": 29415
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Forli'-Cesena",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_forli_cesena.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_forli_cesena.geojson.gz",
+      "original_bytes": 41611,
+      "compressed_bytes": 12710
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Frosinone",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_frosinone.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_frosinone.geojson.gz",
+      "original_bytes": 81458,
+      "compressed_bytes": 23341
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Genova",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_genova.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_genova.geojson.gz",
+      "original_bytes": 60677,
+      "compressed_bytes": 17400
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Gorizia",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_gorizia.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_gorizia.geojson.gz",
+      "original_bytes": 20584,
+      "compressed_bytes": 5831
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Grosseto",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_grosseto.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_grosseto.geojson.gz",
+      "original_bytes": 44683,
+      "compressed_bytes": 14489
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Imperia",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_imperia.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_imperia.geojson.gz",
+      "original_bytes": 51825,
+      "compressed_bytes": 13956
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Isernia",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_isernia.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_isernia.geojson.gz",
+      "original_bytes": 44342,
+      "compressed_bytes": 12490
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "L'Aquila",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_l_aquila.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_l_aquila.geojson.gz",
+      "original_bytes": 101075,
+      "compressed_bytes": 28813
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "La Spezia",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_la_spezia.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_la_spezia.geojson.gz",
+      "original_bytes": 29351,
+      "compressed_bytes": 8555
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Latina",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_latina.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_latina.geojson.gz",
+      "original_bytes": 34304,
+      "compressed_bytes": 10429
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Lecce",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_lecce.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_lecce.geojson.gz",
+      "original_bytes": 97563,
+      "compressed_bytes": 28123
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Lecco",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_lecco.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_lecco.geojson.gz",
+      "original_bytes": 55137,
+      "compressed_bytes": 13148
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Livorno",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_livorno.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_livorno.geojson.gz",
+      "original_bytes": 24381,
+      "compressed_bytes": 7830
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Lodi",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_lodi.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_lodi.geojson.gz",
+      "original_bytes": 53169,
+      "compressed_bytes": 14153
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Lucca",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_lucca.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_lucca.geojson.gz",
+      "original_bytes": 37443,
+      "compressed_bytes": 11410
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Macerata",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_macerata.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_macerata.geojson.gz",
+      "original_bytes": 57858,
+      "compressed_bytes": 17254
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Mantova",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_mantova.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_mantova.geojson.gz",
+      "original_bytes": 66354,
+      "compressed_bytes": 18818
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Massa Carrara",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_massa_carrara.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_massa_carrara.geojson.gz",
+      "original_bytes": 19337,
+      "compressed_bytes": 6021
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Matera",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_matera.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_matera.geojson.gz",
+      "original_bytes": 45259,
+      "compressed_bytes": 13933
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Messina",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_messina.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_messina.geojson.gz",
+      "original_bytes": 93251,
+      "compressed_bytes": 25892
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Milano",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_milano.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_milano.geojson.gz",
+      "original_bytes": 113366,
+      "compressed_bytes": 30227
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Modena",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_modena.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_modena.geojson.gz",
+      "original_bytes": 53143,
+      "compressed_bytes": 15774
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Monza e della Brianza",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_monza_e_della_brianza.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_monza_e_della_brianza.geojson.gz",
+      "original_bytes": 40341,
+      "compressed_bytes": 10022
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Napoli",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_napoli.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_napoli.geojson.gz",
+      "original_bytes": 71723,
+      "compressed_bytes": 19115
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Novara",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_novara.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_novara.geojson.gz",
+      "original_bytes": 68723,
+      "compressed_bytes": 18555
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Nuoro",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_nuoro.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_nuoro.geojson.gz",
+      "original_bytes": 84102,
+      "compressed_bytes": 24874
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Oristano",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_oristano.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_oristano.geojson.gz",
+      "original_bytes": 73611,
+      "compressed_bytes": 20110
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Padova",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_padova.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_padova.geojson.gz",
+      "original_bytes": 89413,
+      "compressed_bytes": 24523
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Palermo",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_palermo.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_palermo.geojson.gz",
+      "original_bytes": 105345,
+      "compressed_bytes": 32989
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Parma",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_parma.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_parma.geojson.gz",
+      "original_bytes": 56539,
+      "compressed_bytes": 16621
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Pavia",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_pavia.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_pavia.geojson.gz",
+      "original_bytes": 162190,
+      "compressed_bytes": 43911
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Perugia",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_perugia.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_perugia.geojson.gz",
+      "original_bytes": 84719,
+      "compressed_bytes": 27092
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Pesaro e Urbino",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_pesaro_e_urbino.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_pesaro_e_urbino.geojson.gz",
+      "original_bytes": 64050,
+      "compressed_bytes": 19579
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Pescara",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_pescara.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_pescara.geojson.gz",
+      "original_bytes": 40219,
+      "compressed_bytes": 11350
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Piacenza",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_piacenza.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_piacenza.geojson.gz",
+      "original_bytes": 55238,
+      "compressed_bytes": 15945
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Pisa",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_pisa.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_pisa.geojson.gz",
+      "original_bytes": 40744,
+      "compressed_bytes": 12308
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Pistoia",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_pistoia.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_pistoia.geojson.gz",
+      "original_bytes": 19404,
+      "compressed_bytes": 5828
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Pordenone",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_pordenone.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_pordenone.geojson.gz",
+      "original_bytes": 53366,
+      "compressed_bytes": 15695
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Potenza",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_potenza.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_potenza.geojson.gz",
+      "original_bytes": 118054,
+      "compressed_bytes": 35404
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Prato",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_prato.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_prato.geojson.gz",
+      "original_bytes": 7349,
+      "compressed_bytes": 2401
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Ragusa",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_ragusa.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_ragusa.geojson.gz",
+      "original_bytes": 23225,
+      "compressed_bytes": 7870
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Ravenna",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_ravenna.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_ravenna.geojson.gz",
+      "original_bytes": 22870,
+      "compressed_bytes": 7073
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Reggio di Calabria",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_reggio_di_calabria.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_reggio_di_calabria.geojson.gz",
+      "original_bytes": 98319,
+      "compressed_bytes": 27902
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Reggio nell'Emilia",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_reggio_nell_emilia.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_reggio_nell_emilia.geojson.gz",
+      "original_bytes": 44927,
+      "compressed_bytes": 12920
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Rieti",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_rieti.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_rieti.geojson.gz",
+      "original_bytes": 68850,
+      "compressed_bytes": 19818
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Rimini",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_rimini.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_rimini.geojson.gz",
+      "original_bytes": 25874,
+      "compressed_bytes": 7551
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Roma",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_roma.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_roma.geojson.gz",
+      "original_bytes": 118296,
+      "compressed_bytes": 34987
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Rovigo",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_rovigo.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_rovigo.geojson.gz",
+      "original_bytes": 46251,
+      "compressed_bytes": 13062
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Salerno",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_salerno.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_salerno.geojson.gz",
+      "original_bytes": 150740,
+      "compressed_bytes": 42926
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Sassari",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_sassari.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_sassari.geojson.gz",
+      "original_bytes": 132913,
+      "compressed_bytes": 41077
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Savona",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_savona.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_savona.geojson.gz",
+      "original_bytes": 56850,
+      "compressed_bytes": 15829
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Siena",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_siena.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_siena.geojson.gz",
+      "original_bytes": 51344,
+      "compressed_bytes": 16594
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Siracusa",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_siracusa.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_siracusa.geojson.gz",
+      "original_bytes": 37667,
+      "compressed_bytes": 12088
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Sondrio",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_sondrio.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_sondrio.geojson.gz",
+      "original_bytes": 64871,
+      "compressed_bytes": 17275
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Sud Sardegna",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_sud_sardegna.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_sud_sardegna.geojson.gz",
+      "original_bytes": 108629,
+      "compressed_bytes": 31177
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Taranto",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_taranto.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_taranto.geojson.gz",
+      "original_bytes": 45700,
+      "compressed_bytes": 14143
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Teramo",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_teramo.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_teramo.geojson.gz",
+      "original_bytes": 45381,
+      "compressed_bytes": 13264
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Terni",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_terni.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_terni.geojson.gz",
+      "original_bytes": 39276,
+      "compressed_bytes": 11952
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Torino",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_torino.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_torino.geojson.gz",
+      "original_bytes": 244178,
+      "compressed_bytes": 66521
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Trapani",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_trapani.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_trapani.geojson.gz",
+      "original_bytes": 40428,
+      "compressed_bytes": 13388
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Trento",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_trento.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_trento.geojson.gz",
+      "original_bytes": 163690,
+      "compressed_bytes": 48091
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Treviso",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_treviso.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_treviso.geojson.gz",
+      "original_bytes": 91603,
+      "compressed_bytes": 26006
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Trieste",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_trieste.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_trieste.geojson.gz",
+      "original_bytes": 6183,
+      "compressed_bytes": 2104
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Udine",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_udine.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_udine.geojson.gz",
+      "original_bytes": 136380,
+      "compressed_bytes": 39867
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Varese",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_varese.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_varese.geojson.gz",
+      "original_bytes": 85932,
+      "compressed_bytes": 20479
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Venezia",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_venezia.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_venezia.geojson.gz",
+      "original_bytes": 54551,
+      "compressed_bytes": 16945
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Verbano-Cusio-Ossola",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_verbano_cusio_ossola.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_verbano_cusio_ossola.geojson.gz",
+      "original_bytes": 63620,
+      "compressed_bytes": 17700
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Vercelli",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_vercelli.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_vercelli.geojson.gz",
+      "original_bytes": 70793,
+      "compressed_bytes": 19938
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Verona",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_verona.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_verona.geojson.gz",
+      "original_bytes": 93608,
+      "compressed_bytes": 26345
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Vibo Valentia",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_vibo_valentia.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_vibo_valentia.geojson.gz",
+      "original_bytes": 42353,
+      "compressed_bytes": 11409
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Vicenza",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_vicenza.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_vicenza.geojson.gz",
+      "original_bytes": 97807,
+      "compressed_bytes": 26923
+    },
+    {
+      "family": "detailMunicipalities",
+      "year": "2021",
+      "province": "Viterbo",
+      "source": "data/derived/geometries_detail_by_province/2021/municipalities_2021_viterbo.geojson",
+      "gzip": "data/derived/geometries_detail_by_province/2021/municipalities_2021_viterbo.geojson.gz",
+      "original_bytes": 66250,
+      "compressed_bytes": 19776
     }
   ],
   "summary_shards": {
@@ -26,8 +989,8 @@
   },
   "result_shards": {
     "format": "gzip",
-    "original_bytes": 530219797,
-    "compressed_bytes": 40564921,
-    "reduction_pct": 92.35
+    "original_bytes": 40549681,
+    "compressed_bytes": 40549681,
+    "reduction_pct": 0.0
   }
 }

@@ -11,6 +11,9 @@
   <link rel="stylesheet" href="vendor/tabler/icons/tabler-icons.min.css" />
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="tabler-theme.css" />
+  <link rel="preload" href="data/derived/geometry_pack_web.json" as="fetch" crossorigin="anonymous" />
+  <link rel="preload" href="data/derived/geometries_web/municipalities_2021.geojson.gz" as="fetch" crossorigin="anonymous" />
+  <link rel="preload" href="data/derived/geometries_web/provinces_2021.geojson.gz" as="fetch" crossorigin="anonymous" />
   <script defer src="vendor/d3/d3.min.js"></script>
   <script defer src="vendor/papaparse/papaparse.min.js"></script>
   <script defer src="vendor/topojson-client/topojson-client.min.js"></script>
@@ -67,8 +70,8 @@
       <section class="panel control-panel">
         <div class="panel-header tight">
           <div>
-            <h2>Controlli mappa</h2>
-            <p class="panel-subtitle">Anno, metrica, confronto e base geometrica in un unico pannello.</p>
+            <h2>Esplora il voto</h2>
+            <p class="panel-subtitle">Scegli comune, elezione e metrica. Le opzioni specialistiche restano sotto Strumenti avanzati.</p>
           </div>
           <button type="button" id="reset-btn" class="ghost-btn small-btn">Reset</button>
         </div>
@@ -79,94 +82,94 @@
           <datalist id="municipality-list"></datalist>
         </label>
 
-        <div class="two-col two-col-main">
-          <label>
-            Elezione
-            <select id="election-select"></select>
-          </label>
-          <label>
-            Confronta con
-            <select id="compare-election-select"></select>
-          </label>
-        </div>
+        <label class="election-primary-control">
+          Elezione
+          <select id="election-select"></select>
+        </label>
 
-        <div class="two-col two-col-main">
-          <label>
+        <div class="primary-control-row">
+          <label class="primary-metric-control">
             Mostra in mappa
             <select id="metric-select">
               <option value="first_party">Primo partito</option>
-              <option value="party_share">Quota selezionata</option>
+              <option value="party_share">Quota partito</option>
               <option value="turnout">Affluenza</option>
               <option value="margin">Margine del vincente</option>
               <option value="dominant_block">Blocco dominante</option>
-              <option value="swing_compare">Scarto vs confronto</option>
               <option value="delta_turnout">Delta affluenza</option>
-              <option value="volatility">Volatilità storica</option>
-              <option value="dominance_changes">Cambi di dominanza</option>
-              <option value="concentration">Concentrazione del voto</option>
-              <option value="over_performance_province">Scarto vs provincia</option>
-              <option value="over_performance_region">Scarto vs Italia</option>
-              <option value="stability_index">Indice di stabilità</option>
-              <option value="custom_indicator">Indicatore esterno</option>
             </select>
           </label>
-          <label>
-            Livello selezione
-            <select id="party-mode-select">
-              <option value="party_std">Partito</option>
-              <option value="party_family">Famiglia</option>
-              <option value="bloc">Blocco</option>
-            </select>
-          </label>
-        </div>
-
-        <div class="two-col two-col-main">
-          <label>
-            Partito / famiglia / blocco
+          <label id="primary-party-control" class="primary-party-control">
+            Seleziona partito
             <select id="party-select"></select>
           </label>
-          <label>
-            Base geometrica
-            <select id="geometry-reference-select"></select>
-          </label>
+        </div>
+        <div id="control-refresh-status" class="control-refresh-status hidden" aria-live="polite">
+          <span class="control-refresh-dot"></span>
+          <span>Aggiorno la vista</span>
         </div>
 
-        <div class="two-col two-col-main">
-          <label>
-            Modalità territoriale
-            <select id="territorial-mode-select">
-              <option value="historical">Comune storico</option>
-              <option value="harmonized">Comune armonizzato</option>
-            </select>
-          </label>
-          <label>
-            Palette
-            <select id="palette-select">
-              <option value="auto">Auto</option>
-              <option value="sequential">Sequential</option>
-              <option value="diverging">Diverging</option>
-              <option value="categorical">Categorical</option>
-              <option value="accessible">Accessible</option>
-            </select>
-          </label>
-        </div>
-
-        <div class="time-nav-box compact-time-nav">
-          <div class="time-nav-actions">
-            <button type="button" id="prev-election-btn" class="ghost-btn small-btn">← Anno prec.</button>
-            <button type="button" id="next-election-btn" class="ghost-btn small-btn">Anno succ. →</button>
-          <button type="button" id="play-timeline-btn" class="ghost-btn small-btn">Avvia timeline</button>
-          </div>
-          <label>
-            Timeline
-            <input id="election-slider" type="range" min="0" max="0" value="0" step="1" />
-          </label>
-          <div id="slider-year-label" class="helper-text">Timeline non disponibile</div>
-        </div>
-
-        <details class="advanced-sidebar-details">
-          <summary>Controlli avanzati</summary>
+        <details id="advanced-controls" class="advanced-sidebar-details">
+          <summary>Strumenti avanzati</summary>
           <div class="advanced-sidebar-grid">
+            <label class="compare-election-control">
+              Confronto opzionale
+              <select id="compare-election-select"></select>
+            </label>
+
+            <label>
+              Livello selezione
+              <select id="party-mode-select">
+                <option value="party_std">Partito</option>
+                <option value="party_family">Famiglia</option>
+                <option value="bloc">Blocco</option>
+              </select>
+            </label>
+
+            <div class="two-col">
+              <label>
+                Base geometrica
+                <select id="geometry-reference-select"></select>
+              </label>
+              <label>
+                Soglia minima quota (%)
+                <input id="min-share-input" type="number" min="0" max="100" step="1" value="0" />
+              </label>
+            </div>
+
+            <div class="two-col">
+              <label>
+                Modalità territoriale
+                <select id="territorial-mode-select">
+                  <option value="historical">Comune storico</option>
+                  <option value="harmonized">Comune armonizzato</option>
+                </select>
+              </label>
+              <label>
+                Palette
+                <select id="palette-select">
+                  <option value="auto">Auto</option>
+                  <option value="sequential">Sequential</option>
+                  <option value="diverging">Diverging</option>
+                  <option value="categorical">Categorical</option>
+                  <option value="accessible">Accessible</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="time-nav-box compact-time-nav">
+              <div class="time-nav-actions">
+                <button type="button" id="prev-election-btn" class="ghost-btn small-btn">← Anno prec.</button>
+                <button type="button" id="next-election-btn" class="ghost-btn small-btn">Anno succ. →</button>
+                <button type="button" id="play-timeline-btn" class="ghost-btn small-btn">Avvia timeline</button>
+              </div>
+              <label>
+                Timeline
+                <input id="election-slider" type="range" min="0" max="0" value="0" step="1" />
+              </label>
+              <div id="slider-year-label" class="helper-text">Timeline non disponibile</div>
+            </div>
+
             <label>
               Area
               <select id="area-preset-select"></select>
@@ -216,11 +219,6 @@
               </label>
             </div>
 
-            <label>
-              Soglia minima quota (%)
-              <input id="min-share-input" type="number" min="0" max="100" step="1" value="0" />
-            </label>
-
             <div class="toggle-stack">
               <label class="checkbox-row">
                 <input id="same-scale-checkbox" type="checkbox" checked />
@@ -247,9 +245,9 @@
         </details>
       </section>
 
-      <details class="sidebar-tools">
-        <summary>Strumenti avanzati</summary>
-        <div class="sidebar-tools-copy">Funzioni avanzate sempre disponibili, ma fuori dal primo colpo d'occhio.</div>
+      <details id="secondary-tools" class="sidebar-tools">
+        <summary>Azioni e preferenze</summary>
+        <div class="sidebar-tools-copy">Esportazioni, modalitÃ , viste salvate e preferenze restano disponibili qui, fuori dal primo colpo d'occhio.</div>
       <section class="panel quick-actions-panel">
         <h2>Azioni rapide</h2>
         <div class="button-grid">
@@ -786,6 +784,9 @@
               <h2>Profilo del comune</h2>
               <p class="panel-subtitle">Anagrafica, confronto con provincia/Italia, linea temporale, lineage.</p>
             </div>
+            <div class="profile-header-actions">
+              <button type="button" id="back-to-map-btn" class="ghost-btn small-btn">Torna alla mappa</button>
+            </div>
           </div>
 
           <div class="detail-summary-shell">
@@ -1199,4 +1200,3 @@
   </div>
 </body>
 </html>
-

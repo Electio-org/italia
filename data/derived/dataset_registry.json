@@ -14,7 +14,7 @@
       "status": "usable",
       "coverage_label": "summary+results",
       "download_summary": "data/derived/summary_by_election/assemblea_costituente_1946.csv",
-      "download_results": "data/derived/results_by_election/assemblea_costituente_1946.csv"
+      "download_results": "data/derived/results_by_election/assemblea_costituente_1946.csv.gz"
     },
     {
       "dataset_key": "camera_1948",
@@ -28,7 +28,7 @@
       "status": "usable",
       "coverage_label": "summary+results",
       "download_summary": "data/derived/summary_by_election/camera_1948.csv",
-      "download_results": "data/derived/results_by_election/camera_1948.csv"
+      "download_results": "data/derived/results_by_election/camera_1948.csv.gz"
     },
     {
       "dataset_key": "camera_1953",
@@ -42,7 +42,7 @@
       "status": "usable",
       "coverage_label": "summary+results",
       "download_summary": "data/derived/summary_by_election/camera_1953.csv",
-      "download_results": "data/derived/results_by_election/camera_1953.csv"
+      "download_results": "data/derived/results_by_election/camera_1953.csv.gz"
     },
     {
       "dataset_key": "camera_1958",
@@ -56,7 +56,7 @@
       "status": "usable",
       "coverage_label": "summary+results",
       "download_summary": "data/derived/summary_by_election/camera_1958.csv",
-      "download_results": "data/derived/results_by_election/camera_1958.csv"
+      "download_results": "data/derived/results_by_election/camera_1958.csv.gz"
     },
     {
       "dataset_key": "camera_1963",
@@ -70,7 +70,7 @@
       "status": "usable",
       "coverage_label": "summary+results",
       "download_summary": "data/derived/summary_by_election/camera_1963.csv",
-      "download_results": "data/derived/results_by_election/camera_1963.csv"
+      "download_results": "data/derived/results_by_election/camera_1963.csv.gz"
     },
     {
       "dataset_key": "camera_1968",
@@ -84,7 +84,7 @@
       "status": "usable",
       "coverage_label": "summary+results",
       "download_summary": "data/derived/summary_by_election/camera_1968.csv",
-      "download_results": "data/derived/results_by_election/camera_1968.csv"
+      "download_results": "data/derived/results_by_election/camera_1968.csv.gz"
     },
     {
       "dataset_key": "camera_1972",
@@ -98,7 +98,7 @@
       "status": "usable",
       "coverage_label": "summary+results",
       "download_summary": "data/derived/summary_by_election/camera_1972.csv",
-      "download_results": "data/derived/results_by_election/camera_1972.csv"
+      "download_results": "data/derived/results_by_election/camera_1972.csv.gz"
     },
     {
       "dataset_key": "camera_1976",
@@ -112,7 +112,7 @@
       "status": "usable",
       "coverage_label": "summary+results",
       "download_summary": "data/derived/summary_by_election/camera_1976.csv",
-      "download_results": "data/derived/results_by_election/camera_1976.csv"
+      "download_results": "data/derived/results_by_election/camera_1976.csv.gz"
     },
     {
       "dataset_key": "camera_1979",
@@ -126,7 +126,7 @@
       "status": "usable",
       "coverage_label": "summary+results",
       "download_summary": "data/derived/summary_by_election/camera_1979.csv",
-      "download_results": "data/derived/results_by_election/camera_1979.csv"
+      "download_results": "data/derived/results_by_election/camera_1979.csv.gz"
     },
     {
       "dataset_key": "camera_1983",
@@ -140,7 +140,7 @@
       "status": "usable",
       "coverage_label": "summary+results",
       "download_summary": "data/derived/summary_by_election/camera_1983.csv",
-      "download_results": "data/derived/results_by_election/camera_1983.csv"
+      "download_results": "data/derived/results_by_election/camera_1983.csv.gz"
     },
     {
       "dataset_key": "camera_1987",
@@ -154,7 +154,7 @@
       "status": "usable",
       "coverage_label": "summary+results",
       "download_summary": "data/derived/summary_by_election/camera_1987.csv",
-      "download_results": "data/derived/results_by_election/camera_1987.csv"
+      "download_results": "data/derived/results_by_election/camera_1987.csv.gz"
     },
     {
       "dataset_key": "camera_1992",
@@ -168,7 +168,7 @@
       "status": "usable",
       "coverage_label": "summary+results",
       "download_summary": "data/derived/summary_by_election/camera_1992.csv",
-      "download_results": "data/derived/results_by_election/camera_1992.csv"
+      "download_results": "data/derived/results_by_election/camera_1992.csv.gz"
     },
     {
       "dataset_key": "camera_1994",
@@ -182,7 +182,7 @@
       "status": "usable",
       "coverage_label": "summary+results",
       "download_summary": "data/derived/summary_by_election/camera_1994.csv",
-      "download_results": "data/derived/results_by_election/camera_1994.csv"
+      "download_results": "data/derived/results_by_election/camera_1994.csv.gz"
     },
     {
       "dataset_key": "camera_1996",
@@ -196,7 +196,7 @@
       "status": "usable",
       "coverage_label": "summary+results",
       "download_summary": "data/derived/summary_by_election/camera_1996.csv",
-      "download_results": "data/derived/results_by_election/camera_1996.csv"
+      "download_results": "data/derived/results_by_election/camera_1996.csv.gz"
     },
     {
       "dataset_key": "camera_2001",
@@ -210,7 +210,7 @@
       "status": "usable",
       "coverage_label": "summary+results",
       "download_summary": "data/derived/summary_by_election/camera_2001.csv",
-      "download_results": "data/derived/results_by_election/camera_2001.csv"
+      "download_results": "data/derived/results_by_election/camera_2001.csv.gz"
     },
     {
       "dataset_key": "camera_2006",
@@ -224,7 +224,7 @@
       "status": "usable",
       "coverage_label": "summary+results",
       "download_summary": "data/derived/summary_by_election/camera_2006.csv",
-      "download_results": "data/derived/results_by_election/camera_2006.csv"
+      "download_results": "data/derived/results_by_election/camera_2006.csv.gz"
     },
     {
       "dataset_key": "camera_2008",
@@ -238,7 +238,7 @@
       "status": "usable",
       "coverage_label": "summary+results",
       "download_summary": "data/derived/summary_by_election/camera_2008.csv",
-      "download_results": "data/derived/results_by_election/camera_2008.csv"
+      "download_results": "data/derived/results_by_election/camera_2008.csv.gz"
     },
     {
       "dataset_key": "camera_2013",
@@ -252,7 +252,7 @@
       "status": "usable",
       "coverage_label": "summary+results",
       "download_summary": "data/derived/summary_by_election/camera_2013.csv",
-      "download_results": "data/derived/results_by_election/camera_2013.csv"
+      "download_results": "data/derived/results_by_election/camera_2013.csv.gz"
     },
     {
       "dataset_key": "camera_2018",
@@ -266,7 +266,7 @@
       "status": "usable",
       "coverage_label": "summary+results",
       "download_summary": "data/derived/summary_by_election/camera_2018.csv",
-      "download_results": "data/derived/results_by_election/camera_2018.csv"
+      "download_results": "data/derived/results_by_election/camera_2018.csv.gz"
     },
     {
       "dataset_key": "camera_2022",
@@ -280,7 +280,7 @@
       "status": "usable",
       "coverage_label": "summary+results",
       "download_summary": "data/derived/summary_by_election/camera_2022.csv",
-      "download_results": "data/derived/results_by_election/camera_2022.csv"
+      "download_results": "data/derived/results_by_election/camera_2022.csv.gz"
     },
     {
       "dataset_key": "geometry_municipalities_2021",

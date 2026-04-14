@@ -30,30 +30,30 @@
       "dataset_key": "datasetRegistry",
       "path": "data/derived/dataset_registry.json",
       "kind": "json",
-      "size_bytes": 11346,
+      "size_bytes": 11406,
       "row_count": null,
       "feature_count": null,
-      "sha256": "3f555edef2adc81f5512a1a10725f91534a8bcb1a0f3d279dc5b4bd4eb1cbf6d"
+      "sha256": "933f792fc72638c6b3e27b317f38aa99bdc65233e02ffefbabec302bf3f90054"
     },
     {
       "role": "companion",
       "dataset_key": "codebook",
       "path": "data/derived/codebook.json",
       "kind": "json",
-      "size_bytes": 15353,
+      "size_bytes": 14849,
       "row_count": null,
       "feature_count": null,
-      "sha256": "9cf57feef45eed47543abc0c309da431bf37980e523341989f387f015058f61c"
+      "sha256": "7b654ee44b9bf9399ab2dd5e8dc09dacf2b77a91e9b5a60038f418a18c99ab91"
     },
     {
       "role": "extra",
       "dataset_key": "usageNotes",
       "path": "data/derived/usage_notes.json",
       "kind": "json",
-      "size_bytes": 1868,
+      "size_bytes": 1828,
       "row_count": null,
       "feature_count": null,
-      "sha256": "093e8ea9da64b22995bd77ce68a0f94580e6415a0d02cfb1fc353706cc4938a6"
+      "sha256": "0e2e2c960f5175a44b2ab839fd38e9d12fedbbb548c530606f28745e0495b771"
     },
     {
       "role": "extra",
@@ -70,20 +70,20 @@
       "dataset_key": "archiveBundleGapReport",
       "path": "data/derived/archive_bundle_gap_report.json",
       "kind": "json",
-      "size_bytes": 18091,
+      "size_bytes": 17621,
       "row_count": null,
       "feature_count": null,
-      "sha256": "aa78f62582d45ddeb769b21ab113637076900de048df58314b6b7d19ddb1433a"
+      "sha256": "ffb1a1685a65ba6b0ef9c7fcb1b3e03fcbdedd1eed29a08c2fc4a282283ece9c"
     },
     {
       "role": "extra",
       "dataset_key": "webGeometryReport",
       "path": "data/derived/web_geometry_report.json",
       "kind": "json",
-      "size_bytes": 1156,
+      "size_bytes": 1154,
       "row_count": null,
       "feature_count": null,
-      "sha256": "cbadf09d3d488b6a7be15e6a3bad644bbefd06744197d442b75de4b6be441a1b"
+      "sha256": "4c571f43551850acf1e82a9e8b7a8e6554ff3c305a7273c8a288ec10723e4816"
     }
   ],
   "inventory": {
@@ -94,7 +94,7 @@
         "dataset_key": "datasetRegistry",
         "path": "data/derived/dataset_registry.json",
         "kind": "json",
-        "size_bytes": 11346,
+        "size_bytes": 11406,
         "row_count": null,
         "feature_count": null
       },
@@ -102,7 +102,7 @@
         "dataset_key": "codebook",
         "path": "data/derived/codebook.json",
         "kind": "json",
-        "size_bytes": 15353,
+        "size_bytes": 14849,
         "row_count": null,
         "feature_count": null
       },
@@ -110,7 +110,7 @@
         "dataset_key": "usageNotes",
         "path": "data/derived/usage_notes.json",
         "kind": "json",
-        "size_bytes": 1868,
+        "size_bytes": 1828,
         "row_count": null,
         "feature_count": null
       },
@@ -126,7 +126,7 @@
         "dataset_key": "archiveBundleGapReport",
         "path": "data/derived/archive_bundle_gap_report.json",
         "kind": "json",
-        "size_bytes": 18091,
+        "size_bytes": 17621,
         "row_count": null,
         "feature_count": null
       },
@@ -134,7 +134,7 @@
         "dataset_key": "webGeometryReport",
         "path": "data/derived/web_geometry_report.json",
         "kind": "json",
-        "size_bytes": 1156,
+        "size_bytes": 1154,
         "row_count": null,
         "feature_count": null
       }

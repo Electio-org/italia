@@ -420,6 +420,20 @@
         "the report diagnoses residual gaps and unresolved geometry joins but does not harmonize extinct municipalities",
         "coverage equivalence with the official source does not imply full historical harmonization across boundary changes"
       ]
+    },
+    {
+      "dataset_key": "mapReadyByElectionIndex",
+      "path": "data/derived/map_ready_by_election.json",
+      "produced_by": "build_result_shards.py",
+      "source_class": "derived_bundle",
+      "transformation_steps": [
+        "lettura dei summary comunali e dei risultati di partito gia validati",
+        "aggregazione per comune delle quote party_std, party_family e bloc",
+        "scrittura di asset map-ready per election_key per metriche base della mappa"
+      ],
+      "limitations": [
+        "l'asset serve la mappa interattiva e non sostituisce il dataset long completo per analisi approfondite"
+      ]
     }
   ]
 }

@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import gzip
 import hashlib
 import json
 from pathlib import Path
@@ -67,6 +68,176 @@ def summarize_file(path: Path, bundle_root: Path) -> Dict[str, object]:
 
 def slugify(value: str) -> str:
     return str(value).strip().lower().replace(" ", "_")
+
+
+def is_git_lfs_pointer(path: Path) -> bool:
+    if not path.exists() or path.stat().st_size > 512:
+        return False
+    try:
+        return path.read_text(encoding="utf-8", errors="ignore").startswith("version https://git-lfs.github.com/spec/")
+    except Exception:
+        return False
+
+
+def to_number(value: object) -> float | None:
+    try:
+        if value is None or value == "":
+            return None
+        number = float(value)
+        if pd.isna(number):
+            return None
+        return number
+    except Exception:
+        return None
+
+
+def rounded(value: float | None) -> float | None:
+    if value is None:
+        return None
+    return round(float(value), 6)
+
+
+def grouped_share_maps(result_chunk: pd.DataFrame, valid_votes_by_mid: Dict[str, float]) -> Dict[str, Dict[str, Dict[str, float]]]:
+    output: Dict[str, Dict[str, Dict[str, float]]] = {}
+    if result_chunk.empty:
+        return output
+    chunk = result_chunk.copy()
+    chunk["_votes_num"] = pd.to_numeric(chunk.get("votes", 0), errors="coerce").fillna(0.0)
+    chunk["_share_num"] = pd.to_numeric(chunk.get("vote_share", 0), errors="coerce").fillna(0.0)
+    for mode, column in [("party_std", "party_std"), ("party_family", "party_family"), ("bloc", "bloc")]:
+        if column not in chunk.columns:
+            continue
+        grouped = chunk.groupby(["municipality_id", column], dropna=False)[["_votes_num", "_share_num"]].sum().reset_index()
+        for item in grouped.to_dict("records"):
+            municipality_id = str(item.get("municipality_id") or "").strip()
+            group = str(item.get(column) or "").strip()
+            if not municipality_id or not group:
+                continue
+            valid_votes = valid_votes_by_mid.get(municipality_id) or 0
+            votes = float(item.get("_votes_num") or 0)
+            summed_share = float(item.get("_share_num") or 0)
+            share = (votes / valid_votes * 100) if valid_votes > 0 else summed_share
+            output.setdefault(municipality_id, {}).setdefault(mode, {})[group] = round(share, 6)
+    return output
+
+
+def build_map_ready_assets(
+    summary: pd.DataFrame,
+    results: pd.DataFrame,
+    derived: Path,
+    root: Path,
+    result_shards: Dict[str, str] | None = None,
+    result_row_counts_out: Dict[str, int] | None = None,
+) -> Dict[str, object]:
+    out_dir = derived / "map_ready_by_election"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    for old in out_dir.glob("*.json.gz"):
+        old.unlink()
+
+    shards: Dict[str, str] = {}
+    row_counts: Dict[str, int] = {}
+    original_bytes = 0
+    compressed_bytes = 0
+    if summary.empty or "election_key" not in summary.columns:
+        return {
+            "generated_by": "build_result_shards.py",
+            "dataset": "map_ready",
+            "strategy": "by_election",
+            "shards": shards,
+            "row_counts": row_counts,
+        }
+
+    result_groups = dict(tuple(results.groupby("election_key"))) if not results.empty and "election_key" in results.columns else {}
+    result_shards = result_shards or {}
+    number_fields = [
+        "election_year",
+        "turnout_pct",
+        "electors",
+        "voters",
+        "valid_votes",
+        "total_votes",
+        "first_party_share",
+        "second_party_share",
+        "first_second_margin",
+    ]
+    text_fields = [
+        "election_key",
+        "election_date",
+        "municipality_id",
+        "municipality_name",
+        "province",
+        "region",
+        "geometry_id",
+        "territorial_mode",
+        "territorial_status",
+        "first_party_std",
+        "second_party_std",
+        "dominant_block",
+        "comparability_note",
+        "completeness_flag",
+    ]
+    for election_key, summary_chunk in sorted(summary.groupby("election_key"), key=lambda item: str(item[0])):
+        election_key = str(election_key)
+        valid_votes_by_mid = {
+            str(row.get("municipality_id") or "").strip(): float(to_number(row.get("valid_votes")) or 0)
+            for row in summary_chunk.to_dict("records")
+        }
+        if election_key in result_groups:
+            result_chunk = result_groups.get(election_key, pd.DataFrame())
+        elif result_shards.get(election_key) and (root / result_shards[election_key]).exists():
+            result_chunk = pd.read_csv(root / result_shards[election_key], dtype=str).fillna("")
+            if result_row_counts_out is not None:
+                result_row_counts_out[election_key] = int(len(result_chunk))
+        else:
+            result_chunk = pd.DataFrame()
+        share_maps = grouped_share_maps(result_chunk, valid_votes_by_mid)
+        rows: List[Dict[str, object]] = []
+        for source_row in summary_chunk.to_dict("records"):
+            out: Dict[str, object] = {}
+            for field in text_fields:
+                value = str(source_row.get(field) or "").strip()
+                if value:
+                    out[field] = value
+            for field in number_fields:
+                value = rounded(to_number(source_row.get(field)))
+                if value is not None:
+                    out[field] = value
+            municipality_id = str(source_row.get("municipality_id") or "").strip()
+            shares = share_maps.get(municipality_id) or {}
+            out["shares"] = {
+                "party_std": shares.get("party_std") or {},
+                "party_family": shares.get("party_family") or {},
+                "bloc": shares.get("bloc") or {},
+            }
+            rows.append(out)
+        payload = {
+            "generated_by": "build_result_shards.py",
+            "dataset": "map_ready",
+            "election_key": election_key,
+            "rows": rows,
+        }
+        raw = json.dumps(payload, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
+        path = out_dir / f"{slugify(election_key)}.json.gz"
+        with gzip.open(path, "wb", compresslevel=9) as fh:
+            fh.write(raw)
+        original_bytes += len(raw)
+        compressed_bytes += path.stat().st_size
+        shards[election_key] = str(path.relative_to(root)).replace("\\", "/")
+        row_counts[election_key] = len(rows)
+
+    return {
+        "generated_by": "build_result_shards.py",
+        "dataset": "map_ready",
+        "strategy": "by_election",
+        "shards": shards,
+        "row_counts": row_counts,
+        "compression": {
+            "format": "gzip",
+            "original_bytes": original_bytes,
+            "compressed_bytes": compressed_bytes,
+            "reduction_pct": round(100 * (1 - compressed_bytes / original_bytes), 2) if original_bytes else 0,
+        },
+    }
 
 
 def ensure_update_log_entry(entries: List[Dict[str, object]]) -> List[Dict[str, object]]:
@@ -151,6 +322,7 @@ def main() -> None:
     files["productCatalog"] = "data/products/product_catalog.json"
     files["municipalitySummaryByElectionIndex"] = "data/derived/municipality_summary_by_election.json"
     files["municipalityResultsLongByElectionIndex"] = "data/derived/municipality_results_long_by_election.json"
+    files["mapReadyByElectionIndex"] = "data/derived/map_ready_by_election.json"
     manifest["loading"] = {
         "municipalitySummary": {
             "strategy": "deferred_by_election",
@@ -159,6 +331,10 @@ def main() -> None:
         "municipalityResultsLong": {
             "strategy": "deferred_by_election",
             "index": "data/derived/municipality_results_long_by_election.json"
+        },
+        "mapReady": {
+            "strategy": "deferred_by_election",
+            "index": "data/derived/map_ready_by_election.json"
         }
     }
 
@@ -190,7 +366,9 @@ def main() -> None:
     summary_shard_index_path.write_text(json.dumps(summary_shard_index, ensure_ascii=False, indent=2), encoding="utf-8")
 
     results_path = derived / "municipality_results_long.csv"
-    results = pd.read_csv(results_path, dtype=str).fillna("")
+    results = pd.DataFrame()
+    if results_path.exists() and not is_git_lfs_pointer(results_path):
+        results = pd.read_csv(results_path, dtype=str).fillna("")
     shard_dir = derived / "results_by_election"
     shard_dir.mkdir(parents=True, exist_ok=True)
     for old in shard_dir.glob("*.csv"):
@@ -205,6 +383,10 @@ def main() -> None:
             chunk.to_csv(path, index=False)
             shards[str(election_key)] = str(path.relative_to(root)).replace("\\", "/")
             row_counts[str(election_key)] = int(len(chunk))
+    else:
+        for path in sorted(shard_dir.glob("*.csv.gz")):
+            election_key = path.name[:-7] if path.name.endswith(".csv.gz") else path.stem
+            shards[str(election_key)] = str(path.relative_to(root)).replace("\\", "/")
 
     shard_index = {
         "generated_by": "build_result_shards.py",
@@ -213,6 +395,12 @@ def main() -> None:
         "shards": shards,
         "row_counts": row_counts,
     }
+
+    map_ready_index = build_map_ready_assets(summary, results, derived, root, result_shards=shards, result_row_counts_out=row_counts)
+    map_ready_index_path = derived / "map_ready_by_election.json"
+    map_ready_index_path.write_text(json.dumps(map_ready_index, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    shard_index["row_counts"] = row_counts
     shard_index_path = derived / "municipality_results_long_by_election.json"
     shard_index_path.write_text(json.dumps(shard_index, ensure_ascii=False, indent=2), encoding="utf-8")
 
@@ -311,6 +499,21 @@ def main() -> None:
                 ],
                 "limitations": [
                     "gli shard non aggiungono copertura sostanziale: cambiano solo la strategia di consegna del bundle"
+                ]
+            })
+        if not any(entry.get("dataset_key") == "mapReadyByElectionIndex" for entry in entries):
+            entries.append({
+                "dataset_key": "mapReadyByElectionIndex",
+                "path": files["mapReadyByElectionIndex"],
+                "produced_by": "build_result_shards.py",
+                "source_class": "derived_bundle",
+                "transformation_steps": [
+                    "lettura dei summary comunali e dei risultati di partito gia validati",
+                    "aggregazione per comune delle quote party_std, party_family e bloc",
+                    "scrittura di asset map-ready per election_key per metriche base della mappa"
+                ],
+                "limitations": [
+                    "l'asset serve la mappa interattiva e non sostituisce il dataset long completo per analisi approfondite"
                 ]
             })
         provenance["entries"] = entries
@@ -531,8 +734,10 @@ def main() -> None:
         "product_count": len(product_catalog_items),
         "summary_shard_count": len(summary_shards),
         "shard_count": len(shards),
+        "map_ready_shard_count": len(map_ready_index.get("shards") or {}),
         "declared_summary_rows": sum(summary_row_counts.values()),
         "declared_rows": sum(row_counts.values()),
+        "map_ready_rows": sum((map_ready_index.get("row_counts") or {}).values()),
     }, ensure_ascii=False, indent=2))
 
 

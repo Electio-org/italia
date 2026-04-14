@@ -48,12 +48,14 @@
     "siteGuides": "data/derived/site_guides.json",
     "archiveBundleGapReport": "data/derived/archive_bundle_gap_report.json",
     "geometryPackFull": "data/derived/geometry_pack_full.json",
-    "geometryFull": "data/derived/geometries/municipalities_2021.geojson",
-    "provinceGeometryFull": "data/derived/geometries/provinces_2021.geojson",
+    "geometryFull": "data/derived/geometries/municipalities_2026.geojson",
+    "provinceGeometryFull": "data/derived/geometries/provinces_2026.geojson",
     "webGeometryReport": "data/derived/web_geometry_report.json",
     "webCompressionReport": "data/derived/web_compression_report.json",
     "productCatalog": "data/products/product_catalog.json",
-    "municipalitySummaryByElectionIndex": "data/derived/municipality_summary_by_election.json"
+    "municipalitySummaryByElectionIndex": "data/derived/municipality_summary_by_election.json",
+    "municipalitySearchIndex": "data/derived/municipality_search_index.json.gz",
+    "mapReadyByElectionIndex": "data/derived/map_ready_by_election.json"
   },
   "contracts": {
     "geometryJoinPriority": [
@@ -74,6 +76,10 @@
     "municipalityResultsLong": {
       "strategy": "deferred_by_election",
       "index": "data/derived/municipality_results_long_by_election.json"
+    },
+    "mapReady": {
+      "strategy": "deferred_by_election",
+      "index": "data/derived/map_ready_by_election.json"
     }
   }
 }
