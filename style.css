@@ -4485,10 +4485,19 @@ button:hover {
   box-shadow: 0 16px 38px rgba(37, 99, 235, 0.18);
 }
 
+.tooltip.is-compact {
+  max-width: 280px;
+}
+
 .tooltip-card {
   display: grid;
   gap: 10px;
   padding: 14px;
+}
+
+.tooltip-card-compact {
+  gap: 4px;
+  padding: 10px 12px;
 }
 
 .tooltip.is-pinned .tooltip-card::before {
@@ -4509,6 +4518,10 @@ button:hover {
   align-items: flex-start;
   justify-content: space-between;
   gap: 10px;
+}
+
+.tooltip-header-compact {
+  align-items: center;
 }
 
 .tooltip-header strong {
