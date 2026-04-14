@@ -3,6 +3,7 @@
   "municipality_tolerance": 1100.0,
   "province_tolerance": 2000.0,
   "detail_municipality_tolerance": 12.0,
+  "boundary_tolerance": 85.0,
   "rows": [
     {
       "layer": "municipalities",
@@ -15,6 +16,20 @@
       "points_after": 61332,
       "bytes_before": 242685924,
       "bytes_after": 3450075
+    },
+    {
+      "layer": "municipality_boundaries",
+      "year": 2021,
+      "source_path": "data/derived/geometries/municipalities_2021.geojson",
+      "target_path": "data/derived/geometries_web/municipality_boundaries_2021.geojson",
+      "tolerance": 85.0,
+      "feature_count": 1,
+      "mesh_lines": 24988,
+      "raw_segments": 6841611,
+      "points_before": 3685078,
+      "points_after": 232246,
+      "bytes_before": 242685924,
+      "bytes_after": 4968683
     },
     {
       "layer": "municipalities_detail",
@@ -1421,11 +1436,11 @@
     }
   ],
   "totals": {
-    "bytes_before": 532587377,
-    "bytes_after": 38235651,
-    "points_before": 15043688,
-    "points_after": 1599630,
-    "byte_reduction_pct": 92.82,
-    "point_reduction_pct": 89.37
+    "bytes_before": 775273301,
+    "bytes_after": 43204334,
+    "points_before": 18728766,
+    "points_after": 1831876,
+    "byte_reduction_pct": 94.43,
+    "point_reduction_pct": 90.22
   }
 }

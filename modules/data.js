@@ -607,6 +607,11 @@ async function loadBundleWithManifest(state, manifest, resolver, { buildIndices,
   state.geometryFallback = mainGeometry || { type: 'FeatureCollection', features: [] };
   state.provinceGeometryFallback = provinceGeometry || { type: 'FeatureCollection', features: [] };
   state.geometryCache = {};
+  state.municipalityBoundaryGeometry = null;
+  state.municipalityBoundaryGeometryYear = null;
+  state.municipalityBoundaryLoadingYear = null;
+  state.municipalityBoundaryLoadPromise = null;
+  state.municipalityBoundaryIdleHandle = null;
   state.detailGeometryCache = {};
   state.detailGeometry = null;
   state.detailGeometryKey = null;

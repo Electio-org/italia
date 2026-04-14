@@ -32,6 +32,7 @@ import {
   electionCoverageFor,
   syncActiveGeometry,
   geometryYearForElectionValue,
+  ensureGeometry,
   ensureDetailGeometryForProvince
 } from './modules/data.js';
 import {
@@ -193,7 +194,12 @@ state.provinceGeometry = null;
 state.geometryCompareA = null;
 state.geometryCompareB = null;
 state.geometrySwipe = null;
-state.geometryCache = { municipalities: {}, provinces: {} };
+state.geometryCache = { municipalities: {}, municipalityBoundaries: {}, provinces: {} };
+state.municipalityBoundaryGeometry = null;
+state.municipalityBoundaryGeometryYear = null;
+state.municipalityBoundaryLoadingYear = null;
+state.municipalityBoundaryLoadPromise = null;
+state.municipalityBoundaryIdleHandle = null;
 state.detailGeometryCache = {};
 const ANALYSIS_MODES = createAnalysisModes(state);
 
@@ -2617,6 +2623,8 @@ function currentMapRenderKey() {
     resultsRows: state.resultsLong.length,
     geometryFeatures: state.geometry?.features?.length || 0,
     provinceGeometryFeatures: state.provinceGeometry?.features?.length || 0,
+    municipalityBoundaryGeometryYear: state.municipalityBoundaryGeometryYear || '',
+    municipalityBoundaryFeatures: state.municipalityBoundaryGeometry?.features?.length || 0,
     detailGeometryKey: state.detailGeometryKey,
     detailGeometryFeatures: state.detailGeometry?.features?.length || 0,
     showNotes: state.showNotes
@@ -2630,6 +2638,55 @@ function activeMunicipalityFeatures() {
   const detailKeys = new Set(detailFeatures.map(geometryJoinKey).filter(Boolean));
   if (!detailKeys.size) return overviewFeatures;
   return overviewFeatures.filter(feature => !detailKeys.has(geometryJoinKey(feature))).concat(detailFeatures);
+}
+
+function currentMapGeometryYear() {
+  return geometryYearForElectionValue(state, state.selectedElection, state.territorialMode);
+}
+
+function activeMunicipalityBoundaryGeometry(year = currentMapGeometryYear()) {
+  const yearKey = String(year || '');
+  if (!yearKey || state.municipalityBoundaryGeometryYear !== yearKey) return null;
+  return state.municipalityBoundaryGeometry;
+}
+
+function scheduleMunicipalityBoundaryGeometryLoad(year = currentMapGeometryYear()) {
+  const yearKey = String(year || '');
+  if (!yearKey || !state.geometryPack?.municipalityBoundaries?.[yearKey]) return;
+  if (state.municipalityBoundaryGeometryYear === yearKey && state.municipalityBoundaryGeometry?.features?.length) return;
+  if (state.municipalityBoundaryLoadingYear === yearKey && state.municipalityBoundaryLoadPromise) return;
+  if (state.municipalityBoundaryIdleHandle) {
+    if (typeof window.cancelIdleCallback === 'function') window.cancelIdleCallback(state.municipalityBoundaryIdleHandle);
+    else window.clearTimeout(state.municipalityBoundaryIdleHandle);
+    state.municipalityBoundaryIdleHandle = null;
+  }
+  const startLoad = () => {
+    state.municipalityBoundaryIdleHandle = null;
+    if (state.municipalityBoundaryGeometryYear === yearKey && state.municipalityBoundaryGeometry?.features?.length) return;
+    state.municipalityBoundaryLoadingYear = yearKey;
+    const loadPromise = ensureGeometry(state, 'municipalityBoundaries', yearKey, registerIssue)
+      .then(geometry => {
+        if (String(currentMapGeometryYear() || '') !== yearKey) return geometry;
+        state.municipalityBoundaryGeometry = geometry || { type: 'FeatureCollection', features: [] };
+        state.municipalityBoundaryGeometryYear = yearKey;
+        state.mapCanvasCache = null;
+        state.lastMapRenderKey = null;
+        requestRender();
+        return geometry;
+      })
+      .finally(() => {
+        if (state.municipalityBoundaryLoadingYear === yearKey) {
+          state.municipalityBoundaryLoadingYear = null;
+          state.municipalityBoundaryLoadPromise = null;
+        }
+      });
+    state.municipalityBoundaryLoadPromise = loadPromise;
+  };
+  if (typeof window.requestIdleCallback === 'function') {
+    state.municipalityBoundaryIdleHandle = window.requestIdleCallback(startLoad, { timeout: 1200 });
+  } else {
+    state.municipalityBoundaryIdleHandle = window.setTimeout(startLoad, 160);
+  }
 }
 
 function renderMap() {
@@ -2664,7 +2721,10 @@ function renderMap() {
   const projection = makeGeoProjection(state.geometry, 960, 680);
   const path = d3.geoPath(projection);
   const features = activeMunicipalityFeatures();
+  const geometryYear = currentMapGeometryYear();
+  const boundaryGeometry = activeMunicipalityBoundaryGeometry(geometryYear);
   const anySelection = Boolean(state.selectedMunicipalityId);
+  scheduleMunicipalityBoundaryGeometryLoad(geometryYear);
 
   if (els.mapCanvas && typeof Path2D === 'function') {
     svg.classed('is-canvas-backed', true);
@@ -2684,19 +2744,9 @@ function renderMap() {
 
   const zoomLayer = svg.append('g').attr('class', 'map-zoom-layer');
 
-  if (state.provinceGeometry?.features?.length) {
-    zoomLayer.append('g').attr('class','province-layer').selectAll('path')
-      .data(state.provinceGeometry.features)
-      .join('path')
-      .attr('class','province-boundary')
-      .attr('d', path)
-      .attr('fill','none')
-      .attr('stroke','#94a3b8')
-      .attr('stroke-width',0.8)
-      .attr('opacity',0.55);
-  }
+  const fillLayer = zoomLayer.append('g').attr('class', 'municipality-fill-layer');
 
-  zoomLayer.selectAll('path')
+  fillLayer.selectAll('path')
     .data(features)
     .join('path')
     .attr('class', feature => {
@@ -2744,6 +2794,35 @@ function renderMap() {
       }
     });
 
+  if (boundaryGeometry?.features?.length) {
+    zoomLayer.append('g').attr('class','municipality-boundary-layer').selectAll('path')
+      .data(boundaryGeometry.features)
+      .join('path')
+      .attr('class','municipality-boundary-mesh')
+      .attr('d', path)
+      .attr('fill','none')
+      .attr('stroke','#0f172a')
+      .attr('stroke-width',0.28)
+      .attr('stroke-linejoin','round')
+      .attr('stroke-linecap','round')
+      .attr('vector-effect','non-scaling-stroke')
+      .attr('opacity',0.22)
+      .attr('pointer-events','none');
+  }
+
+  if (state.provinceGeometry?.features?.length) {
+    zoomLayer.append('g').attr('class','province-layer').selectAll('path')
+      .data(state.provinceGeometry.features)
+      .join('path')
+      .attr('class','province-boundary')
+      .attr('d', path)
+      .attr('fill','none')
+      .attr('stroke','#334155')
+      .attr('stroke-width',0.86)
+      .attr('vector-effect','non-scaling-stroke')
+      .attr('opacity',0.48);
+  }
+
   enableMapZoom();
   if (state.selectedMunicipalityId && state.lastAutoZoomMunicipality !== state.selectedMunicipalityId) {
     zoomToSelectedMunicipality();
@@ -2759,9 +2838,12 @@ function canvasGeometryCacheKey(projection) {
   const geometryYear = state.geometryReferenceYear || 'auto';
   const featureCount = state.geometry?.features?.length || 0;
   const provinceCount = state.provinceGeometry?.features?.length || 0;
+  const boundaryGeometry = activeMunicipalityBoundaryGeometry();
+  const boundaryYear = state.municipalityBoundaryGeometryYear || '';
+  const boundaryCount = boundaryGeometry?.features?.length || 0;
   const detailKey = state.detailGeometryKey || '';
   const detailCount = state.detailGeometry?.features?.length || 0;
-  return `${geometryYear}|${years}|${featureCount}|${provinceCount}|${detailKey}|${detailCount}|${projection?.constructor?.name || 'projection'}`;
+  return `${geometryYear}|${years}|${featureCount}|${provinceCount}|${boundaryYear}|${boundaryCount}|${detailKey}|${detailCount}|${projection?.constructor?.name || 'projection'}`;
 }
 
 function buildCanvasMapCache(projection) {
@@ -2781,12 +2863,17 @@ function buildCanvasMapCache(projection) {
       boundsArea: [x0, y0, x1, y1].every(Number.isFinite) ? Math.max(1, (x1 - x0) * (y1 - y0)) : Infinity
     };
   };
+  const toStrokeItem = feature => {
+    const d = path(feature);
+    return d ? { feature, path: new Path2D(d) } : null;
+  };
   const overviewItems = (state.geometry?.features || []).map(toItem).filter(Boolean);
   const detailItems = (state.detailGeometry?.features || []).map(toItem).filter(Boolean);
   const detailKeys = new Set(detailItems.map(item => item.key).filter(Boolean));
   const items = detailItems.length && detailKeys.size
     ? overviewItems.filter(item => !detailKeys.has(item.key)).concat(detailItems)
     : overviewItems;
+  const boundaryItems = (activeMunicipalityBoundaryGeometry()?.features || []).map(toStrokeItem).filter(Boolean);
   const provinceItems = (state.provinceGeometry?.features || []).map(toItem).filter(Boolean);
   const hitGridCellSize = 24;
   const hitGrid = new Map();
@@ -2811,6 +2898,7 @@ function buildCanvasMapCache(projection) {
   state.mapCanvasCache = {
     key,
     items,
+    boundaryItems,
     provinceItems,
     hitGrid,
     hitGridCellSize,
@@ -2909,6 +2997,15 @@ function drawCanvasMap(transform = state.mapCanvasTransform || d3.zoomIdentity) 
       ctx.stroke(item.path);
     }
   });
+
+  if (render.cache.boundaryItems?.length) {
+    ctx.globalAlpha = transform.k >= 3 ? 0.16 : 0.24;
+    ctx.strokeStyle = '#0f172a';
+    ctx.lineWidth = (transform.k >= 3 ? 0.24 : 0.2) * strokeScale;
+    render.cache.boundaryItems.forEach(item => {
+      ctx.stroke(item.path);
+    });
+  }
 
   ctx.globalAlpha = transform.k >= 3 ? 0.28 : 0.48;
   ctx.strokeStyle = '#334155';

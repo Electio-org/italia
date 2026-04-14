@@ -79,7 +79,7 @@ def main() -> None:
     geometry_pack_path = derived / "geometry_pack_web.json"
     geometry_pack = json.loads(geometry_pack_path.read_text(encoding="utf-8"))
     geometry_compression = []
-    for family in ["municipalities", "provinces"]:
+    for family in ["municipalities", "municipalityBoundaries", "provinces"]:
         for year, path_rel in list((geometry_pack.get(family) or {}).items()):
             source_rel, gz_path_rel, original_bytes, compressed_bytes = gzip_geometry_rel(path_rel, root)
             geometry_pack[family][year] = gz_path_rel

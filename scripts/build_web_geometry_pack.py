@@ -9,10 +9,12 @@ import unicodedata
 from collections import defaultdict
 from copy import deepcopy
 from pathlib import Path
-from typing import DefaultDict, Dict, Iterable, List, Sequence, Tuple
+from typing import DefaultDict, Dict, Iterable, List, Sequence, Set, Tuple
 
 
 Point = Sequence[float]
+RoundedPoint = Tuple[float, float]
+SegmentKey = Tuple[RoundedPoint, RoundedPoint]
 
 
 def sq_dist(a: Point, b: Point) -> float:
@@ -137,6 +139,144 @@ def feature_point_count(feature: Dict[str, object]) -> int:
     return 0
 
 
+def rounded_point(point: Point) -> RoundedPoint:
+    return (round(float(point[0]), 1), round(float(point[1]), 1))
+
+
+def segment_key(a: RoundedPoint, b: RoundedPoint) -> SegmentKey:
+    return (a, b) if a <= b else (b, a)
+
+
+def iter_geometry_rings(geometry: Dict[str, object]) -> Iterable[List[Point]]:
+    if not geometry:
+        return
+    geom_type = geometry.get("type")
+    coords = geometry.get("coordinates") or []
+    if geom_type == "Polygon":
+        for ring in coords:
+            yield list(ring)
+    elif geom_type == "MultiPolygon":
+        for polygon in coords:
+            for ring in polygon:
+                yield list(ring)
+
+
+def build_boundary_lines(features: List[Dict[str, object]], tolerance: float) -> Tuple[List[List[List[float]]], int, int, int]:
+    adjacency: DefaultDict[RoundedPoint, Set[RoundedPoint]] = defaultdict(set)
+    raw_segments = 0
+    for feature in features:
+        for ring in iter_geometry_rings(feature.get("geometry") or {}):
+            if len(ring) < 2:
+                continue
+            rounded = [rounded_point(point) for point in ring]
+            for a, b in zip(rounded, rounded[1:]):
+                if a == b:
+                    continue
+                adjacency[a].add(b)
+                adjacency[b].add(a)
+                raw_segments += 1
+
+    visited: Set[SegmentKey] = set()
+    lines: List[List[RoundedPoint]] = []
+
+    def walk_line(start: RoundedPoint, neighbor: RoundedPoint) -> List[RoundedPoint]:
+        line = [start, neighbor]
+        visited.add(segment_key(start, neighbor))
+        previous = start
+        current = neighbor
+        while True:
+            if current == start:
+                break
+            current_neighbors = sorted(adjacency[current])
+            if len(current_neighbors) != 2:
+                break
+            candidates = [
+                candidate
+                for candidate in current_neighbors
+                if candidate != previous and segment_key(current, candidate) not in visited
+            ]
+            if not candidates:
+                break
+            next_point = candidates[0]
+            visited.add(segment_key(current, next_point))
+            line.append(next_point)
+            previous, current = current, next_point
+        return line
+
+    for start in sorted(adjacency):
+        if len(adjacency[start]) == 2:
+            continue
+        for neighbor in sorted(adjacency[start]):
+            if segment_key(start, neighbor) in visited:
+                continue
+            lines.append(walk_line(start, neighbor))
+
+    for start in sorted(adjacency):
+        for neighbor in sorted(adjacency[start]):
+            if segment_key(start, neighbor) in visited:
+                continue
+            lines.append(walk_line(start, neighbor))
+
+    simplified_lines: List[List[List[float]]] = []
+    for line in lines:
+        if len(line) < 2:
+            continue
+        simplified = simplify_ring(line, tolerance) if len(line) >= 4 and line[0] == line[-1] else simplify_line(line, tolerance)
+        if len(simplified) >= 2:
+            simplified_lines.append(simplified)
+    before_points = sum(len(line) for line in lines)
+    after_points = sum(len(line) for line in simplified_lines)
+    return simplified_lines, raw_segments, before_points, after_points
+
+
+def write_boundary_mesh(
+    path: Path,
+    out_path: Path,
+    bundle_root: Path,
+    year_key: str,
+    tolerance: float,
+) -> Dict[str, object]:
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    features = payload.get("features") or []
+    lines, raw_segments, before_points, after_points = build_boundary_lines(features, tolerance)
+    mesh_payload = {
+        "type": "FeatureCollection",
+        "name": f"municipality_boundaries_{year_key}",
+        "features": [{
+            "type": "Feature",
+            "properties": {
+                "layer": "municipality_boundaries",
+                "year": int(year_key),
+                "source_features": len(features),
+                "raw_segments": raw_segments,
+                "mesh_lines": len(lines),
+            },
+            "geometry": {
+                "type": "MultiLineString",
+                "coordinates": lines,
+            },
+        }],
+    }
+    if "crs" in payload:
+        mesh_payload["crs"] = payload["crs"]
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    out_path.write_text(json.dumps(mesh_payload, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    before_payload = {**payload, "features": features}
+    before_bytes = len(json.dumps(before_payload, ensure_ascii=False, separators=(",", ":")).encode("utf-8"))
+    return {
+        "source_path": str(path.relative_to(bundle_root)).replace("\\", "/"),
+        "target_path": str(out_path.relative_to(bundle_root)).replace("\\", "/"),
+        "tolerance": tolerance,
+        "feature_count": 1,
+        "mesh_lines": len(lines),
+        "raw_segments": raw_segments,
+        "points_before": before_points,
+        "points_after": after_points,
+        "bytes_before": before_bytes,
+        "bytes_after": out_path.stat().st_size,
+    }
+
+
 def simplify_features(features: List[Dict[str, object]], tolerance: float) -> Tuple[List[Dict[str, object]], int, int]:
     before_points = sum(feature_point_count(feature) for feature in features)
     simplified_features = []
@@ -236,6 +376,7 @@ def main() -> None:
     parser.add_argument("--municipality-tolerance", type=float, default=1100.0, help="Simplification tolerance for municipality boundaries")
     parser.add_argument("--province-tolerance", type=float, default=2000.0, help="Simplification tolerance for province boundaries")
     parser.add_argument("--detail-municipality-tolerance", type=float, default=12.0, help="Simplification tolerance for province chunk detail geometry")
+    parser.add_argument("--boundary-tolerance", type=float, default=85.0, help="Simplification tolerance for national municipality boundary mesh")
     args = parser.parse_args()
 
     root = Path(args.root).resolve()
@@ -251,6 +392,7 @@ def main() -> None:
     web_pack = {
         "availableYears": list(full_pack.get("availableYears") or []),
         "municipalities": {},
+        "municipalityBoundaries": {},
         "provinces": {},
         "detailMunicipalities": {},
     }
@@ -269,6 +411,14 @@ def main() -> None:
                 **simplify_feature_collection(in_path, out_path, root, args.municipality_tolerance),
             })
             web_pack["municipalities"][year_key] = str(out_rel).replace("\\", "/")
+            boundary_rel = Path("data/derived/geometries_web") / f"municipality_boundaries_{year_key}.geojson"
+            boundary_path = root / boundary_rel
+            report_rows.append({
+                "layer": "municipality_boundaries",
+                "year": int(year_key),
+                **write_boundary_mesh(in_path, boundary_path, root, year_key, args.boundary_tolerance),
+            })
+            web_pack["municipalityBoundaries"][year_key] = str(boundary_rel).replace("\\", "/")
             chunks, chunk_rows = write_detail_chunks_by_province(
                 in_path,
                 derived / "geometries_detail_by_province" / year_key,
@@ -306,6 +456,7 @@ def main() -> None:
         "municipality_tolerance": args.municipality_tolerance,
         "province_tolerance": args.province_tolerance,
         "detail_municipality_tolerance": args.detail_municipality_tolerance,
+        "boundary_tolerance": args.boundary_tolerance,
         "rows": report_rows,
         "totals": totals,
     }
