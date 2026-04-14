@@ -348,7 +348,7 @@ function visibleElectionKeysForSummary() {
   if (shouldHydrateCompareSummaryNow()) keys.add(state.compareElection);
   const needsHistory = ['volatility', 'dominance_changes', 'stability_index', 'concentration'].includes(state.selectedMetric)
     || ['trajectory', 'similarity', 'archetypes', 'group_compare'].includes(state.analysisMode)
-    || state.uiLevel === 'research';
+    || state.audienceMode === 'research';
   if (needsHistory) {
     state.elections.forEach(election => {
       const coverage = electionCoverageFor(state, election.election_key);
@@ -365,7 +365,7 @@ function visibleElectionKeysForResults() {
   }
   const needsHistory = ['volatility', 'dominance_changes', 'stability_index', 'concentration'].includes(state.selectedMetric)
     || state.analysisMode === 'trajectory'
-    || state.uiLevel === 'research';
+    || state.audienceMode === 'research';
   if (needsHistory) {
     state.elections.forEach(election => {
       const coverage = electionCoverageFor(state, election.election_key);
@@ -1263,7 +1263,7 @@ function ensureActiveSelectionForQuestions() {
     return;
   }
   if (state.selectedParty) return;
-  const options = state.indices?.partyOptionsByMode?.[state.selectedPartyMode] || [];
+  const options = mapReadyPartyOptionsFor(state, state.selectedElection, state.selectedPartyMode);
   state.selectedParty = options[0] || state.selectedParty || FALLBACK_PARTY_OPTIONS[0] || null;
 }
 
@@ -3474,21 +3474,7 @@ function showTooltip(event, feature, row, options = {}) {
   const provinceDelta = provinceAvg != null && typeof metricValue === 'number' ? `${fmtPctSigned(metricValue - provinceAvg)} pt` : '—';
   const regionDelta = regionAvg != null && typeof metricValue === 'number' ? `${fmtPctSigned(metricValue - regionAvg)} pt` : '—';
   const comparabilityNote = row?.comparability_note ? `<div class="tooltip-note">${escapeHtml(row.comparability_note)}</div>` : '';
-  if (tooltip.dataset.tooltipKey !== tooltipKey) {
   tooltip.dataset.tooltipKey = tooltipKey;
-  tooltip.innerHTML = `
-    <strong>${escapeHtml(label)}</strong><br>
-    Provincia: ${escapeHtml(province)}<br>
-    Elezione: ${escapeHtml(state.selectedElection || '—')}<br>
-    Affluenza: ${turnout}<br>
-    Primo partito: ${escapeHtml(firstParty)}<br>
-    ${escapeHtml(metricLabel())}: ${escapeHtml(metricValueStr)}<br>
-    Diff. provincia: ${provinceAvg != null ? `${fmtPctSigned((typeof metricValue === 'number' ? metricValue : null) - provinceAvg)} pt` : '—'}<br>
-        Diff. Italia: ${regionAvg != null ? `${fmtPctSigned((typeof metricValue === 'number' ? metricValue : null) - regionAvg)} pt` : '—'}<br>
-    Stato territoriale: ${escapeHtml(row?.territorial_status || '—')}<br>
-    <span style="color:#94a3b8">Shift+click per aggiungere/rimuovere nel comparatore</span>
-    ${row?.comparability_note ? `<br>Nota: ${escapeHtml(row.comparability_note)}` : ''}
-  `;
   tooltip.innerHTML = `
     <div class="tooltip-card">
       <div class="tooltip-header">
@@ -3508,7 +3494,6 @@ function showTooltip(event, feature, row, options = {}) {
       <div class="tooltip-hint">Shift+click per aggiungere o rimuovere il comune dal comparatore</div>
     </div>
   `;
-  }
   positionTooltip(event, tooltip);
 }
 

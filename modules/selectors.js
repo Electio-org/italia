@@ -64,6 +64,8 @@ function addKeyToSetMap(map, key, value) {
 function summaryStats(acc) {
   return {
     turnout_pct: acc.electors > 0 ? (acc.voters / acc.electors) * 100 : mean(acc.turnout_values),
+    margin: mean(acc.margin_values),
+    first_party_share: mean(acc.first_party_share_values),
     n: acc.n,
     electors: acc.electors,
     voters: acc.voters,
@@ -73,13 +75,25 @@ function summaryStats(acc) {
 
 function addToSummaryAcc(map, key, row) {
   if (!key) return null;
-  const acc = map.get(key) || { electors: 0, voters: 0, valid_votes: 0, n: 0, turnout_values: [] };
+  const acc = map.get(key) || {
+    electors: 0,
+    voters: 0,
+    valid_votes: 0,
+    n: 0,
+    turnout_values: [],
+    margin_values: [],
+    first_party_share_values: []
+  };
   acc.electors += safeNumber(row.electors) || 0;
   acc.voters += safeNumber(row.voters) || 0;
   acc.valid_votes += safeNumber(row.valid_votes) || 0;
   acc.n += 1;
   const turnout = safeNumber(row.turnout_pct);
   if (Number.isFinite(turnout)) acc.turnout_values.push(turnout);
+  const margin = safeNumber(row.first_second_margin ?? row.margin);
+  if (Number.isFinite(margin)) acc.margin_values.push(margin);
+  const firstPartyShare = safeNumber(row.first_party_share);
+  if (Number.isFinite(firstPartyShare)) acc.first_party_share_values.push(firstPartyShare);
   map.set(key, acc);
   return acc;
 }
@@ -334,8 +348,25 @@ export function computeTrajectorySegments(state, profileRows) {
   const out = [];
   series.forEach(item => {
     const prev = out.at(-1);
-    if (!prev || prev.leader !== item.leader) out.push({ leader: item.leader, from: item.year, to: item.year, max: item.value, min: item.value });
-    else { prev.to = item.year; prev.max = Math.max(prev.max, item.value || prev.max); prev.min = Math.min(prev.min, item.value || prev.min); }
+    if (!prev || prev.leader !== item.leader) {
+      out.push({
+        leader: item.leader,
+        dominant: item.leader,
+        label: item.leader,
+        from: item.year,
+        to: item.year,
+        elections: 1,
+        max: item.value,
+        min: item.value
+      });
+    } else {
+      prev.to = item.year;
+      prev.elections += 1;
+      if (item.value != null) {
+        prev.max = prev.max == null ? item.value : Math.max(prev.max, item.value);
+        prev.min = prev.min == null ? item.value : Math.min(prev.min, item.value);
+      }
+    }
   });
   return out;
 }
@@ -343,7 +374,7 @@ export function computeTrajectorySegments(state, profileRows) {
 export function longestLeaderRun(state, profileRows) {
   const segs = computeTrajectorySegments(state, profileRows);
   if (!segs.length) return null;
-  return segs.slice().sort((a, b) => (b.to - b.from) - (a.to - a.from))[0];
+  return segs.slice().sort((a, b) => (b.elections - a.elections) || ((b.to - b.from) - (a.to - a.from)))[0];
 }
 
 export function shareTrendLabel(series) {
