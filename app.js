@@ -62,8 +62,9 @@ import { AUDIENCE_MODES, GLOSSARY_ENTRIES, GUIDED_QUESTION_BANK, DEFAULT_SITE_LA
 import { createAnalysisModes, DEFAULT_NEXT_ACTIONS, DEFAULT_COLLAPSED_PANELS } from './modules/app-shell.js';
 
 const LOCAL_STORAGE_KEY = 'italia_camera_explorer_state_v1';
-const MAP_MAX_ZOOM = 32;
+const MAP_MAX_ZOOM = 160;
 const DETAIL_ZOOM_THRESHOLD = 7;
+const MUNICIPALITY_FOCUS_FILL = 0.96;
 
 const state = {
   manifest: null,
@@ -4262,7 +4263,7 @@ function zoomToSelectedMunicipality(options = {}) {
   const dy = y1 - y0;
   const x = (x0 + x1) / 2;
   const y = (y0 + y1) / 2;
-  const scale = Math.max(1, Math.min(MAP_MAX_ZOOM, 0.8 / Math.max(dx / width, dy / height)));
+  const scale = Math.max(1, Math.min(MAP_MAX_ZOOM, MUNICIPALITY_FOCUS_FILL / Math.max(dx / width, dy / height)));
   const transform = d3.zoomIdentity.translate(width / 2, height / 2).scale(scale).translate(-x, -y);
   const duration = options.duration ?? (state.detailGeometryKey ? 180 : 220);
   if (state.mapZoomTarget === 'canvas' && els.mapCanvas) {

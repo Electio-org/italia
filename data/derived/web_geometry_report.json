@@ -2,7 +2,7 @@
   "generated_by": "build_web_geometry_pack.py",
   "municipality_tolerance": 1100.0,
   "province_tolerance": 2000.0,
-  "detail_municipality_tolerance": 35.0,
+  "detail_municipality_tolerance": 12.0,
   "rows": [
     {
       "layer": "municipalities",
@@ -22,12 +22,12 @@
       "province": "Agrigento",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_agrigento.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 43,
       "points_before": 75273,
-      "points_after": 7181,
+      "points_after": 14436,
       "bytes_before": 2758553,
-      "bytes_after": 162760
+      "bytes_after": 315115
     },
     {
       "layer": "municipalities_detail",
@@ -35,12 +35,12 @@
       "province": "Alessandria",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_alessandria.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 187,
       "points_before": 198811,
-      "points_after": 15773,
+      "points_after": 30502,
       "bytes_before": 7120898,
-      "bytes_after": 382953
+      "bytes_after": 692262
     },
     {
       "layer": "municipalities_detail",
@@ -48,12 +48,12 @@
       "province": "Ancona",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_ancona.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 47,
       "points_before": 53094,
-      "points_after": 5333,
+      "points_after": 10623,
       "bytes_before": 1855969,
-      "bytes_after": 124710
+      "bytes_after": 235800
     },
     {
       "layer": "municipalities_detail",
@@ -61,12 +61,12 @@
       "province": "Aosta",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_aosta.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 74,
       "points_before": 30473,
-      "points_after": 6000,
+      "points_after": 11622,
       "bytes_before": 1102583,
-      "bytes_after": 146066
+      "bytes_after": 264128
     },
     {
       "layer": "municipalities_detail",
@@ -74,12 +74,12 @@
       "province": "Arezzo",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_arezzo.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 36,
       "points_before": 58685,
-      "points_after": 4844,
+      "points_after": 9716,
       "bytes_before": 2049073,
-      "bytes_after": 111745
+      "bytes_after": 214057
     },
     {
       "layer": "municipalities_detail",
@@ -87,12 +87,12 @@
       "province": "Ascoli Piceno",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_ascoli_piceno.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 33,
       "points_before": 37043,
-      "points_after": 3907,
+      "points_after": 7894,
       "bytes_before": 1296174,
-      "bytes_after": 91371
+      "bytes_after": 175098
     },
     {
       "layer": "municipalities_detail",
@@ -100,12 +100,12 @@
       "province": "Asti",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_asti.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 118,
       "points_before": 67364,
-      "points_after": 7849,
+      "points_after": 15335,
       "bytes_before": 2429417,
-      "bytes_after": 196615
+      "bytes_after": 353821
     },
     {
       "layer": "municipalities_detail",
@@ -113,12 +113,12 @@
       "province": "Avellino",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_avellino.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 118,
       "points_before": 57515,
-      "points_after": 9864,
+      "points_after": 19028,
       "bytes_before": 2063654,
-      "bytes_after": 245354
+      "bytes_after": 443245
     },
     {
       "layer": "municipalities_detail",
@@ -126,12 +126,12 @@
       "province": "Bari",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_bari.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 41,
       "points_before": 69502,
-      "points_after": 7758,
+      "points_after": 14674,
       "bytes_before": 2441989,
-      "bytes_after": 181915
+      "bytes_after": 334067
     },
     {
       "layer": "municipalities_detail",
@@ -139,12 +139,12 @@
       "province": "Barletta-Andria-Trani",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_barletta_andria_trani.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 10,
       "points_before": 19405,
-      "points_after": 1908,
+      "points_after": 3607,
       "bytes_before": 679937,
-      "bytes_after": 44971
+      "bytes_after": 82349
     },
     {
       "layer": "municipalities_detail",
@@ -152,12 +152,12 @@
       "province": "Belluno",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_belluno.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 61,
       "points_before": 55636,
-      "points_after": 6970,
+      "points_after": 13543,
       "bytes_before": 1948569,
-      "bytes_after": 163183
+      "bytes_after": 301216
     },
     {
       "layer": "municipalities_detail",
@@ -165,12 +165,12 @@
       "province": "Benevento",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_benevento.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 78,
       "points_before": 41814,
-      "points_after": 6763,
+      "points_after": 12982,
       "bytes_before": 1479499,
-      "bytes_after": 164295
+      "bytes_after": 295471
     },
     {
       "layer": "municipalities_detail",
@@ -178,12 +178,12 @@
       "province": "Bergamo",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_bergamo.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 243,
       "points_before": 97185,
-      "points_after": 13406,
+      "points_after": 25133,
       "bytes_before": 3443018,
-      "bytes_after": 347265
+      "bytes_after": 593532
     },
     {
       "layer": "municipalities_detail",
@@ -191,12 +191,12 @@
       "province": "Biella",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_biella.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 74,
       "points_before": 65201,
-      "points_after": 5504,
+      "points_after": 11305,
       "bytes_before": 2341050,
-      "bytes_after": 135644
+      "bytes_after": 257465
     },
     {
       "layer": "municipalities_detail",
@@ -204,12 +204,12 @@
       "province": "Bologna",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_bologna.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 55,
       "points_before": 90820,
-      "points_after": 7819,
+      "points_after": 15852,
       "bytes_before": 3171316,
-      "bytes_after": 179848
+      "bytes_after": 348541
     },
     {
       "layer": "municipalities_detail",
@@ -217,12 +217,12 @@
       "province": "Bolzano",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_bolzano.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 116,
       "points_before": 190357,
-      "points_after": 14167,
+      "points_after": 28154,
       "bytes_before": 6658847,
-      "bytes_after": 330194
+      "bytes_after": 623921
     },
     {
       "layer": "municipalities_detail",
@@ -230,12 +230,12 @@
       "province": "Brescia",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_brescia.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 205,
       "points_before": 105759,
-      "points_after": 16617,
+      "points_after": 30329,
       "bytes_before": 3728803,
-      "bytes_after": 404189
+      "bytes_after": 692141
     },
     {
       "layer": "municipalities_detail",
@@ -243,12 +243,12 @@
       "province": "Brindisi",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_brindisi.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 20,
       "points_before": 36266,
-      "points_after": 3366,
+      "points_after": 6637,
       "bytes_before": 1273401,
-      "bytes_after": 79701
+      "bytes_after": 151663
     },
     {
       "layer": "municipalities_detail",
@@ -256,12 +256,12 @@
       "province": "Cagliari",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_cagliari.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 17,
       "points_before": 35274,
-      "points_after": 2502,
+      "points_after": 5094,
       "bytes_before": 1253556,
-      "bytes_after": 57313
+      "bytes_after": 111745
     },
     {
       "layer": "municipalities_detail",
@@ -269,12 +269,12 @@
       "province": "Caltanissetta",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_caltanissetta.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 22,
       "points_before": 37945,
-      "points_after": 3821,
+      "points_after": 7528,
       "bytes_before": 1393088,
-      "bytes_after": 86441
+      "bytes_after": 164288
     },
     {
       "layer": "municipalities_detail",
@@ -282,12 +282,12 @@
       "province": "Campobasso",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_campobasso.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 84,
       "points_before": 86476,
-      "points_after": 8054,
+      "points_after": 16802,
       "bytes_before": 3034468,
-      "bytes_after": 193122
+      "bytes_after": 377757
     },
     {
       "layer": "municipalities_detail",
@@ -295,12 +295,12 @@
       "province": "Caserta",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_caserta.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 104,
       "points_before": 47775,
-      "points_after": 7656,
+      "points_after": 14059,
       "bytes_before": 1687364,
-      "bytes_after": 189407
+      "bytes_after": 323870
     },
     {
       "layer": "municipalities_detail",
@@ -308,12 +308,12 @@
       "province": "Catania",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_catania.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 58,
       "points_before": 78964,
-      "points_after": 7081,
+      "points_after": 14543,
       "bytes_before": 2936225,
-      "bytes_after": 170436
+      "bytes_after": 333168
     },
     {
       "layer": "municipalities_detail",
@@ -321,12 +321,12 @@
       "province": "Catanzaro",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_catanzaro.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 80,
       "points_before": 91439,
-      "points_after": 9461,
+      "points_after": 19634,
       "bytes_before": 3219546,
-      "bytes_after": 230090
+      "bytes_after": 453896
     },
     {
       "layer": "municipalities_detail",
@@ -334,12 +334,12 @@
       "province": "Chieti",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_chieti.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 104,
       "points_before": 56196,
-      "points_after": 8334,
+      "points_after": 16689,
       "bytes_before": 1981508,
-      "bytes_after": 203265
+      "bytes_after": 378720
     },
     {
       "layer": "municipalities_detail",
@@ -347,12 +347,12 @@
       "province": "Como",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_como.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 148,
       "points_before": 34561,
-      "points_after": 8529,
+      "points_after": 15381,
       "bytes_before": 1268431,
-      "bytes_after": 218645
+      "bytes_after": 362537
     },
     {
       "layer": "municipalities_detail",
@@ -360,12 +360,12 @@
       "province": "Cosenza",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_cosenza.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 150,
       "points_before": 184317,
-      "points_after": 18125,
+      "points_after": 37995,
       "bytes_before": 6487394,
-      "bytes_after": 439890
+      "bytes_after": 877030
     },
     {
       "layer": "municipalities_detail",
@@ -373,12 +373,12 @@
       "province": "Cremona",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_cremona.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 113,
       "points_before": 30684,
-      "points_after": 9406,
+      "points_after": 14945,
       "bytes_before": 1096490,
-      "bytes_after": 228708
+      "bytes_after": 345027
     },
     {
       "layer": "municipalities_detail",
@@ -386,12 +386,12 @@
       "province": "Crotone",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_crotone.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 27,
       "points_before": 47656,
-      "points_after": 4631,
+      "points_after": 9499,
       "bytes_before": 1673735,
-      "bytes_after": 109345
+      "bytes_after": 216441
     },
     {
       "layer": "municipalities_detail",
@@ -399,12 +399,12 @@
       "province": "Cuneo",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_cuneo.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 247,
       "points_before": 188173,
-      "points_after": 19488,
+      "points_after": 39207,
       "bytes_before": 6759656,
-      "bytes_after": 475014
+      "bytes_after": 889113
     },
     {
       "layer": "municipalities_detail",
@@ -412,12 +412,12 @@
       "province": "Enna",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_enna.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 20,
       "points_before": 44801,
-      "points_after": 5054,
+      "points_after": 9857,
       "bytes_before": 1639769,
-      "bytes_after": 112243
+      "bytes_after": 213693
     },
     {
       "layer": "municipalities_detail",
@@ -425,12 +425,12 @@
       "province": "Fermo",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_fermo.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 40,
       "points_before": 34330,
-      "points_after": 3044,
+      "points_after": 5906,
       "bytes_before": 1204353,
-      "bytes_after": 74970
+      "bytes_after": 135072
     },
     {
       "layer": "municipalities_detail",
@@ -438,12 +438,12 @@
       "province": "Ferrara",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_ferrara.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 21,
       "points_before": 18829,
-      "points_after": 2834,
+      "points_after": 4923,
       "bytes_before": 659100,
-      "bytes_after": 65383
+      "bytes_after": 109252
     },
     {
       "layer": "municipalities_detail",
@@ -451,12 +451,12 @@
       "province": "Firenze",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_firenze.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 41,
       "points_before": 71166,
-      "points_after": 5934,
+      "points_after": 11795,
       "bytes_before": 2483898,
-      "bytes_after": 135911
+      "bytes_after": 258992
     },
     {
       "layer": "municipalities_detail",
@@ -464,12 +464,12 @@
       "province": "Foggia",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_foggia.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 61,
       "points_before": 102614,
-      "points_after": 9959,
+      "points_after": 19768,
       "bytes_before": 3650892,
-      "bytes_after": 235917
+      "bytes_after": 451604
     },
     {
       "layer": "municipalities_detail",
@@ -477,12 +477,12 @@
       "province": "Forli'-Cesena",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_forli_cesena.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 30,
       "points_before": 33415,
-      "points_after": 5213,
+      "points_after": 10847,
       "bytes_before": 1171451,
-      "bytes_after": 118156
+      "bytes_after": 236470
     },
     {
       "layer": "municipalities_detail",
@@ -490,12 +490,12 @@
       "province": "Frosinone",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_frosinone.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 91,
       "points_before": 65176,
-      "points_after": 8031,
+      "points_after": 15862,
       "bytes_before": 2288103,
-      "bytes_after": 193409
+      "bytes_after": 357860
     },
     {
       "layer": "municipalities_detail",
@@ -503,12 +503,12 @@
       "province": "Genova",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_genova.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 67,
       "points_before": 60131,
-      "points_after": 6463,
+      "points_after": 13568,
       "bytes_before": 2148618,
-      "bytes_after": 153707
+      "bytes_after": 302912
     },
     {
       "layer": "municipalities_detail",
@@ -516,12 +516,12 @@
       "province": "Gorizia",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_gorizia.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 25,
       "points_before": 16391,
-      "points_after": 1822,
+      "points_after": 3495,
       "bytes_before": 569082,
-      "bytes_after": 45574
+      "bytes_after": 80707
     },
     {
       "layer": "municipalities_detail",
@@ -529,12 +529,12 @@
       "province": "Grosseto",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_grosseto.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 28,
       "points_before": 79185,
-      "points_after": 5757,
+      "points_after": 12412,
       "bytes_before": 2757758,
-      "bytes_after": 128704
+      "bytes_after": 268459
     },
     {
       "layer": "municipalities_detail",
@@ -542,12 +542,12 @@
       "province": "Imperia",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_imperia.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 66,
       "points_before": 48204,
-      "points_after": 5052,
+      "points_after": 10186,
       "bytes_before": 1733056,
-      "bytes_after": 123918
+      "bytes_after": 231732
     },
     {
       "layer": "municipalities_detail",
@@ -555,12 +555,12 @@
       "province": "Isernia",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_isernia.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 52,
       "points_before": 50128,
-      "points_after": 4276,
+      "points_after": 8787,
       "bytes_before": 1755810,
-      "bytes_after": 104192
+      "bytes_after": 198923
     },
     {
       "layer": "municipalities_detail",
@@ -568,12 +568,12 @@
       "province": "L'Aquila",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_l_aquila.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 108,
       "points_before": 51997,
-      "points_after": 9389,
+      "points_after": 16938,
       "bytes_before": 1835817,
-      "bytes_after": 226844
+      "bytes_after": 385373
     },
     {
       "layer": "municipalities_detail",
@@ -581,12 +581,12 @@
       "province": "La Spezia",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_la_spezia.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 32,
       "points_before": 27917,
-      "points_after": 2980,
+      "points_after": 6109,
       "bytes_before": 978547,
-      "bytes_after": 71393
+      "bytes_after": 137102
     },
     {
       "layer": "municipalities_detail",
@@ -594,12 +594,12 @@
       "province": "Latina",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_latina.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 33,
       "points_before": 27918,
-      "points_after": 3516,
+      "points_after": 7221,
       "bytes_before": 977949,
-      "bytes_after": 82730
+      "bytes_after": 160535
     },
     {
       "layer": "municipalities_detail",
@@ -607,12 +607,12 @@
       "province": "Lecce",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_lecce.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 96,
       "points_before": 112696,
-      "points_after": 10785,
+      "points_after": 20599,
       "bytes_before": 3966303,
-      "bytes_after": 262959
+      "bytes_after": 478867
     },
     {
       "layer": "municipalities_detail",
@@ -620,12 +620,12 @@
       "province": "Lecco",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_lecco.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 84,
       "points_before": 24096,
-      "points_after": 5159,
+      "points_after": 9743,
       "bytes_before": 860636,
-      "bytes_after": 130821
+      "bytes_after": 227085
     },
     {
       "layer": "municipalities_detail",
@@ -633,12 +633,12 @@
       "province": "Livorno",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_livorno.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 19,
       "points_before": 44035,
-      "points_after": 2915,
+      "points_after": 6691,
       "bytes_before": 1535372,
-      "bytes_after": 66591
+      "bytes_after": 145887
     },
     {
       "layer": "municipalities_detail",
@@ -646,12 +646,12 @@
       "province": "Lodi",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_lodi.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 60,
       "points_before": 18881,
-      "points_after": 4904,
+      "points_after": 8007,
       "bytes_before": 671964,
-      "bytes_after": 119508
+      "bytes_after": 184671
     },
     {
       "layer": "municipalities_detail",
@@ -659,12 +659,12 @@
       "province": "Lucca",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_lucca.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 33,
       "points_before": 54941,
-      "points_after": 4103,
+      "points_after": 8379,
       "bytes_before": 1916737,
-      "bytes_after": 95256
+      "bytes_after": 185052
     },
     {
       "layer": "municipalities_detail",
@@ -672,12 +672,12 @@
       "province": "Macerata",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_macerata.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 55,
       "points_before": 67591,
-      "points_after": 6695,
+      "points_after": 13244,
       "bytes_before": 2361675,
-      "bytes_after": 155634
+      "bytes_after": 293163
     },
     {
       "layer": "municipalities_detail",
@@ -685,12 +685,12 @@
       "province": "Mantova",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_mantova.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 64,
       "points_before": 31213,
-      "points_after": 6119,
+      "points_after": 11045,
       "bytes_before": 1101067,
-      "bytes_after": 146112
+      "bytes_after": 249558
     },
     {
       "layer": "municipalities_detail",
@@ -698,12 +698,12 @@
       "province": "Massa Carrara",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_massa_carrara.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 17,
       "points_before": 23689,
-      "points_after": 2042,
+      "points_after": 4123,
       "bytes_before": 828028,
-      "bytes_after": 47645
+      "bytes_after": 91346
     },
     {
       "layer": "municipalities_detail",
@@ -711,12 +711,12 @@
       "province": "Matera",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_matera.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 31,
       "points_before": 39045,
-      "points_after": 5016,
+      "points_after": 9737,
       "bytes_before": 1374660,
-      "bytes_after": 118849
+      "bytes_after": 222711
     },
     {
       "layer": "municipalities_detail",
@@ -724,12 +724,12 @@
       "province": "Messina",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_messina.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 108,
       "points_before": 101543,
-      "points_after": 9210,
+      "points_after": 19039,
       "bytes_before": 3618245,
-      "bytes_after": 230597
+      "bytes_after": 445042
     },
     {
       "layer": "municipalities_detail",
@@ -737,12 +737,12 @@
       "province": "Milano",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_milano.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 133,
       "points_before": 47326,
-      "points_after": 11710,
+      "points_after": 17905,
       "bytes_before": 1710839,
-      "bytes_after": 282080
+      "bytes_after": 412175
     },
     {
       "layer": "municipalities_detail",
@@ -750,12 +750,12 @@
       "province": "Modena",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_modena.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 47,
       "points_before": 40996,
-      "points_after": 5249,
+      "points_after": 9844,
       "bytes_before": 1436549,
-      "bytes_after": 123367
+      "bytes_after": 219862
     },
     {
       "layer": "municipalities_detail",
@@ -763,12 +763,12 @@
       "province": "Monza e della Brianza",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_monza_e_della_brianza.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 55,
       "points_before": 17515,
-      "points_after": 4450,
+      "points_after": 6955,
       "bytes_before": 633697,
-      "bytes_after": 109179
+      "bytes_after": 161784
     },
     {
       "layer": "municipalities_detail",
@@ -776,12 +776,12 @@
       "province": "Napoli",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_napoli.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 92,
       "points_before": 51844,
-      "points_after": 6673,
+      "points_after": 12459,
       "bytes_before": 1826980,
-      "bytes_after": 165383
+      "bytes_after": 286889
     },
     {
       "layer": "municipalities_detail",
@@ -789,12 +789,12 @@
       "province": "Novara",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_novara.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 87,
       "points_before": 45717,
-      "points_after": 6602,
+      "points_after": 11188,
       "bytes_before": 1647891,
-      "bytes_after": 162005
+      "bytes_after": 258311
     },
     {
       "layer": "municipalities_detail",
@@ -802,12 +802,12 @@
       "province": "Nuoro",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_nuoro.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 74,
       "points_before": 97001,
-      "points_after": 9433,
+      "points_after": 19086,
       "bytes_before": 3422499,
-      "bytes_after": 217620
+      "bytes_after": 420333
     },
     {
       "layer": "municipalities_detail",
@@ -815,12 +815,12 @@
       "province": "Oristano",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_oristano.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 87,
       "points_before": 76633,
-      "points_after": 7683,
+      "points_after": 15439,
       "bytes_before": 2748903,
-      "bytes_after": 184848
+      "bytes_after": 347724
     },
     {
       "layer": "municipalities_detail",
@@ -828,12 +828,12 @@
       "province": "Padova",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_padova.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 102,
       "points_before": 60217,
-      "points_after": 8733,
+      "points_after": 15441,
       "bytes_before": 2120128,
-      "bytes_after": 210898
+      "bytes_after": 351766
     },
     {
       "layer": "municipalities_detail",
@@ -841,12 +841,12 @@
       "province": "Palermo",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_palermo.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 82,
       "points_before": 127848,
-      "points_after": 13051,
+      "points_after": 26715,
       "bytes_before": 4540551,
-      "bytes_after": 296529
+      "bytes_after": 583473
     },
     {
       "layer": "municipalities_detail",
@@ -854,12 +854,12 @@
       "province": "Parma",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_parma.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 44,
       "points_before": 35678,
-      "points_after": 6235,
+      "points_after": 11829,
       "bytes_before": 1250021,
-      "bytes_after": 143122
+      "bytes_after": 260596
     },
     {
       "layer": "municipalities_detail",
@@ -867,12 +867,12 @@
       "province": "Pavia",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_pavia.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 186,
       "points_before": 78012,
-      "points_after": 15315,
+      "points_after": 25529,
       "bytes_before": 2813625,
-      "bytes_after": 372232
+      "bytes_after": 586726
     },
     {
       "layer": "municipalities_detail",
@@ -880,12 +880,12 @@
       "province": "Perugia",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_perugia.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 59,
       "points_before": 62616,
-      "points_after": 9766,
+      "points_after": 19173,
       "bytes_before": 2188353,
-      "bytes_after": 221177
+      "bytes_after": 418724
     },
     {
       "layer": "municipalities_detail",
@@ -893,12 +893,12 @@
       "province": "Pesaro e Urbino",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_pesaro_e_urbino.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 50,
       "points_before": 73095,
-      "points_after": 7835,
+      "points_after": 15967,
       "bytes_before": 2553814,
-      "bytes_after": 178689
+      "bytes_after": 349461
     },
     {
       "layer": "municipalities_detail",
@@ -906,12 +906,12 @@
       "province": "Pescara",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_pescara.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 46,
       "points_before": 25513,
-      "points_after": 4050,
+      "points_after": 7925,
       "bytes_before": 899230,
-      "bytes_after": 97696
+      "bytes_after": 179071
     },
     {
       "layer": "municipalities_detail",
@@ -919,12 +919,12 @@
       "province": "Piacenza",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_piacenza.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 46,
       "points_before": 32239,
-      "points_after": 6184,
+      "points_after": 11589,
       "bytes_before": 1133820,
-      "bytes_after": 142829
+      "bytes_after": 256334
     },
     {
       "layer": "municipalities_detail",
@@ -932,12 +932,12 @@
       "province": "Pisa",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_pisa.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 37,
       "points_before": 57842,
-      "points_after": 4385,
+      "points_after": 8657,
       "bytes_before": 2019021,
-      "bytes_after": 102190
+      "bytes_after": 191902
     },
     {
       "layer": "municipalities_detail",
@@ -945,12 +945,12 @@
       "province": "Pistoia",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_pistoia.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 20,
       "points_before": 27254,
-      "points_after": 1939,
+      "points_after": 3933,
       "bytes_before": 953304,
-      "bytes_after": 46284
+      "bytes_after": 88158
     },
     {
       "layer": "municipalities_detail",
@@ -958,12 +958,12 @@
       "province": "Pordenone",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_pordenone.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 50,
       "points_before": 43746,
-      "points_after": 5990,
+      "points_after": 10866,
       "bytes_before": 1518012,
-      "bytes_after": 140264
+      "bytes_after": 242660
     },
     {
       "layer": "municipalities_detail",
@@ -971,12 +971,12 @@
       "province": "Potenza",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_potenza.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 100,
       "points_before": 113886,
-      "points_after": 13107,
+      "points_after": 27140,
       "bytes_before": 4013083,
-      "bytes_after": 315900
+      "bytes_after": 624626
     },
     {
       "layer": "municipalities_detail",
@@ -984,12 +984,12 @@
       "province": "Prato",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_prato.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 7,
       "points_before": 9357,
-      "points_after": 751,
+      "points_after": 1496,
       "bytes_before": 327048,
-      "bytes_after": 17744
+      "bytes_after": 33389
     },
     {
       "layer": "municipalities_detail",
@@ -997,12 +997,12 @@
       "province": "Ragusa",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_ragusa.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 12,
       "points_before": 30640,
-      "points_after": 2831,
+      "points_after": 5837,
       "bytes_before": 1142370,
-      "bytes_after": 64670
+      "bytes_after": 129809
     },
     {
       "layer": "municipalities_detail",
@@ -1010,12 +1010,12 @@
       "province": "Ravenna",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_ravenna.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 18,
       "points_before": 24574,
-      "points_after": 2364,
+      "points_after": 4573,
       "bytes_before": 858900,
-      "bytes_after": 54727
+      "bytes_after": 101116
     },
     {
       "layer": "municipalities_detail",
@@ -1023,12 +1023,12 @@
       "province": "Reggio di Calabria",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_reggio_di_calabria.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 97,
       "points_before": 117598,
-      "points_after": 11027,
+      "points_after": 22949,
       "bytes_before": 4143067,
-      "bytes_after": 270271
+      "bytes_after": 532555
     },
     {
       "layer": "municipalities_detail",
@@ -1036,12 +1036,12 @@
       "province": "Reggio nell'Emilia",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_reggio_nell_emilia.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 42,
       "points_before": 24665,
-      "points_after": 4395,
+      "points_after": 8066,
       "bytes_before": 868005,
-      "bytes_after": 104462
+      "bytes_after": 181553
     },
     {
       "layer": "municipalities_detail",
@@ -1049,12 +1049,12 @@
       "province": "Rieti",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_rieti.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 73,
       "points_before": 39875,
-      "points_after": 6818,
+      "points_after": 13027,
       "bytes_before": 1404940,
-      "bytes_after": 162867
+      "bytes_after": 293256
     },
     {
       "layer": "municipalities_detail",
@@ -1062,12 +1062,12 @@
       "province": "Rimini",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_rimini.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 27,
       "points_before": 20991,
-      "points_after": 2853,
+      "points_after": 5620,
       "bytes_before": 737360,
-      "bytes_after": 67601
+      "bytes_after": 125708
     },
     {
       "layer": "municipalities_detail",
@@ -1075,12 +1075,12 @@
       "province": "Roma",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_roma.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 121,
       "points_before": 112708,
-      "points_after": 12122,
+      "points_after": 23252,
       "bytes_before": 3949268,
-      "bytes_after": 286926
+      "bytes_after": 520656
     },
     {
       "layer": "municipalities_detail",
@@ -1088,12 +1088,12 @@
       "province": "Rovigo",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_rovigo.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 50,
       "points_before": 30033,
-      "points_after": 3881,
+      "points_after": 6899,
       "bytes_before": 1056232,
-      "bytes_after": 94992
+      "bytes_after": 158370
     },
     {
       "layer": "municipalities_detail",
@@ -1101,12 +1101,12 @@
       "province": "Salerno",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_salerno.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 158,
       "points_before": 95817,
-      "points_after": 15554,
+      "points_after": 30119,
       "bytes_before": 3433539,
-      "bytes_after": 382665
+      "bytes_after": 700347
     },
     {
       "layer": "municipalities_detail",
@@ -1114,12 +1114,12 @@
       "province": "Sassari",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_sassari.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 92,
       "points_before": 171368,
-      "points_after": 16631,
+      "points_after": 36433,
       "bytes_before": 6077827,
-      "bytes_after": 374455
+      "bytes_after": 790297
     },
     {
       "layer": "municipalities_detail",
@@ -1127,12 +1127,12 @@
       "province": "Savona",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_savona.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 69,
       "points_before": 43141,
-      "points_after": 5587,
+      "points_after": 11238,
       "bytes_before": 1553320,
-      "bytes_after": 135705
+      "bytes_after": 254376
     },
     {
       "layer": "municipalities_detail",
@@ -1140,12 +1140,12 @@
       "province": "Siena",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_siena.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 35,
       "points_before": 84211,
-      "points_after": 5938,
+      "points_after": 11868,
       "bytes_before": 2933395,
-      "bytes_after": 134294
+      "bytes_after": 258824
     },
     {
       "layer": "municipalities_detail",
@@ -1153,12 +1153,12 @@
       "province": "Siracusa",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_siracusa.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 21,
       "points_before": 50067,
-      "points_after": 4794,
+      "points_after": 10118,
       "bytes_before": 1875221,
-      "bytes_after": 111323
+      "bytes_after": 228451
     },
     {
       "layer": "municipalities_detail",
@@ -1166,12 +1166,12 @@
       "province": "Sondrio",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_sondrio.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 77,
       "points_before": 28022,
-      "points_after": 6141,
+      "points_after": 11748,
       "bytes_before": 995000,
-      "bytes_after": 149795
+      "bytes_after": 267542
     },
     {
       "layer": "municipalities_detail",
@@ -1179,12 +1179,12 @@
       "province": "Sud Sardegna",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_sud_sardegna.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 107,
       "points_before": 126359,
-      "points_after": 11454,
+      "points_after": 23849,
       "bytes_before": 4505575,
-      "bytes_after": 270056
+      "bytes_after": 530351
     },
     {
       "layer": "municipalities_detail",
@@ -1192,12 +1192,12 @@
       "province": "Taranto",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_taranto.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 29,
       "points_before": 44804,
-      "points_after": 4843,
+      "points_after": 9055,
       "bytes_before": 1575236,
-      "bytes_after": 114494
+      "bytes_after": 207158
     },
     {
       "layer": "municipalities_detail",
@@ -1205,12 +1205,12 @@
       "province": "Teramo",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_teramo.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 47,
       "points_before": 36871,
-      "points_after": 4854,
+      "points_after": 9654,
       "bytes_before": 1293206,
-      "bytes_after": 114786
+      "bytes_after": 215586
     },
     {
       "layer": "municipalities_detail",
@@ -1218,12 +1218,12 @@
       "province": "Terni",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_terni.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 33,
       "points_before": 23762,
-      "points_after": 4431,
+      "points_after": 8347,
       "bytes_before": 832795,
-      "bytes_after": 101961
+      "bytes_after": 184197
     },
     {
       "layer": "municipalities_detail",
@@ -1231,12 +1231,12 @@
       "province": "Torino",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_torino.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 312,
       "points_before": 238102,
-      "points_after": 22282,
+      "points_after": 43054,
       "bytes_before": 8553979,
-      "bytes_after": 552290
+      "bytes_after": 988502
     },
     {
       "layer": "municipalities_detail",
@@ -1244,12 +1244,12 @@
       "province": "Trapani",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_trapani.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 25,
       "points_before": 63304,
-      "points_after": 5271,
+      "points_after": 11521,
       "bytes_before": 2252694,
-      "bytes_after": 117708
+      "bytes_after": 248958
     },
     {
       "layer": "municipalities_detail",
@@ -1257,12 +1257,12 @@
       "province": "Trento",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_trento.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 166,
       "points_before": 180206,
-      "points_after": 16268,
+      "points_after": 32262,
       "bytes_before": 6306773,
-      "bytes_after": 388117
+      "bytes_after": 723991
     },
     {
       "layer": "municipalities_detail",
@@ -1270,12 +1270,12 @@
       "province": "Treviso",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_treviso.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 94,
       "points_before": 71886,
-      "points_after": 9924,
+      "points_after": 18080,
       "bytes_before": 2522101,
-      "bytes_after": 233899
+      "bytes_after": 405175
     },
     {
       "layer": "municipalities_detail",
@@ -1283,12 +1283,12 @@
       "province": "Trieste",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_trieste.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 6,
       "points_before": 9873,
-      "points_after": 729,
+      "points_after": 1539,
       "bytes_before": 343999,
-      "bytes_after": 17145
+      "bytes_after": 34155
     },
     {
       "layer": "municipalities_detail",
@@ -1296,12 +1296,12 @@
       "province": "Udine",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_udine.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 134,
       "points_before": 69416,
-      "points_after": 14212,
+      "points_after": 25801,
       "bytes_before": 2412205,
-      "bytes_after": 336258
+      "bytes_after": 579627
     },
     {
       "layer": "municipalities_detail",
@@ -1309,12 +1309,12 @@
       "province": "Varese",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_varese.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 138,
       "points_before": 36574,
-      "points_after": 7439,
+      "points_after": 13691,
       "bytes_before": 1337237,
-      "bytes_after": 193620
+      "bytes_after": 324912
     },
     {
       "layer": "municipalities_detail",
@@ -1322,12 +1322,12 @@
       "province": "Venezia",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_venezia.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 44,
       "points_before": 51896,
-      "points_after": 5843,
+      "points_after": 10443,
       "bytes_before": 1814715,
-      "bytes_after": 134687
+      "bytes_after": 231287
     },
     {
       "layer": "municipalities_detail",
@@ -1335,12 +1335,12 @@
       "province": "Verbano-Cusio-Ossola",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_verbano_cusio_ossola.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 74,
       "points_before": 60977,
-      "points_after": 5862,
+      "points_after": 11768,
       "bytes_before": 2186136,
-      "bytes_after": 144113
+      "bytes_after": 268139
     },
     {
       "layer": "municipalities_detail",
@@ -1348,12 +1348,12 @@
       "province": "Vercelli",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_vercelli.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 82,
       "points_before": 71998,
-      "points_after": 6804,
+      "points_after": 12806,
       "bytes_before": 2583716,
-      "bytes_after": 164978
+      "bytes_after": 291020
     },
     {
       "layer": "municipalities_detail",
@@ -1361,12 +1361,12 @@
       "province": "Verona",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_verona.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 98,
       "points_before": 71333,
-      "points_after": 9372,
+      "points_after": 17548,
       "bytes_before": 2506658,
-      "bytes_after": 223409
+      "bytes_after": 395105
     },
     {
       "layer": "municipalities_detail",
@@ -1374,12 +1374,12 @@
       "province": "Vibo Valentia",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_vibo_valentia.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 50,
       "points_before": 46207,
-      "points_after": 4490,
+      "points_after": 9189,
       "bytes_before": 1630031,
-      "bytes_after": 112665
+      "bytes_after": 216043
     },
     {
       "layer": "municipalities_detail",
@@ -1387,12 +1387,12 @@
       "province": "Vicenza",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_vicenza.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 114,
       "points_before": 83875,
-      "points_after": 10216,
+      "points_after": 19149,
       "bytes_before": 2942250,
-      "bytes_after": 245227
+      "bytes_after": 432820
     },
     {
       "layer": "municipalities_detail",
@@ -1400,12 +1400,12 @@
       "province": "Viterbo",
       "source_path": "data/derived/geometries/municipalities_2021.geojson",
       "target_path": "data/derived/geometries_detail_by_province/2021/municipalities_2021_viterbo.geojson",
-      "tolerance": 35.0,
+      "tolerance": 12.0,
       "feature_count": 60,
       "points_before": 45338,
-      "points_after": 7159,
+      "points_after": 13971,
       "bytes_before": 1591167,
-      "bytes_after": 166546
+      "bytes_after": 309598
     },
     {
       "layer": "provinces",
@@ -1422,10 +1422,10 @@
   ],
   "totals": {
     "bytes_before": 532587377,
-    "bytes_after": 22470877,
+    "bytes_after": 38235651,
     "points_before": 15043688,
-    "points_after": 855910,
-    "byte_reduction_pct": 95.78,
-    "point_reduction_pct": 94.31
+    "points_after": 1599630,
+    "byte_reduction_pct": 92.82,
+    "point_reduction_pct": 89.37
   }
 }
