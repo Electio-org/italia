@@ -7,11 +7,25 @@
   <title>Italia Camera Explorer | Dashboard</title>
   <meta name="description" content="Atlante elettorale comunale della Camera e dell'Assemblea Costituente in Italia: mappe, confronti tra elezioni, profili comunali, note d'uso e accesso ai dataset." />
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-  <link rel="stylesheet" href="vendor/tabler/core/tabler.min.css" />
-  <link rel="stylesheet" href="vendor/tabler/icons/tabler-icons.min.css" />
+
+  <!-- Preconnect + preload the critical-path data so fetches start in parallel with JS parsing. -->
+  <link rel="preload" as="fetch" href="data/derived/manifest.json" crossorigin="anonymous" />
+  <link rel="preload" as="fetch" href="data/derived/geometries_web/municipalities_2021.topojson" crossorigin="anonymous" type="application/json" />
+  <link rel="preload" as="fetch" href="data/derived/elections_master.csv" crossorigin="anonymous" />
+  <link rel="preload" as="fetch" href="data/derived/municipalities_master.csv" crossorigin="anonymous" />
+  <link rel="preload" as="fetch" href="data/derived/parties_master.csv" crossorigin="anonymous" />
+  <link rel="preload" as="script" href="vendor/d3/d3-slim.min.js" />
+
+  <!-- Non-blocking stylesheet load: Tabler base + icons are not on the critical render path for the
+       dashboard. We ship them via the print-media swap so first paint is driven by style.css only. -->
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="tabler-theme.css" />
-  <script defer src="vendor/d3/d3.min.js"></script>
+  <link rel="stylesheet" href="vendor/tabler/core/tabler.min.css" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="vendor/tabler/core/tabler.min.css" /></noscript>
+
+  <!-- Slim d3 bundle: only the APIs actually used (d3-array, d3-geo, d3-scale, d3-scale-chromatic,
+       d3-selection, d3-shape, d3-axis, d3-color, d3-format, d3-interpolate, d3-transition, d3-zoom). -->
+  <script defer src="vendor/d3/d3-slim.min.js"></script>
   <script defer src="vendor/papaparse/papaparse.min.js"></script>
   <script defer src="vendor/topojson-client/topojson-client.min.js"></script>
 </head>
@@ -32,10 +46,10 @@
         </button>
         <div class="collapse navbar-collapse" id="site-nav-menu">
           <nav class="navbar-nav ms-auto site-nav" aria-label="Navigazione principale">
-            <a class="nav-link is-active active" href="index.html"><i class="ti ti-chart-grid-dots site-nav-icon"></i><span>Dashboard</span></a>
-            <a class="nav-link" href="data-download.html"><i class="ti ti-database-export site-nav-icon"></i><span>Dati</span></a>
-            <a class="nav-link" href="usage-notes.html"><i class="ti ti-book-2 site-nav-icon"></i><span>Metodo</span></a>
-            <a class="nav-link" href="update-log.html"><i class="ti ti-history site-nav-icon"></i><span>Aggiornamenti</span></a>
+            <a class="nav-link is-active active" href="index.html"><svg class="site-nav-icon" aria-hidden="true" focusable="false"><use href="icons.svg#icon-chart-grid-dots"/></svg><span>Dashboard</span></a>
+            <a class="nav-link" href="data-download.html"><svg class="site-nav-icon" aria-hidden="true" focusable="false"><use href="icons.svg#icon-database-export"/></svg><span>Dati</span></a>
+            <a class="nav-link" href="usage-notes.html"><svg class="site-nav-icon" aria-hidden="true" focusable="false"><use href="icons.svg#icon-book-2"/></svg><span>Metodo</span></a>
+            <a class="nav-link" href="update-log.html"><svg class="site-nav-icon" aria-hidden="true" focusable="false"><use href="icons.svg#icon-history"/></svg><span>Aggiornamenti</span></a>
           </nav>
         </div>
       </div>
@@ -387,8 +401,8 @@
           <span id="metric-summary" class="pill muted"></span>
         </div>
         <div class="toolbar-right">
-          <button type="button" id="history-back-btn" class="ghost-btn small-btn" aria-label="Vista precedente"><i class="ti ti-arrow-left"></i><span>Indietro</span></button>
-          <button type="button" id="history-forward-btn" class="ghost-btn small-btn" aria-label="Vista successiva"><i class="ti ti-arrow-right"></i><span>Avanti</span></button>
+          <button type="button" id="history-back-btn" class="ghost-btn small-btn" aria-label="Vista precedente"><svg class="ti-icon ti-icon-arrow-left" aria-hidden="true" focusable="false"><use href="icons.svg#icon-arrow-left"/></svg><span>Indietro</span></button>
+          <button type="button" id="history-forward-btn" class="ghost-btn small-btn" aria-label="Vista successiva"><svg class="ti-icon ti-icon-arrow-right" aria-hidden="true" focusable="false"><use href="icons.svg#icon-arrow-right"/></svg><span>Avanti</span></button>
           <button type="button" id="command-palette-btn" class="ghost-btn small-btn">Ctrl+K</button>
           <button type="button" id="help-btn" class="ghost-btn small-btn" aria-label="Apri guida rapida">Guida</button>
           <button type="button" id="focus-mode-btn" class="ghost-btn small-btn">Modalit&agrave; focus</button>
@@ -1197,6 +1211,52 @@
       <div class="helper-text">Invio = apri · ↑↓ = scorri · Esc = chiudi</div>
     </div>
   </div>
+
+  <!-- Runtime perf: service worker + nav prefetch. Keeps navigation instant
+       after the first visit and prewarms sibling pages on hover/focus. -->
+  <script>
+    (function () {
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function () {
+          navigator.serviceWorker.register('service-worker.js').catch(function () { /* best effort */ });
+        });
+      }
+
+      var prefetched = new Set();
+      function prefetch(href) {
+        if (!href || prefetched.has(href)) return;
+        prefetched.add(href);
+        var link = document.createElement('link');
+        link.rel = 'prefetch';
+        link.href = href;
+        link.as = 'document';
+        document.head.appendChild(link);
+      }
+
+      function bindNavPrefetch() {
+        var links = document.querySelectorAll('a.nav-link[href]');
+        links.forEach(function (link) {
+          var href = link.getAttribute('href');
+          if (!href || /^(https?:|mailto:|#)/.test(href)) return;
+          var trigger = function () { prefetch(href); };
+          link.addEventListener('pointerenter', trigger, { once: true, passive: true });
+          link.addEventListener('focus', trigger, { once: true });
+        });
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', bindNavPrefetch);
+      } else {
+        bindNavPrefetch();
+      }
+
+      // Prewarm sibling pages during idle time so the first click is instant.
+      var idle = window.requestIdleCallback || function (fn) { return setTimeout(fn, 1500); };
+      idle(function () {
+        ['data-download.html', 'usage-notes.html', 'update-log.html'].forEach(prefetch);
+      });
+    })();
+  </script>
 </body>
 </html>
 
