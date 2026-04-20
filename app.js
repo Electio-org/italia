@@ -65,6 +65,7 @@ import {
   activeMunicipalityFeatures as mapActiveMunicipalityFeatures,
   buildCanvasMapCache as buildMapCanvasCache,
   createCurrentMapRenderKey,
+  drawCanvasMap as drawMapCanvas,
   hitTestCanvasMap as hitTestMapCanvas,
   resizeCanvasBackingStore as resizeMapCanvasBackingStore
 } from './modules/features/map.js';
@@ -3034,51 +3035,7 @@ function renderCanvasMap({ rows, rowByJoinKey, scaleInfo, projection, anySelecti
 }
 
 function drawCanvasMap(transform = state.mapCanvasTransform || d3.zoomIdentity) {
-  const canvas = els.mapCanvas;
-  const ctx = resizeCanvasBackingStore(canvas);
-  const render = state.mapCanvasRender;
-  if (!canvas || !ctx || !render) return;
-  state.mapCanvasTransform = transform;
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.save();
-  ctx.translate(transform.x, transform.y);
-  ctx.scale(transform.k, transform.k);
-  const strokeScale = 1 / Math.max(1, transform.k);
-
-  render.cache.items.forEach(item => {
-    const row = render.rowByJoinKey.get(item.key);
-    const mid = row?.municipality_id;
-    const selected = mid && mid === state.selectedMunicipalityId;
-    const compared = mid && state.compareMunicipalityIds.includes(mid);
-    const faded = render.anySelection && mid && !selected && !compared;
-    ctx.globalAlpha = faded ? 0.32 : 1;
-    ctx.fillStyle = row ? render.scaleInfo.colorFor(row.__metric_value) : '#e5e7eb';
-    ctx.fill(item.path);
-    const showMunicipalStroke = selected || compared || transform.k >= 3;
-    if (showMunicipalStroke) {
-      ctx.strokeStyle = selected ? '#0f172a' : compared ? municipalityColor(mid) : 'rgba(15, 23, 42, 0.12)';
-      ctx.lineWidth = (selected ? 2.2 : compared ? 1.5 : 0.18) * strokeScale;
-      ctx.stroke(item.path);
-    }
-  });
-
-  if (render.cache.boundaryItems?.length) {
-    ctx.globalAlpha = transform.k >= 3 ? 0.16 : 0.24;
-    ctx.strokeStyle = '#0f172a';
-    ctx.lineWidth = (transform.k >= 3 ? 0.24 : 0.2) * strokeScale;
-    render.cache.boundaryItems.forEach(item => {
-      ctx.stroke(item.path);
-    });
-  }
-
-  ctx.globalAlpha = transform.k >= 3 ? 0.28 : 0.48;
-  ctx.strokeStyle = '#334155';
-  ctx.lineWidth = (transform.k >= 3 ? 0.62 : 0.92) * strokeScale;
-  render.cache.provinceItems.forEach(item => {
-    ctx.stroke(item.path);
-  });
-  ctx.restore();
-  ctx.globalAlpha = 1;
+  drawMapCanvas(state, els.mapCanvas, { transform, municipalityColor });
 }
 
 function drawCanvasMapSoon(transform = state.mapCanvasTransform || d3.zoomIdentity) {

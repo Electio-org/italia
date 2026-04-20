@@ -121,6 +121,54 @@ export function resizeCanvasBackingStore(canvas, width = 960, height = 680) {
   return canvas.getContext('2d', { alpha: true });
 }
 
+export function drawCanvasMap(state, canvas, { transform, municipalityColor = () => '#2563eb' } = {}) {
+  const ctx = resizeCanvasBackingStore(canvas);
+  const render = state.mapCanvasRender;
+  if (!canvas || !ctx || !render?.cache) return;
+  const activeTransform = transform || state.mapCanvasTransform || globalThis.d3?.zoomIdentity || { x: 0, y: 0, k: 1 };
+  state.mapCanvasTransform = activeTransform;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.save();
+  ctx.translate(activeTransform.x || 0, activeTransform.y || 0);
+  ctx.scale(activeTransform.k || 1, activeTransform.k || 1);
+  const strokeScale = 1 / Math.max(1, activeTransform.k || 1);
+
+  render.cache.items.forEach(item => {
+    const row = render.rowByJoinKey.get(item.key);
+    const mid = row?.municipality_id;
+    const selected = mid && mid === state.selectedMunicipalityId;
+    const compared = mid && state.compareMunicipalityIds.includes(mid);
+    const faded = render.anySelection && mid && !selected && !compared;
+    ctx.globalAlpha = faded ? 0.32 : 1;
+    ctx.fillStyle = row ? render.scaleInfo.colorFor(row.__metric_value) : '#e5e7eb';
+    ctx.fill(item.path);
+    const showMunicipalStroke = selected || compared || activeTransform.k >= 3;
+    if (showMunicipalStroke) {
+      ctx.strokeStyle = selected ? '#0f172a' : compared ? municipalityColor(mid) : 'rgba(15, 23, 42, 0.12)';
+      ctx.lineWidth = (selected ? 2.2 : compared ? 1.5 : 0.18) * strokeScale;
+      ctx.stroke(item.path);
+    }
+  });
+
+  if (render.cache.boundaryItems?.length) {
+    ctx.globalAlpha = activeTransform.k >= 3 ? 0.16 : 0.24;
+    ctx.strokeStyle = '#0f172a';
+    ctx.lineWidth = (activeTransform.k >= 3 ? 0.24 : 0.2) * strokeScale;
+    render.cache.boundaryItems.forEach(item => {
+      ctx.stroke(item.path);
+    });
+  }
+
+  ctx.globalAlpha = activeTransform.k >= 3 ? 0.28 : 0.48;
+  ctx.strokeStyle = '#334155';
+  ctx.lineWidth = (activeTransform.k >= 3 ? 0.62 : 0.92) * strokeScale;
+  render.cache.provinceItems.forEach(item => {
+    ctx.stroke(item.path);
+  });
+  ctx.restore();
+  ctx.globalAlpha = 1;
+}
+
 export function canvasEventPoint(state, canvas, event) {
   if (!canvas) return null;
   const rect = canvas.getBoundingClientRect();
