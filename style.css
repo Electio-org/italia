@@ -5273,21 +5273,30 @@ body.basic-mode .sidebar-tools {
 
 @media (min-width: 960px) {
   body[data-site-page="dashboard"] .app-shell {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 0 !important;
+    padding-top: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    max-width: none !important;
   }
 
   body[data-site-page="dashboard"] .sidebar {
-    position: sticky;
-    top: 0;
-    z-index: 18;
-    padding: 12px 18px;
-    border-right: none;
-    border-bottom: 1px solid var(--line-soft);
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 18 !important;
+    padding: 12px 18px !important;
+    margin: 0 !important;
+    max-height: none !important;
+    min-width: 0 !important;
+    width: 100% !important;
+    border-right: none !important;
+    border-bottom: 1px solid var(--line-soft) !important;
     background: rgba(2, 6, 23, 0.94);
     backdrop-filter: saturate(1.1) blur(8px);
-    overflow: visible;
-    display: grid;
-    grid-template-columns: minmax(260px, 22%) minmax(0, 1fr);
+    overflow: visible !important;
+    display: grid !important;
+    grid-template-columns: minmax(260px, 22%) minmax(0, 1fr) !important;
     column-gap: 18px;
     row-gap: 10px;
     align-items: start;
@@ -5411,12 +5420,13 @@ body.basic-mode .sidebar-tools {
 
   /* Main content gets the full width under the strip. */
   body[data-site-page="dashboard"] .main-content {
-    padding: 18px 22px 28px;
+    padding: 18px 22px 28px !important;
+    max-width: none !important;
   }
   body[data-site-page="dashboard"] .map-and-detail {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: auto auto;
-    gap: 16px;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: auto auto !important;
+    gap: 16px !important;
   }
   body[data-site-page="dashboard"] .map-panel {
     min-height: min(72vh, 780px);

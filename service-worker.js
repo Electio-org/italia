@@ -10,7 +10,7 @@
  * and old caches are dropped on activate.
  */
 
-const SW_VERSION = 'lce-v1-2026-04-20';
+const SW_VERSION = 'lce-v2-2026-04-20';
 const SHELL_CACHE = `shell::${SW_VERSION}`;
 const DATA_CACHE = `data::${SW_VERSION}`;
 
