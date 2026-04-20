@@ -1212,51 +1212,9 @@
     </div>
   </div>
 
-  <!-- Runtime perf: service worker + nav prefetch. Keeps navigation instant
-       after the first visit and prewarms sibling pages on hover/focus. -->
-  <script>
-    (function () {
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', function () {
-          navigator.serviceWorker.register('service-worker.js').catch(function () { /* best effort */ });
-        });
-      }
-
-      var prefetched = new Set();
-      function prefetch(href) {
-        if (!href || prefetched.has(href)) return;
-        prefetched.add(href);
-        var link = document.createElement('link');
-        link.rel = 'prefetch';
-        link.href = href;
-        link.as = 'document';
-        document.head.appendChild(link);
-      }
-
-      function bindNavPrefetch() {
-        var links = document.querySelectorAll('a.nav-link[href]');
-        links.forEach(function (link) {
-          var href = link.getAttribute('href');
-          if (!href || /^(https?:|mailto:|#)/.test(href)) return;
-          var trigger = function () { prefetch(href); };
-          link.addEventListener('pointerenter', trigger, { once: true, passive: true });
-          link.addEventListener('focus', trigger, { once: true });
-        });
-      }
-
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', bindNavPrefetch);
-      } else {
-        bindNavPrefetch();
-      }
-
-      // Prewarm sibling pages during idle time so the first click is instant.
-      var idle = window.requestIdleCallback || function (fn) { return setTimeout(fn, 1500); };
-      idle(function () {
-        ['data-download.html', 'usage-notes.html', 'update-log.html'].forEach(prefetch);
-      });
-    })();
-  </script>
+  <!-- Runtime perf: service worker + speculation rules + nav prefetch.
+       Shared across all HTML pages. Keeps navigation instant. -->
+  <script src="perf-boot.js" defer></script>
 </body>
 </html>
 

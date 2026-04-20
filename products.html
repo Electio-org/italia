@@ -97,43 +97,8 @@
   <script src="tabler-enhance.js"></script>
   <script type="module" src="site-pages.js"></script>
 
-  <!-- Runtime perf: service worker + nav prefetch. -->
-  <script>
-    (function () {
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', function () {
-          navigator.serviceWorker.register('service-worker.js').catch(function () {});
-        });
-      }
-      var prefetched = new Set();
-      function prefetch(href) {
-        if (!href || prefetched.has(href)) return;
-        prefetched.add(href);
-        var link = document.createElement('link');
-        link.rel = 'prefetch';
-        link.href = href;
-        link.as = 'document';
-        document.head.appendChild(link);
-      }
-      function bind() {
-        document.querySelectorAll('a.nav-link[href]').forEach(function (link) {
-          var href = link.getAttribute('href');
-          if (!href || /^(https?:|mailto:|#)/.test(href)) return;
-          var trigger = function () { prefetch(href); };
-          link.addEventListener('pointerenter', trigger, { once: true, passive: true });
-          link.addEventListener('focus', trigger, { once: true });
-        });
-      }
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', bind);
-      } else {
-        bind();
-      }
-      var idle = window.requestIdleCallback || function (fn) { return setTimeout(fn, 1500); };
-      idle(function () {
-        ['index.html', 'data-download.html', 'usage-notes.html', 'update-log.html'].forEach(prefetch);
-      });
-    })();
-  </script>
+  <!-- Runtime perf: service worker + speculation rules + nav prefetch.
+       Shared across all HTML pages. Keeps navigation instant. -->
+  <script src="perf-boot.js" defer></script>
 </body>
 </html>

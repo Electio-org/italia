@@ -1,3 +1,18 @@
+/* View Transitions API: native crossfade between MPA navigations in supporting
+   browsers (Chrome 111+). No-op elsewhere — prefetch + SW keep things instant. */
+@view-transition { navigation: auto; }
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 180ms;
+  animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+}
+
 :root {
   --bg: #09111f;
   --bg-2: #0f172a;
@@ -34,10 +49,12 @@ button { cursor: pointer; }
   border-right: 1px solid var(--line-soft);
   padding: 18px;
   overflow: auto;
+  overscroll-behavior: contain;
 }
 .main-content {
   padding: 18px;
   overflow: auto;
+  overscroll-behavior: contain;
 }
 .brand {
   margin-bottom: 16px;
@@ -4374,6 +4391,7 @@ button:hover {
 
 #map-svg.is-canvas-backed {
   display: none;
+  pointer-events: none;
 }
 
 #map-svg {

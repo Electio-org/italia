@@ -14,18 +14,26 @@
  * `cache.addAll()` that would reject the whole install on any 404.
  */
 
-const SW_VERSION = 'lce-v3-2026-04-20';
+const SW_VERSION = 'lce-v4-2026-04-20';
 const SHELL_CACHE = `shell::${SW_VERSION}`;
 const DATA_CACHE = `data::${SW_VERSION}`;
+const NAV_FALLBACK = './index.html';
 
 const SHELL_PATHS = [
   './',
   './index.html',
+  './data-download.html',
+  './usage-notes.html',
+  './update-log.html',
+  './programmatic-access.html',
+  './products.html',
   './style.css',
   './tabler-theme.css',
   './icons.svg',
   './app.js',
   './site-pages.js',
+  './perf-boot.js',
+  './tabler-enhance.js',
   './modules/data.js',
   './modules/selectors.js',
   './modules/shared.js',
@@ -99,6 +107,13 @@ self.addEventListener('fetch', (event) => {
   }
   if (url.origin !== self.location.origin) return;
 
+  // Navigation requests: stale-while-revalidate, with same-origin HTML fallback
+  // so a second visit is served instantly from cache and survives offline.
+  if (request.mode === 'navigate') {
+    event.respondWith(navigationHandler(request));
+    return;
+  }
+
   if (isDerivedData(url)) {
     event.respondWith(cacheFirst(DATA_CACHE, request));
     return;
@@ -108,6 +123,26 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 });
+
+async function navigationHandler(request) {
+  const cache = await caches.open(SHELL_CACHE);
+  const hit = await cache.match(request, { ignoreSearch: true });
+  const networkPromise = fetch(request)
+    .then((response) => {
+      if (response && response.ok) cache.put(request, response.clone());
+      return response;
+    })
+    .catch(() => null);
+  if (hit) {
+    // Refresh in background; serve cache now for instant paint.
+    networkPromise.catch(() => {});
+    return hit;
+  }
+  const network = await networkPromise;
+  if (network) return network;
+  const fallback = await cache.match(NAV_FALLBACK);
+  return fallback || new Response('', { status: 504 });
+}
 
 async function cacheFirst(cacheName, request) {
   const cache = await caches.open(cacheName);
