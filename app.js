@@ -68,6 +68,7 @@ import {
   hitTestCanvasMap as hitTestMapCanvas,
   renderCanvasMap as renderMapCanvas
 } from './modules/features/map.js';
+import { setupCanvasMapInteractions } from './modules/features/map-interactions.js';
 import { createMapTooltipController } from './modules/features/map-tooltip.js';
 
 const LOCAL_STORAGE_KEY = 'italia_camera_explorer_state_v1';
@@ -2968,45 +2969,20 @@ function renderMap() {
 }
 
 function setupCanvasMapHandlers() {
-  const canvas = els.mapCanvas;
-  if (!canvas || canvas.__italiaMapHandlers) return;
-  canvas.__italiaMapHandlers = true;
-  canvas.addEventListener('mousemove', event => {
-    markDetailPrefetchInteraction(DETAIL_PREFETCH_LIGHT_PAUSE_MS);
-    if (state.mapTooltipPinned) return;
-    state.mapCanvasLastPointerEvent = event;
-    if (state.mapCanvasMoveFrame) return;
-    state.mapCanvasMoveFrame = window.requestAnimationFrame(() => {
-      state.mapCanvasMoveFrame = null;
-      const pointerEvent = state.mapCanvasLastPointerEvent || event;
-      const hit = hitTestCanvasMap(pointerEvent);
-      if (hit) {
-        scheduleHoverTooltip(pointerEvent, hit.item.feature, hit.row);
-        if (!state.selectedMunicipalityId && state.mapCanvasTransform?.k >= DETAIL_ZOOM_THRESHOLD) {
-          ensureDetailGeometryForMunicipality(hit.row?.municipality_id, { reason: 'hover-deep-zoom' });
-        }
-      } else {
-        hideTooltip();
-      }
-    });
-  });
-  canvas.addEventListener('mouseleave', () => {
-    state.mapCanvasLastPointerEvent = null;
-    state.mapCanvasLastHit = null;
-    hideTooltip();
-  });
-  canvas.addEventListener('click', event => {
-    markDetailPrefetchInteraction(DETAIL_PREFETCH_HEAVY_PAUSE_MS);
-    const hit = hitTestCanvasMap(event);
-    const row = hit?.row;
-    if (!row?.municipality_id) return;
-    if (event.shiftKey) {
-      toggleCompareMunicipality(row.municipality_id);
-      return;
-    }
-    selectMunicipality(row.municipality_id, { updateSearch: true });
-    showTooltip(event, hit.item.feature, row, { pinned: true, variant: 'full' });
-    requestRender();
+  setupCanvasMapInteractions({
+    canvas: els.mapCanvas,
+    state,
+    detailZoomThreshold: DETAIL_ZOOM_THRESHOLD,
+    hitTest: hitTestCanvasMap,
+    markLightInteraction: () => markDetailPrefetchInteraction(DETAIL_PREFETCH_LIGHT_PAUSE_MS),
+    markHeavyInteraction: () => markDetailPrefetchInteraction(DETAIL_PREFETCH_HEAVY_PAUSE_MS),
+    scheduleHoverTooltip,
+    hideTooltip,
+    ensureDetailGeometryForMunicipality,
+    toggleCompareMunicipality,
+    selectMunicipality,
+    showTooltip,
+    requestRender
   });
 }
 
