@@ -694,13 +694,8 @@ async function loadBundleWithManifest(state, manifest, resolver, { buildIndices,
   if (typeof buildIndices === 'function') buildIndices({ rebuild: true });
   const defaults = defaultElectionSequence(state);
   state.selectedElection = state.selectedElection || defaults.at(-1)?.election_key || state.elections.at(-1)?.election_key || null;
-  const selectedDefaultIndex = defaults.findIndex(d => d.election_key === state.selectedElection);
-  const defaultCompareElection = selectedDefaultIndex > 0
-    ? defaults[selectedDefaultIndex - 1]?.election_key
-    : defaults.find(d => d.election_key !== state.selectedElection)?.election_key;
-  state.compareElection = state.compareElection || defaultCompareElection || null;
+  state.compareElection = state.compareElection || null;
   await ensureMapReadyForElections(state, [state.selectedElection].filter(Boolean), { buildIndices, registerIssue });
-  await ensureSummaryForElections(state, [state.selectedElection].filter(Boolean), { buildIndices, registerIssue });
   await syncActiveGeometry(state, registerIssue);
 }
 

@@ -1,4 +1,5 @@
 export function createCurrentMapRenderKey(state) {
+  const mapReadyMetric = ['turnout', 'first_party', 'margin', 'dominant_block', 'party_share'].includes(state.selectedMetric);
   return JSON.stringify({
     selectedElection: state.selectedElection,
     compareElection: state.compareElection,
@@ -16,9 +17,9 @@ export function createCurrentMapRenderKey(state) {
     selectedProvinceSet: [...state.selectedProvinceSet].sort(),
     selectedMunicipalityId: state.selectedMunicipalityId,
     compareMunicipalityIds: [...state.compareMunicipalityIds],
-    summaryRows: state.summary.length,
+    summaryRows: mapReadyMetric ? 0 : state.summary.length,
     mapReadyRows: state.mapReadyRows.length,
-    resultsRows: state.resultsLong.length,
+    resultsRows: mapReadyMetric ? 0 : state.resultsLong.length,
     geometryFeatures: state.geometry?.features?.length || 0,
     provinceGeometryFeatures: state.provinceGeometry?.features?.length || 0,
     municipalityBoundaryGeometryYear: state.municipalityBoundaryGeometryYear || '',
@@ -132,8 +133,22 @@ export function drawCanvasMap(state, canvas, { transform, municipalityColor = ()
   ctx.translate(activeTransform.x || 0, activeTransform.y || 0);
   ctx.scale(activeTransform.k || 1, activeTransform.k || 1);
   const strokeScale = 1 / Math.max(1, activeTransform.k || 1);
+  const zoom = Math.max(1, activeTransform.k || 1);
+  const viewportPadding = 18 * strokeScale;
+  const visibleBounds = {
+    x0: (-(activeTransform.x || 0) / zoom) - viewportPadding,
+    y0: (-(activeTransform.y || 0) / zoom) - viewportPadding,
+    x1: ((canvas.width - (activeTransform.x || 0)) / zoom) + viewportPadding,
+    y1: ((canvas.height - (activeTransform.y || 0)) / zoom) + viewportPadding
+  };
+  const itemVisible = item => {
+    const [[x0, y0], [x1, y1]] = item.bounds || [[NaN, NaN], [NaN, NaN]];
+    if (![x0, y0, x1, y1].every(Number.isFinite)) return true;
+    return x1 >= visibleBounds.x0 && x0 <= visibleBounds.x1 && y1 >= visibleBounds.y0 && y0 <= visibleBounds.y1;
+  };
+  const visibleItems = zoom > 1.2 ? render.cache.items.filter(itemVisible) : render.cache.items;
 
-  render.cache.items.forEach(item => {
+  visibleItems.forEach(item => {
     const row = render.rowByJoinKey.get(item.key);
     const mid = row?.municipality_id;
     const selected = mid && mid === state.selectedMunicipalityId;
@@ -150,19 +165,20 @@ export function drawCanvasMap(state, canvas, { transform, municipalityColor = ()
     }
   });
 
-  if (render.cache.boundaryItems?.length) {
-    ctx.globalAlpha = activeTransform.k >= 3 ? 0.16 : 0.24;
+  if (render.cache.boundaryItems?.length && zoom < 7) {
+    ctx.globalAlpha = zoom >= 3 ? 0.16 : 0.24;
     ctx.strokeStyle = '#0f172a';
-    ctx.lineWidth = (activeTransform.k >= 3 ? 0.24 : 0.2) * strokeScale;
+    ctx.lineWidth = (zoom >= 3 ? 0.24 : 0.2) * strokeScale;
     render.cache.boundaryItems.forEach(item => {
       ctx.stroke(item.path);
     });
   }
 
-  ctx.globalAlpha = activeTransform.k >= 3 ? 0.28 : 0.48;
+  ctx.globalAlpha = zoom >= 3 ? 0.28 : 0.48;
   ctx.strokeStyle = '#334155';
-  ctx.lineWidth = (activeTransform.k >= 3 ? 0.62 : 0.92) * strokeScale;
-  render.cache.provinceItems.forEach(item => {
+  ctx.lineWidth = (zoom >= 3 ? 0.62 : 0.92) * strokeScale;
+  const visibleProvinceItems = zoom > 1.2 ? render.cache.provinceItems.filter(itemVisible) : render.cache.provinceItems;
+  visibleProvinceItems.forEach(item => {
     ctx.stroke(item.path);
   });
   ctx.restore();

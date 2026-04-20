@@ -174,8 +174,8 @@
     "geometry": {
       "path": "data/derived/geometries_web/municipalities_2021.geojson",
       "kind": "geojson",
-      "size_bytes": 3450075,
-      "sha256": "b7a486b762f011163a549a5d8c2fba2ccda5211f6e17503fb616df27ea1dc22b",
+      "size_bytes": 9747914,
+      "sha256": "b2de4ae50b6cbe37ba7e36038c4b654d0f858b84ccd07139bd35192c06d03ae1",
       "feature_count": 7904
     },
     "dataQualityReport": {
@@ -303,14 +303,14 @@
     "webGeometryReport": {
       "path": "data/derived/web_geometry_report.json",
       "kind": "json",
-      "size_bytes": 52008,
-      "sha256": "6264a2115bc898801429a66845ab2ba7bd0a6b27f861064dfea2fbc71ab57d8b"
+      "size_bytes": 52007,
+      "sha256": "0d7415a2fb07a4d302f89a9a8dd2a3bde388743f84fd263dc8d74af500d19714"
     },
     "webCompressionReport": {
       "path": "data/derived/web_compression_report.json",
       "kind": "json",
-      "size_bytes": 42576,
-      "sha256": "eea97ae1f0cf1606720a2ec09450dd65758643e35bafe17e648ffef15ec2bbc1"
+      "size_bytes": 42577,
+      "sha256": "d95b5817a4a0f04da2f99ff29c1d86977ae9ef42a2214e098de3351c7d237998"
     },
     "productCatalog": {
       "path": "data/products/product_catalog.json",

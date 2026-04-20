@@ -80,8 +80,10 @@ const DETAIL_PREFETCH_IDLE_TIMEOUT_MS = 3600;
 const DETAIL_PREFETCH_RETRY_MS = 2400;
 const DETAIL_PREFETCH_HEAVY_PAUSE_MS = 3600;
 const DETAIL_PREFETCH_LIGHT_PAUSE_MS = 1200;
-const DETAIL_PREFETCH_BOOT_DELAY_MS = 12000;
-const MAP_DATASET_PREFETCH_DELAY_MS = 15000;
+const DETAIL_PREFETCH_BOOT_DELAY_MS = 18000;
+const MAP_DATASET_PREFETCH_DELAY_MS = 22000;
+const SUMMARY_HYDRATION_DELAY_MS = 12000;
+const MUNICIPALITY_BOUNDARY_LOAD_DELAY_MS = 14000;
 const MUNICIPALITY_BOUNDARY_LOAD_IDLE_TIMEOUT_MS = 2400;
 
 const state = {
@@ -192,6 +194,7 @@ const state = {
   mapRefreshToken: 0,
   mapRefreshLabel: '',
   mapIdlePrefetchHandle: null,
+  summaryIdleHydrationHandle: null,
   prefetchedElectionKeys: new Set(),
   controlBusyPreviousDisabled: new WeakMap(),
   controlBusyCounts: new WeakMap(),
@@ -563,6 +566,46 @@ function ensureVisibleSummary({ silent = true } = {}) {
     applySummaryHydrationOutcome(report, { silent });
     return report;
   });
+}
+
+function visibleSummaryHydrationNeeded() {
+  if (!state.selectedElection || state.summaryLoadStrategy !== 'by_election') return false;
+  return visibleElectionKeysForSummary().some(key => {
+    const coverage = electionCoverageFor(state, key);
+    return coverage.summary && !state.loadedSummaryElectionKeys?.has(key);
+  });
+}
+
+function scheduleVisibleSummaryHydration({ delay = SUMMARY_HYDRATION_DELAY_MS, force = false } = {}) {
+  if (state.summaryIdleHydrationHandle) {
+    if (!force) return;
+    if (typeof window.cancelIdleCallback === 'function') window.cancelIdleCallback(state.summaryIdleHydrationHandle);
+    window.clearTimeout(state.summaryIdleHydrationHandle);
+    state.summaryIdleHydrationHandle = null;
+  }
+  if (!force && !visibleSummaryHydrationNeeded()) return;
+  const startHydration = () => {
+    state.summaryIdleHydrationHandle = idle(async () => {
+      state.summaryIdleHydrationHandle = null;
+      if (!force && (document.hidden || state.mapRefreshPending || state.renderQueued)) {
+        scheduleVisibleSummaryHydration({ delay: SUMMARY_HYDRATION_DELAY_MS });
+        return;
+      }
+      try {
+        await ensureVisibleSummary({ silent: true });
+      } catch (error) {
+        registerIssue('summary-idle-hydration', error);
+      }
+    }, 1800);
+  };
+  if (delay > 0) {
+    state.summaryIdleHydrationHandle = window.setTimeout(() => {
+      state.summaryIdleHydrationHandle = null;
+      startHydration();
+    }, delay);
+    return;
+  }
+  startHydration();
 }
 
 function applyMapReadyHydrationOutcome(report, { silent = true } = {}) {
@@ -956,6 +999,7 @@ function selectMunicipality(id, options = {}) {
   if (options.updateSearch !== false && els.municipalitySearch) els.municipalitySearch.value = municipalityLabelById(id);
   updateMunicipalityNoteUI();
   syncURLState();
+  scheduleVisibleSummaryHydration({ delay: 0, force: true });
   ensureDetailGeometryForMunicipality(id, { reason: 'selection' });
   scheduleDetailGeometryPrefetch({ delay: DETAIL_PREFETCH_RETRY_MS });
 }
@@ -1180,7 +1224,11 @@ function readControls({ refreshMap = true } = {}) {
     syncActiveGeometry(state, registerIssue).then(() => {
       requestRender();
       ensureVisibleMapReady({ silent: true });
-      ensureVisibleSummary({ silent: true });
+      if (selectedMapNeedsSummary() || shouldHydrateCompareSummaryNow() || state.selectedMunicipalityId) {
+        ensureVisibleSummary({ silent: true });
+      } else {
+        scheduleVisibleSummaryHydration();
+      }
       if (shouldHydratePartyResultsNow()) ensureVisibleResults({ silent: false });
       scheduleLikelyDatasetPrefetch();
     }).catch(err => registerIssue('geometry-sync', err));
@@ -2813,11 +2861,7 @@ function scheduleMunicipalityBoundaryGeometryLoad(year = currentMapGeometryYear(
   if (!yearKey || !state.geometryPack?.municipalityBoundaries?.[yearKey]) return;
   if (state.municipalityBoundaryGeometryYear === yearKey && state.municipalityBoundaryGeometry?.features?.length) return;
   if (state.municipalityBoundaryLoadingYear === yearKey && state.municipalityBoundaryLoadPromise) return;
-  if (state.municipalityBoundaryIdleHandle) {
-    if (typeof window.cancelIdleCallback === 'function') window.cancelIdleCallback(state.municipalityBoundaryIdleHandle);
-    else window.clearTimeout(state.municipalityBoundaryIdleHandle);
-    state.municipalityBoundaryIdleHandle = null;
-  }
+  if (state.municipalityBoundaryIdleHandle) return;
   const startLoad = () => {
     state.municipalityBoundaryIdleHandle = null;
     if (state.municipalityBoundaryGeometryYear === yearKey && state.municipalityBoundaryGeometry?.features?.length) return;
@@ -2837,14 +2881,20 @@ function scheduleMunicipalityBoundaryGeometryLoad(year = currentMapGeometryYear(
           state.municipalityBoundaryLoadingYear = null;
           state.municipalityBoundaryLoadPromise = null;
         }
-      });
+    });
     state.municipalityBoundaryLoadPromise = loadPromise;
   };
-  if (typeof window.requestIdleCallback === 'function') {
-    state.municipalityBoundaryIdleHandle = window.requestIdleCallback(startLoad, { timeout: MUNICIPALITY_BOUNDARY_LOAD_IDLE_TIMEOUT_MS });
-  } else {
-    state.municipalityBoundaryIdleHandle = window.setTimeout(startLoad, MUNICIPALITY_BOUNDARY_LOAD_IDLE_TIMEOUT_MS);
-  }
+  const startIdleLoad = () => {
+    if (typeof window.requestIdleCallback === 'function') {
+      state.municipalityBoundaryIdleHandle = window.requestIdleCallback(startLoad, { timeout: MUNICIPALITY_BOUNDARY_LOAD_IDLE_TIMEOUT_MS });
+    } else {
+      state.municipalityBoundaryIdleHandle = window.setTimeout(startLoad, MUNICIPALITY_BOUNDARY_LOAD_IDLE_TIMEOUT_MS);
+    }
+  };
+  state.municipalityBoundaryIdleHandle = window.setTimeout(() => {
+    state.municipalityBoundaryIdleHandle = null;
+    startIdleLoad();
+  }, MUNICIPALITY_BOUNDARY_LOAD_DELAY_MS);
 }
 
 function renderMap() {
@@ -5393,7 +5443,11 @@ function renderViewTrustPill() {
 
 function renderAll() {
   ensureVisibleMapReady({ silent: true });
-  ensureVisibleSummary({ silent: true });
+  if (selectedMapNeedsSummary() || shouldHydrateCompareSummaryNow() || state.selectedMunicipalityId) {
+    ensureVisibleSummary({ silent: true });
+  } else {
+    scheduleVisibleSummaryHydration();
+  }
   if (shouldHydratePartyResultsNow()) ensureVisibleResults({ silent: true });
   cancelDeferredRender();
   state.renderCycle += 1;
