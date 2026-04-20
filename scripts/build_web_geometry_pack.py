@@ -373,7 +373,7 @@ def write_detail_chunks_by_province(
 def main() -> None:
     parser = argparse.ArgumentParser(description="Build a web-optimized geometry pack from the full Italy boundary files.")
     parser.add_argument("--root", default=".", help="Project root")
-    parser.add_argument("--municipality-tolerance", type=float, default=100.0, help="Simplification tolerance for municipality boundaries")
+    parser.add_argument("--municipality-tolerance", type=float, default=35.0, help="Simplification tolerance for municipality boundaries")
     parser.add_argument("--province-tolerance", type=float, default=2000.0, help="Simplification tolerance for province boundaries")
     parser.add_argument("--detail-municipality-tolerance", type=float, default=12.0, help="Simplification tolerance for province chunk detail geometry")
     parser.add_argument("--boundary-tolerance", type=float, default=35.0, help="Simplification tolerance for national municipality boundary mesh")

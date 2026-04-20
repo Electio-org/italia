@@ -2124,6 +2124,55 @@ function setLoading(isLoading, message = '') {
   if (helper && message) helper.textContent = message;
 }
 
+function nextAnimationFrame() {
+  return new Promise(resolve => window.requestAnimationFrame(() => resolve()));
+}
+
+function mapCanvasHasPaint() {
+  const canvas = els.mapCanvas;
+  if (!canvas?.width || !canvas?.height) return false;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return false;
+  try {
+    const sample = ctx.getImageData(0, 0, Math.min(canvas.width, 360), Math.min(canvas.height, 300)).data;
+    for (let i = 3; i < sample.length; i += 4) {
+      if (sample[i] !== 0) return true;
+    }
+  } catch {
+    return hasRenderedMapSurface();
+  }
+  return false;
+}
+
+async function waitForMapPaint(maxFrames = 8) {
+  for (let frame = 0; frame < maxFrames; frame += 1) {
+    if (mapCanvasHasPaint()) return true;
+    await nextAnimationFrame();
+  }
+  return mapCanvasHasPaint();
+}
+
+async function prepareFirstMapReveal() {
+  setLoading(true, 'Preparo la mappa dettagliata e la cache di disegno...');
+  const geometryYear = currentMapGeometryYear();
+  const yearKey = String(geometryYear || '');
+  if (yearKey && state.geometryPack?.municipalityBoundaries?.[yearKey]) {
+    const boundaryGeometry = await ensureGeometry(state, 'municipalityBoundaries', yearKey, registerIssue);
+    if (boundaryGeometry?.features?.length) {
+      state.municipalityBoundaryGeometry = boundaryGeometry;
+      state.municipalityBoundaryGeometryYear = yearKey;
+    }
+  }
+  state.mapCanvasCache = null;
+  state.lastMapRenderKey = null;
+  renderAll();
+  await waitForMapPaint();
+  if (!hasRenderedMapSurface() || !mapCanvasHasPaint()) {
+    requestRender();
+    await waitForMapPaint();
+  }
+}
+
 function showToast(message, type = 'success', timeout = 2400) {
   const stack = q('toast-stack');
   if (!stack) return;
@@ -2668,7 +2717,11 @@ function hideMapMessage() {
 
 function getScaleDomainRows(rows) {
   if (!state.sameScaleAcrossYears) return rows;
-  return state.summary
+  const sourceRows = selectedMapNeedsMapReady() && state.mapReadyRows?.length
+    ? state.mapReadyRows
+    : state.summary;
+  if (!sourceRows?.length) return rows;
+  return sourceRows
     .filter(row => !state.selectedProvinceSet.size || state.selectedProvinceSet.has(row.province))
     .filter(row => !row.territorial_mode || row.territorial_mode === state.territorialMode)
     .map(row => ({ ...row, __metric_value: getMetricValue(state, row) }));
@@ -5744,7 +5797,7 @@ async function init() {
     initCollapsiblePanels();
     updateBodyAppearance();
     toggleFocusMode(state.focusMode);
-    requestRender();
+    await prepareFirstMapReveal();
     scheduleLikelyDatasetPrefetch();
     bindDetailPrefetchActivityGuards();
     window.requestAnimationFrame(() => scheduleDetailGeometryPrefetch({ delay: DETAIL_PREFETCH_BOOT_DELAY_MS }));

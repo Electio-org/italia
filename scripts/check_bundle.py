@@ -18,6 +18,11 @@ def read_csv_rows(path: Path):
         return list(csv.DictReader(fh))
 
 
+def geometry_year_from_path(path: Path) -> str | None:
+    match = re.search(r'_(\d{4})\.geojson(?:\.gz)?$', str(path).replace('\\', '/'))
+    return match.group(1) if match else None
+
+
 def extract_table_sort_options(html_text: str):
     match = re.search(r'<select[^>]*id="table-sort"[^>]*>(.*?)</select>', html_text, flags=re.S | re.I)
     if not match:
@@ -291,9 +296,11 @@ def main() -> int:
     web_geometry_path = root / (files.get('geometry') or '')
     full_geometry_path = root / (files.get('geometryFull') or '')
     if web_geometry_path.exists() and full_geometry_path.exists():
+        web_year = geometry_year_from_path(web_geometry_path)
+        full_year = geometry_year_from_path(full_geometry_path)
         web_size = web_geometry_path.stat().st_size
         full_size = full_geometry_path.stat().st_size
-        if web_size >= full_size:
+        if (not web_year or not full_year or web_year == full_year) and web_size >= full_size:
             issues.append('geometry_web:not_smaller_than_full')
     web_pack_path = root / (files.get('geometryPack') or '')
     full_pack_path = root / (files.get('geometryPackFull') or '')
@@ -302,6 +309,18 @@ def main() -> int:
         full_pack = json.loads(full_pack_path.read_text(encoding='utf-8'))
         if web_pack == full_pack:
             issues.append('geometry_pack:web_and_full_identical')
+        for year, web_rel in (web_pack.get('municipalities') or {}).items():
+            full_rel = (full_pack.get('municipalities') or {}).get(str(year))
+            if not full_rel:
+                continue
+            web_rel = str(web_rel)
+            full_rel = str(full_rel)
+            web_uncompressed = web_rel[:-3] if web_rel.endswith('.gz') and (root / web_rel[:-3]).exists() else web_rel
+            full_uncompressed = full_rel[:-3] if full_rel.endswith('.gz') and (root / full_rel[:-3]).exists() else full_rel
+            web_path = root / web_uncompressed
+            full_path = root / full_uncompressed
+            if web_path.exists() and full_path.exists() and web_path.stat().st_size >= full_path.stat().st_size:
+                issues.append(f'geometry_web:not_smaller_than_full:{year}')
 
     citation_path = root / 'CITATION.cff'
     if not citation_path.exists():

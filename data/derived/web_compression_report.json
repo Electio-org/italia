@@ -6,8 +6,8 @@
       "year": "2021",
       "source": "data/derived/geometries_web/municipalities_2021.geojson",
       "gzip": "data/derived/geometries_web/municipalities_2021.geojson.gz",
-      "original_bytes": 9747914,
-      "compressed_bytes": 2867086
+      "original_bytes": 18884764,
+      "compressed_bytes": 5784869
     },
     {
       "family": "municipalityBoundaries",

@@ -157,26 +157,26 @@ export function drawCanvasMap(state, canvas, { transform, municipalityColor = ()
     ctx.globalAlpha = faded ? 0.32 : 1;
     ctx.fillStyle = row ? render.scaleInfo.colorFor(row.__metric_value) : '#e5e7eb';
     ctx.fill(item.path);
-    const showMunicipalStroke = selected || compared || activeTransform.k >= 3;
+    const showMunicipalStroke = selected || compared || zoom >= 1.8;
     if (showMunicipalStroke) {
-      ctx.strokeStyle = selected ? '#0f172a' : compared ? municipalityColor(mid) : 'rgba(15, 23, 42, 0.12)';
-      ctx.lineWidth = (selected ? 2.2 : compared ? 1.5 : 0.18) * strokeScale;
+      ctx.strokeStyle = selected ? '#0f172a' : compared ? municipalityColor(mid) : (zoom < 3 ? 'rgba(15, 23, 42, 0.08)' : 'rgba(15, 23, 42, 0.11)');
+      ctx.lineWidth = (selected ? 2.2 : compared ? 1.5 : zoom < 3 ? 0.12 : 0.16) * strokeScale;
       ctx.stroke(item.path);
     }
   });
 
-  if (render.cache.boundaryItems?.length && zoom < 7) {
-    ctx.globalAlpha = zoom >= 3 ? 0.16 : 0.24;
+  if (render.cache.boundaryItems?.length && zoom < 1.8) {
+    ctx.globalAlpha = 0.1;
     ctx.strokeStyle = '#0f172a';
-    ctx.lineWidth = (zoom >= 3 ? 0.24 : 0.2) * strokeScale;
+    ctx.lineWidth = 0.12 * strokeScale;
     render.cache.boundaryItems.forEach(item => {
       ctx.stroke(item.path);
     });
   }
 
-  ctx.globalAlpha = zoom >= 3 ? 0.28 : 0.48;
+  ctx.globalAlpha = zoom >= 3 ? 0.22 : 0.36;
   ctx.strokeStyle = '#334155';
-  ctx.lineWidth = (zoom >= 3 ? 0.62 : 0.92) * strokeScale;
+  ctx.lineWidth = (zoom >= 3 ? 0.52 : 0.74) * strokeScale;
   const visibleProvinceItems = zoom > 1.2 ? render.cache.provinceItems.filter(itemVisible) : render.cache.provinceItems;
   visibleProvinceItems.forEach(item => {
     ctx.stroke(item.path);
