@@ -82,10 +82,10 @@ class CompressedStaticHandler(SimpleHTTPRequestHandler):
         self.send_header("Content-Length", str(stat.st_size))
         self.send_header("Content-Encoding", token)
         self.send_header("Vary", "Accept-Encoding")
-        self.send_header("Cache-Control", "no-cache")
         self.send_header(
             "Last-Modified", self.date_time_string(int(stat.st_mtime))
         )
+        # Cache-Control is appended in end_headers() for every response.
         self.end_headers()
         return fh
 
