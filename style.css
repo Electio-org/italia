@@ -5467,6 +5467,8 @@ body.basic-mode .sidebar-tools {
   body[data-site-page="dashboard"].basic-mode .dashboard-intro-strip,
   body[data-site-page="dashboard"].basic-mode .dashboard-section-tabs,
   body[data-site-page="dashboard"].basic-mode .overview-grid,
+  body[data-site-page="dashboard"].basic-mode #overview-cards,
+  body[data-site-page="dashboard"].basic-mode .insight-strip,
   body[data-site-page="dashboard"].basic-mode .data-package-panel,
   body[data-site-page="dashboard"].basic-mode .usage-notes-panel,
   body[data-site-page="dashboard"].basic-mode #usage-notes-panel,
