@@ -5261,3 +5261,181 @@ body.basic-mode .sidebar-tools {
   gap: 10px;
   margin-top: 18px;
 }
+
+/* ============================================================ */
+/* Dashboard-on-top layout (gerda parity)                       */
+/*                                                              */
+/* Rather than a 378-px left sidebar + right main area, the     */
+/* controls flow as a compact horizontal strip above a          */
+/* full-width map. HTML structure is unchanged so every JS      */
+/* binding keeps working — only placement is reshaped via grid. */
+/* ============================================================ */
+
+@media (min-width: 960px) {
+  body[data-site-page="dashboard"] .app-shell {
+    grid-template-columns: 1fr;
+  }
+
+  body[data-site-page="dashboard"] .sidebar {
+    position: sticky;
+    top: 0;
+    z-index: 18;
+    padding: 12px 18px;
+    border-right: none;
+    border-bottom: 1px solid var(--line-soft);
+    background: rgba(2, 6, 23, 0.94);
+    backdrop-filter: saturate(1.1) blur(8px);
+    overflow: visible;
+    display: grid;
+    grid-template-columns: minmax(260px, 22%) minmax(0, 1fr);
+    column-gap: 18px;
+    row-gap: 10px;
+    align-items: start;
+  }
+
+  /* Compact brand block on the left of the topbar. */
+  body[data-site-page="dashboard"] .sidebar .brand {
+    margin-bottom: 0;
+    display: grid;
+    gap: 4px;
+  }
+  body[data-site-page="dashboard"] .sidebar .brand h1 {
+    font-size: 1.02rem;
+    line-height: 1.1;
+    margin: 0;
+  }
+  body[data-site-page="dashboard"] .sidebar .brand > p,
+  body[data-site-page="dashboard"] .sidebar .brand .brand-facts {
+    display: none;
+  }
+  body[data-site-page="dashboard"] .sidebar .brand .eyebrow {
+    margin-bottom: 0;
+    padding: 2px 8px;
+    font-size: 0.68rem;
+  }
+
+  /* Control panel becomes a flat horizontal dashboard toolbar. */
+  body[data-site-page="dashboard"] .sidebar .panel.control-panel {
+    margin-bottom: 0;
+    padding: 8px 12px;
+    border-radius: 14px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(168px, 1fr));
+    gap: 8px 10px;
+    align-items: end;
+    box-shadow: none;
+  }
+  body[data-site-page="dashboard"] .sidebar .panel.control-panel .panel-header {
+    grid-column: 1 / -1;
+    margin-bottom: 2px;
+    align-items: center;
+  }
+  body[data-site-page="dashboard"] .sidebar .panel.control-panel .panel-header h2 {
+    font-size: 0.92rem;
+  }
+  body[data-site-page="dashboard"] .sidebar .panel.control-panel .panel-subtitle {
+    font-size: 0.76rem;
+    margin: 2px 0 0;
+  }
+  body[data-site-page="dashboard"] .sidebar .panel.control-panel .two-col,
+  body[data-site-page="dashboard"] .sidebar .panel.control-panel .two-col-main {
+    display: contents;
+  }
+  body[data-site-page="dashboard"] .sidebar .panel.control-panel label {
+    margin-bottom: 0;
+    font-size: 0.8rem;
+    gap: 2px;
+  }
+  body[data-site-page="dashboard"] .sidebar .panel.control-panel input,
+  body[data-site-page="dashboard"] .sidebar .panel.control-panel select {
+    padding: 6px 10px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+  }
+  body[data-site-page="dashboard"] .sidebar .panel.control-panel .time-nav-box {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 10px;
+    align-items: center;
+    padding: 4px 0 0;
+    border-top: 1px solid var(--line-soft);
+    margin-top: 4px;
+  }
+  body[data-site-page="dashboard"] .sidebar .panel.control-panel .time-nav-actions {
+    display: flex;
+    gap: 6px;
+    order: 1;
+  }
+  body[data-site-page="dashboard"] .sidebar .panel.control-panel .time-nav-box label {
+    margin: 0;
+    order: 2;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    font-size: 0.76rem;
+  }
+  body[data-site-page="dashboard"] .sidebar .panel.control-panel .time-nav-box label > input[type="range"] {
+    flex: 1;
+    min-width: 140px;
+  }
+  body[data-site-page="dashboard"] .sidebar .panel.control-panel #slider-year-label {
+    order: 3;
+    margin: 0;
+    white-space: nowrap;
+  }
+  body[data-site-page="dashboard"] .sidebar .panel.control-panel .advanced-sidebar-details {
+    grid-column: 1 / -1;
+  }
+  body[data-site-page="dashboard"] .sidebar .panel.control-panel .advanced-sidebar-details > summary {
+    font-size: 0.82rem;
+  }
+  body[data-site-page="dashboard"] .sidebar .panel.control-panel .advanced-sidebar-grid {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+  body[data-site-page="dashboard"] .sidebar .panel.control-panel .advanced-sidebar-grid label {
+    margin-bottom: 0;
+  }
+
+  /* Secondary panels (data source, tools, etc.) are pushed below the      */
+  /* strip — they remain accessible as collapsed details but out of sight. */
+  body[data-site-page="dashboard"] .sidebar > :not(.brand):not(.control-panel) {
+    grid-column: 1 / -1;
+  }
+  body[data-site-page="dashboard"] .sidebar .data-source-panel,
+  body[data-site-page="dashboard"] .sidebar .quick-actions-panel,
+  body[data-site-page="dashboard"] .sidebar .sidebar-tools,
+  body[data-site-page="dashboard"] .sidebar > .panel.compact {
+    margin-bottom: 0;
+  }
+
+  /* Main content gets the full width under the strip. */
+  body[data-site-page="dashboard"] .main-content {
+    padding: 18px 22px 28px;
+  }
+  body[data-site-page="dashboard"] .map-and-detail {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    gap: 16px;
+  }
+  body[data-site-page="dashboard"] .map-panel {
+    min-height: min(72vh, 780px);
+  }
+  body[data-site-page="dashboard"] #map-wrapper {
+    aspect-ratio: auto;
+    min-height: min(64vh, 680px);
+  }
+}
+
+/* On narrow viewports, restore the stacked sidebar layout so nothing is */
+/* clipped on phones/tablets. */
+@media (max-width: 959.98px) {
+  body[data-site-page="dashboard"] .app-shell {
+    grid-template-columns: 1fr;
+  }
+  body[data-site-page="dashboard"] .sidebar {
+    border-right: none;
+    border-bottom: 1px solid var(--line-soft);
+  }
+}
+
