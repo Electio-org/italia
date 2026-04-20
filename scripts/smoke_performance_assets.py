@@ -125,13 +125,18 @@ def main() -> int:
     selectors_text = (root / "modules" / "selectors.js").read_text(encoding="utf-8")
     app_text = (root / "app.js").read_text(encoding="utf-8")
     map_module_path = root / "modules" / "features" / "map.js"
+    tooltip_module_path = root / "modules" / "features" / "map-tooltip.js"
     require(map_module_path.exists(), "map_module:missing", issues)
+    require(tooltip_module_path.exists(), "map_tooltip_module:missing", issues)
     map_module_text = map_module_path.read_text(encoding="utf-8") if map_module_path.exists() else ""
+    tooltip_module_text = tooltip_module_path.read_text(encoding="utf-8") if tooltip_module_path.exists() else ""
     require("party_share" in selectors_text and "MAP_READY_METRICS" in selectors_text, "selectors:party_share_not_declared_map_ready", issues)
     require("shouldUseMapReadyRows" in selectors_text and "state.mapReadyRows" in selectors_text, "selectors:missing_map_ready_selection_path", issues)
     require("scheduleDetailGeometryPrefetch" in app_text and "pumpDetailGeometryPrefetch" in app_text, "app:missing_detail_prefetch_queue", issues)
     require("scheduleMunicipalityBoundaryGeometryLoad" in app_text, "app:missing_boundary_mesh_loader", issues)
     require("buildCanvasMapCache" in map_module_text and "hitTestCanvasMap" in map_module_text, "map_module:missing_canvas_exports", issues)
+    require("createMapTooltipController" in tooltip_module_text and "scheduleHoverTooltip" in tooltip_module_text, "map_tooltip_module:missing_hover_exports", issues)
+    require("createMapTooltipController" in app_text and "map-tooltip.js" in app_text, "app:missing_map_tooltip_controller", issues)
 
     print(json.dumps({
         "root": str(root),
