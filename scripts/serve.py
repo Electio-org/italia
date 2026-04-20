@@ -92,7 +92,13 @@ class CompressedStaticHandler(SimpleHTTPRequestHandler):
     def end_headers(self):  # type: ignore[override]
         # Leave long-lived caching to production hosting (Netlify / Cloudflare
         # Pages / GitHub Pages); in dev we want instant cache invalidation.
-        self.send_header("Cache-Control", "no-cache")
+        # `no-store` on the service worker defeats Chrome's stubborn SW-script
+        # HTTP cache so bumped `SW_VERSION`s land on the next reload.
+        path = getattr(self, "path", "") or ""
+        if path.rstrip("/").endswith("service-worker.js"):
+            self.send_header("Cache-Control", "no-store, max-age=0")
+        else:
+            self.send_header("Cache-Control", "no-cache")
         super().end_headers()
 
 

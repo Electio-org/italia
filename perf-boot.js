@@ -17,11 +17,21 @@
   if (typeof window === 'undefined') return;
 
   // --- 1. Service worker -------------------------------------------------
+  // `updateViaCache: 'none'` tells the browser to bypass the HTTP cache when
+  // fetching `service-worker.js`, so a new `SW_VERSION` goes live on the next
+  // reload instead of sitting behind Chrome's 24h SW-script freshness window.
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', function () {
-      navigator.serviceWorker.register('service-worker.js').catch(function () {
-        /* best effort — dashboard still works without SW */
-      });
+      navigator.serviceWorker
+        .register('service-worker.js', { updateViaCache: 'none' })
+        .then(function (reg) {
+          // Opportunistic update check on every load so cache-busted SW
+          // deploys land immediately in long-lived tabs.
+          try { reg.update(); } catch (_e) { /* ignore */ }
+        })
+        .catch(function () {
+          /* best effort — dashboard still works without SW */
+        });
     });
   }
 
