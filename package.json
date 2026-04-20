@@ -1,0 +1,12 @@
+{
+  "name": "lombardia-camera-app-v35",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test:selectors": "node tests/selectors-aggregation.test.mjs",
+    "test:browser": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.52.0"
+  }
+}

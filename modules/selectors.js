@@ -62,10 +62,22 @@ function addKeyToSetMap(map, key, value) {
 }
 
 function summaryStats(acc) {
+  const firstPartyShare = acc.first_party_share_weight > 0
+    ? (acc.first_party_votes_est / acc.first_party_share_weight) * 100
+    : mean(acc.first_party_share_values);
+  const secondPartyShare = acc.second_party_share_weight > 0
+    ? (acc.second_party_votes_est / acc.second_party_share_weight) * 100
+    : mean(acc.second_party_share_values);
+  const margin = Number.isFinite(firstPartyShare) && Number.isFinite(secondPartyShare)
+    ? firstPartyShare - secondPartyShare
+    : acc.margin_weight > 0
+      ? acc.margin_weighted_sum / acc.margin_weight
+      : mean(acc.margin_values);
   return {
     turnout_pct: acc.electors > 0 ? (acc.voters / acc.electors) * 100 : mean(acc.turnout_values),
-    margin: mean(acc.margin_values),
-    first_party_share: mean(acc.first_party_share_values),
+    margin,
+    first_party_share: firstPartyShare,
+    second_party_share: secondPartyShare,
     n: acc.n,
     electors: acc.electors,
     voters: acc.voters,
@@ -82,18 +94,48 @@ function addToSummaryAcc(map, key, row) {
     n: 0,
     turnout_values: [],
     margin_values: [],
-    first_party_share_values: []
+    margin_weighted_sum: 0,
+    margin_weight: 0,
+    first_party_share_values: [],
+    second_party_share_values: [],
+    first_party_votes_est: 0,
+    first_party_share_weight: 0,
+    second_party_votes_est: 0,
+    second_party_share_weight: 0
   };
-  acc.electors += safeNumber(row.electors) || 0;
-  acc.voters += safeNumber(row.voters) || 0;
-  acc.valid_votes += safeNumber(row.valid_votes) || 0;
+  const electors = safeNumber(row.electors) || 0;
+  const voters = safeNumber(row.voters) || 0;
+  const validVotes = safeNumber(row.valid_votes) || 0;
+  acc.electors += electors;
+  acc.voters += voters;
+  acc.valid_votes += validVotes;
   acc.n += 1;
   const turnout = safeNumber(row.turnout_pct);
   if (Number.isFinite(turnout)) acc.turnout_values.push(turnout);
   const margin = safeNumber(row.first_second_margin ?? row.margin);
-  if (Number.isFinite(margin)) acc.margin_values.push(margin);
+  if (Number.isFinite(margin)) {
+    acc.margin_values.push(margin);
+    if (validVotes > 0) {
+      acc.margin_weighted_sum += margin * validVotes;
+      acc.margin_weight += validVotes;
+    }
+  }
   const firstPartyShare = safeNumber(row.first_party_share);
-  if (Number.isFinite(firstPartyShare)) acc.first_party_share_values.push(firstPartyShare);
+  if (Number.isFinite(firstPartyShare)) {
+    acc.first_party_share_values.push(firstPartyShare);
+    if (validVotes > 0) {
+      acc.first_party_votes_est += (firstPartyShare / 100) * validVotes;
+      acc.first_party_share_weight += validVotes;
+    }
+  }
+  const secondPartyShare = safeNumber(row.second_party_share);
+  if (Number.isFinite(secondPartyShare)) {
+    acc.second_party_share_values.push(secondPartyShare);
+    if (validVotes > 0) {
+      acc.second_party_votes_est += (secondPartyShare / 100) * validVotes;
+      acc.second_party_share_weight += validVotes;
+    }
+  }
   map.set(key, acc);
   return acc;
 }

@@ -19,3 +19,8 @@ data/derived/geometry_backup_codex_*/
 # OS/editor noise
 .DS_Store
 Thumbs.db
+
+# Frontend test dependencies and reports
+node_modules/
+test-results/
+playwright-report/
