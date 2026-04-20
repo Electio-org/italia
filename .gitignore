@@ -21,3 +21,4 @@ Thumbs.db
 # Perf / build intermediates
 build/node_modules/
 build/package-lock.json
+test-plan.md
