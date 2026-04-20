@@ -66,7 +66,15 @@ self.addEventListener('activate', (event) => {
   })());
 });
 
+function isManifest(url) {
+  return url.pathname.endsWith('/data/derived/manifest.json');
+}
+
 function isDerivedData(url) {
+  // manifest.json is the app's data index — it must stay in sync with the
+  // shell code, so it takes the stale-while-revalidate shell path instead
+  // of the cache-first data path.
+  if (isManifest(url)) return false;
   return url.pathname.includes('/data/derived/');
 }
 
