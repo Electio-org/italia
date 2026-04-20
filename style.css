@@ -5449,3 +5449,115 @@ body.basic-mode .sidebar-tools {
   }
 }
 
+/* ============================================================ */
+/* gerda-style clean dashboard (desktop, basic default mode)    */
+/*                                                              */
+/* Strips the secondary chrome so the dashboard reads as a map- */
+/* first surface: topbar (brand + controls) / map / profile.    */
+/* Extra panels are still available in "Esperto" UI mode.       */
+/* ============================================================ */
+
+@media (min-width: 960px) {
+  /* Drop the redundant above-map chrome in the default basic mode. */
+  body[data-site-page="dashboard"].basic-mode .toolbar,
+  body[data-site-page="dashboard"].basic-mode .jump-bar,
+  body[data-site-page="dashboard"].basic-mode .filter-chip-bar,
+  body[data-site-page="dashboard"].basic-mode .dashboard-intro-strip,
+  body[data-site-page="dashboard"].basic-mode .dashboard-section-tabs,
+  body[data-site-page="dashboard"].basic-mode .overview-grid,
+  body[data-site-page="dashboard"].basic-mode .data-package-panel,
+  body[data-site-page="dashboard"].basic-mode .usage-notes-panel,
+  body[data-site-page="dashboard"].basic-mode #usage-notes-panel,
+  body[data-site-page="dashboard"].basic-mode .methodology-panel {
+    display: none !important;
+  }
+
+  /* Keep the topbar as a single-row strip: brand left, controls right. */
+  body[data-site-page="dashboard"] .sidebar {
+    grid-template-columns: minmax(220px, 20%) minmax(0, 1fr) !important;
+    padding: 10px 18px !important;
+  }
+
+  /* In basic mode hide the secondary sidebar panels entirely: they were  */
+  /* already relegated below the strip, but the topbar is the whole UI   */
+  /* visible in the viewport, so leaving them there leaks into the map.  */
+  body[data-site-page="dashboard"].basic-mode .sidebar > :not(.brand):not(.control-panel) {
+    display: none !important;
+  }
+
+  /* Remove the inner h2 labels inside the map & profile panels — the   */
+  /* panels themselves are clearly framed and the label is noise.       */
+  body[data-site-page="dashboard"].basic-mode .map-panel > .panel-header,
+  body[data-site-page="dashboard"].basic-mode .detail-panel > .panel-header {
+    display: none !important;
+  }
+
+  /* Map takes all the space we can give it. */
+  body[data-site-page="dashboard"] .map-and-detail {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) !important;
+    gap: 16px !important;
+    align-items: start;
+  }
+  body[data-site-page="dashboard"] .map-panel {
+    padding: 10px 12px 14px !important;
+  }
+  body[data-site-page="dashboard"] .detail-panel {
+    position: sticky;
+    top: 96px;
+    max-height: calc(100vh - 120px);
+    overflow: auto;
+    padding: 14px 16px !important;
+  }
+  body[data-site-page="dashboard"] #map-wrapper {
+    min-height: min(76vh, 820px);
+  }
+
+  /* Further-in: slim the control strip headings so the topbar reads    */
+  /* like a toolbar, not a card.                                         */
+  body[data-site-page="dashboard"] .sidebar .panel.control-panel {
+    background: transparent !important;
+    border: 0 !important;
+    padding: 4px 0 0 !important;
+  }
+  body[data-site-page="dashboard"] .sidebar .panel.control-panel .panel-header {
+    display: none !important;
+  }
+}
+
+/* Trim the sub-page Tabler card styling on docs pages so they read as   */
+/* clean editorial typography instead of a wall of rounded boxes.        */
+body[data-site-page="data-download"] .site-doc-main .card,
+body[data-site-page="usage-notes"] .site-doc-main .card,
+body[data-site-page="update-log"] .site-doc-main .card,
+body[data-site-page="products"] .site-doc-main .card,
+body[data-site-page="programmatic-access"] .site-doc-main .card {
+  box-shadow: none;
+  border: 0;
+  border-radius: 0;
+  border-top: 1px solid var(--line-soft);
+  background: transparent;
+  padding: 18px 0 4px;
+}
+body[data-site-page="data-download"] .site-doc-main .card + .card,
+body[data-site-page="usage-notes"] .site-doc-main .card + .card,
+body[data-site-page="update-log"] .site-doc-main .card + .card,
+body[data-site-page="products"] .site-doc-main .card + .card,
+body[data-site-page="programmatic-access"] .site-doc-main .card + .card {
+  margin-top: 8px;
+}
+body[data-site-page="data-download"] .site-doc-main .card:first-of-type,
+body[data-site-page="usage-notes"] .site-doc-main .card:first-of-type,
+body[data-site-page="update-log"] .site-doc-main .card:first-of-type,
+body[data-site-page="products"] .site-doc-main .card:first-of-type,
+body[data-site-page="programmatic-access"] .site-doc-main .card:first-of-type {
+  border-top: 0;
+  padding-top: 0;
+}
+body[data-site-page="data-download"] .site-doc-main .card .card-body,
+body[data-site-page="usage-notes"] .site-doc-main .card .card-body,
+body[data-site-page="update-log"] .site-doc-main .card .card-body,
+body[data-site-page="products"] .site-doc-main .card .card-body,
+body[data-site-page="programmatic-access"] .site-doc-main .card .card-body {
+  padding: 0;
+}
+
