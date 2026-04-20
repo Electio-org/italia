@@ -14,8 +14,8 @@
       "year": "2021",
       "source": "data/derived/geometries_web/municipality_boundaries_2021.geojson",
       "gzip": "data/derived/geometries_web/municipality_boundaries_2021.geojson.gz",
-      "original_bytes": 4968683,
-      "compressed_bytes": 1629783
+      "original_bytes": 9230227,
+      "compressed_bytes": 3055122
     },
     {
       "family": "provinces",

@@ -75,11 +75,14 @@ const LOCAL_STORAGE_KEY = 'italia_camera_explorer_state_v1';
 const MAP_MAX_ZOOM = 160;
 const DETAIL_ZOOM_THRESHOLD = 7;
 const MUNICIPALITY_FOCUS_FILL = 0.96;
-const DETAIL_PREFETCH_CONCURRENCY = 2;
-const DETAIL_PREFETCH_IDLE_TIMEOUT_MS = 2200;
-const DETAIL_PREFETCH_RETRY_MS = 900;
-const DETAIL_PREFETCH_HEAVY_PAUSE_MS = 1800;
-const DETAIL_PREFETCH_LIGHT_PAUSE_MS = 450;
+const DETAIL_PREFETCH_CONCURRENCY = 1;
+const DETAIL_PREFETCH_IDLE_TIMEOUT_MS = 3600;
+const DETAIL_PREFETCH_RETRY_MS = 2400;
+const DETAIL_PREFETCH_HEAVY_PAUSE_MS = 3600;
+const DETAIL_PREFETCH_LIGHT_PAUSE_MS = 1200;
+const DETAIL_PREFETCH_BOOT_DELAY_MS = 12000;
+const MAP_DATASET_PREFETCH_DELAY_MS = 15000;
+const MUNICIPALITY_BOUNDARY_LOAD_IDLE_TIMEOUT_MS = 2400;
 
 const state = {
   manifest: null,
@@ -431,13 +434,20 @@ function seedDetailPrefetchQueue(year = currentMapGeometryYear()) {
   if (!yearKey || !Object.keys(byProvince).length) return false;
   if (state.detailGeometryPrefetchYear !== yearKey) resetDetailPrefetchQueueForYear(yearKey);
   const priorityProvince = normalizeTextToken(prioritizedDetailPrefetchProvince());
+  const selectedProvinceTokens = new Set([...state.selectedProvinceSet].map(province => normalizeTextToken(province)).filter(Boolean));
+  if (!priorityProvince && !selectedProvinceTokens.size) return false;
   const entries = Object.keys(byProvince)
-    .map(province => ({
-      year: yearKey,
-      province,
-      key: detailPrefetchCacheKey(yearKey, province),
-      priority: normalizeTextToken(province) === priorityProvince ? 0 : 1
-    }))
+    .map(province => {
+      const token = normalizeTextToken(province);
+      const priority = token === priorityProvince ? 0 : selectedProvinceTokens.has(token) ? 1 : 99;
+      return {
+        year: yearKey,
+        province,
+        key: detailPrefetchCacheKey(yearKey, province),
+        priority
+      };
+    })
+    .filter(entry => entry.priority < 99)
     .sort((a, b) => a.priority - b.priority || a.province.localeCompare(b.province, 'it'));
   entries.forEach(entry => {
     if (state.detailGeometryPrefetchQueuedKeys.has(entry.key) || state.detailGeometryPrefetchedKeys.has(entry.key)) return;
@@ -449,9 +459,12 @@ function seedDetailPrefetchQueue(year = currentMapGeometryYear()) {
     state.detailGeometryPrefetchQueue.push(entry);
   });
   state.detailGeometryPrefetchQueue.forEach(entry => {
-    entry.priority = normalizeTextToken(entry.province) === priorityProvince ? 0 : 1;
+    const token = normalizeTextToken(entry.province);
+    entry.priority = token === priorityProvince ? 0 : selectedProvinceTokens.has(token) ? 1 : 99;
   });
-  state.detailGeometryPrefetchQueue.sort((a, b) => a.priority - b.priority || a.province.localeCompare(b.province, 'it'));
+  state.detailGeometryPrefetchQueue = state.detailGeometryPrefetchQueue
+    .filter(entry => entry.priority < 99)
+    .sort((a, b) => a.priority - b.priority || a.province.localeCompare(b.province, 'it'));
   return Boolean(state.detailGeometryPrefetchQueue.length);
 }
 
@@ -2188,29 +2201,43 @@ function likelyNextElectionKeys(limit = 2) {
   return [...new Set(candidates)].filter(key => key !== state.selectedElection).slice(0, limit);
 }
 
-function scheduleLikelyDatasetPrefetch() {
+function scheduleLikelyDatasetPrefetch({ delay = MAP_DATASET_PREFETCH_DELAY_MS } = {}) {
   if (state.mapIdlePrefetchHandle) return;
-  state.mapIdlePrefetchHandle = idle(async () => {
-    state.mapIdlePrefetchHandle = null;
-    const keys = likelyNextElectionKeys()
-      .filter(key => !state.prefetchedElectionKeys.has(key))
-      .filter(key => !state.loadedMapReadyElectionKeys?.has(key) || !state.loadedSummaryElectionKeys?.has(key));
-    if (!keys.length) return;
-    keys.forEach(key => state.prefetchedElectionKeys.add(key));
-    try {
-      const [mapReport, summaryReport] = await Promise.all([
-        ensureMapReadyForElections(state, keys, { buildIndices: updateIndices, registerIssue }),
-        ensureSummaryForElections(state, keys, { buildIndices: updateIndices, registerIssue })
-      ]);
-      if ((mapReport?.loadedRows || 0) || (summaryReport?.loadedRows || 0)) {
-        invalidateDerivedCaches();
-        renderStatusPanel();
+  const startPrefetch = () => {
+    state.mapIdlePrefetchHandle = idle(async () => {
+      state.mapIdlePrefetchHandle = null;
+      if (detailPrefetchShouldPause()) {
+        scheduleLikelyDatasetPrefetch({ delay: MAP_DATASET_PREFETCH_DELAY_MS });
+        return;
       }
-    } catch (error) {
-      keys.forEach(key => state.prefetchedElectionKeys.delete(key));
-      registerIssue('idle-prefetch', error);
-    }
-  }, 1000);
+      const keys = likelyNextElectionKeys()
+        .filter(key => !state.prefetchedElectionKeys.has(key))
+        .filter(key => !state.loadedMapReadyElectionKeys?.has(key) || !state.loadedSummaryElectionKeys?.has(key));
+      if (!keys.length) return;
+      keys.forEach(key => state.prefetchedElectionKeys.add(key));
+      try {
+        const [mapReport, summaryReport] = await Promise.all([
+          ensureMapReadyForElections(state, keys, { buildIndices: updateIndices, registerIssue }),
+          ensureSummaryForElections(state, keys, { buildIndices: updateIndices, registerIssue })
+        ]);
+        if ((mapReport?.loadedRows || 0) || (summaryReport?.loadedRows || 0)) {
+          invalidateDerivedCaches();
+          renderStatusPanel();
+        }
+      } catch (error) {
+        keys.forEach(key => state.prefetchedElectionKeys.delete(key));
+        registerIssue('idle-prefetch', error);
+      }
+    }, 1600);
+  };
+  if (delay > 0) {
+    state.mapIdlePrefetchHandle = window.setTimeout(() => {
+      state.mapIdlePrefetchHandle = null;
+      startPrefetch();
+    }, delay);
+    return;
+  }
+  startPrefetch();
 }
 
 function refreshMapContinuously(control = null, { message = controlRefreshLabel(control), disableControl = true } = {}) {
@@ -2814,9 +2841,9 @@ function scheduleMunicipalityBoundaryGeometryLoad(year = currentMapGeometryYear(
     state.municipalityBoundaryLoadPromise = loadPromise;
   };
   if (typeof window.requestIdleCallback === 'function') {
-    state.municipalityBoundaryIdleHandle = window.requestIdleCallback(startLoad, { timeout: 1200 });
+    state.municipalityBoundaryIdleHandle = window.requestIdleCallback(startLoad, { timeout: MUNICIPALITY_BOUNDARY_LOAD_IDLE_TIMEOUT_MS });
   } else {
-    state.municipalityBoundaryIdleHandle = window.setTimeout(startLoad, 160);
+    state.municipalityBoundaryIdleHandle = window.setTimeout(startLoad, MUNICIPALITY_BOUNDARY_LOAD_IDLE_TIMEOUT_MS);
   }
 }
 
@@ -5666,7 +5693,7 @@ async function init() {
     requestRender();
     scheduleLikelyDatasetPrefetch();
     bindDetailPrefetchActivityGuards();
-    window.requestAnimationFrame(() => scheduleDetailGeometryPrefetch({ delay: 900 }));
+    window.requestAnimationFrame(() => scheduleDetailGeometryPrefetch({ delay: DETAIL_PREFETCH_BOOT_DELAY_MS }));
     setLoading(false);
     if (!state.onboardingDismissed && new URLSearchParams(window.location.search).get('onboarding') === '1') openOnboarding();
     showToast('Explorer pronto. Controlla audit e metodo se i dati sono parziali.', 'success', 2600);

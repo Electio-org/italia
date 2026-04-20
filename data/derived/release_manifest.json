@@ -304,13 +304,13 @@
       "path": "data/derived/web_geometry_report.json",
       "kind": "json",
       "size_bytes": 52008,
-      "sha256": "f97a591243c5a025398809d99d217aa3e4774b52e82bdf6d8e626629ab4f3356"
+      "sha256": "6264a2115bc898801429a66845ab2ba7bd0a6b27f861064dfea2fbc71ab57d8b"
     },
     "webCompressionReport": {
       "path": "data/derived/web_compression_report.json",
       "kind": "json",
       "size_bytes": 42576,
-      "sha256": "239f446f83169a4c27ea309e24bbf31912fa51733d9c92c7a3a8cc905240c617"
+      "sha256": "eea97ae1f0cf1606720a2ec09450dd65758643e35bafe17e648ffef15ec2bbc1"
     },
     "productCatalog": {
       "path": "data/products/product_catalog.json",
