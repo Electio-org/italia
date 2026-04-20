@@ -63,11 +63,10 @@ import { AUDIENCE_MODES, GLOSSARY_ENTRIES, GUIDED_QUESTION_BANK, DEFAULT_SITE_LA
 import { createAnalysisModes, DEFAULT_NEXT_ACTIONS, DEFAULT_COLLAPSED_PANELS } from './modules/app-shell.js';
 import {
   activeMunicipalityFeatures as mapActiveMunicipalityFeatures,
-  buildCanvasMapCache as buildMapCanvasCache,
   createCurrentMapRenderKey,
   drawCanvasMap as drawMapCanvas,
   hitTestCanvasMap as hitTestMapCanvas,
-  resizeCanvasBackingStore as resizeMapCanvasBackingStore
+  renderCanvasMap as renderMapCanvas
 } from './modules/features/map.js';
 import { createMapTooltipController } from './modules/features/map-tooltip.js';
 
@@ -2968,13 +2967,6 @@ function renderMap() {
   state.lastMapRenderKey = renderKey;
 }
 
-function buildCanvasMapCache(projection) {
-  return buildMapCanvasCache(state, projection, {
-    geometryJoinKey,
-    boundaryGeometry: activeMunicipalityBoundaryGeometry()
-  });
-}
-
 function setupCanvasMapHandlers() {
   const canvas = els.mapCanvas;
   if (!canvas || canvas.__italiaMapHandlers) return;
@@ -3018,20 +3010,17 @@ function setupCanvasMapHandlers() {
   });
 }
 
-function resizeCanvasBackingStore(canvas) {
-  return resizeMapCanvasBackingStore(canvas);
-}
-
 function renderCanvasMap({ rows, rowByJoinKey, scaleInfo, projection, anySelection }) {
-  const canvas = els.mapCanvas;
-  const ctx = resizeCanvasBackingStore(canvas);
-  if (!canvas || !ctx) return;
   setupCanvasMapHandlers();
-  const cache = buildCanvasMapCache(projection);
-  const transform = state.mapCanvasTransform || d3.zoomIdentity;
-  state.mapCanvasLastHit = null;
-  state.mapCanvasRender = { cache, rowByJoinKey, scaleInfo, anySelection };
-  drawCanvasMap(transform);
+  renderMapCanvas(state, els.mapCanvas, projection, {
+    geometryJoinKey,
+    boundaryGeometry: activeMunicipalityBoundaryGeometry(),
+    rowByJoinKey,
+    scaleInfo,
+    anySelection,
+    transform: state.mapCanvasTransform || d3.zoomIdentity,
+    municipalityColor
+  });
 }
 
 function drawCanvasMap(transform = state.mapCanvasTransform || d3.zoomIdentity) {

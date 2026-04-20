@@ -134,7 +134,7 @@ def main() -> int:
     require("shouldUseMapReadyRows" in selectors_text and "state.mapReadyRows" in selectors_text, "selectors:missing_map_ready_selection_path", issues)
     require("scheduleDetailGeometryPrefetch" in app_text and "pumpDetailGeometryPrefetch" in app_text, "app:missing_detail_prefetch_queue", issues)
     require("scheduleMunicipalityBoundaryGeometryLoad" in app_text, "app:missing_boundary_mesh_loader", issues)
-    require("buildCanvasMapCache" in map_module_text and "hitTestCanvasMap" in map_module_text and "drawCanvasMap" in map_module_text, "map_module:missing_canvas_exports", issues)
+    require("buildCanvasMapCache" in map_module_text and "hitTestCanvasMap" in map_module_text and "drawCanvasMap" in map_module_text and "renderCanvasMap" in map_module_text, "map_module:missing_canvas_exports", issues)
     require("createMapTooltipController" in tooltip_module_text and "scheduleHoverTooltip" in tooltip_module_text, "map_tooltip_module:missing_hover_exports", issues)
     require("createMapTooltipController" in app_text and "map-tooltip.js" in app_text, "app:missing_map_tooltip_controller", issues)
 

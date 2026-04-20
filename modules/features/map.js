@@ -169,6 +169,30 @@ export function drawCanvasMap(state, canvas, { transform, municipalityColor = ()
   ctx.globalAlpha = 1;
 }
 
+export function renderCanvasMap(state, canvas, projection, {
+  geometryJoinKey,
+  boundaryGeometry,
+  rowByJoinKey,
+  scaleInfo,
+  anySelection,
+  transform,
+  municipalityColor
+} = {}) {
+  const ctx = resizeCanvasBackingStore(canvas);
+  if (!canvas || !ctx) return null;
+  const cache = buildCanvasMapCache(state, projection, { geometryJoinKey, boundaryGeometry });
+  if (!cache) {
+    state.mapCanvasLastHit = null;
+    state.mapCanvasRender = null;
+    return null;
+  }
+  const activeTransform = transform || state.mapCanvasTransform || globalThis.d3?.zoomIdentity;
+  state.mapCanvasLastHit = null;
+  state.mapCanvasRender = { cache, rowByJoinKey, scaleInfo, anySelection };
+  drawCanvasMap(state, canvas, { transform: activeTransform, municipalityColor });
+  return state.mapCanvasRender;
+}
+
 export function canvasEventPoint(state, canvas, event) {
   if (!canvas) return null;
   const rect = canvas.getBoundingClientRect();
