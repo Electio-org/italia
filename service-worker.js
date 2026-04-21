@@ -14,7 +14,7 @@
  * `cache.addAll()` that would reject the whole install on any 404.
  */
 
-const SW_VERSION = 'electio-v1-2026-04-20';
+const SW_VERSION = 'electio-v2-2026-04-21';
 const SHELL_CACHE = `shell::${SW_VERSION}`;
 const DATA_CACHE = `data::${SW_VERSION}`;
 const NAV_FALLBACK = './index.html';
@@ -34,7 +34,10 @@ const SHELL_PATHS = [
   './site-pages.js',
   './perf-boot.js',
   './tabler-enhance.js',
+  './modules/app-shell.js',
   './modules/data.js',
+  './modules/guidance.js',
+  './modules/quality.js',
   './modules/selectors.js',
   './modules/shared.js',
   './vendor/d3/d3-slim.min.js',
