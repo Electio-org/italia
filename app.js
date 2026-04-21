@@ -1758,7 +1758,6 @@ function requestRender() {
   window.requestAnimationFrame(() => {
     state.renderQueued = false;
     renderAll();
-    if (typeof setMapLoading === 'function') setMapLoading(false);
   });
 }
 
@@ -1767,6 +1766,21 @@ function requestRender() {
 // frame and never becomes visible.
 function deferAfterLoadingPaint(fn) {
   window.requestAnimationFrame(() => window.requestAnimationFrame(fn));
+}
+
+// Run a readControls+requestRender paired with a loading indicator. The
+// spinner is dismissed only after renderAll completes (one rAF after
+// requestRender schedules it). Any unrelated requestRender firing during the
+// deferral cannot hide the spinner because mapLoadingOwed gates the hide.
+function runRenderWithLoadingDismiss(doWork) {
+  deferAfterLoadingPaint(() => {
+    doWork();
+    // Hide one frame after the render rAF runs, so renderAll has already
+    // swapped the canvas contents when the spinner comes down.
+    window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => setMapLoading(false));
+    });
+  });
 }
 
 function invalidateDerivedCaches() {
@@ -2737,9 +2751,15 @@ function updateMapDetailCta() {
   els.mapDetailCta.setAttribute('aria-hidden', 'false');
 }
 
+// Counter so unrelated renders running between a loading trigger and the
+// deferred render of that trigger cannot prematurely hide the spinner. Only
+// the matching setMapLoading(false) from the trigger that owed it actually
+// hides the overlay.
+let mapLoadingOwed = 0;
 function setMapLoading(isLoading, message = '') {
   if (!els.mapLoading) return;
   if (isLoading) {
+    mapLoadingOwed += 1;
     if (message) {
       const label = els.mapLoading.querySelector('.map-loading-label');
       if (label) label.textContent = message;
@@ -2747,6 +2767,8 @@ function setMapLoading(isLoading, message = '') {
     els.mapLoading.classList.remove('hidden');
     els.mapLoading.setAttribute('aria-hidden', 'false');
   } else {
+    if (mapLoadingOwed > 0) mapLoadingOwed -= 1;
+    if (mapLoadingOwed > 0) return;
     els.mapLoading.classList.add('hidden');
     els.mapLoading.setAttribute('aria-hidden', 'true');
   }
@@ -4086,7 +4108,7 @@ function bindEvents() {
       invalidateDerivedCaches();
       state.tablePage = 1;
       if (loadingTriggerSelects.has(el)) {
-        deferAfterLoadingPaint(() => { readControls(); requestRender(); });
+        runRenderWithLoadingDismiss(() => { readControls(); requestRender(); });
       } else {
         readControls();
         requestRender();
@@ -4105,7 +4127,7 @@ function bindEvents() {
     els.electionSelect.value = label.value;
     updateElectionSlider();
     state.tablePage = 1;
-    deferAfterLoadingPaint(() => { readControls(); requestRender(); });
+    runRenderWithLoadingDismiss(() => { readControls(); requestRender(); });
   });
   els.prevElectionBtn.addEventListener('click', () => stepElection(-1));
   els.nextElectionBtn.addEventListener('click', () => stepElection(1));
