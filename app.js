@@ -1774,7 +1774,14 @@ function deferAfterLoadingPaint(fn) {
 // deferral cannot hide the spinner because mapLoadingOwed gates the hide.
 function runRenderWithLoadingDismiss(doWork) {
   deferAfterLoadingPaint(() => {
-    doWork();
+    try {
+      doWork();
+    } catch (err) {
+      // Don't let a downstream failure leak a permanently-visible overlay:
+      // the matching setMapLoading(false) still runs in the finally-style
+      // post-render rAF below.
+      console.error('[runRenderWithLoadingDismiss]', err);
+    }
     // Hide one frame after the render rAF runs, so renderAll has already
     // swapped the canvas contents when the spinner comes down.
     window.requestAnimationFrame(() => {
