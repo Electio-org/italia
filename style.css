@@ -5727,3 +5727,123 @@ body[data-site-page="programmatic-access"] .site-doc-main .card .card-body {
   padding: 0;
 }
 
+/* ============================================================ */
+/* gerda-parity (round 4) — the dashboard should match          */
+/* https://german-elections.com/dashboard/ in information        */
+/* density and visual chrome: thin topbar, narrow sidebar with   */
+/* year/metric/legend, full-bleed map, profile BELOW the map     */
+/* only after a comune is selected.                              */
+/* ============================================================ */
+
+/* (A) Brand block: force a single horizontal row so the EI      */
+/* monogram sits inline with the text, not stacked above it.    */
+.site-header-inner .site-brand {
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 10px !important;
+}
+.site-header-inner .site-brand .site-brand-copy {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+@media (max-width: 720px) {
+  body[data-site-page="dashboard"] .site-brand-subtitle {
+    display: none !important;
+  }
+}
+
+/* (B) Skip-link visible in the top-left bleeds into the layout  */
+/* of every page. Keep it available to screen readers but make   */
+/* it truly invisible until focused.                             */
+.skip-link {
+  position: absolute !important;
+  top: -40px !important;
+  left: 8px !important;
+  z-index: 100;
+  padding: 6px 10px;
+  background: var(--accent-deep, #10233c);
+  color: #fff;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: top 0.12s ease-out;
+}
+.skip-link:focus { top: 8px !important; }
+
+/* (C) Kill the remaining sidebar noise on the dashboard:        */
+/*     • "Controlli avanzati" details (advanced-sidebar-details) */
+/*     • Time-nav row (prev/next/play + slider) — the Elezione   */
+/*       dropdown already covers year selection, GERDA-style.    */
+/*     • Panel-header h2 "Controlli mappa" + its subtitle.       */
+body[data-site-page="dashboard"] .advanced-sidebar-details,
+body[data-site-page="dashboard"] .sidebar .panel.control-panel .time-nav-box,
+body[data-site-page="dashboard"] .sidebar .panel.control-panel .compact-time-nav,
+body[data-site-page="dashboard"] .sidebar .panel.control-panel .panel-header > div > h2,
+body[data-site-page="dashboard"] .sidebar .panel.control-panel .panel-header > div > p.panel-subtitle {
+  display: none !important;
+}
+
+/* (D) Hide the detail-panel entirely while the profile is in    */
+/* empty-state. Using :has() so it flips back on as soon as JS   */
+/* removes the .empty-state class from #municipality-profile.    */
+/* When hidden, collapse .map-and-detail to a single column so   */
+/* the map claims the full width.                                */
+body[data-site-page="dashboard"] .detail-panel:has(#municipality-profile.empty-state) {
+  display: none !important;
+}
+@media (min-width: 960px) {
+  body[data-site-page="dashboard"] .map-and-detail:has(.detail-panel #municipality-profile.empty-state) {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  /* When a municipality IS selected, keep detail-panel in the    */
+  /* secondary column but not "sticky tall" — match GERDA and     */
+  /* let it flow below on tighter viewports.                      */
+  body[data-site-page="dashboard"] .map-and-detail {
+    align-items: start;
+  }
+}
+
+/* (E) Control panel becomes a narrow vertical GERDA-style       */
+/* sidebar on desktop: labels stacked, single column, no two-col */
+/* grid. Visually separated from the map by generous gap.        */
+@media (min-width: 960px) {
+  body[data-site-page="dashboard"] .sidebar .panel.control-panel .two-col.two-col-main {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 10px !important;
+  }
+  body[data-site-page="dashboard"] .sidebar .panel.control-panel label {
+    font-size: 0.72rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+  }
+  body[data-site-page="dashboard"] .sidebar .panel.control-panel select,
+  body[data-site-page="dashboard"] .sidebar .panel.control-panel input[type="text"] {
+    font-size: 0.92rem;
+    font-weight: 500;
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--text);
+  }
+}
+
+/* (F) Map panel: strip the card chrome so it reads as a canvas  */
+/* on the page, not a card-in-a-card. GERDA's map sits directly  */
+/* on the page background with a 1px border.                     */
+@media (min-width: 960px) {
+  body[data-site-page="dashboard"] .map-panel {
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+  }
+  body[data-site-page="dashboard"] #map-wrapper {
+    border: 1px solid var(--line-soft);
+    border-radius: 10px;
+    overflow: hidden;
+    background: #fafbfd;
+  }
+}
+
