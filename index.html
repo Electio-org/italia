@@ -108,9 +108,8 @@
           <label>
             Mostra in mappa
             <select id="metric-select">
-              <option value="first_party">Primo partito</option>
-              <option value="party_share">Quota selezionata</option>
               <option value="turnout">Affluenza</option>
+              <option value="party_share">Quota selezionata</option>
               <option value="margin">Margine del vincente</option>
               <option value="dominant_block">Blocco dominante</option>
               <option value="swing_compare">Scarto vs confronto</option>
@@ -249,7 +248,7 @@
             <div class="preset-box">
               <div class="helper-text">Preset rapidi</div>
               <div class="preset-grid">
-                <button type="button" class="preset-btn" data-preset-metric="first_party" data-preset-mode="party_std">Primo partito</button>
+                <button type="button" class="preset-btn" data-preset-metric="margin" data-preset-palette="diverging">Margine</button>
                 <button type="button" class="preset-btn" data-preset-metric="party_share">Quota selezionata</button>
                 <button type="button" class="preset-btn" data-preset-metric="turnout" data-preset-palette="sequential">Affluenza</button>
                 <button type="button" class="preset-btn" data-preset-metric="swing_compare" data-preset-palette="diverging">Scarto</button>
@@ -807,13 +806,13 @@
           <div class="panel-header">
             <div>
               <h2>Profilo del comune</h2>
-              <p class="panel-subtitle">Anagrafica, confronto con provincia/Italia, linea temporale, lineage.</p>
+              <p class="panel-subtitle">Quadro rapido del comune selezionato, con contesto essenziale e approfondimenti sotto.</p>
             </div>
           </div>
 
           <div class="detail-summary-shell">
             <div class="detail-meta-block">
-              <div class="detail-section-title">Scheda del caso</div>
+              <div class="detail-section-title">Quadro rapido</div>
               <div id="municipality-profile" class="empty-state">Seleziona un comune dalla mappa o dalla ricerca.</div>
             </div>
             <div class="detail-meta-block">
@@ -960,7 +959,7 @@
                   <th>Scheda comune</th>
                   <th>Provincia</th>
                   <th>Affluenza</th>
-                  <th>Primo partito</th>
+                  <th>Leadership locale</th>
                   <th>Quota attiva</th>
                   <th>Δ confronto</th>
                   <th>Volatilità</th>

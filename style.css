@@ -4639,6 +4639,17 @@ button:hover {
   margin-top: 10px;
 }
 
+.detail-inline-note {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+.detail-inline-note strong {
+  color: var(--accent-deep);
+}
+
 .detail-panel .trajectory-toolbar {
   margin-bottom: 0;
 }
