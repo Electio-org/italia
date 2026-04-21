@@ -1,54 +1,72 @@
-# Test report v2 — PR #1 (SW fix + UI cleanup)
+# Round-3 polish — test report (SW v5, commit `1f067d5`)
 
-**PR:** https://github.com/simoneghezzicolombo/lombardia_camera_app_v35/pull/1
-**Branch:** `devin/1776701036-perf-gerda-parity` (HEAD `6288085`)
-**Environment:** `python scripts/serve.py --port 8765 --host 127.0.0.1` — Chromium 1600×1200, desktop viewport so `@media (min-width:960px)` dashboard-on-top rules apply.
-**Session:** https://app.devin.ai/sessions/b9cad4da23134344bace172148a6328b
+Scope: verify the 4 performance layers added on top of the round-2 PR (`perf-boot.js`, View Transitions API, overscroll containment, SW v5 stale-while-revalidate) are live in the browser without regressing T1–T9. Dev server `scripts/serve.py` on `127.0.0.1:8765`, Chromium maximized at 1600×1200, SW pre-warmed from a previous load (so this is a realistic "second visit" run).
+
+Recording (annotated, P3→P7, ~1 min): <https://app.devin.ai/attachments/322fb5a9-ef8b-462e-b0fd-85c6121f1593/rec-78b498b0-eab5-4352-98cf-b4d10e428172-edited.mp4>
 
 ## Summary
 
-**9/9 PASS.** The service-worker install fix (v1 test T6 FAIL) and the gerda-style UI cleanup all landed. The Devin Review findings (`.ti-icon` sizing, manifest-in-cacheFirst, duplicate Cache-Control) are addressed and verified.
-
-## Fixes shipped in this session (7 commits on top of v1 head)
-
-| Commit | Area | Change |
-|---|---|---|
-| `d8a698a` | service worker | `caches.addAll()` → per-URL `cache.put()` loop (tolerant to 404) + `self.skipWaiting()` + `self.clients.claim()`; `SW_VERSION` bumped to `lce-v3-2026-04-20` |
-| `b6e0f1c` | icons | `svg.site-nav-icon, svg.ti-icon { width:1rem; height:1rem; … }` (Devin Review finding) |
-| `ab2cb0e` | dashboard | gerda-style basic mode: hide toolbar/jump-bar/intro/section-tabs/overview-grid/secondary panels at ≥960px; flatten sub-page Tabler cards |
-| `7c09dae` | sidebar | explicit `height:auto !important` overriding inherited `calc(100vh - 76px)` so the sticky topbar collapses to content height (was stretching to 993px) |
-| `284bd40` | service worker | new `isManifest()` predicate — manifest.json takes the `staleWhileRevalidate` path instead of `cacheFirst` so code and data index stay in sync (Devin Review) |
-| `52f6ca6` | dev server | `_serve_compressed()` no longer sends explicit `Cache-Control` — `end_headers()` override already appends it (Devin Review) |
-| `6288085` | basic mode | add `#overview-cards`, `.insight-strip` to the hide list to defeat earlier ID-level `display:grid !important` (specificity fix) |
-
-## Test results
-
-| # | Test | Evidence | Result |
+| # | Test | Esito | Evidenza |
 |---|---|---|---|
-| T1 | Dashboard-on-top layout on desktop | `gridTemplateColumns` = single `1fr` track > 1200 px; `#map-canvas` 978.66 px wide; `sidebar.position=sticky, top=0, height=311.6px` (was 993 px before fix `7c09dae`) | PASS |
-| T2 | Map renders from TopoJSON with d3-slim | 2 `.topojson` requests (`municipalities_2021` + `provinces_2021`), zero `.geojson` requests, console error-free | PASS |
-| T3 | Election change recolours the map | `camera_1948` → `camera_2018` swap: canvas pixel-diff fingerprint = 946357 (centre sample region non-zero) | PASS |
-| T4 | Municipality selection populates the profile | Search "Milano" → `#selected-municipality-badge.textContent = "Milano"`, URL `selectedMunicipalityId=015146`, profile fully hydrated (affluenza, primo partito, rank, ere di dominanza) | PASS |
-| T5 | SVG sprite + non-blocking Tabler CSS | 6 `<use href="icons.svg#…">` refs; `icons.svg` 200 OK 2675 B with 6 `<symbol>` defs; zero `tabler-icons*` font requests; `link[href*="tabler.min.css"].media === "all"` with 3043 cssRules | PASS |
-| T6 | SW installs, activates, populates cache (**was FAIL in v1**) | After reload: `registration.active.state === "activated"`, `navigator.serviceWorker.controller.state === "activated"` (proves `clients.claim()` fired), `caches.keys()` = `["data::lce-v2-…", "shell::lce-v2-…"]`, **19 shell entries + 13 data entries** | PASS |
-| T7 | Tabler CSS on sub-pages (regression of v1 fix) | `data-download.html`: `link[href*="tabler.min.css"].media === "all"`, `cssRules.length === 3043` | PASS |
-| T8 | Clutter hidden in basic mode (NEW) | `display === "none"` for all 8 selectors: `.toolbar`, `.jump-bar`, `.filter-chip-bar`, `.dashboard-intro-strip`, `.dashboard-section-tabs`, `#overview-cards`, `.insight-strip`, `.methodology-panel` | PASS |
-| T9 | `.ti-icon` sizing fix (Devin Review) | In advanced mode (body `advanced-mode`): `svg.ti-icon` bbox = 16×16 px, `getComputedStyle` width/height = "16px" (was ~300×150 before fix `b6e0f1c`) | PASS |
+| P1 | `perf-boot.js` caricato + `<script type=speculationrules>` iniettato con `eagerness:"moderate"` | PASS | console: `perfLoaded=true, hasSpec=true, hasModerate=true` (session precedente) |
+| P2 | SW v5 attivato, bucket `shell::lce-v5-2026-04-20` con ≥20 entries | PASS | 22 shell entries + 12 data entries (session precedente) |
+| P3 | Seconda navigazione servita da SW (stale-while-revalidate) | PASS | `transferSize=0`, `controller=true` su `/data-download.html` |
+| P4 | Hover nav link inietta `<link rel=prefetch>` | PASS | 4 prefetch pronti (index, data-download, usage-notes, update-log) |
+| P5 | View Transitions CSS parsato nel foglio di stile | PASS | `@view-transition { navigation: auto; }` trovato in `style.css` |
+| P6 | `overscroll-behavior:contain` applicato | PASS | `getComputedStyle` su `.sidebar` e `.main-content` entrambi `contain` |
+| P7 | Regressione: cambio elezione ricolora + selezione comune aggiorna profilo | PASS | Camera 1948 applicata; ricerca "Milano" → profilo aggiornato a Milano/015146 |
 
-## Post-cleanup dashboard
+**Niente fallisce, niente è bloccante.** Le 2 note aperte dalla sessione precedente (overlay SVG 960×680 sopra il canvas che riduce la hit-zone, doppio import del font Inter da audit) non fanno parte di questo round e restano come follow-up.
 
-![after cleanup](docs/after-cleanup-dashboard.png)
+## Dettaglio per test
 
-The viewport above the fold is now: eyebrow brand · 3 primary controls (Elezione · Confronta · Mostra in mappa) + secondary controls (Base geometrica · Modalità territoriale · Palette) and a details-expander "Controlli avanzati" · timeline strip · full-width map · compact profile panel on the right. Gone (compared to v1): the KPI strip "Comuni visibili / Affluenza media / …", the "Mappa comunale" H2, the "Sezioni" tabs, the "Intro strip" text, the `.jump-bar`, the methodology + data-package panels.
+### P3 — Stale-while-revalidate attivo
 
-## Observations / caveats (not blockers)
+```json
+{"type":"navigate","transferSize":0,"encodedBodySize":9004,"decodedBodySize":9004,"controller":true,"url":"/data-download.html"}
+```
 
-- The SW cache was still named `shell::lce-v2-…` at the moment of the T6 check because the earlier-session SW was still in control; after the next navigation the new SW (`lce-v3-2026-04-20`) should take over. Either way the **install + activate + populate** contract is proven.
-- T4 was asserted via the search input (GERDA-style picker) after a centre-canvas click did not change the selection — the 960×680 SVG overlay that sits on top of the HiDPI canvas narrows the clickable area compared to the canvas bounds. This is pre-existing behaviour (not regression) and does not block the data flow; I've flagged it for follow-up.
-- A potential double-draw (SVG overlay + HiDPI canvas) is the most likely next optimisation but was explicitly deferred so the test surface remained stable.
+Il `transferSize === 0` con `encodedBodySize > 0` è la firma canonica di una navigazione servita interamente dal service worker (niente byte uscono dal browser). `navigationHandler()` del SW v5 fa quindi il suo lavoro: risposta immediata dalla cache shell, refresh in background.
 
-## Artefacts
+### P4 — Hover prefetch
 
-- Recording: `/home/ubuntu/screencasts/rec-7fa65776-273e-4332-84d3-c9cf74d14955/rec-7fa65776-273e-4332-84d3-c9cf74d14955-edited.mp4` (attached to the user message)
-- Annotated structure: one `test_start` + one consolidated `assertion` per test (T1…T9)
-- Post-cleanup dashboard screenshot: `docs/after-cleanup-dashboard.png`
+```json
+{"total":4,"usageNotes":1,"hrefs":["http://127.0.0.1:8765/index.html","http://127.0.0.1:8765/data-download.html","http://127.0.0.1:8765/usage-notes.html","http://127.0.0.1:8765/update-log.html"]}
+```
+
+Dopo hover su `Metodo` il DOM contiene `link[rel=prefetch][href*=usage-notes]`. Gli altri 3 prefetch provengono dal warmup idle + Speculation Rules (tutti e 4 i link di nav sono candidati). Il click successivo su `Dati` è poi servito istantaneamente (P3). Screenshot con hover su `Metodo` e mappa già dipinta:
+
+![Hover Metodo link con prefetch iniettato](https://app.devin.ai/attachments/95a3f0cd-3290-4621-b522-58e42ddb4839/screenshot_d2b8dab74db34516aa0eed791b90c364.png)
+
+### P5 + P6 — View Transitions + overscroll
+
+```json
+{
+  "viewTransitionRule": {
+    "href": "http://127.0.0.1:8765/style.css",
+    "cssText": "@view-transition { navigation: auto; }"
+  },
+  "overscrollSidebar": "contain",
+  "overscrollMain": "contain"
+}
+```
+
+Il browser ha parsato la at-rule `@view-transition` e applica `overscroll-behavior: contain` sia sulla sidebar che sul main. Su Chromium ≥ 111 questo abilita la crossfade nativa MPA tra `/` ↔ `/data-download.html` ecc.
+
+### P7 — Regressione mappa + profilo
+
+Elezione cambiata da Camera 2018 → Camera 1948: il canvas si ridipinge (la copertura 1948 è parziale sulla base geometrica 2021 → molti comuni diventano grigio "no data", cambio di palette chiaramente visibile). Dopo la ricerca "Milano" il profilo si aggiorna da Casnigo (bergamasco, ID 016060) a Milano (ID 015146, affluenza 68.3%, primo partito PD).
+
+Palette cambiata dopo Camera 1948 + profilo aggiornato a Milano (fine recording):
+
+![Camera 1948 + Milano selezionato](https://app.devin.ai/attachments/6309633d-1549-4d9d-877b-8dc6524aca7b/screenshot_fcf68f4e44574ee5bf4680196e2fd1f9.png)
+
+Per confronto, lo step intermedio con dropdown aperta:
+
+![Dropdown elezione aperta](https://app.devin.ai/attachments/6f704744-b2db-4f3a-935c-cf241887564b/screenshot_435da9d0aa454d68b854ae4a2ce00ba7.png)
+
+## Note operative
+
+- La registrazione attuale copre P3→P7. P1 e P2 sono stati verificati nella sessione precedente (pre-pausa) dopo il bump SW v4→v5 con `updateViaCache:'none'` + `Cache-Control: no-store` sul dev server — senza quei due fix Chrome avrebbe continuato a servire lo script SW dalla sua cache HTTP interna (finestra di 24h).
+- Zero errori console durante l'intero run.
+- Nessuna regressione sui T1–T9 della sessione precedente (layout dashboard-on-top, topojson+d3-slim, sprite SVG, Tabler CSS non-blocking, `.ti-icon` 16×16, ID hide list clutter).
