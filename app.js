@@ -2205,7 +2205,10 @@ function renderQuickStats(rows) {
   const metricKey = state.selectedMetric;
   const fmt = v => {
     if (v == null || !Number.isFinite(v)) return '—';
-    if (['turnout', 'party_share', 'margin', 'delta_turnout', 'swing_compare', 'over_performance_province', 'over_performance_region', 'volatility', 'concentration', 'stability_index'].includes(metricKey)) {
+    if (['swing_compare', 'delta_turnout', 'over_performance_province', 'over_performance_region'].includes(metricKey)) {
+      return `${fmtPctSigned(v)} pt`;
+    }
+    if (['turnout', 'party_share', 'margin', 'volatility', 'concentration', 'stability_index'].includes(metricKey)) {
       return `${fmtPct(v)}%`;
     }
     return fmtInt(v);
@@ -5008,7 +5011,7 @@ function renderAll() {
     { scope: 'methodology', fn: renderMethodologyPanels, target: '#usage-notes-panel' },
     { scope: 'map', fn: renderMap, target: '#map-canvas' },
     { scope: 'filter-chips', fn: renderActiveFilterChips, target: () => els.activeFilterChips },
-    { scope: 'detail', fn: renderDetail, target: () => els.municipalityProfile },
+    { scope: 'detail', fn: renderDetail, target: () => els.municipalityProfile, always: true },
     { scope: 'comparison-panel', fn: renderComparisonPanel, target: () => els.comparisonPanelContent },
     { scope: 'recent', fn: renderRecentMunicipalityPanel, target: () => els.recentMunicipalityPanel },
     { scope: 'diagnostics', fn: renderDiagnostics, target: () => els.diagnosticsPanel },
