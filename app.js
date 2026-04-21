@@ -231,6 +231,31 @@ function audienceMeta() {
   return AUDIENCE_MODES[state.audienceMode] || AUDIENCE_MODES.public;
 }
 
+const PUBLIC_METRICS = new Set([
+  'turnout',
+  'party_share',
+  'margin',
+  'dominant_block',
+  'swing_compare',
+  'delta_turnout',
+  'volatility',
+  'dominance_changes',
+  'concentration',
+  'over_performance_province',
+  'over_performance_region',
+  'stability_index',
+  'custom_indicator'
+]);
+
+function sanitizeSelectedMetric(metric) {
+  if (metric === 'first_party') return 'margin';
+  return PUBLIC_METRICS.has(metric) ? metric : 'turnout';
+}
+
+function normalizeMetricState() {
+  state.selectedMetric = sanitizeSelectedMetric(state.selectedMetric);
+}
+
 function metricReadableExplanation() {
   switch (state.selectedMetric) {
     case 'turnout': return "La mappa mostra quanta partecipazione elettorale c'è stata, non quale partito ha vinto.";
@@ -568,7 +593,7 @@ function metricSentenceForRow(row) {
   const selection = currentSelectionLabel();
   switch (state.selectedMetric) {
     case 'turnout': return `affluenza ${formatMetricValue(metricValue)}`;
-    case 'first_party': return `primo partito ${row.first_party_std || 'n/d'}`;
+    case 'first_party': return `leadership locale ${row.first_party_std || 'n/d'}`;
     case 'party_share': return `${selection} ${formatMetricValue(metricValue)}`;
     case 'margin': return `margine 1°-2° ${formatMetricValue(metricValue)}`;
     case 'dominant_block': return `blocco dominante ${row.dominant_block || 'n/d'}`;
@@ -626,7 +651,7 @@ function buildViewBriefing(rows = filteredRowsWithMetric(state)) {
   if (!state.geometry?.features?.length) caution.push('Le geometrie attive mancano o non sono caricabili: la lettura spaziale è limitata.');
 
   if (state.qualityReport?.derived_validations && (state.qualityReport.derived_validations.substantive_coverage_score ?? 0) < 40) cannotSay.push("Questa vista non basta per descrivere da sola la storia elettorale completa dell'Italia.");
-  if (state.selectedMetric === 'first_party') cannotSay.push('Il primo partito non misura da solo il margine della vittoria né la distanza dagli inseguitori.');
+  if (state.selectedMetric === 'first_party') cannotSay.push('La leadership locale non misura da sola il margine della vittoria né la distanza dagli inseguitori.');
   if (state.selectedMetric === 'turnout') cannotSay.push("L'affluenza non identifica da sola quali partiti siano forti o deboli.");
   if (state.selectedMetric === 'party_share') cannotSay.push("La quota della selezione attiva non equivale all'intera distribuzione del voto nel comune.");
   if (state.selectedMetric === 'swing_compare' || state.selectedMetric === 'delta_turnout') cannotSay.push('Una differenza tra due elezioni non spiega da sola le cause del cambiamento.');
@@ -731,6 +756,7 @@ function restoreLocalState() {
     state.onboardingDismissed = !!obj.onboardingDismissed;
     Object.assign(state, obj.lastView || {});
     if (Array.isArray(obj.lastView?.selectedProvinces)) state.selectedProvinceSet = new Set(obj.lastView.selectedProvinces);
+    normalizeMetricState();
   } catch {}
 }
 
@@ -755,6 +781,7 @@ function updateElectionSlider() {
 }
 
 function setupControls() {
+  normalizeMetricState();
   if (els.electionSelect) {
     const withData = state.elections.filter(d => { const c = electionCoverageFor(state, d.election_key); return c.summary || c.results; });
     const withoutData = state.elections.filter(d => { const c = electionCoverageFor(state, d.election_key); return !(c.summary || c.results); });
@@ -784,7 +811,7 @@ function setupControls() {
   }
   if (els.completenessSelect) els.completenessSelect.value = state.selectedCompleteness || 'all';
   if (els.territorialStatusSelect) els.territorialStatusSelect.value = state.selectedTerritorialStatus || 'all';
-  if (els.metricSelect) els.metricSelect.value = state.selectedMetric;
+  if (els.metricSelect) els.metricSelect.value = sanitizeSelectedMetric(state.selectedMetric);
   if (els.partyModeSelect) els.partyModeSelect.value = state.selectedPartyMode;
   if (els.territorialModeSelect) {
     const hasHarmonized = state.summary.some(r => String(r.territorial_mode || '') === 'harmonized');
@@ -823,7 +850,7 @@ function setupControls() {
 function readControls() {
   if (els.electionSelect) state.selectedElection = els.electionSelect.value || state.selectedElection;
   if (els.compareElectionSelect) state.compareElection = els.compareElectionSelect.value || null;
-  if (els.metricSelect) state.selectedMetric = els.metricSelect.value || state.selectedMetric;
+  if (els.metricSelect) state.selectedMetric = sanitizeSelectedMetric(els.metricSelect.value || state.selectedMetric);
   if (els.partyModeSelect) state.selectedPartyMode = els.partyModeSelect.value || state.selectedPartyMode;
   if (els.partySelect) state.selectedParty = els.partySelect.value || state.selectedParty;
   if (els.customIndicatorSelect) state.selectedCustomIndicator = els.customIndicatorSelect.value || null;
@@ -963,7 +990,7 @@ function applyGuidedQuestion(questionId) {
     state.analysisMode = settings.analysisMode;
     ANALYSIS_MODES[settings.analysisMode].apply();
   }
-  if (settings.metric) state.selectedMetric = settings.metric;
+  if (settings.metric) state.selectedMetric = sanitizeSelectedMetric(settings.metric);
   if (settings.palette) state.selectedPalette = settings.palette;
   if (settings.partyMode) state.selectedPartyMode = settings.partyMode;
   if (Object.prototype.hasOwnProperty.call(settings, 'showNotes')) state.showNotes = !!settings.showNotes;
@@ -1082,7 +1109,7 @@ function applyResearchRecipe(recipeKey) {
     state.analysisMode = settings.analysisMode;
     ANALYSIS_MODES[settings.analysisMode].apply();
   }
-  if (settings.metric) state.selectedMetric = settings.metric;
+  if (settings.metric) state.selectedMetric = sanitizeSelectedMetric(settings.metric);
   if (settings.palette) state.selectedPalette = settings.palette;
   if (settings.partyMode) state.selectedPartyMode = settings.partyMode;
   if (Object.prototype.hasOwnProperty.call(settings, 'showNotes')) state.showNotes = !!settings.showNotes;
@@ -1611,7 +1638,6 @@ function buildMunicipalityReportHtml() {
   const historyRows = rows.map(row => ({
     year: row.election_year || '—',
     turnout: row.turnout_pct != null ? `${fmtPct(row.turnout_pct)}%` : '—',
-    firstParty: row.first_party_std || '—',
     margin: row.first_second_margin != null ? `${fmtPct(row.first_second_margin)} pt` : '—',
     activeShare: (() => {
       const share = aggregateShareFor(state, row.election_key, id, state.selectedParty);
@@ -1629,7 +1655,7 @@ function buildMunicipalityReportHtml() {
     ['Provincia corrente', currentProvince],
     ['Affidabilità del caso', trust.label],
     ['Affluenza corrente', currentRow?.turnout_pct != null ? `${fmtPct(currentRow.turnout_pct)}%` : '—'],
-    ['Primo partito', currentRow?.first_party_std || '—'],
+    ['Margine 1°-2°', currentRow?.first_second_margin != null ? `${fmtPct(currentRow.first_second_margin)} pt` : '—'],
     ['Quota attiva', currentPartyShare != null ? `${fmtPct(currentPartyShare)}%` : '—'],
     ['Δ quota vs confronto', currentPartyShare != null && compareShare != null ? `${fmtPctSigned(currentPartyShare - compareShare)} pt` : '—']
   ];
@@ -1706,10 +1732,10 @@ function buildMunicipalityReportHtml() {
       <h2>Serie storica disponibile</h2>
       <table>
         <thead>
-          <tr><th>Anno</th><th>Affluenza</th><th>Primo partito</th><th>Quota attiva</th><th>Margine</th><th>Completezza</th><th>Stato territoriale</th></tr>
+          <tr><th>Anno</th><th>Affluenza</th><th>Quota attiva</th><th>Margine</th><th>Completezza</th><th>Stato territoriale</th></tr>
         </thead>
         <tbody>
-          ${historyRows.length ? historyRows.map(row => `<tr><td>${escapeHtml(String(row.year))}</td><td>${escapeHtml(row.turnout)}</td><td>${escapeHtml(row.firstParty)}</td><td>${escapeHtml(row.activeShare)}</td><td>${escapeHtml(row.margin)}</td><td>${escapeHtml(row.completeness)}</td><td>${escapeHtml(row.territorial)}</td></tr>`).join('') : '<tr><td colspan="7">Nessuna serie storica disponibile.</td></tr>'}
+          ${historyRows.length ? historyRows.map(row => `<tr><td>${escapeHtml(String(row.year))}</td><td>${escapeHtml(row.turnout)}</td><td>${escapeHtml(row.activeShare)}</td><td>${escapeHtml(row.margin)}</td><td>${escapeHtml(row.completeness)}</td><td>${escapeHtml(row.territorial)}</td></tr>`).join('') : '<tr><td colspan="6">Nessuna serie storica disponibile.</td></tr>'}
         </tbody>
       </table>
     </section>
@@ -2108,7 +2134,7 @@ function renderActiveFilterChips() {
 
 function metricLabel() {
   const labels = {
-    first_party: 'Primo partito',
+    first_party: 'Leadership locale',
     party_share: 'Quota selezione attiva',
     turnout: 'Affluenza',
     margin: 'Margine 1°-2°',
@@ -2879,28 +2905,26 @@ function showTooltip(event, feature, row) {
   const p = feature.properties || {};
   const label = row?.municipality_name || p.name_current || p.name || 'Comune';
   const province = row?.province || p.province || '—';
-  const firstParty = row?.first_party_std || '—';
   const turnout = row?.turnout_pct != null ? `${fmtPct(row.turnout_pct)}%` : '—';
+  const margin = row?.first_second_margin != null ? `${fmtPct(row.first_second_margin)} pt` : '—';
   const metricValue = row?.__metric_value;
   const provinceAvg = row ? getProvinceMetricAverage(row) : null;
   const regionAvg = row ? getRegionMetricAverage(row) : null;
-  const metricValueStr = metricDisplay(metricValue, !['first_party','dominant_block','custom_indicator'].includes(state.selectedMetric));
+  const currentPartyShare = row ? aggregateShareFor(state, row.election_key, row.municipality_id, state.selectedParty) : null;
+  const metricValueStr = metricDisplay(metricValue, !['dominant_block','custom_indicator'].includes(state.selectedMetric));
   const provinceDelta = provinceAvg != null && typeof metricValue === 'number' ? `${fmtPctSigned(metricValue - provinceAvg)} pt` : '—';
   const regionDelta = regionAvg != null && typeof metricValue === 'number' ? `${fmtPctSigned(metricValue - regionAvg)} pt` : '—';
   const comparabilityNote = row?.comparability_note ? `<div class="tooltip-note">${escapeHtml(row.comparability_note)}</div>` : '';
-  tooltip.innerHTML = `
-    <strong>${escapeHtml(label)}</strong><br>
-    Provincia: ${escapeHtml(province)}<br>
-    Elezione: ${escapeHtml(state.selectedElection || '—')}<br>
-    Affluenza: ${turnout}<br>
-    Primo partito: ${escapeHtml(firstParty)}<br>
-    ${escapeHtml(metricLabel())}: ${escapeHtml(metricValueStr)}<br>
-    Diff. provincia: ${provinceAvg != null ? `${fmtPctSigned((typeof metricValue === 'number' ? metricValue : null) - provinceAvg)} pt` : '—'}<br>
-        Diff. Italia: ${regionAvg != null ? `${fmtPctSigned((typeof metricValue === 'number' ? metricValue : null) - regionAvg)} pt` : '—'}<br>
-    Stato territoriale: ${escapeHtml(row?.territorial_status || '—')}<br>
-    <span style="color:#94a3b8">Shift+click per aggiungere/rimuovere nel comparatore</span>
-    ${row?.comparability_note ? `<br>Nota: ${escapeHtml(row.comparability_note)}` : ''}
-  `;
+  const tooltipItems = [
+    { label: 'Valore', value: metricValueStr },
+    { label: 'Affluenza', value: turnout },
+    { label: 'Margine', value: margin },
+    currentPartyShare != null && state.selectedMetric !== 'party_share'
+      ? { label: currentSelectionLabel(), value: `${fmtPct(currentPartyShare)}%` }
+      : { label: 'Stato territoriale', value: row?.territorial_status || '—' },
+    { label: 'Vs provincia', value: provinceDelta },
+    { label: 'Vs Italia', value: regionDelta }
+  ];
   tooltip.innerHTML = `
     <div class="tooltip-card">
       <div class="tooltip-header">
@@ -2909,12 +2933,7 @@ function showTooltip(event, feature, row) {
       </div>
       <div class="tooltip-meta">Elezione ${escapeHtml(state.selectedElection || '—')} · ${escapeHtml(metricLabel())}</div>
       <div class="tooltip-grid">
-        <div><span>Valore</span><strong>${escapeHtml(metricValueStr)}</strong></div>
-        <div><span>Affluenza</span><strong>${turnout}</strong></div>
-        <div><span>Primo partito</span><strong>${escapeHtml(firstParty)}</strong></div>
-        <div><span>Stato territoriale</span><strong>${escapeHtml(row?.territorial_status || '—')}</strong></div>
-        <div><span>Vs provincia</span><strong>${escapeHtml(provinceDelta)}</strong></div>
-        <div><span>Vs Italia</span><strong>${escapeHtml(regionDelta)}</strong></div>
+        ${tooltipItems.map(item => `<div><span>${escapeHtml(item.label)}</span><strong>${escapeHtml(item.value)}</strong></div>`).join('')}
       </div>
       ${comparabilityNote}
       <div class="tooltip-hint">Shift+click per aggiungere o rimuovere il comune dal comparatore</div>
@@ -2925,11 +2944,11 @@ function showTooltip(event, feature, row) {
   tooltip.style.left = `${event.clientX - wrapperRect.left + 14}px`;
   tooltip.style.top = `${event.clientY - wrapperRect.top + 14}px`;
   const tooltipRect = tooltip.getBoundingClientRect();
-  const margin = 16;
+  const marginInset = 16;
   const idealLeft = event.clientX - wrapperRect.left + 16;
   const idealTop = event.clientY - wrapperRect.top + 16;
-  const left = Math.max(margin, Math.min(idealLeft, wrapperRect.width - tooltipRect.width - margin));
-  const top = Math.max(margin, Math.min(idealTop, wrapperRect.height - tooltipRect.height - margin));
+  const left = Math.max(marginInset, Math.min(idealLeft, wrapperRect.width - tooltipRect.width - marginInset));
+  const top = Math.max(marginInset, Math.min(idealTop, wrapperRect.height - tooltipRect.height - marginInset));
   tooltip.style.left = `${left}px`;
   tooltip.style.top = `${top}px`;
 }
@@ -2999,12 +3018,10 @@ function renderDetail() {
   if (!selected) {
     els.selectedMunicipalityBadge.textContent = 'Nessun comune selezionato';
     container.className = 'empty-state smart-empty-state';
-    container.innerHTML = `<strong>Nessun comune selezionato</strong><div class="helper-text">Usa ricerca, mappa, insight o command palette per aprire subito un profilo comunale.</div><div class="detail-actions-row" style="margin-top:12px"><button type="button" data-empty-action="search">Apri ricerca</button><button type="button" class="ghost-btn" data-empty-action="trajectory">Modalità Traiettoria</button><button type="button" class="ghost-btn" data-empty-action="compare">Modalità Confronta</button></div>`;
+    container.innerHTML = `<strong>Seleziona un comune</strong><div class="helper-text">Apri un comune dalla mappa o dalla ricerca: qui trovi solo il quadro rapido utile, senza passare da una scheda troppo carica.</div><div class="detail-actions-row" style="margin-top:12px"><button type="button" data-empty-action="search">Apri ricerca</button></div>`;
     container.querySelectorAll('[data-empty-action]').forEach(btn => btn.addEventListener('click', () => {
       const action = btn.dataset.emptyAction;
       if (action === 'search') els.municipalitySearch?.focus();
-      if (action === 'trajectory') applyAnalysisMode('trajectory');
-      if (action === 'compare') applyAnalysisMode('compare');
     }));
     els.municipalityStory.classList.add('hidden');
     els.municipalityStory.innerHTML = '';
@@ -3025,13 +3042,52 @@ function renderDetail() {
   const currentRow = getSummaryRow(state, state.selectedElection, state.selectedMunicipalityId) || profileRows.at(-1) || {};
   const compareRow = state.compareElection ? getSummaryRow(state, state.compareElection, state.selectedMunicipalityId) : null;
   const lineage = lineageRecord();
-  const provinceTurnout = currentRow ? state.indices.provinceSummaryMap.get(`${currentRow.election_key}__${currentRow.province}`)?.turnout_pct : null;
-  const regionTurnout = currentRow ? state.indices.regionSummaryMap.get(currentRow.election_key)?.turnout_pct : null;
   const currentPartyShare = currentRow ? aggregateShareFor(state, currentRow.election_key, state.selectedMunicipalityId, state.selectedParty) : null;
   const provincePartyShare = currentRow ? state.indices.provinceGroupMaps[state.selectedPartyMode]?.get(`${currentRow.election_key}__${currentRow.province}__${state.selectedParty}`) : null;
   const regionPartyShare = currentRow ? state.indices.regionGroupMaps[state.selectedPartyMode]?.get(`${currentRow.election_key}__${state.selectedParty}`) : null;
   const turnoutRank = currentRow ? rankPosition(state.filteredRows, state.selectedMunicipalityId, r => r.turnout_pct) : null;
   const metricRank = currentRow ? rankPosition(state.filteredRows, state.selectedMunicipalityId, r => typeof r.__metric_value === 'number' ? r.__metric_value : null) : null;
+  const trust = assessRowTrust(currentRow, lineage);
+  const metricValue = getMetricValue(state, currentRow);
+  const metricValueStr = metricDisplay(metricValue, !['dominant_block', 'custom_indicator'].includes(state.selectedMetric));
+  const provinceMetric = currentRow ? getProvinceMetricAverage(currentRow) : null;
+  const regionMetric = currentRow ? getRegionMetricAverage(currentRow) : null;
+  const provinceMetricDelta = provinceMetric != null && typeof metricValue === 'number' ? `${fmtPctSigned(metricValue - provinceMetric)} pt` : '—';
+  const regionMetricDelta = regionMetric != null && typeof metricValue === 'number' ? `${fmtPctSigned(metricValue - regionMetric)} pt` : '—';
+  const currentName = selected.name_current || selected.municipality_name || '—';
+  const historicalName = selected.name_historical && selected.name_historical !== currentName ? selected.name_historical : null;
+  const coverageSpan = profileRows.length
+    ? `${profileRows[0]?.election_year || '—'}–${profileRows.at(-1)?.election_year || '—'} · ${fmtInt(profileRows.length)} elezioni`
+    : 'Copertura n/d';
+  const quickFacts = [
+    ['Elezione attiva', electionLabelByKey(state.selectedElection)],
+    ['Metrica attiva', metricLabel()],
+    ['Valore attuale', metricValueStr],
+    ['Affluenza', currentRow.turnout_pct != null ? `${fmtPct(currentRow.turnout_pct)}%` : '—'],
+    ['Margine 1°-2°', currentRow.first_second_margin != null ? `${fmtPct(currentRow.first_second_margin)} pt` : '—'],
+    ...(typeof metricValue === 'number'
+      ? [['Vs provincia', provinceMetricDelta], ['Vs Italia', regionMetricDelta]]
+      : [['Stato territoriale', currentRow.territorial_status || '—'], ['Affidabilità del caso', trust.label]]),
+    ...(currentPartyShare != null && state.selectedMetric !== 'party_share'
+      ? [
+          [currentSelectionLabel(), `${fmtPct(currentPartyShare)}%`],
+          ['Vs provincia / Italia', `${provincePartyShare != null ? fmtPctSigned(currentPartyShare - provincePartyShare) : '—'} / ${regionPartyShare != null ? fmtPctSigned(currentPartyShare - regionPartyShare) : '—'} pt`]
+        ]
+      : []),
+    ['Rank indicatore', metricRank != null ? `#${fmtInt(metricRank)} / ${fmtInt(state.filteredRows.length)}` : '—']
+  ];
+  const contextFacts = [
+    ['Provincia corrente', selected.province_current || currentRow.province || '—'],
+    ...(currentRow?.province_observed && currentRow.province_observed !== (selected.province_current || currentRow.province || '')
+      ? [['Provincia osservata nella fonte', currentRow.province_observed]]
+      : []),
+    ...(historicalName ? [['Nome storico', historicalName]] : []),
+    ['Copertura disponibile', coverageSpan],
+    ['Affidabilità del caso', trust.label],
+    ['Modalità territoriale', currentRow.territorial_mode || state.territorialMode],
+    ['Rank affluenza', turnoutRank != null ? `#${fmtInt(turnoutRank)} / ${fmtInt(state.filteredRows.length)}` : '—'],
+    ['Confronto attivo', state.compareElection ? electionLabelByKey(state.compareElection) : 'nessuno']
+  ];
 
   els.selectedMunicipalityBadge.textContent = selected.name_current || selected.municipality_name || selected.name_historical || state.selectedMunicipalityId;
   els.bookmarkMunicipalityBtn.textContent = state.compareMunicipalityIds.includes(state.selectedMunicipalityId) ? 'Rimuovi dal comparatore' : 'Aggiungi al comparatore';
@@ -3039,31 +3095,17 @@ function renderDetail() {
   container.className = '';
   container.innerHTML = `
     <div class="detail-block">
-      <h3>Anagrafica</h3>
+      <h3>Quadro rapido</h3>
+      <div class="helper-text">${escapeHtml(metricSentenceForRow(currentRow))}</div>
       <div class="keyvals">
-        ${currentRow?.province_observed && currentRow.province_observed !== (selected.province_current || currentRow.province || '') ? `<div><span>Provincia osservata</span>${escapeHtml(currentRow.province_observed)}</div>` : ''}
-        <div><span>ID geometrico corrente</span>${escapeHtml(selected.geometry_id || currentRow.geometry_id || 'n/d')}</div>
-        <div><span>Nome corrente</span>${escapeHtml(selected.name_current || selected.municipality_name || '—')}</div>
-        <div><span>Nome storico</span>${escapeHtml(selected.name_historical || '—')}</div>
-        <div><span>Provincia</span>${escapeHtml(selected.province_current || currentRow.province || '—')}</div>
-        <div><span>ID stabile</span>${escapeHtml(selected.municipality_id || selected.geometry_id || '—')}</div>
-        <div><span>Stato territoriale</span>${escapeHtml(currentRow.territorial_status || '—')}</div>
-        <div><span>Modalità territoriale</span>${escapeHtml(currentRow.territorial_mode || state.territorialMode)}</div>
+        ${quickFacts.map(([label, value]) => `<div><span>${escapeHtml(label)}</span>${escapeHtml(value)}</div>`).join('')}
       </div>
+      ${currentRow?.comparability_note ? `<div class="detail-inline-note"><strong>Nota territoriale:</strong> ${escapeHtml(currentRow.comparability_note)}</div>` : ''}
     </div>
     <div class="detail-block">
-      <h3>Confronti immediati</h3>
+      <h3>Contesto del comune</h3>
       <div class="keyvals">
-        <div><span>Affluenza comune</span>${currentRow.turnout_pct != null ? `${fmtPct(currentRow.turnout_pct)}%` : '—'}</div>
-        <div><span>Vs provincia</span>${currentRow.turnout_pct != null && provinceTurnout != null ? `${fmtPctSigned(currentRow.turnout_pct - provinceTurnout)} pt` : '—'}</div>
-        <div><span>Vs Italia</span>${currentRow.turnout_pct != null && regionTurnout != null ? `${fmtPctSigned(currentRow.turnout_pct - regionTurnout)} pt` : '—'}</div>
-        <div><span>Primo partito</span>${escapeHtml(currentRow.first_party_std || '—')}</div>
-        <div><span>${escapeHtml(state.selectedParty || 'Quota attiva')}</span>${currentPartyShare != null ? `${fmtPct(currentPartyShare)}%` : '—'}</div>
-        <div><span>Vs provincia / Italia</span>${currentPartyShare != null ? `${provincePartyShare != null ? fmtPctSigned(currentPartyShare - provincePartyShare) : '—'} / ${regionPartyShare != null ? fmtPctSigned(currentPartyShare - regionPartyShare) : '—'} pt` : '—'}</div>
-        <div><span>Margine 1°-2°</span>${currentRow.first_second_margin != null ? `${fmtPct(currentRow.first_second_margin)} pt` : '—'}</div>
-        <div><span>Delta vs confronto</span>${compareRow ? `${fmtPctSigned((currentPartyShare ?? 0) - (aggregateShareFor(state, compareRow.election_key, state.selectedMunicipalityId, state.selectedParty) ?? 0))} pt` : '—'}</div>
-        <div><span>Rank affluenza</span>${turnoutRank != null ? `#${fmtInt(turnoutRank)} / ${fmtInt(state.filteredRows.length)}` : '—'}</div>
-        <div><span>Rank indicatore</span>${metricRank != null ? `#${fmtInt(metricRank)} / ${fmtInt(state.filteredRows.length)}` : '—'}</div>
+        ${contextFacts.map(([label, value]) => `<div><span>${escapeHtml(label)}</span>${escapeHtml(value)}</div>`).join('')}
       </div>
     </div>`;
 
@@ -3501,7 +3543,7 @@ function renderComparisonPanel() {
       ${listHtml(turnoutGain.map(d => ({ ...d, delta_party: null })), 'turnout')}
     </div>
     <div class="comparison-box">
-      <h3>Cambi di primo partito</h3>
+      <h3>Cambi di leadership</h3>
       ${listHtml(leaderFlips, 'flip')}
     </div>`;
   [...els.comparisonPanelContent.querySelectorAll('[data-mid]')].forEach(btn => btn.addEventListener('click', () => {
@@ -4232,6 +4274,7 @@ function restoreURLState() {
   state.tableSort = params.get('tableSort') || state.tableSort;
   state.tablePage = safeNumber(params.get('tablePage')) || state.tablePage;
   state.showNotes = params.get('showNotes') !== 'false';
+  normalizeMetricState();
   state.trajectoryMode = params.get('trajectoryMode') || state.trajectoryMode;
   state.swipePosition = safeNumber(params.get('swipePosition')) ?? state.swipePosition;
   state.selectedAreaPreset = params.get('selectedAreaPreset') || state.selectedAreaPreset;
@@ -4451,7 +4494,7 @@ function bindEvents() {
   els.saveNoteBtn?.addEventListener('click', saveCurrentMunicipalityNote);
   els.clearNoteBtn?.addEventListener('click', clearCurrentMunicipalityNote);
   [...document.querySelectorAll('[data-preset-metric]')].forEach(btn => btn.addEventListener('click', () => {
-    state.selectedMetric = btn.dataset.presetMetric || state.selectedMetric;
+    state.selectedMetric = sanitizeSelectedMetric(btn.dataset.presetMetric || state.selectedMetric);
     if (btn.dataset.presetMode) state.selectedPartyMode = btn.dataset.presetMode;
     if (btn.dataset.presetPalette) state.selectedPalette = btn.dataset.presetPalette;
     state.tablePage = 1;
@@ -4960,7 +5003,7 @@ function renderTransitionMatrix() {
         <div class="archetype-badge">Sintesi</div>
         <div class="similarity-list">
           <div class="similarity-item"><div><strong>Comuni confrontabili</strong><div class="similarity-meta">con dati in entrambe le elezioni</div></div><div class="similarity-score">${fmtInt(pairs.length)}</div></div>
-          <div class="similarity-item"><div><strong>Cambio di primo partito</strong></div><div class="similarity-score">${fmtInt(changedLeader)}</div></div>
+          <div class="similarity-item"><div><strong>Cambio di leadership</strong></div><div class="similarity-score">${fmtInt(changedLeader)}</div></div>
           <div class="similarity-item"><div><strong>Cambio di blocco dominante</strong></div><div class="similarity-score">${fmtInt(changedBlock)}</div></div>
         </div>
       </div>

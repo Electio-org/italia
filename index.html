@@ -108,7 +108,6 @@
           <label>
             Mostra in mappa
             <select id="metric-select">
-              <option value="first_party">Primo partito</option>
               <option value="party_share">Quota del partito</option>
               <option value="turnout">Affluenza</option>
               <option value="margin">Margine del vincente</option>
@@ -116,7 +115,7 @@
             </select>
           </label>
           <label>
-            Livello selezione
+            Quota per
             <select id="party-mode-select">
               <option value="party_std">Partito</option>
               <option value="party_family">Famiglia</option>
@@ -127,12 +126,8 @@
 
         <div class="two-col two-col-main">
           <label>
-            Partito / famiglia / blocco
+            Soggetto
             <select id="party-select"></select>
-          </label>
-          <label>
-            Base geometrica
-            <select id="geometry-reference-select"></select>
           </label>
         </div>
 
@@ -172,6 +167,11 @@
         <details class="advanced-sidebar-details">
           <summary>Controlli avanzati</summary>
           <div class="advanced-sidebar-grid">
+            <label>
+              Base geometrica
+              <select id="geometry-reference-select"></select>
+            </label>
+
             <label>
               Area
               <select id="area-preset-select"></select>
@@ -240,12 +240,10 @@
             <div class="preset-box">
               <div class="helper-text">Preset rapidi</div>
               <div class="preset-grid">
-                <button type="button" class="preset-btn" data-preset-metric="first_party" data-preset-mode="party_std">Primo partito</button>
-                <button type="button" class="preset-btn" data-preset-metric="party_share">Quota selezionata</button>
+                <button type="button" class="preset-btn" data-preset-metric="margin" data-preset-palette="diverging">Margine</button>
+                <button type="button" class="preset-btn" data-preset-metric="party_share">Quota partito</button>
                 <button type="button" class="preset-btn" data-preset-metric="turnout" data-preset-palette="sequential">Affluenza</button>
                 <button type="button" class="preset-btn" data-preset-metric="swing_compare" data-preset-palette="diverging">Scarto</button>
-                <button type="button" class="preset-btn" data-preset-metric="volatility" data-preset-palette="sequential">Volatilità</button>
-                <button type="button" class="preset-btn" data-preset-metric="dominant_block" data-preset-mode="bloc">Blocchi</button>
               </div>
             </div>
           </div>
@@ -820,13 +818,13 @@
           <div class="panel-header">
             <div>
               <h2>Profilo del comune</h2>
-              <p class="panel-subtitle">Anagrafica, confronto con provincia/Italia, linea temporale, lineage.</p>
+              <p class="panel-subtitle">Quadro rapido del comune selezionato, con contesto essenziale e approfondimenti sotto.</p>
             </div>
           </div>
 
           <div class="detail-summary-shell">
             <div class="detail-meta-block">
-              <div class="detail-section-title">Scheda del caso</div>
+              <div class="detail-section-title">Quadro rapido</div>
               <div id="municipality-profile" class="empty-state">Seleziona un comune dalla mappa o dalla ricerca.</div>
             </div>
             <div class="detail-meta-block">
@@ -973,7 +971,7 @@
                   <th>Scheda comune</th>
                   <th>Provincia</th>
                   <th>Affluenza</th>
-                  <th>Primo partito</th>
+                  <th>Leadership locale</th>
                   <th>Quota attiva</th>
                   <th>Δ confronto</th>
                   <th>Volatilità</th>
