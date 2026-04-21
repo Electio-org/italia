@@ -784,9 +784,17 @@
           </div>
           <div id="map-wrapper">
             <canvas id="map-canvas" width="960" height="680" role="img" aria-label="Mappa comunale interattiva dell'Italia"></canvas>
-            <svg id="map-svg" viewBox="0 0 960 680" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Mappa comunale interattiva dell'Italia"></svg>
+            <div id="map-loading" class="map-loading hidden" aria-hidden="true">
+              <div class="map-loading-spinner" aria-hidden="true"></div>
+              <div class="map-loading-label">Caricamento dati elezione…</div>
+            </div>
             <div id="map-empty-state" class="empty-state hidden"></div>
             <div id="tooltip" class="tooltip hidden"></div>
+          </div>
+          <div id="map-detail-cta" class="map-detail-cta hidden" aria-hidden="true">
+            <span class="map-detail-cta-label">Comune selezionato</span>
+            <strong id="map-detail-cta-name">—</strong>
+            <a href="#municipality-profile" id="map-detail-cta-link" class="ghost-btn small-btn">Vai al dettaglio ↓</a>
           </div>
           <div class="map-context-strip">
             <div class="map-context-block">

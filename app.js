@@ -1761,6 +1761,35 @@ function requestRender() {
   });
 }
 
+// Double-rAF so the loading overlay DOM change paints before the blocking
+// renderAll starts. Without this the spinner is shown and hidden in the same
+// frame and never becomes visible.
+function deferAfterLoadingPaint(fn) {
+  window.requestAnimationFrame(() => window.requestAnimationFrame(fn));
+}
+
+// Run a readControls+requestRender paired with a loading indicator. The
+// spinner is dismissed only after renderAll completes (one rAF after
+// requestRender schedules it). Any unrelated requestRender firing during the
+// deferral cannot hide the spinner because mapLoadingOwed gates the hide.
+function runRenderWithLoadingDismiss(doWork) {
+  deferAfterLoadingPaint(() => {
+    try {
+      doWork();
+    } catch (err) {
+      // Don't let a downstream failure leak a permanently-visible overlay:
+      // the matching setMapLoading(false) still runs in the finally-style
+      // post-render rAF below.
+      console.error('[runRenderWithLoadingDismiss]', err);
+    }
+    // Hide one frame after the render rAF runs, so renderAll has already
+    // swapped the canvas contents when the spinner comes down.
+    window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => setMapLoading(false));
+    });
+  });
+}
+
 function invalidateDerivedCaches() {
   state.metricCaches = {};
   state.selectorCaches = {};
@@ -2309,8 +2338,6 @@ function currentMapRenderKey() {
 function renderMap() {
   const renderKey = currentMapRenderKey();
   if (state.lastMapRenderKey === renderKey) return;
-  const svg = d3.select('#map-svg');
-  svg.selectAll('*').remove();
 
   const rows = filteredRowsWithMetric(state, { matchesCompleteness, matchesTerritorialStatus });
   state.filteredRows = rows;
@@ -2333,87 +2360,15 @@ function renderMap() {
   renderQuickStats(rows);
 
   const projection = makeGeoProjection(state.geometry, 960, 680);
-  const path = d3.geoPath(projection);
-  const features = state.geometry.features;
   const anySelection = Boolean(state.selectedMunicipalityId);
 
-  if (els.mapCanvas && typeof Path2D === 'function') {
-    svg.classed('is-canvas-backed', true);
-    renderCanvasMap({ rows, rowByJoinKey, scaleInfo, projection, anySelection });
-    enableMapZoom();
-    if (state.selectedMunicipalityId && state.lastAutoZoomMunicipality !== state.selectedMunicipalityId) {
-      zoomToSelectedMunicipality();
-      state.lastAutoZoomMunicipality = state.selectedMunicipalityId;
-    } else if (!state.selectedMunicipalityId) {
-      state.lastAutoZoomMunicipality = null;
-    }
+  if (!els.mapCanvas || typeof Path2D !== 'function') {
+    showMapMessage('Mappa non disponibile: il browser non supporta Canvas Path2D.');
     state.lastMapRenderKey = renderKey;
     return;
   }
 
-  svg.classed('is-canvas-backed', false);
-
-  const zoomLayer = svg.append('g').attr('class', 'map-zoom-layer');
-
-  if (state.provinceGeometry?.features?.length) {
-    zoomLayer.append('g').attr('class','province-layer').selectAll('path')
-      .data(state.provinceGeometry.features)
-      .join('path')
-      .attr('class','province-boundary')
-      .attr('d', path)
-      .attr('fill','none')
-      .attr('stroke','#94a3b8')
-      .attr('stroke-width',0.8)
-      .attr('opacity',0.55);
-  }
-
-  zoomLayer.selectAll('path')
-    .data(features)
-    .join('path')
-    .attr('class', feature => {
-      const row = rowByJoinKey.get(geometryJoinKey(feature));
-      const mid = row?.municipality_id;
-      const classes = ['map-path','municipality-path'];
-      if (mid && mid === state.selectedMunicipalityId) classes.push('is-selected');
-      if (mid && state.compareMunicipalityIds.includes(mid)) classes.push('is-compared');
-      if (anySelection && mid && mid !== state.selectedMunicipalityId && !state.compareMunicipalityIds.includes(mid)) classes.push('is-faded');
-      return classes.join(' ');
-    })
-    .attr('d', path)
-    .attr('fill', feature => {
-      const row = rowByJoinKey.get(geometryJoinKey(feature));
-      return row ? scaleInfo.colorFor(row.__metric_value) : '#cbd5e1';
-    })
-    .attr('stroke', feature => {
-      const row = rowByJoinKey.get(geometryJoinKey(feature));
-      const mid = row?.municipality_id;
-      if (mid && mid === state.selectedMunicipalityId) return '#f8fafc';
-      if (mid && state.compareMunicipalityIds.includes(mid)) return municipalityColor(mid);
-      return '#09111f';
-    })
-    .attr('stroke-width', feature => {
-      const row = rowByJoinKey.get(geometryJoinKey(feature));
-      const mid = row?.municipality_id;
-      if (mid && mid === state.selectedMunicipalityId) return 1.8;
-      if (mid && state.compareMunicipalityIds.includes(mid)) return 1.25;
-      return 0.55;
-    })
-    .attr('cursor', 'pointer')
-    .on('mouseenter', (event, feature) => showTooltip(event, feature, rowByJoinKey.get(geometryJoinKey(feature))))
-    .on('mousemove', (event, feature) => showTooltip(event, feature, rowByJoinKey.get(geometryJoinKey(feature))))
-    .on('mouseleave', hideTooltip)
-    .on('click', (event, feature) => {
-      const row = rowByJoinKey.get(geometryJoinKey(feature));
-      if (row?.municipality_id) {
-        if (event.shiftKey) {
-          toggleCompareMunicipality(row.municipality_id);
-          return;
-        }
-        selectMunicipality(row.municipality_id, { updateSearch: true });
-        requestRender();
-      }
-    });
-
+  renderCanvasMap({ rows, rowByJoinKey, scaleInfo, projection, anySelection });
   enableMapZoom();
   if (state.selectedMunicipalityId && state.lastAutoZoomMunicipality !== state.selectedMunicipalityId) {
     zoomToSelectedMunicipality();
@@ -2550,13 +2505,8 @@ function drawCanvasMap(transform = state.mapCanvasTransform || d3.zoomIdentity) 
   ctx.lineCap = 'round';
   const strokeScale = 1 / Math.max(1, transform.k);
 
-  render.cache.provinceItems.forEach(item => {
-    ctx.strokeStyle = '#475569';
-    ctx.globalAlpha = 0.7;
-    ctx.lineWidth = 0.9 * strokeScale;
-    ctx.stroke(item.path);
-  });
-
+  // Fill first, then draw all strokes on top (avoids adjacent fills
+  // eating one side of each border and gives GERDA-style crisp edges).
   render.cache.items.forEach(item => {
     const row = render.rowByJoinKey.get(item.key);
     const mid = row?.municipality_id;
@@ -2564,10 +2514,37 @@ function drawCanvasMap(transform = state.mapCanvasTransform || d3.zoomIdentity) 
     const compared = mid && state.compareMunicipalityIds.includes(mid);
     const faded = render.anySelection && mid && !selected && !compared;
     ctx.globalAlpha = faded ? 0.32 : 1;
-    ctx.fillStyle = row ? render.scaleInfo.colorFor(row.__metric_value) : '#cbd5e1';
+    ctx.fillStyle = row ? render.scaleInfo.colorFor(row.__metric_value) : '#e2e8f0';
     ctx.fill(item.path);
-    ctx.strokeStyle = selected ? '#0f172a' : compared ? municipalityColor(mid) : '#ffffff';
-    ctx.lineWidth = (selected ? 2.4 : compared ? 1.6 : 0.55) * strokeScale;
+  });
+
+  ctx.globalAlpha = 0.55;
+  ctx.strokeStyle = '#1e293b';
+  ctx.lineWidth = 0.7 * strokeScale;
+  render.cache.items.forEach(item => {
+    const row = render.rowByJoinKey.get(item.key);
+    const mid = row?.municipality_id;
+    if (mid && mid === state.selectedMunicipalityId) return;
+    if (mid && state.compareMunicipalityIds.includes(mid)) return;
+    ctx.stroke(item.path);
+  });
+
+  ctx.globalAlpha = 0.9;
+  ctx.strokeStyle = '#0f172a';
+  ctx.lineWidth = 1.4 * strokeScale;
+  render.cache.provinceItems.forEach(item => {
+    ctx.stroke(item.path);
+  });
+
+  ctx.globalAlpha = 1;
+  render.cache.items.forEach(item => {
+    const row = render.rowByJoinKey.get(item.key);
+    const mid = row?.municipality_id;
+    const selected = mid && mid === state.selectedMunicipalityId;
+    const compared = mid && state.compareMunicipalityIds.includes(mid);
+    if (!selected && !compared) return;
+    ctx.strokeStyle = selected ? '#0f172a' : municipalityColor(mid);
+    ctx.lineWidth = (selected ? 2.8 : 1.9) * strokeScale;
     ctx.stroke(item.path);
   });
   ctx.restore();
@@ -2761,7 +2738,51 @@ function lineageRecord() {
   return state.lineage.find(d => d.municipality_id_stable === state.selectedMunicipalityId) || null;
 }
 
+function updateMapDetailCta() {
+  if (!els.mapDetailCta) return;
+  const selected = selectedMunicipalityRecord();
+  if (!selected) {
+    els.mapDetailCta.classList.add('hidden');
+    els.mapDetailCta.setAttribute('aria-hidden', 'true');
+    return;
+  }
+  const name = selected.name_current || selected.municipality_name || selected.name_historical || state.selectedMunicipalityId;
+  if (els.mapDetailCtaName) els.mapDetailCtaName.textContent = name;
+  if (els.mapDetailCtaLink) {
+    const params = new URLSearchParams();
+    params.set('id', state.selectedMunicipalityId);
+    if (state.selectedElection) params.set('election', state.selectedElection);
+    els.mapDetailCtaLink.href = `municipality-detail.html?${params.toString()}`;
+  }
+  els.mapDetailCta.classList.remove('hidden');
+  els.mapDetailCta.setAttribute('aria-hidden', 'false');
+}
+
+// Counter so unrelated renders running between a loading trigger and the
+// deferred render of that trigger cannot prematurely hide the spinner. Only
+// the matching setMapLoading(false) from the trigger that owed it actually
+// hides the overlay.
+let mapLoadingOwed = 0;
+function setMapLoading(isLoading, message = '') {
+  if (!els.mapLoading) return;
+  if (isLoading) {
+    mapLoadingOwed += 1;
+    if (message) {
+      const label = els.mapLoading.querySelector('.map-loading-label');
+      if (label) label.textContent = message;
+    }
+    els.mapLoading.classList.remove('hidden');
+    els.mapLoading.setAttribute('aria-hidden', 'false');
+  } else {
+    if (mapLoadingOwed > 0) mapLoadingOwed -= 1;
+    if (mapLoadingOwed > 0) return;
+    els.mapLoading.classList.add('hidden');
+    els.mapLoading.setAttribute('aria-hidden', 'true');
+  }
+}
+
 function renderDetail() {
+  updateMapDetailCta();
   const container = els.municipalityProfile;
   const selected = selectedMunicipalityRecord();
   if (!selected) {
@@ -3830,50 +3851,30 @@ function renderProvinceSmallMultiples() {
 }
 
 function enableMapZoom() {
-  if (els.mapCanvas && state.mapCanvasRender) {
-    const canvas = d3.select(els.mapCanvas);
-    if (!state.mapCanvasZoomBehavior) {
-      state.mapCanvasZoomBehavior = d3.zoom()
-        .scaleExtent([1, 9])
-        .on('zoom', event => drawCanvasMapSoon(event.transform));
-      canvas.call(state.mapCanvasZoomBehavior);
-    }
-    state.mapZoomBehavior = state.mapCanvasZoomBehavior;
-    state.mapZoomTarget = 'canvas';
-    return;
+  if (!els.mapCanvas || !state.mapCanvasRender) return;
+  const canvas = d3.select(els.mapCanvas);
+  if (!state.mapCanvasZoomBehavior) {
+    state.mapCanvasZoomBehavior = d3.zoom()
+      .scaleExtent([1, 9])
+      .on('zoom', event => drawCanvasMapSoon(event.transform));
+    canvas.call(state.mapCanvasZoomBehavior);
   }
-  const svg = d3.select('#map-svg');
-  const base = svg.select('g.map-zoom-layer');
-  if (base.empty()) return;
-  const zoom = d3.zoom().scaleExtent([1, 8]).on('zoom', (event) => base.attr('transform', event.transform));
-  svg.call(zoom);
-  state.mapZoomBehavior = zoom;
-  state.mapZoomTarget = 'svg';
+  state.mapZoomBehavior = state.mapCanvasZoomBehavior;
+  state.mapZoomTarget = 'canvas';
 }
 
 function resetMapZoom() {
-  if (!state.mapZoomBehavior) return;
-  if (state.mapZoomTarget === 'canvas' && els.mapCanvas) {
-    d3.select(els.mapCanvas).transition().duration(180).call(state.mapZoomBehavior.transform, d3.zoomIdentity);
-    return;
-  }
-  d3.select('#map-svg').transition().duration(250).call(state.mapZoomBehavior.transform, d3.zoomIdentity);
+  if (!state.mapZoomBehavior || !els.mapCanvas) return;
+  d3.select(els.mapCanvas).transition().duration(180).call(state.mapZoomBehavior.transform, d3.zoomIdentity);
 }
 
 function zoomToSelectedMunicipality() {
   if (!state.mapZoomBehavior || !state.selectedMunicipalityId || !state.geometry?.features?.length) return;
+  if (!els.mapCanvas || !state.mapCanvasRender?.cache?.items?.length) return;
   const row = state.summary.find(d => d.municipality_id === state.selectedMunicipalityId) || state.municipalities.find(d => d.municipality_id === state.selectedMunicipalityId);
   if (!row) return;
-  let bounds = null;
-  if (state.mapZoomTarget === 'canvas' && state.mapCanvasRender?.cache?.items?.length) {
-    const key = rowJoinKey(row);
-    bounds = state.mapCanvasRender.cache.itemsByKey?.get(key)?.bounds || null;
-  } else {
-    const feature = state.geometry.features.find(f => geometryJoinKey(f) === rowJoinKey(row));
-    if (!feature) return;
-    const path = d3.geoPath(makeGeoProjection(state.geometry, 960, 680));
-    bounds = path.bounds(feature);
-  }
+  const key = rowJoinKey(row);
+  const bounds = state.mapCanvasRender.cache.itemsByKey?.get(key)?.bounds || null;
   if (!bounds) return;
   const [[x0, y0], [x1, y1]] = bounds;
   if (![x0, y0, x1, y1].every(Number.isFinite)) return;
@@ -3885,11 +3886,7 @@ function zoomToSelectedMunicipality() {
   const y = (y0 + y1) / 2;
   const scale = Math.max(1, Math.min(8, 0.8 / Math.max(dx / width, dy / height)));
   const transform = d3.zoomIdentity.translate(width / 2, height / 2).scale(scale).translate(-x, -y);
-  if (state.mapZoomTarget === 'canvas' && els.mapCanvas) {
-    d3.select(els.mapCanvas).transition().duration(220).call(state.mapZoomBehavior.transform, transform);
-    return;
-  }
-  d3.select('#map-svg').transition().duration(350).call(state.mapZoomBehavior.transform, transform);
+  d3.select(els.mapCanvas).transition().duration(220).call(state.mapZoomBehavior.transform, transform);
 }
 
 function serializeSvgToPng(svgNode, filename = 'chart.png') {
@@ -4094,8 +4091,15 @@ function bindEvents() {
   document.addEventListener('dashboard-view-change', event => {
     if (event.detail?.view === 'method') ensureDeferredMetadata({ silent: false });
   });
+  const loadingTriggerSelects = new Set([els.electionSelect, els.compareElectionSelect, els.metricSelect, els.partySelect, els.customIndicatorSelect, els.partyModeSelect, els.paletteSelect, els.provinceSelect, els.areaPresetSelect].filter(Boolean));
   [els.electionSelect, els.compareElectionSelect, els.provinceSelect, els.areaPresetSelect, els.metricSelect, els.partySelect, els.customIndicatorSelect, els.partyModeSelect, els.territorialModeSelect, els.completenessSelect, els.territorialStatusSelect, els.sameScaleCheckbox, els.paletteSelect, els.tableSortSelect, els.showNotesCheckbox, els.trajectoryModeSelect, els.densitySelect, els.visionModeSelect].filter(Boolean).forEach(el => {
     el.addEventListener('change', () => {
+      if (loadingTriggerSelects.has(el)) {
+        const message = el === els.electionSelect || el === els.compareElectionSelect
+          ? 'Caricamento dati elezione…'
+          : 'Aggiornamento mappa…';
+        setMapLoading(true, message);
+      }
       if (el === els.partyModeSelect) refreshPartySelector();
       if (el === els.areaPresetSelect) {
         const available = [...els.provinceSelect.options].map(o => o.value);
@@ -4110,8 +4114,12 @@ function bindEvents() {
       }
       invalidateDerivedCaches();
       state.tablePage = 1;
-      readControls();
-      requestRender();
+      if (loadingTriggerSelects.has(el)) {
+        runRenderWithLoadingDismiss(() => { readControls(); requestRender(); });
+      } else {
+        readControls();
+        requestRender();
+      }
     });
   });
 
@@ -4121,12 +4129,12 @@ function bindEvents() {
     const idx = Number(els.electionSlider.value || 0);
     const label = (state.electionLabels || [])[idx];
     if (!label) return;
+    setMapLoading(true, 'Caricamento dati elezione…');
     state.selectedElection = label.value;
     els.electionSelect.value = label.value;
     updateElectionSlider();
     state.tablePage = 1;
-    readControls();
-    requestRender();
+    runRenderWithLoadingDismiss(() => { readControls(); requestRender(); });
   });
   els.prevElectionBtn.addEventListener('click', () => stepElection(-1));
   els.nextElectionBtn.addEventListener('click', () => stepElection(1));
@@ -5088,6 +5096,10 @@ async function init() {
     sidebarQuickStats: q('sidebar-quick-stats'),
     sidebarDownloadPngBtn: q('sidebar-download-png-btn'),
     mapCanvas: q('map-canvas'),
+    mapLoading: q('map-loading'),
+    mapDetailCta: q('map-detail-cta'),
+    mapDetailCtaName: q('map-detail-cta-name'),
+    mapDetailCtaLink: q('map-detail-cta-link'),
     mapEmptyState: q('map-empty-state'),
     tooltip: q('tooltip'),
     municipalityProfile: q('municipality-profile'),

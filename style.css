@@ -5808,24 +5808,85 @@ body[data-site-page="dashboard"] .sidebar .panel.control-panel .panel-header > d
   display: none !important;
 }
 
-/* (D) Hide the detail-panel entirely while the profile is in    */
-/* empty-state. Using :has() so it flips back on as soon as JS   */
-/* removes the .empty-state class from #municipality-profile.    */
-/* When hidden, collapse .map-and-detail to a single column so   */
-/* the map claims the full width.                                */
-body[data-site-page="dashboard"] .detail-panel:has(#municipality-profile.empty-state) {
+/* (D) Detail is now a standalone page (`municipality-detail.html`).
+ * Hide the inline detail-panel entirely on the dashboard and let the
+ * map claim the full width; the "Vai al dettaglio" CTA next to the
+ * map takes the user to the dedicated page when a comune is selected. */
+body[data-site-page="dashboard"] .detail-panel {
   display: none !important;
 }
 @media (min-width: 960px) {
-  body[data-site-page="dashboard"] .map-and-detail:has(.detail-panel #municipality-profile.empty-state) {
-    grid-template-columns: minmax(0, 1fr) !important;
-  }
-  /* When a municipality IS selected, keep detail-panel in the    */
-  /* secondary column but not "sticky tall" — match GERDA and     */
-  /* let it flow below on tighter viewports.                      */
   body[data-site-page="dashboard"] .map-and-detail {
+    grid-template-columns: minmax(0, 1fr) !important;
     align-items: start;
   }
+}
+
+/* Map-adjacent CTA "Vai al dettaglio del comune" */
+body[data-site-page="dashboard"] .map-detail-cta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 10px 0 0 0;
+  padding: 10px 14px;
+  background: rgba(15, 23, 42, 0.72);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  border-radius: 12px;
+  color: #e2e8f0;
+  font-size: 13px;
+}
+body[data-site-page="dashboard"] .map-detail-cta.hidden {
+  display: none !important;
+}
+body[data-site-page="dashboard"] .map-detail-cta-label {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 11px;
+  color: #94a3b8;
+}
+body[data-site-page="dashboard"] .map-detail-cta strong {
+  font-size: 15px;
+  color: #f8fafc;
+}
+body[data-site-page="dashboard"] .map-detail-cta a {
+  margin-left: auto;
+  text-decoration: none;
+}
+
+/* Loading indicator overlay on top of the map canvas */
+#map-wrapper { position: relative; }
+.map-loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: rgba(2, 6, 23, 0.55);
+  backdrop-filter: blur(2px);
+  color: #e2e8f0;
+  font-size: 13px;
+  z-index: 6;
+  pointer-events: none;
+}
+.map-loading.hidden {
+  display: none !important;
+}
+.map-loading-spinner {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 3px solid rgba(148, 163, 184, 0.25);
+  border-top-color: #60a5fa;
+  animation: mapLoadingSpin 0.75s linear infinite;
+}
+.map-loading-label {
+  letter-spacing: 0.02em;
+}
+@keyframes mapLoadingSpin {
+  to { transform: rotate(360deg); }
 }
 
 /* (E) Control panel becomes a narrow vertical GERDA-style       */
@@ -6029,3 +6090,60 @@ body[data-site-page="dashboard"] #loading-overlay.hidden {
   display: none !important;
 }
 
+
+/* ---------------------------------------------------------------
+   Municipality detail page (municipality-detail.html)
+   --------------------------------------------------------------- */
+body[data-site-page="municipality-detail"] .detail-breadcrumb-link {
+  color: inherit;
+  text-decoration: none;
+}
+body[data-site-page="municipality-detail"] .detail-breadcrumb-link:hover {
+  text-decoration: underline;
+}
+body[data-site-page="municipality-detail"] .detail-error {
+  margin-top: 16px;
+  padding: 12px 16px;
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  border-radius: 10px;
+  background: rgba(239, 68, 68, 0.08);
+  color: #991b1b;
+  font-size: 14px;
+}
+body[data-site-page="municipality-detail"] .detail-error.hidden {
+  display: none !important;
+}
+body[data-site-page="municipality-detail"] .detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+body[data-site-page="municipality-detail"] .detail-kv {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 14px;
+  background: #ffffff;
+  border: 1px solid var(--line-soft, #e2e8f0);
+  border-radius: 12px;
+}
+body[data-site-page="municipality-detail"] .detail-kv-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #64748b;
+}
+body[data-site-page="municipality-detail"] .detail-kv-value {
+  font-size: 15px;
+  font-weight: 600;
+  color: #0f172a;
+}
+body[data-site-page="municipality-detail"] .detail-placeholder {
+  padding: 14px;
+  color: #475569;
+  font-size: 14px;
+}
+body[data-site-page="municipality-detail"] .detail-placeholder-muted {
+  color: #94a3b8;
+  font-style: italic;
+}

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light" />
+  <title>Electio Italia | Dettaglio comune</title>
+  <meta name="description" content="Profilo comunale: anagrafica, confronti con provincia/Italia, evoluzione storica e grafici per un singolo comune." />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="tabler-theme.css" />
+  <link rel="stylesheet" href="vendor/tabler/core/tabler.min.css" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="vendor/tabler/core/tabler.min.css" /></noscript>
+  <script defer src="vendor/papaparse/papaparse.min.js"></script>
+</head>
+<body data-site-page="municipality-detail">
+  <a href="#main-content" class="skip-link">Salta al contenuto</a>
+  <div class="page page-site">
+    <header class="site-header navbar navbar-expand-lg navbar-light d-print-none" role="banner">
+      <div class="container-xl site-header-inner">
+        <a class="navbar-brand site-brand" href="index.html">
+          <span class="site-brand-monogram">EI</span>
+          <span class="site-brand-copy">
+        <span class="site-brand-mark">Electio Italia</span>
+        <span class="site-brand-subtitle">Atlante elettorale d'Italia — tutte le elezioni dal dopoguerra al livello comunale</span>
+          </span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#site-nav-menu" aria-controls="site-nav-menu" aria-expanded="false" aria-label="Apri navigazione">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="site-nav-menu">
+          <nav class="navbar-nav ms-auto site-nav" aria-label="Navigazione principale">
+            <a class="nav-link" href="index.html"><svg class="site-nav-icon" aria-hidden="true" focusable="false"><use href="icons.svg#icon-chart-grid-dots"/></svg><span>Dashboard</span></a>
+            <a class="nav-link" href="data-download.html"><svg class="site-nav-icon" aria-hidden="true" focusable="false"><use href="icons.svg#icon-database-export"/></svg><span>Dati</span></a>
+            <a class="nav-link" href="usage-notes.html"><svg class="site-nav-icon" aria-hidden="true" focusable="false"><use href="icons.svg#icon-book-2"/></svg><span>Metodo</span></a>
+            <a class="nav-link" href="update-log.html"><svg class="site-nav-icon" aria-hidden="true" focusable="false"><use href="icons.svg#icon-history"/></svg><span>Aggiornamenti</span></a>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <main id="main-content" class="site-doc-main page-body">
+      <section class="site-doc-hero">
+        <div class="doc-eyebrow"><a href="index.html" class="detail-breadcrumb-link">← Torna alla dashboard</a></div>
+        <h1 id="detail-name">Dettaglio comune</h1>
+        <p class="site-doc-standfirst" id="detail-standfirst">Anagrafica, confronto con provincia/regione/Italia, evoluzione storica e grafici per il comune selezionato.</p>
+        <div id="detail-error" class="detail-error hidden"></div>
+      </section>
+
+      <section class="doc-section" id="detail-anagrafica-section">
+        <div class="doc-section-head">
+          <div>
+            <div class="doc-eyebrow">Anagrafica</div>
+            <h2>Identità del comune</h2>
+          </div>
+          <p class="doc-section-copy">Provincia, regione, codice ISTAT, geometria di riferimento.</p>
+        </div>
+        <div id="detail-anagrafica" class="detail-grid">
+          <div class="detail-placeholder">Caricamento anagrafica…</div>
+        </div>
+      </section>
+
+      <section class="doc-section" id="detail-history-section">
+        <div class="doc-section-head">
+          <div>
+            <div class="doc-eyebrow">Storico</div>
+            <h2>Evoluzione nelle elezioni</h2>
+          </div>
+          <p class="doc-section-copy">Risultati summary del comune per ciascuna elezione con copertura disponibile (affluenza, voti validi, schede bianche).</p>
+        </div>
+        <div class="doc-table-wrap">
+          <table class="doc-table" id="detail-history-table">
+            <thead>
+              <tr>
+                <th>Elezione</th>
+                <th>Anno</th>
+                <th>Affluenza %</th>
+                <th>Voti validi</th>
+                <th>Elettori</th>
+              </tr>
+            </thead>
+            <tbody id="detail-history-body">
+              <tr><td colspan="5" class="detail-placeholder">Caricamento storico…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="doc-section" id="detail-charts-section">
+        <div class="doc-section-head">
+          <div>
+            <div class="doc-eyebrow">Grafici</div>
+            <h2>Grafici storici &amp; evoluzione</h2>
+          </div>
+          <p class="doc-section-copy">In arrivo: serie storica affluenza, composizione partitica nel tempo, confronto con media provincia/regione/Italia.</p>
+        </div>
+        <div class="detail-placeholder detail-placeholder-muted">
+          Sezione in costruzione. I grafici saranno aggiunti in una release successiva.
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="site-footer-inner">
+        <div class="footer-section">
+          <h3>Progetto</h3>
+          <p>Electio Italia è un atlante elettorale pubblico per l'Italia, dal dopoguerra in poi, al livello comunale — dashboard, download, metodo e accesso programmatico.</p>
+        </div>
+        <div class="footer-section">
+          <h3>Risorse</h3>
+          <ul>
+            <li><a href="index.html">Dashboard</a></li>
+            <li><a href="data-download.html">Dati</a></li>
+            <li><a href="usage-notes.html">Metodo</a></li>
+            <li><a href="update-log.html">Aggiornamenti</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Stato del progetto</h3>
+          <p>La piattaforma è organizzata come archivio pubblico e cresce insieme alla copertura storica del dato elettorale nazionale.</p>
+        </div>
+      </div>
+      <div class="site-footer-copy">
+        <p>&copy; 2026 Simone Ghezzi Colombo &middot; Electio Italia &middot; Dati &amp; codice pubblicati con attribuzione.</p>
+      </div>
+    </footer>
+  </div>
+
+  <script src="vendor/tabler/core/tabler.min.js"></script>
+  <script src="tabler-enhance.js"></script>
+  <script type="module" src="municipality-detail.js"></script>
+  <script src="perf-boot.js" defer></script>
+</body>
+</html>
