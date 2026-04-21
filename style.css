@@ -5561,19 +5561,20 @@ body[data-site-page="dashboard"] .detail-panel .detail-meta-block:has(#compare-c
 
 /* (4) Header: shrink brand subtitle so the topbar does not      */
 /* shout. The subtitle is still visible but in-line small.       */
-.site-brand-subtitle {
+/* Scoped to dashboard only — other pages keep their header.     */
+body[data-site-page="dashboard"] .site-brand-subtitle {
   font-size: 0.78rem !important;
   font-weight: 500 !important;
   letter-spacing: 0 !important;
   text-transform: none !important;
   color: var(--muted) !important;
 }
-.site-brand-monogram {
+body[data-site-page="dashboard"] .site-brand-monogram {
   width: 32px !important;
   height: 32px !important;
   font-size: 0.82rem !important;
 }
-.site-header { padding: 6px 0 !important; }
+body[data-site-page="dashboard"] .site-header { padding: 6px 0 !important; }
 
 /* (5) Slim the control panel. Keep Elezione, Mostra in mappa,  */
 /* Partito and the timeline. Hide the rest (they are still      */
