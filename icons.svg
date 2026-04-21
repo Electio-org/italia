@@ -3,7 +3,7 @@
   <!--
     Inline SVG sprite that replaces the 207 KB tabler-icons font.
     Each symbol uses the Tabler icon source; only the 6 icons actually referenced
-    by the Italia Camera Explorer are included. Strokes follow the default Tabler
+    by the Electio Italia are included. Strokes follow the default Tabler
     1.5px outline with "currentColor" so the existing `.site-nav-icon` CSS keeps
     controlling fill and size.
   -->

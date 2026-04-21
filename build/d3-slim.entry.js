@@ -1,4 +1,4 @@
-// Custom slim d3 bundle: only the APIs Italia Camera Explorer actually uses.
+// Custom slim d3 bundle: only the APIs Electio Italia actually uses.
 export { extent, max, mean, min, pairs, sum, rollup, rollups } from 'd3-array';
 export { axisBottom, axisLeft } from 'd3-axis';
 export { rgb } from 'd3-color';

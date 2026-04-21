@@ -4,7 +4,7 @@
 `python -m http.server` is convenient but it does not honor
 `Accept-Encoding`, so the browser always downloads the uncompressed
 `.geojson`/`.topojson`/`.csv` files even though pre-compressed `.gz`
-siblings ship in the bundle. For the Italia Camera Explorer this means
+siblings ship in the bundle. For the Electio Italia this means
 roughly 3.5 MB of boundary data per page load instead of ~400 KB.
 
 This wrapper serves the pre-compressed `.br` (Brotli) or `.gz` (Gzip)

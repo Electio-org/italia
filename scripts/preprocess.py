@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Preprocessing infrastructure for Italia Camera Explorer.
+Preprocessing infrastructure for Electio Italia.
 
 Goals for this hardened version:
 - never invent electoral data
@@ -392,7 +392,7 @@ def write_manifest(output_root: Path) -> None:
     geometry_info = geometry_manifest_files(output_root)
     manifest = {
         "project": {
-            "title": "Italia Camera Explorer",
+            "title": "Electio Italia",
             "version": "0.11.1",
             "ready_for_real_data": True,
             "notes": [
@@ -484,7 +484,7 @@ def build_dataset_registry(output_root: Path, elections: List[Dict[str, object]]
         })
     return {
         "generated_by": "preprocess.py",
-        "project": "Italia Camera Explorer",
+        "project": "Electio Italia",
         "datasets": rows,
         "summary": {
             "technical_readiness": quality.get("derived_validations", {}).get("technical_readiness_score"),
@@ -1631,7 +1631,7 @@ def finalize_elections_master(elections: List[Dict[str, object]], summary_rows: 
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Prepare derived scaffolding for Italia Camera Explorer")
+    parser = argparse.ArgumentParser(description="Prepare derived scaffolding for Electio Italia")
     parser.add_argument("--source-root", required=True, help="Root with camera_YYYY folders and optional *_clean / *_raw")
     parser.add_argument("--output-root", required=True, help="App project root")
     args = parser.parse_args()

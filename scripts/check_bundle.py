@@ -48,7 +48,7 @@ def extract_imported_names(js_text: str):
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description='Smoke checks for Lombardia Camera Explorer bundle')
+    parser = argparse.ArgumentParser(description='Smoke checks for Electio Italia bundle')
     parser.add_argument('--root', default='.', help='Project root')
     args = parser.parse_args()
     root = Path(args.root).resolve()

@@ -138,7 +138,7 @@ async function loadBundle(page = 'dashboard') {
       payload.citation = await fetchText('CITATION.cff');
     } catch (error) {
       console.error(error);
-  payload.citation = `Italia Camera Explorer ${manifest.version || ''}`.trim();
+  payload.citation = `Electio Italia ${manifest.version || ''}`.trim();
     }
   }
   return payload;

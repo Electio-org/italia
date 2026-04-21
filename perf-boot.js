@@ -1,5 +1,5 @@
 /*
- * Italia Camera Explorer — runtime perf boot.
+ * Electio Italia — runtime perf boot.
  *
  * Keeps navigation instant after the first visit:
  *   1. Registers the service worker (navigation + asset cache, offline fallback).

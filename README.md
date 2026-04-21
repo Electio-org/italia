@@ -1,8 +1,10 @@
-# Italia Camera Explorer
+# Electio Italia
 
-Private preview of an Italy-wide election data platform for `Camera dei Deputati` and `Assemblea Costituente` results at municipal level.
+Public-facing electoral atlas of Italy — an all-country, municipality-level static explorer for `Camera dei Deputati` elections and the `Assemblea Costituente` 1946 vote.
 
-This repository is the focused home for the national build: a public-facing explorer, a structured derived-data bundle, and lightweight programmatic access for research and reuse. The project now publishes the all-Italy Camera layer from official Eligendo open-data archives.
+This repository is the focused home for the national build: a web dashboard, a structured derived-data bundle, and lightweight programmatic access for research and reuse. Data is sourced from official Eligendo open-data archives.
+
+**Live site:** https://electio.eu/ (GitHub Pages, once enabled — see "Deploy" below).
 
 ## What is in this repository
 
@@ -37,16 +39,24 @@ Requirements:
 
 The dashboard vendors its critical browser libraries locally (`d3`, `PapaParse`, `topojson-client`) instead of loading them from public CDNs at runtime.
 
-From the repository root:
+From the repository root, use the project dev server (it sets `Cache-Control: no-store` on `service-worker.js` so SW updates land immediately):
 
-```powershell
-python -m http.server 8000
+```bash
+python scripts/serve.py --port 8765 --host 127.0.0.1
 ```
 
-Then open:
+Then open `http://127.0.0.1:8765/`.
 
-- `http://127.0.0.1:8000/index.html`
-- `http://127.0.0.1:8000/data-download.html`
+## Deploy (GitHub Pages)
+
+The repository root is the Pages site. A `.nojekyll` file disables Jekyll, and a `CNAME` file maps the site to `electio.eu`.
+
+1. **GitHub → Settings → Pages**: source = `main` branch, folder = `/ (root)`.
+2. **Custom domain**: already set via `CNAME`. Configure DNS at your registrar:
+   - `ALIAS`/`ANAME` (or `A` records to GitHub Pages IPs `185.199.108-111.153`) on apex `electio.eu`
+   - `CNAME` on `www.electio.eu` → `simoneghezzicolombo.github.io`
+3. **Enforce HTTPS**: enable it in Pages settings after DNS propagates.
+4. **Large downloads**: `municipality_results_long.csv` (506 MB) and full-res GeoJSON files (LFS) are not served by Pages. Publish them as GitHub Release assets and update the links in `data-download.html` accordingly.
 
 ## Validation
 

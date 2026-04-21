@@ -107,7 +107,7 @@ def main() -> None:
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     project = manifest.setdefault("project", {})
     project["version"] = CURRENT_VERSION
-    project["title"] = "Italia Camera Explorer"
+    project["title"] = "Electio Italia"
     notes = list(project.get("notes") or [])
     if EXTRA_NOTE not in notes:
         notes.append(EXTRA_NOTE)

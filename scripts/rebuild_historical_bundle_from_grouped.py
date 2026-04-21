@@ -500,7 +500,7 @@ def source_path_for_year(pipeline_root: Path, year: int) -> Path:
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Repair historical grouped years and merge them into the Lombardia Camera Explorer bundle.")
+    parser = argparse.ArgumentParser(description="Repair historical grouped years and merge them into the Electio Italia bundle.")
     parser.add_argument("--root", default=".", help="Project root of lombardia_camera_app_v35")
     parser.add_argument("--pipeline-root", default=str(DEFAULT_PIPELINE_ROOT), help="Root of camera_lombardia_only_suite_v5 pipeline artifacts")
     parser.add_argument("--source-root", default=str(DEFAULT_SOURCE_ROOT), help="Temporary repaired historical source root")

@@ -1,6 +1,6 @@
 # Build helpers
 
-Lightweight build tooling for the Italia Camera Explorer perf bundle. Nothing
+Lightweight build tooling for the Electio Italia perf bundle. Nothing
 here runs at page load time — these scripts regenerate the pre-built assets
 that ship in `vendor/` and `data/derived/geometries_web/`.
 
