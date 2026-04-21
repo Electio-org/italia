@@ -747,8 +747,9 @@ function setupControls() {
     const withoutData = state.elections.filter(d => { const c = electionCoverageFor(state, d.election_key); return !(c.summary || c.results); });
     const renderOption = d => {
       const c = electionCoverageFor(state, d.election_key);
-      const suffix = c.results ? ` | ${c.results} righe partiti` : c.summary ? ` | ${c.summary} righe summary` : ' | nessun dato comunale pubblicato';
-      return `<option value="${escapeHtml(d.election_key)}">${escapeHtml(d.election_label || d.election_key)}${escapeHtml(suffix)}</option>`;
+      const hasData = !!(c.results || c.summary);
+      const suffix = hasData ? '' : ' · non ancora pubblicato';
+      return `<option value="${escapeHtml(d.election_key)}"${hasData ? '' : ' disabled'}>${escapeHtml(d.election_label || d.election_key)}${escapeHtml(suffix)}</option>`;
     };
     els.electionSelect.innerHTML = `${withData.length ? `<optgroup label="Elezioni con copertura">${withData.map(renderOption).join('')}</optgroup>` : ''}${withoutData.length ? `<optgroup label="Anni noti ma non ancora pubblicati a livello comunale">${withoutData.map(renderOption).join('')}</optgroup>` : ''}`;
     els.compareElectionSelect.innerHTML = `<option value="">Nessun confronto</option>` + `${withData.length ? `<optgroup label="Elezioni con copertura">${withData.map(renderOption).join('')}</optgroup>` : ''}${withoutData.length ? `<optgroup label="Anni noti ma non ancora pubblicati a livello comunale">${withoutData.map(renderOption).join('')}</optgroup>` : ''}`;
@@ -2156,11 +2157,13 @@ function colorScaleForRows(rows) {
 
 function renderLegend(scaleInfo) {
   if (!scaleInfo || !scaleInfo.legend?.length) {
-    els.legend.innerHTML = `
+    const emptyHtml = `
       <div class="legend-stack">
         <span class="legend-caption">Legenda</span>
         <span class="legend-empty">Legenda non disponibile per la vista corrente</span>
       </div>`;
+    els.legend.innerHTML = emptyHtml;
+    if (els.sidebarLegend) els.sidebarLegend.innerHTML = emptyHtml;
     return;
   }
   const explainer = scaleInfo.type === 'categorical'
@@ -2174,7 +2177,7 @@ function renderLegend(scaleInfo) {
     }
     return `<span class="legend-item"><span class="legend-swatch" style="background:${item.color}"></span><span>${escapeHtml(item.label)}</span></span>`;
   }).join('');
-  els.legend.innerHTML = `
+  const legendHtml = `
     <div class="legend-stack">
       <div class="legend-heading">
         <span class="legend-caption">${escapeHtml(metricLabel())}</span>
@@ -2185,6 +2188,36 @@ function renderLegend(scaleInfo) {
         <span class="legend-item"><span class="legend-swatch" style="background:#cbd5e1"></span><span>Nessun dato / comune non coperto</span></span>
       </div>
     </div>`;
+  els.legend.innerHTML = legendHtml;
+  if (els.sidebarLegend) els.sidebarLegend.innerHTML = legendHtml;
+}
+
+function renderQuickStats(rows) {
+  if (!els.sidebarQuickStats) return;
+  const values = (rows || []).map(r => r.__metric_value).filter(v => Number.isFinite(v));
+  if (!values.length) {
+    els.sidebarQuickStats.innerHTML = `<div class="quick-stats-empty">Nessun comune con valore numerico per la metrica corrente.</div>`;
+    return;
+  }
+  const avg = d3.mean(values);
+  const lo = d3.min(values);
+  const hi = d3.max(values);
+  const metricKey = state.selectedMetric;
+  const fmt = v => {
+    if (v == null || !Number.isFinite(v)) return '—';
+    if (['turnout', 'party_share', 'margin', 'delta_turnout', 'swing_compare', 'over_performance_province', 'over_performance_region', 'volatility', 'concentration', 'stability_index'].includes(metricKey)) {
+      return `${fmtPct(v)}%`;
+    }
+    return fmtInt(v);
+  };
+  els.sidebarQuickStats.innerHTML = `
+    <div class="quick-stats-header">${escapeHtml(metricLabel())}</div>
+    <dl class="quick-stats-grid">
+      <div class="quick-stat"><dt>Media</dt><dd>${fmt(avg)}</dd></div>
+      <div class="quick-stat"><dt>Minimo</dt><dd>${fmt(lo)}</dd></div>
+      <div class="quick-stat"><dt>Massimo</dt><dd>${fmt(hi)}</dd></div>
+      <div class="quick-stat"><dt>Comuni</dt><dd>${fmtInt(values.length)}</dd></div>
+    </dl>`;
 }
 
 function renderOverviewCards(rows) {
@@ -2285,6 +2318,7 @@ function renderMap() {
   if (!state.geometry || !Array.isArray(state.geometry.features) || !state.geometry.features.length) {
     showMapMessage('Geografia non disponibile. Inserisci un <code>GeoJSON</code> o <code>TopoJSON</code> reale e aggiorna il percorso nel <code>manifest.json</code>.');
     renderLegend(null);
+    renderQuickStats([]);
     state.lastMapRenderKey = renderKey;
     return;
   }
@@ -2293,6 +2327,7 @@ function renderMap() {
   const rowByJoinKey = new Map(rows.map(r => [rowJoinKey(r), r]));
   const scaleInfo = colorScaleForRows(rows);
   renderLegend(scaleInfo);
+  renderQuickStats(rows);
 
   const projection = makeGeoProjection(state.geometry, 960, 680);
   const path = d3.geoPath(projection);
@@ -2468,12 +2503,20 @@ function setupCanvasMapHandlers() {
   });
 }
 
+const CANVAS_LOGICAL_WIDTH = 960;
+const CANVAS_LOGICAL_HEIGHT = 680;
+
+function canvasBackingRatio() {
+  return Math.max(1, Math.min(3, window.devicePixelRatio || 1));
+}
+
 function resizeCanvasBackingStore(canvas) {
   if (!canvas) return null;
-  const width = 960;
-  const height = 680;
-  if (canvas.width !== width) canvas.width = width;
-  if (canvas.height !== height) canvas.height = height;
+  const dpr = canvasBackingRatio();
+  const bw = Math.round(CANVAS_LOGICAL_WIDTH * dpr);
+  const bh = Math.round(CANVAS_LOGICAL_HEIGHT * dpr);
+  if (canvas.width !== bw) canvas.width = bw;
+  if (canvas.height !== bh) canvas.height = bh;
   return canvas.getContext('2d', { alpha: true });
 }
 
@@ -2496,14 +2539,18 @@ function drawCanvasMap(transform = state.mapCanvasTransform || d3.zoomIdentity) 
   state.mapCanvasTransform = transform;
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.save();
+  const dpr = canvasBackingRatio();
+  ctx.scale(dpr, dpr);
   ctx.translate(transform.x, transform.y);
   ctx.scale(transform.k, transform.k);
+  ctx.lineJoin = 'round';
+  ctx.lineCap = 'round';
   const strokeScale = 1 / Math.max(1, transform.k);
 
   render.cache.provinceItems.forEach(item => {
-    ctx.strokeStyle = '#64748b';
-    ctx.globalAlpha = 0.58;
-    ctx.lineWidth = 0.8 * strokeScale;
+    ctx.strokeStyle = '#475569';
+    ctx.globalAlpha = 0.7;
+    ctx.lineWidth = 0.9 * strokeScale;
     ctx.stroke(item.path);
   });
 
@@ -2516,8 +2563,8 @@ function drawCanvasMap(transform = state.mapCanvasTransform || d3.zoomIdentity) 
     ctx.globalAlpha = faded ? 0.32 : 1;
     ctx.fillStyle = row ? render.scaleInfo.colorFor(row.__metric_value) : '#cbd5e1';
     ctx.fill(item.path);
-    ctx.strokeStyle = selected ? '#0f172a' : compared ? municipalityColor(mid) : '#f8fafc';
-    ctx.lineWidth = (selected ? 2.2 : compared ? 1.5 : 0.38) * strokeScale;
+    ctx.strokeStyle = selected ? '#0f172a' : compared ? municipalityColor(mid) : '#ffffff';
+    ctx.lineWidth = (selected ? 2.4 : compared ? 1.6 : 0.55) * strokeScale;
     ctx.stroke(item.path);
   });
   ctx.restore();
@@ -2537,8 +2584,8 @@ function canvasEventPoint(event) {
   const canvas = els.mapCanvas;
   if (!canvas) return null;
   const rect = canvas.getBoundingClientRect();
-  const x = (event.clientX - rect.left) * (canvas.width / Math.max(1, rect.width));
-  const y = (event.clientY - rect.top) * (canvas.height / Math.max(1, rect.height));
+  const x = (event.clientX - rect.left) * (CANVAS_LOGICAL_WIDTH / Math.max(1, rect.width));
+  const y = (event.clientY - rect.top) * (CANVAS_LOGICAL_HEIGHT / Math.max(1, rect.height));
   const transform = state.mapCanvasTransform || d3.zoomIdentity;
   const [ux, uy] = transform.invert([x, y]);
   return { x: ux, y: uy };
@@ -4151,6 +4198,11 @@ function bindEvents() {
     else serializeSvgToPng(q('map-svg'), `map_${state.selectedElection || 'all'}.png`);
     showToast('Snapshot mappa avviato.');
   });
+  els.sidebarDownloadPngBtn?.addEventListener('click', () => {
+    if (els.mapCanvas && state.mapCanvasRender) downloadCanvasAsPng(els.mapCanvas, `map_${state.selectedElection || 'all'}.png`);
+    else serializeSvgToPng(q('map-svg'), `map_${state.selectedElection || 'all'}.png`);
+    showToast('Snapshot mappa avviato.');
+  });
   els.exportTimelinePngBtn?.addEventListener('click', () => { serializeSvgToPng(q('timeline-chart'), `timeline_${state.selectedMunicipalityId || 'none'}.png`); showToast('Snapshot timeline avviato.'); });
   els.exportHeatmapPngBtn?.addEventListener('click', () => { serializeSvgToPng(q('heatmap-chart'), `heatmap_${state.selectedMunicipalityId || 'none'}.png`); showToast('Snapshot heatmap avviato.'); });
   els.exportAuditBtn?.addEventListener('click', () => { exportJSON(auditPayload(), `audit_${state.selectedElection || 'all'}.json`); showToast('Audit esportato.'); });
@@ -5029,6 +5081,9 @@ async function init() {
     downloadGuidePanel: q('download-guide-panel'),
     updateLogPanel: q('update-log-panel'),
     legend: q('legend'),
+    sidebarLegend: q('sidebar-legend'),
+    sidebarQuickStats: q('sidebar-quick-stats'),
+    sidebarDownloadPngBtn: q('sidebar-download-png-btn'),
     mapCanvas: q('map-canvas'),
     mapEmptyState: q('map-empty-state'),
     tooltip: q('tooltip'),

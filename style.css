@@ -5847,3 +5847,161 @@ body[data-site-page="dashboard"] .detail-panel:has(#municipality-profile.empty-s
   }
 }
 
+/* ============================================================ */
+/* gerda-parity (round 5) — legend + quick-stats + download in    */
+/* the sidebar, below the control-panel, always visible.          */
+/* ============================================================ */
+
+body[data-site-page="dashboard"] .sidebar .panel.map-companion {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 14px 14px 16px;
+  border: 1px solid var(--line-soft, #e5e9f2);
+  border-radius: 10px;
+  background: #fff;
+}
+body[data-site-page="dashboard"] .sidebar-legend:empty,
+body[data-site-page="dashboard"] .sidebar-quick-stats:empty { display: none; }
+body[data-site-page="dashboard"] .sidebar-legend .legend-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+body[data-site-page="dashboard"] .sidebar-legend .legend-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+body[data-site-page="dashboard"] .sidebar-legend .legend-caption {
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--muted);
+}
+body[data-site-page="dashboard"] .sidebar-legend .legend-caption.subtle {
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 400;
+  color: var(--muted);
+  opacity: 0.85;
+}
+body[data-site-page="dashboard"] .sidebar-legend .legend-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+body[data-site-page="dashboard"] .sidebar-legend .legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  color: var(--text);
+}
+body[data-site-page="dashboard"] .sidebar-legend .legend-swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  flex-shrink: 0;
+}
+body[data-site-page="dashboard"] .sidebar-legend .legend-gradient {
+  width: 100%;
+  height: 10px;
+  border-radius: 4px;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+}
+body[data-site-page="dashboard"] .sidebar-legend .legend-item-block {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
+  width: 100%;
+}
+
+body[data-site-page="dashboard"] .sidebar-quick-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line-soft, #e5e9f2);
+}
+body[data-site-page="dashboard"] .quick-stats-header {
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--muted);
+}
+body[data-site-page="dashboard"] .quick-stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 14px;
+  margin: 0;
+}
+body[data-site-page="dashboard"] .quick-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+body[data-site-page="dashboard"] .quick-stat dt {
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 500;
+}
+body[data-site-page="dashboard"] .quick-stat dd {
+  margin: 0;
+  font-size: 1.02rem;
+  font-weight: 600;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+body[data-site-page="dashboard"] .quick-stats-empty {
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+body[data-site-page="dashboard"] .sidebar-download-row {
+  display: flex;
+  padding-top: 12px;
+  border-top: 1px solid var(--line-soft, #e5e9f2);
+}
+body[data-site-page="dashboard"] .sidebar-download-btn {
+  width: 100%;
+  justify-content: center;
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+
+/* (G) Sidebar flush with map top — drop the .sidebar top padding */
+/* that made the control-panel float ~14px below the map frame.   */
+@media (min-width: 960px) {
+  body[data-site-page="dashboard"] .map-and-detail {
+    align-items: flex-start !important;
+  }
+  body[data-site-page="dashboard"] .sidebar {
+    padding-top: 0 !important;
+    gap: 14px;
+  }
+  body[data-site-page="dashboard"] .sidebar > .brand {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+  body[data-site-page="dashboard"] .sidebar .panel.control-panel {
+    margin-top: 0 !important;
+  }
+}
+
+/* (H) Loading overlay: make sure it sits above the map and is    */
+/* actually visible during first fetch / election change. The     */
+/* base class already provides the chrome — we only make sure it  */
+/* isn't hidden by the parent stacking context.                   */
+body[data-site-page="dashboard"] #loading-overlay {
+  z-index: 1200;
+}
+body[data-site-page="dashboard"] #loading-overlay.hidden {
+  display: none !important;
+}
+
