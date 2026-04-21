@@ -1,8 +1,13 @@
-# Italia Camera Explorer
+# Electio Italia
 
-Private preview of an Italy-wide election data platform for `Camera dei Deputati` and `Assemblea Costituente` results at municipal level.
+Public-facing electoral atlas of Italy — mapping every Italian election, from the post-war period onward, at the **municipal level**.
 
-This repository is the focused home for the national build: a public-facing explorer, a structured derived-data bundle, and lightweight programmatic access for research and reuse. The project now publishes the all-Italy Camera layer from official Eligendo open-data archives.
+This repository is the focused home for the national build: a web dashboard, a structured derived-data bundle, and lightweight programmatic access for research and reuse. Data is sourced from official Eligendo open-data archives.
+
+**Current coverage (shipped):** `Camera dei Deputati` (1948–2022) + `Assemblea Costituente` 1946.
+**Roadmap:** `Senato`, `Parlamento Europeo`, `Regionali`, `Comunali`, `Referendum` — all at the municipal level, all from 1946 onward.
+
+**Live site:** https://simoneghezzicolombo.github.io/electio/ (GitHub Pages; a custom domain can be added later by restoring the `CNAME` file).
 
 ## What is in this repository
 
@@ -12,12 +17,13 @@ This repository is the focused home for the national build: a public-facing expl
 - Programmatic loaders for Python and R under `clients/`.
 - Validation scripts for bundle integrity, frontend sanity checks, and loader smoke tests.
 
-## Current scope
+## Current scope & roadmap
 
-- Geography: Italy
-- Election family: `Camera dei Deputati` plus `Assemblea Costituente 1946`
-- Granularity: primarily municipal, with province and region context layers
-- Product style: public-facing and explorable, but structured as a data product rather than a one-off dashboard
+- **Geography:** Italy — all ~7,900 comuni, with province and region context layers
+- **Granularity:** primarily municipal
+- **Election families shipped:** `Camera dei Deputati` (1948–2022) + `Assemblea Costituente` 1946
+- **Roadmap (next waves):** `Senato della Repubblica` · `Parlamento Europeo` · `Regionali` · `Comunali` · `Referendum`
+- **Product style:** public-facing and explorable, but structured as a data product rather than a one-off dashboard
 
 ## Main entry points
 
@@ -37,16 +43,25 @@ Requirements:
 
 The dashboard vendors its critical browser libraries locally (`d3`, `PapaParse`, `topojson-client`) instead of loading them from public CDNs at runtime.
 
-From the repository root:
+From the repository root, use the project dev server (it sets `Cache-Control: no-store` on `service-worker.js` so SW updates land immediately):
 
-```powershell
-python -m http.server 8000
+```bash
+python scripts/serve.py --port 8765 --host 127.0.0.1
 ```
 
-Then open:
+Then open `http://127.0.0.1:8765/`.
 
-- `http://127.0.0.1:8000/index.html`
-- `http://127.0.0.1:8000/data-download.html`
+## Deploy (GitHub Pages)
+
+The repository root is the Pages site. A `.nojekyll` file disables Jekyll.
+
+1. **GitHub → Settings → Pages**: source = `main` branch, folder = `/ (root)`.
+2. **Default URL**: `https://<owner>.github.io/<repo>/`. For this repository that is `https://simoneghezzicolombo.github.io/electio/`.
+3. **Custom domain (optional)**: create a `CNAME` file at the repo root containing the domain (e.g. `electio.eu`), then configure DNS at your registrar:
+   - `A` records on the apex → `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`
+   - `CNAME` on the `www` subdomain → `<owner>.github.io`
+   - Enable **Enforce HTTPS** after DNS propagates.
+4. **Large downloads**: `municipality_results_long.csv` (506 MB) and full-resolution GeoJSON files (LFS) are not served by Pages. Publish them as GitHub Release assets and update the links in `data-download.html` accordingly.
 
 ## Validation
 

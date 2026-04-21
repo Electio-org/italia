@@ -48,7 +48,7 @@ def extract_imported_names(js_text: str):
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description='Smoke checks for Lombardia Camera Explorer bundle')
+    parser = argparse.ArgumentParser(description='Smoke checks for Electio Italia bundle')
     parser.add_argument('--root', default='.', help='Project root')
     args = parser.parse_args()
     root = Path(args.root).resolve()
@@ -66,7 +66,7 @@ def main() -> int:
         'app.js',
         'site-pages.js',
         'modules/app-shell.js',
-        'vendor/d3/d3.min.js',
+        'vendor/d3/d3-slim.min.js',
         'vendor/papaparse/papaparse.min.js',
         'vendor/topojson-client/topojson-client.min.js',
         'scripts/preprocess.py',

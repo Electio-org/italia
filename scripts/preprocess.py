@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Preprocessing infrastructure for Italia Camera Explorer.
+Preprocessing infrastructure for Electio Italia.
 
 Goals for this hardened version:
 - never invent electoral data
@@ -301,15 +301,18 @@ def ensure_contract_csv(path: Path, headers: List[str]) -> None:
 def geometry_manifest_files(output_root: Path) -> dict:
     derived = output_root / "data" / "derived"
     geom_dir = derived / "geometries"
-    municipality_files = {}
-    province_files = {}
+    municipality_files: dict[str, str] = {}
+    province_files: dict[str, str] = {}
     if geom_dir.exists():
-        for path in sorted(geom_dir.glob('municipalities_*.geojson')):
-            year = path.stem.split('_')[-1]
-            municipality_files[year] = str(path.relative_to(output_root)).replace('\\', '/')
-        for path in sorted(geom_dir.glob('provinces_*.geojson')):
-            year = path.stem.split('_')[-1]
-            province_files[year] = str(path.relative_to(output_root)).replace('\\', '/')
+        # Prefer TopoJSON over GeoJSON for the same year (the runtime format),
+        # but keep GeoJSON as the fallback when only it is present.
+        def _collect(prefix: str, bucket: dict[str, str]) -> None:
+            for ext in ('.topojson', '.geojson'):
+                for path in sorted(geom_dir.glob(f'{prefix}_*{ext}')):
+                    year = path.stem.split('_')[-1]
+                    bucket.setdefault(year, str(path.relative_to(output_root)).replace('\\', '/'))
+        _collect('municipalities', municipality_files)
+        _collect('provinces', province_files)
     if municipality_files:
         latest_year = sorted(municipality_files, key=lambda x: int(x))[-1]
         geometry = municipality_files[latest_year]
@@ -392,7 +395,7 @@ def write_manifest(output_root: Path) -> None:
     geometry_info = geometry_manifest_files(output_root)
     manifest = {
         "project": {
-            "title": "Italia Camera Explorer",
+            "title": "Electio Italia",
             "version": "0.11.1",
             "ready_for_real_data": True,
             "notes": [
@@ -484,7 +487,7 @@ def build_dataset_registry(output_root: Path, elections: List[Dict[str, object]]
         })
     return {
         "generated_by": "preprocess.py",
-        "project": "Italia Camera Explorer",
+        "project": "Electio Italia",
         "datasets": rows,
         "summary": {
             "technical_readiness": quality.get("derived_validations", {}).get("technical_readiness_score"),
@@ -1631,7 +1634,7 @@ def finalize_elections_master(elections: List[Dict[str, object]], summary_rows: 
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Prepare derived scaffolding for Italia Camera Explorer")
+    parser = argparse.ArgumentParser(description="Prepare derived scaffolding for Electio Italia")
     parser.add_argument("--source-root", required=True, help="Root with camera_YYYY folders and optional *_clean / *_raw")
     parser.add_argument("--output-root", required=True, help="App project root")
     args = parser.parse_args()

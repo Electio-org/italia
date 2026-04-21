@@ -55,7 +55,7 @@ import {
 import { AUDIENCE_MODES, GLOSSARY_ENTRIES, GUIDED_QUESTION_BANK, DEFAULT_SITE_LAYERS, DEFAULT_METHOD_EXPLAINERS, DEFAULT_FAQ_ITEMS, DEFAULT_SITE_MANIFESTO, DEFAULT_SIGNATURE_PILLARS } from './modules/guidance.js';
 import { createAnalysisModes, DEFAULT_NEXT_ACTIONS, DEFAULT_COLLAPSED_PANELS } from './modules/app-shell.js';
 
-const LOCAL_STORAGE_KEY = 'italia_camera_explorer_state_v1';
+const LOCAL_STORAGE_KEY = 'electio_italia_state_v1';
 
 const state = {
   manifest: null,
@@ -473,7 +473,7 @@ print(summary.head())`;
 function buildProjectCitation() {
   const version = currentReleaseVersion();
   const date = currentReleaseDate();
-  return `Italia Camera Explorer, release ${version} (${date}). Bundle statico boundary-aware per l'analisi comunale delle elezioni della Camera e dell'Assemblea Costituente in Italia.`;
+  return `Electio Italia, release ${version} (${date}). Bundle statico boundary-aware per l'analisi comunale delle elezioni della Camera e dell'Assemblea Costituente in Italia.`;
 }
 
 function researchRecipesForAudience() {
@@ -1296,7 +1296,7 @@ function currentViewCitation(evidence = buildEvidenceLadder()) {
     ? (customIndicatorMeta(state.selectedCustomIndicator).label || state.selectedCustomIndicator || metricLabel())
     : (state.selectedParty || metricLabel());
   const generated = new Date().toISOString().slice(0, 10);
-  return `Italia Camera Explorer, vista "${metricLabel()}" (${selection}) su ${election}${compare}; modalità territoriale ${state.territorialMode}; base geometrica ${state.geometryReferenceYear || 'auto'}; bundle ${bundleVersion}; livello di evidenza ${evidence.badge}; consultato il ${generated}.`;
+  return `Electio Italia, vista "${metricLabel()}" (${selection}) su ${election}${compare}; modalità territoriale ${state.territorialMode}; base geometrica ${state.geometryReferenceYear || 'auto'}; bundle ${bundleVersion}; livello di evidenza ${evidence.badge}; consultato il ${generated}.`;
 }
 
 function currentReproducibilityLine() {

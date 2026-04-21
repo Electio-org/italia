@@ -23,10 +23,16 @@ CURRENT_VERSION = "0.21.0"
 
 
 def latest_geometry_rel(derived: Path, folder: str, prefix: str, root: Path) -> str:
-    paths = sorted((derived / folder).glob(f"{prefix}_*.geojson"))
-    if not paths:
-        return ""
-    return str(paths[-1].relative_to(root)).replace("\\", "/")
+    # Prefer TopoJSON over GeoJSON when both siblings exist; this is the
+    # runtime format for `geometries_web/` and keeps the legacy `.geojson`
+    # fallback for `geometries/` (full-res) and older pipelines.
+    topo = sorted((derived / folder).glob(f"{prefix}_*.topojson"))
+    if topo:
+        return str(topo[-1].relative_to(root)).replace("\\", "/")
+    geo = sorted((derived / folder).glob(f"{prefix}_*.geojson"))
+    if geo:
+        return str(geo[-1].relative_to(root)).replace("\\", "/")
+    return ""
 
 
 def sha256_file(path: Path) -> str:
@@ -51,11 +57,16 @@ def summarize_file(path: Path, bundle_root: Path) -> Dict[str, object]:
             rows = list(csv.DictReader(fh))
         info["row_count"] = len(rows)
         info["columns"] = list(rows[0].keys()) if rows else []
-    elif path.suffix.lower() in {".json", ".geojson"}:
+    elif path.suffix.lower() in {".json", ".geojson", ".topojson"}:
         obj = json.loads(path.read_text(encoding="utf-8"))
         if isinstance(obj, dict):
             if isinstance(obj.get("features"), list):
                 info["feature_count"] = len(obj.get("features") or [])
+            elif isinstance(obj.get("objects"), dict):
+                # TopoJSON: count features inside the first object collection.
+                first = next(iter(obj["objects"].values()), None)
+                if isinstance(first, dict) and isinstance(first.get("geometries"), list):
+                    info["feature_count"] = len(first["geometries"])
             elif isinstance(obj.get("datasets"), list):
                 info["dataset_count"] = len(obj.get("datasets") or [])
             elif isinstance(obj.get("products"), list):
@@ -107,7 +118,7 @@ def main() -> None:
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     project = manifest.setdefault("project", {})
     project["version"] = CURRENT_VERSION
-    project["title"] = "Italia Camera Explorer"
+    project["title"] = "Electio Italia"
     notes = list(project.get("notes") or [])
     if EXTRA_NOTE not in notes:
         notes.append(EXTRA_NOTE)

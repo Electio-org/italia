@@ -185,7 +185,7 @@ class ItaliaCameraBundle:
         citation_path = self.root / 'CITATION.cff'
         if citation_path.exists():
             return citation_path.read_text(encoding='utf-8')
-        return f"Italia Camera Explorer, release {self.version}."
+        return f"Electio Italia, release {self.version}."
 
     def current_release(self) -> Dict[str, Any]:
         release = self.release_manifest()
@@ -235,7 +235,7 @@ def load_bundle(root: str | Path = '.') -> ItaliaCameraBundle:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description='Loader ufficiale Python per il bundle Italia Camera Explorer')
+    parser = argparse.ArgumentParser(description='Loader ufficiale Python per il bundle Electio Italia')
     parser.add_argument('--root', default='.', help='Root del progetto o root del bundle')
     parser.add_argument('--dataset', help='Chiave del dataset da caricare dal manifest')
     parser.add_argument('--head', type=int, default=5, help='Numero di righe da mostrare per i CSV')

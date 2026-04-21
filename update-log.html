@@ -4,13 +4,13 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="color-scheme" content="light" />
-  <title>Italia Camera Explorer | Aggiornamenti</title>
-  <meta name="description" content="Timeline delle release, footprint della release corrente e stato del bundle Italia Camera Explorer, inclusa Assemblea Costituente 1946." />
+  <title>Electio Italia | Aggiornamenti</title>
+  <meta name="description" content="Timeline delle release, footprint della release corrente e stato del bundle Electio Italia, inclusa Assemblea Costituente 1946." />
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-  <link rel="stylesheet" href="vendor/tabler/core/tabler.min.css" />
-  <link rel="stylesheet" href="vendor/tabler/icons/tabler-icons.min.css" />
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="tabler-theme.css" />
+  <link rel="stylesheet" href="vendor/tabler/core/tabler.min.css" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="vendor/tabler/core/tabler.min.css" /></noscript>
 </head>
 <body data-site-page="update-log">
   <a href="#main-content" class="skip-link">Salta al contenuto</a>
@@ -18,10 +18,10 @@
     <header class="site-header navbar navbar-expand-lg navbar-light d-print-none" role="banner">
       <div class="container-xl site-header-inner">
         <a class="navbar-brand site-brand" href="index.html">
-          <span class="site-brand-monogram">LC</span>
+          <span class="site-brand-monogram">EI</span>
           <span class="site-brand-copy">
-        <span class="site-brand-mark">Italia Camera Explorer</span>
-        <span class="site-brand-subtitle">Piattaforma pubblica per i risultati comunali della Camera e dell'Assemblea Costituente in Italia</span>
+        <span class="site-brand-mark">Electio Italia</span>
+        <span class="site-brand-subtitle">Atlante elettorale d'Italia — tutte le elezioni dal dopoguerra al livello comunale</span>
           </span>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#site-nav-menu" aria-controls="site-nav-menu" aria-expanded="false" aria-label="Apri navigazione">
@@ -29,10 +29,10 @@
         </button>
         <div class="collapse navbar-collapse" id="site-nav-menu">
           <nav class="navbar-nav ms-auto site-nav" aria-label="Navigazione principale">
-            <a class="nav-link" href="index.html"><i class="ti ti-chart-grid-dots site-nav-icon"></i><span>Dashboard</span></a>
-            <a class="nav-link" href="data-download.html"><i class="ti ti-database-export site-nav-icon"></i><span>Dati</span></a>
-            <a class="nav-link" href="usage-notes.html"><i class="ti ti-book-2 site-nav-icon"></i><span>Metodo</span></a>
-            <a class="nav-link is-active active" href="update-log.html"><i class="ti ti-history site-nav-icon"></i><span>Aggiornamenti</span></a>
+            <a class="nav-link" href="index.html"><svg class="site-nav-icon" aria-hidden="true" focusable="false"><use href="icons.svg#icon-chart-grid-dots"/></svg><span>Dashboard</span></a>
+            <a class="nav-link" href="data-download.html"><svg class="site-nav-icon" aria-hidden="true" focusable="false"><use href="icons.svg#icon-database-export"/></svg><span>Dati</span></a>
+            <a class="nav-link" href="usage-notes.html"><svg class="site-nav-icon" aria-hidden="true" focusable="false"><use href="icons.svg#icon-book-2"/></svg><span>Metodo</span></a>
+            <a class="nav-link is-active active" href="update-log.html"><svg class="site-nav-icon" aria-hidden="true" focusable="false"><use href="icons.svg#icon-history"/></svg><span>Aggiornamenti</span></a>
           </nav>
         </div>
       </div>
@@ -97,7 +97,7 @@
       <div class="site-footer-inner">
         <div class="footer-section">
           <h3>Progetto</h3>
-          <p>Italia Camera Explorer e una piattaforma pubblica per leggere i risultati comunali della Camera e dell'Assemblea Costituente in Italia con dashboard, download, metodo, release e accesso programmatico.</p>
+          <p>Electio Italia è un atlante elettorale pubblico per l'Italia, dal dopoguerra in poi, al livello comunale — dashboard, download, metodo e accesso programmatico. Copertura attuale: Camera dei Deputati e Assemblea Costituente 1946. In arrivo: Senato, Europee, Regionali, Comunali, Referendum.</p>
         </div>
         <div class="footer-section">
           <h3>Risorse</h3>
@@ -113,11 +113,18 @@
           <p>La piattaforma e gia organizzata come archivio pubblico e cresce insieme alla copertura storica del dato elettorale nazionale.</p>
         </div>
       </div>
+      <div class="site-footer-copy">
+        <p>&copy; 2026 Simone Ghezzi Colombo &middot; Electio Italia &middot; Dati &amp; codice pubblicati con attribuzione.</p>
+      </div>
     </footer>
   </div>
 
   <script src="vendor/tabler/core/tabler.min.js"></script>
   <script src="tabler-enhance.js"></script>
   <script type="module" src="site-pages.js"></script>
+
+  <!-- Runtime perf: service worker + speculation rules + nav prefetch.
+       Shared across all HTML pages. Keeps navigation instant. -->
+  <script src="perf-boot.js" defer></script>
 </body>
 </html>
