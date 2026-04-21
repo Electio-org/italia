@@ -147,7 +147,9 @@ const state = {
   mapCanvasMoveFrame: null,
   mapCanvasZoomFrame: null,
   mapZoomTarget: null,
-  lastAutoZoomMunicipality: null
+  lastAutoZoomMunicipality: null,
+  mapPaintVersion: 0,
+  mapRefreshToken: 0
 };
 
 state.geometryPack = null;
@@ -495,7 +497,7 @@ function metricNeedsPartyResults() {
 }
 
 function shouldHydratePartyResultsNow() {
-  if (state.selectedMunicipalityId) return true;
+  if (state.selectedMunicipalityId && document.body.dataset.dashboardView === 'profile') return true;
   if (metricNeedsPartyResults()) return true;
   if (state.analysisMode === 'trajectory') return true;
   if (state.analysisMode === 'compare' && state.compareElection && state.selectedParty) return true;
@@ -1721,6 +1723,62 @@ function setLoading(isLoading, message = '') {
   if (helper && message) helper.textContent = message;
 }
 
+function setInlineMapLoading(isLoading, message = '') {
+  const inline = els.mapLoadingInline;
+  if (!inline) return;
+  inline.classList.toggle('hidden', !isLoading);
+  inline.textContent = isLoading ? (message || 'Aggiornamento mappa…') : '';
+}
+
+function nextAnimationFrame() {
+  return new Promise(resolve => window.requestAnimationFrame(() => resolve()));
+}
+
+function mapCanvasHasPaint() {
+  const canvas = els.mapCanvas;
+  if (!canvas || !canvas.width || !canvas.height) return false;
+  const ctx = canvas.getContext('2d', { willReadFrequently: true });
+  if (!ctx) return false;
+  const sampleX = Math.max(1, Math.floor(canvas.width / 2));
+  const sampleY = Math.max(1, Math.floor(canvas.height / 2));
+  try {
+    const pixel = ctx.getImageData(sampleX, sampleY, 1, 1).data;
+    return pixel[3] > 0;
+  } catch {
+    return !!state.mapPaintVersion;
+  }
+}
+
+async function waitForMapPaint(startVersion = state.mapPaintVersion || 0, maxFrames = 160) {
+  for (let i = 0; i < maxFrames; i += 1) {
+    await nextAnimationFrame();
+    if ((state.mapPaintVersion || 0) > startVersion) return true;
+    if (!startVersion && mapCanvasHasPaint()) return true;
+  }
+  return mapCanvasHasPaint();
+}
+
+async function refreshMapWithLoading({ overlay = false, message = 'Aggiornamento mappa…', control = null } = {}) {
+  const token = ++state.mapRefreshToken;
+  const startVersion = state.mapPaintVersion || 0;
+  const targetControl = control && 'disabled' in control ? control : null;
+  if (targetControl) targetControl.disabled = true;
+  setInlineMapLoading(true, message);
+  if (overlay) setLoading(true, message);
+  await waitForMapPaint(startVersion);
+  if (token === state.mapRefreshToken) {
+    setInlineMapLoading(false);
+    if (overlay) setLoading(false);
+  }
+  if (targetControl) targetControl.disabled = false;
+}
+
+async function prepareInitialMapReveal() {
+  const startVersion = state.mapPaintVersion || 0;
+  requestRender();
+  await waitForMapPaint(startVersion, 240);
+}
+
 function showToast(message, type = 'success', timeout = 2400) {
   const stack = q('toast-stack');
   if (!stack) return;
@@ -2097,10 +2155,12 @@ function hideMapMessage() {
 
 function getScaleDomainRows(rows) {
   if (!state.sameScaleAcrossYears) return rows;
-  return state.summary
+  const source = state.summary?.length ? state.summary : rows;
+  const domainRows = source
     .filter(row => !state.selectedProvinceSet.size || state.selectedProvinceSet.has(row.province))
     .filter(row => !row.territorial_mode || row.territorial_mode === state.territorialMode)
     .map(row => ({ ...row, __metric_value: getMetricValue(state, row) }));
+  return domainRows.length ? domainRows : rows;
 }
 
 function interpolateToColor(targetColor) {
@@ -2309,14 +2369,14 @@ function currentMapRenderKey() {
 function renderMap() {
   const renderKey = currentMapRenderKey();
   if (state.lastMapRenderKey === renderKey) return;
-  const svg = d3.select('#map-svg');
-  svg.selectAll('*').remove();
 
   const rows = filteredRowsWithMetric(state, { matchesCompleteness, matchesTerritorialStatus });
   state.filteredRows = rows;
-  renderHeaderBadges(rows);
-  renderOverviewCards(rows);
-  renderWarnings(rows);
+  if (isRenderTargetVisible(() => els.activeSummary) || isRenderTargetVisible(() => els.territorySummary) || isRenderTargetVisible(() => els.metricSummary)) {
+    renderHeaderBadges(rows);
+  }
+  if (isRenderTargetVisible(() => els.overviewCards)) renderOverviewCards(rows);
+  if (isRenderTargetVisible(() => els.warningStrip)) renderWarnings(rows);
 
   if (!state.geometry || !Array.isArray(state.geometry.features) || !state.geometry.features.length) {
     showMapMessage('Geografia non disponibile. Inserisci un <code>GeoJSON</code> o <code>TopoJSON</code> reale e aggiorna il percorso nel <code>manifest.json</code>.');
@@ -2333,12 +2393,12 @@ function renderMap() {
   renderQuickStats(rows);
 
   const projection = makeGeoProjection(state.geometry, 960, 680);
-  const path = d3.geoPath(projection);
   const features = state.geometry.features;
   const anySelection = Boolean(state.selectedMunicipalityId);
 
   if (els.mapCanvas && typeof Path2D === 'function') {
-    svg.classed('is-canvas-backed', true);
+    const svgNode = q('map-svg');
+    if (svgNode) svgNode.classList.add('is-canvas-backed');
     renderCanvasMap({ rows, rowByJoinKey, scaleInfo, projection, anySelection });
     enableMapZoom();
     if (state.selectedMunicipalityId && state.lastAutoZoomMunicipality !== state.selectedMunicipalityId) {
@@ -2351,7 +2411,10 @@ function renderMap() {
     return;
   }
 
+  const svg = d3.select('#map-svg');
+  svg.selectAll('*').remove();
   svg.classed('is-canvas-backed', false);
+  const path = d3.geoPath(projection);
 
   const zoomLayer = svg.append('g').attr('class', 'map-zoom-layer');
 
@@ -2421,6 +2484,7 @@ function renderMap() {
   } else if (!state.selectedMunicipalityId) {
     state.lastAutoZoomMunicipality = null;
   }
+  state.mapPaintVersion = (state.mapPaintVersion || 0) + 1;
   state.lastMapRenderKey = renderKey;
 }
 
@@ -2534,6 +2598,22 @@ function renderCanvasMap({ rows, rowByJoinKey, scaleInfo, projection, anySelecti
   drawCanvasMap(transform);
 }
 
+function viewportBoundsForTransform(transform = state.mapCanvasTransform || d3.zoomIdentity) {
+  const [ax, ay] = transform.invert([0, 0]);
+  const [bx, by] = transform.invert([CANVAS_LOGICAL_WIDTH, CANVAS_LOGICAL_HEIGHT]);
+  return {
+    minX: Math.min(ax, bx),
+    minY: Math.min(ay, by),
+    maxX: Math.max(ax, bx),
+    maxY: Math.max(ay, by)
+  };
+}
+
+function boundsIntersectViewport(bounds, viewport, pad = 0) {
+  const [[x0, y0], [x1, y1]] = bounds || [[Infinity, Infinity], [-Infinity, -Infinity]];
+  return !(x1 < viewport.minX - pad || x0 > viewport.maxX + pad || y1 < viewport.minY - pad || y0 > viewport.maxY + pad);
+}
+
 function drawCanvasMap(transform = state.mapCanvasTransform || d3.zoomIdentity) {
   const canvas = els.mapCanvas;
   const ctx = resizeCanvasBackingStore(canvas);
@@ -2549,15 +2629,19 @@ function drawCanvasMap(transform = state.mapCanvasTransform || d3.zoomIdentity) 
   ctx.lineJoin = 'round';
   ctx.lineCap = 'round';
   const strokeScale = 1 / Math.max(1, transform.k);
+  const viewport = viewportBoundsForTransform(transform);
+  const pad = 6 * strokeScale;
 
   render.cache.provinceItems.forEach(item => {
+    if (!boundsIntersectViewport(item.bounds, viewport, pad)) return;
     ctx.strokeStyle = '#475569';
-    ctx.globalAlpha = 0.7;
-    ctx.lineWidth = 0.9 * strokeScale;
+    ctx.globalAlpha = transform.k > 5 ? 0.28 : 0.46;
+    ctx.lineWidth = (transform.k > 5 ? 0.5 : 0.75) * strokeScale;
     ctx.stroke(item.path);
   });
 
   render.cache.items.forEach(item => {
+    if (!boundsIntersectViewport(item.bounds, viewport, pad)) return;
     const row = render.rowByJoinKey.get(item.key);
     const mid = row?.municipality_id;
     const selected = mid && mid === state.selectedMunicipalityId;
@@ -2566,12 +2650,13 @@ function drawCanvasMap(transform = state.mapCanvasTransform || d3.zoomIdentity) 
     ctx.globalAlpha = faded ? 0.32 : 1;
     ctx.fillStyle = row ? render.scaleInfo.colorFor(row.__metric_value) : '#cbd5e1';
     ctx.fill(item.path);
-    ctx.strokeStyle = selected ? '#0f172a' : compared ? municipalityColor(mid) : '#ffffff';
-    ctx.lineWidth = (selected ? 2.4 : compared ? 1.6 : 0.55) * strokeScale;
+    ctx.strokeStyle = selected ? '#0f172a' : compared ? municipalityColor(mid) : (transform.k >= 5 ? 'rgba(15, 23, 42, 0.22)' : 'rgba(15, 23, 42, 0.14)');
+    ctx.lineWidth = (selected ? 2.1 : compared ? 1.35 : transform.k >= 5 ? 0.7 : 0.34) * strokeScale;
     ctx.stroke(item.path);
   });
   ctx.restore();
   ctx.globalAlpha = 1;
+  state.mapPaintVersion = (state.mapPaintVersion || 0) + 1;
 }
 
 function drawCanvasMapSoon(transform = state.mapCanvasTransform || d3.zoomIdentity) {
@@ -3834,7 +3919,7 @@ function enableMapZoom() {
     const canvas = d3.select(els.mapCanvas);
     if (!state.mapCanvasZoomBehavior) {
       state.mapCanvasZoomBehavior = d3.zoom()
-        .scaleExtent([1, 9])
+        .scaleExtent([1, 18])
         .on('zoom', event => drawCanvasMapSoon(event.transform));
       canvas.call(state.mapCanvasZoomBehavior);
     }
@@ -3883,7 +3968,7 @@ function zoomToSelectedMunicipality() {
   const dy = y1 - y0;
   const x = (x0 + x1) / 2;
   const y = (y0 + y1) / 2;
-  const scale = Math.max(1, Math.min(8, 0.8 / Math.max(dx / width, dy / height)));
+  const scale = Math.max(1, Math.min(16, 0.92 / Math.max(dx / width, dy / height)));
   const transform = d3.zoomIdentity.translate(width / 2, height / 2).scale(scale).translate(-x, -y);
   if (state.mapZoomTarget === 'canvas' && els.mapCanvas) {
     d3.select(els.mapCanvas).transition().duration(220).call(state.mapZoomBehavior.transform, transform);
@@ -4092,10 +4177,18 @@ function resetFilters() {
 
 function bindEvents() {
   document.addEventListener('dashboard-view-change', event => {
-    if (event.detail?.view === 'method') ensureDeferredMetadata({ silent: false });
+    const view = event.detail?.view;
+    if (view === 'method') ensureDeferredMetadata({ silent: false });
+    if (view === 'profile') {
+      ensureVisibleSummary({ silent: true });
+      if (shouldHydratePartyResultsNow()) ensureVisibleResults({ silent: true });
+    }
+    requestRender();
   });
-  [els.electionSelect, els.compareElectionSelect, els.provinceSelect, els.areaPresetSelect, els.metricSelect, els.partySelect, els.customIndicatorSelect, els.partyModeSelect, els.territorialModeSelect, els.completenessSelect, els.territorialStatusSelect, els.sameScaleCheckbox, els.paletteSelect, els.tableSortSelect, els.showNotesCheckbox, els.trajectoryModeSelect, els.densitySelect, els.visionModeSelect].filter(Boolean).forEach(el => {
+  [els.electionSelect, els.compareElectionSelect, els.provinceSelect, els.areaPresetSelect, els.metricSelect, els.partySelect, els.customIndicatorSelect, els.partyModeSelect, els.territorialModeSelect, els.geometryReferenceSelect, els.completenessSelect, els.territorialStatusSelect, els.sameScaleCheckbox, els.paletteSelect, els.tableSortSelect, els.showNotesCheckbox, els.trajectoryModeSelect, els.densitySelect, els.visionModeSelect].filter(Boolean).forEach(el => {
     el.addEventListener('change', () => {
+      const majorMapChange = [els.electionSelect, els.compareElectionSelect, els.territorialModeSelect, els.geometryReferenceSelect].includes(el);
+      const inlineMapChange = [els.metricSelect, els.partySelect, els.partyModeSelect, els.customIndicatorSelect, els.paletteSelect].includes(el);
       if (el === els.partyModeSelect) refreshPartySelector();
       if (el === els.areaPresetSelect) {
         const available = [...els.provinceSelect.options].map(o => o.value);
@@ -4111,7 +4204,13 @@ function bindEvents() {
       invalidateDerivedCaches();
       state.tablePage = 1;
       readControls();
-      requestRender();
+      if (majorMapChange || inlineMapChange) {
+        void refreshMapWithLoading({
+          overlay: majorMapChange,
+          message: majorMapChange ? 'Caricamento mappa e dati…' : 'Aggiornamento mappa…',
+          control: el
+        });
+      }
     });
   });
 
@@ -4169,8 +4268,15 @@ function bindEvents() {
   els.copyHeroPythonBtn?.addEventListener('click', () => copyTextToClipboard(buildProgrammaticSnippet('python'), 'Snippet Python copiato.'));
   els.copyReleasePythonBtn?.addEventListener('click', () => copyTextToClipboard(buildProgrammaticSnippet('python'), 'Snippet Python copiato.'));
   els.copyCitationBtn?.addEventListener('click', () => copyTextToClipboard(buildProjectCitation(), 'Citazione progetto copiata.'));
-  els.selectionDockOpenBtn?.addEventListener('click', () => q('municipality-profile')?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
-  els.selectionDockCompareBtn?.addEventListener('click', () => q('comparison-panel-content')?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+  els.selectionDockOpenBtn?.addEventListener('click', () => {
+    if (!state.selectedMunicipalityId) return;
+    switchDashboardSection('profile');
+    window.setTimeout(() => q('municipality-profile')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
+  });
+  els.selectionDockCompareBtn?.addEventListener('click', () => {
+    switchDashboardSection('analysis');
+    window.setTimeout(() => q('comparison-panel-content')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
+  });
   els.selectionDockClearBtn?.addEventListener('click', () => { state.selectedMunicipalityId = null; state.compareMunicipalityIds = []; syncURLState(); requestRender(); });
   const debouncedMunicipalitySearch = debounce(() => handleMunicipalitySearch(), 140);
   const debouncedTableFilter = debounce(() => { state.tablePage = 1; renderTable(); }, 120);
@@ -4964,7 +5070,13 @@ function renderSelectionDock() {
   els.selectionDock.classList.toggle('hidden', !visible);
   if (!visible) return;
   els.selectionDockTitle.textContent = mid ? municipalityLabelById(mid) : 'Nessun comune principale';
-  els.selectionDockMeta.textContent = `${compareN} comuni nel comparatore${mid ? ' · profilo attivo' : ''}`;
+  els.selectionDockMeta.textContent = mid
+    ? `Comune selezionato${compareN ? ` · ${compareN} comuni nel comparatore` : ''}`
+    : `${compareN} comuni nel comparatore`;
+  if (els.selectionDockOpenBtn) {
+    els.selectionDockOpenBtn.textContent = mid ? 'Vai al dettaglio' : 'Apri dettaglio';
+    els.selectionDockOpenBtn.disabled = !mid;
+  }
 }
 
 function renderViewHealthPill() {
@@ -5011,7 +5123,7 @@ function renderAll() {
     { scope: 'methodology', fn: renderMethodologyPanels, target: '#usage-notes-panel' },
     { scope: 'map', fn: renderMap, target: '#map-canvas' },
     { scope: 'filter-chips', fn: renderActiveFilterChips, target: () => els.activeFilterChips },
-    { scope: 'detail', fn: renderDetail, target: () => els.municipalityProfile, always: true },
+    { scope: 'detail', fn: renderDetail, target: () => els.municipalityProfile, when: () => document.body.dataset.dashboardView === 'profile', always: true },
     { scope: 'comparison-panel', fn: renderComparisonPanel, target: () => els.comparisonPanelContent },
     { scope: 'recent', fn: renderRecentMunicipalityPanel, target: () => els.recentMunicipalityPanel },
     { scope: 'diagnostics', fn: renderDiagnostics, target: () => els.diagnosticsPanel },
@@ -5086,6 +5198,7 @@ async function init() {
     legend: q('legend'),
     sidebarLegend: q('sidebar-legend'),
     sidebarQuickStats: q('sidebar-quick-stats'),
+    mapLoadingInline: q('map-loading-inline'),
     sidebarDownloadPngBtn: q('sidebar-download-png-btn'),
     mapCanvas: q('map-canvas'),
     mapEmptyState: q('map-empty-state'),
@@ -5247,7 +5360,9 @@ async function init() {
   });
 
   try {
-    setLoading(true, 'Caricamento dataset, geometrie e indici…');
+    setLoading(true, 'Caricamento mappa, dati e controlli…');
+    setInlineMapLoading(true, 'Caricamento mappa…');
+    if (els.mapCanvas && typeof Path2D === 'function') q('map-svg')?.setAttribute('aria-hidden', 'true');
     await loadData(state, { buildIndices: updateIndices, registerIssue });
     restoreLocalState();
     restoreURLState();
@@ -5262,13 +5377,15 @@ async function init() {
     initCollapsiblePanels();
     updateBodyAppearance();
     toggleFocusMode(state.focusMode);
-    requestRender();
+    await prepareInitialMapReveal();
+    setInlineMapLoading(false);
     setLoading(false);
     if (!state.onboardingDismissed && new URLSearchParams(window.location.search).get('onboarding') === '1') openOnboarding();
     showToast('Explorer pronto. Controlla audit e metodo se i dati sono parziali.', 'success', 2600);
   } catch (err) {
     console.error(err);
     q('dataset-status').innerHTML = `<div class="empty-state">Errore di caricamento: ${escapeHtml(err.message)}</div>`;
+    setInlineMapLoading(false);
     setLoading(false);
     showMapMessage('Manifest o file derived mancanti. Avvia un server statico nella cartella del progetto e verifica <code>data/derived/manifest.json</code>.');
     showToast(`Errore di caricamento: ${err.message}`, 'error', 3600);

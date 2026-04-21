@@ -3,31 +3,29 @@
     "2021"
   ],
   "municipalities": {
-    "2021": "data/derived/geometries_web/municipalities_2021.topojson"
+    "2021": "data/derived/geometries_web/municipalities_2021.geojson.gz.gz.gz"
   },
   "provinces": {
-    "2021": "data/derived/geometries_web/provinces_2021.topojson"
+    "2021": "data/derived/geometries_web/provinces_2021.geojson.gz.gz.gz"
   },
-  "format": "topojson",
-  "quantization": 100000,
   "compression": {
     "format": "gzip",
     "rows": [
       {
         "family": "municipalities",
         "year": "2021",
-        "source": "data/derived/geometries_web/municipalities_2021.topojson",
-        "gzip": "data/derived/geometries_web/municipalities_2021.topojson.gz",
-        "geojson_source": "data/derived/geometries_web/municipalities_2021.geojson",
-        "geojson_gzip": "data/derived/geometries_web/municipalities_2021.geojson.gz"
+        "source": "data/derived/geometries_web/municipalities_2021.geojson.gz.gz",
+        "gzip": "data/derived/geometries_web/municipalities_2021.geojson.gz.gz.gz",
+        "original_bytes": 4613227,
+        "compressed_bytes": 4614689
       },
       {
         "family": "provinces",
         "year": "2021",
-        "source": "data/derived/geometries_web/provinces_2021.topojson",
-        "gzip": "data/derived/geometries_web/provinces_2021.topojson.gz",
-        "geojson_source": "data/derived/geometries_web/provinces_2021.geojson",
-        "geojson_gzip": "data/derived/geometries_web/provinces_2021.geojson.gz"
+        "source": "data/derived/geometries_web/provinces_2021.geojson.gz.gz",
+        "gzip": "data/derived/geometries_web/provinces_2021.geojson.gz.gz.gz",
+        "original_bytes": 72436,
+        "compressed_bytes": 72508
       }
     ]
   }

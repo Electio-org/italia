@@ -10,7 +10,7 @@
 
   <!-- Preconnect + preload the critical-path data so fetches start in parallel with JS parsing. -->
   <link rel="preload" as="fetch" href="data/derived/manifest.json" crossorigin="anonymous" />
-  <link rel="preload" as="fetch" href="data/derived/geometries_web/municipalities_2021.topojson" crossorigin="anonymous" type="application/json" />
+  <link rel="preload" as="fetch" href="data/derived/geometries_web/municipalities_2021.geojson.gz" crossorigin="anonymous" type="application/json" />
   <link rel="preload" as="fetch" href="data/derived/elections_master.csv" crossorigin="anonymous" />
   <link rel="preload" as="fetch" href="data/derived/municipalities_master.csv" crossorigin="anonymous" />
   <link rel="preload" as="fetch" href="data/derived/parties_master.csv" crossorigin="anonymous" />
@@ -262,6 +262,7 @@
       </section>
 
       <section class="panel map-companion" aria-label="Contesto mappa">
+        <div id="map-loading-inline" class="map-loading-inline hidden" aria-live="polite"></div>
         <div id="sidebar-legend" class="sidebar-legend" aria-live="polite"></div>
         <div id="sidebar-quick-stats" class="sidebar-quick-stats" aria-live="polite"></div>
         <div class="sidebar-download-row">
@@ -474,7 +475,7 @@
 
       <nav class="dashboard-section-tabs panel compact" role="tablist" aria-label="Sezioni del dashboard">
         <button type="button" class="dashboard-tab is-active" data-section-view="dashboard" role="tab" aria-selected="true">Mappa</button>
-        <button type="button" class="dashboard-tab" data-section-view="profile" role="tab" aria-selected="false">Scheda comune</button>
+        <button type="button" class="dashboard-tab" data-section-view="profile" role="tab" aria-selected="false">Dettaglio comune</button>
         <button type="button" class="dashboard-tab" data-section-view="analysis" role="tab" aria-selected="false">Analisi</button>
         <button type="button" class="dashboard-tab" data-section-view="method" role="tab" aria-selected="false">Metodo</button>
       </nav>
@@ -1129,7 +1130,7 @@
         <div id="selection-dock-meta" class="helper-text">Seleziona un comune o usa il comparatore.</div>
       </div>
       <div class="selection-dock-actions">
-        <button type="button" id="selection-dock-open-btn">Apri profilo</button>
+        <button type="button" id="selection-dock-open-btn">Vai al dettaglio</button>
         <button type="button" id="selection-dock-compare-btn" class="ghost-btn">Vai ai confronti</button>
         <button type="button" id="selection-dock-clear-btn" class="ghost-btn">Pulisci</button>
       </div>

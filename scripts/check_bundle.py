@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import gzip
 import json
 import re
 import shutil
@@ -16,6 +17,31 @@ def read_csv_rows(path: Path):
         return []
     with path.open(encoding='utf-8', newline='') as fh:
         return list(csv.DictReader(fh))
+
+
+def read_json_payload(path: Path):
+    if not path.exists():
+        return {}
+    if path.suffix.lower() == '.gz':
+        with gzip.open(path, mode='rt', encoding='utf-8') as fh:
+            return json.load(fh)
+    return json.loads(path.read_text(encoding='utf-8'))
+
+
+def geometry_feature_count(payload):
+    if not isinstance(payload, dict):
+        return 0
+    if payload.get('type') == 'FeatureCollection':
+        return len(payload.get('features') or [])
+    if payload.get('type') == 'Topology':
+        objects = payload.get('objects') or {}
+        if not objects:
+            return 0
+        first = next(iter(objects.values()), {}) or {}
+        if first.get('type') == 'GeometryCollection':
+            return len(first.get('geometries') or [])
+        return 1
+    return 0
 
 
 def extract_table_sort_options(html_text: str):
@@ -183,14 +209,14 @@ def main() -> int:
     files = manifest.get('files', {})
 
     geom_path = root / (files.get('geometry') or 'data/derived/lombardia_municipalities.geojson')
-    geometry = json.loads(geom_path.read_text(encoding='utf-8')) if geom_path.exists() else {'features': []}
+    geometry = read_json_payload(geom_path) if geom_path.exists() else {'features': []}
     quality = json.loads((root / 'data' / 'derived' / 'data_quality_report.json').read_text(encoding='utf-8')) if (root / 'data' / 'derived' / 'data_quality_report.json').exists() else {}
     elections_master = read_csv_rows(root / 'data' / 'derived' / 'elections_master.csv')
 
     if quality.get('derived_validations', {}).get('has_errors'):
         warnings.append('derived_validations:has_errors')
 
-    if not geometry.get('features'):
+    if geometry_feature_count(geometry) == 0:
         issues.append('geometry:placeholder_or_missing')
 
     required_manifest_keys = ['geometryPack', 'geometryPackFull', 'geometryFull', 'provinceGeometryFull', 'dataProducts', 'productCatalog', 'datasetContracts', 'provenance', 'releaseManifest', 'researchRecipes', 'siteGuides', 'municipalitySummaryByElectionIndex', 'municipalityResultsLongByElectionIndex', 'archiveBundleGapReport', 'webGeometryReport', 'webCompressionReport']
@@ -370,7 +396,7 @@ def main() -> int:
         'root': str(root),
         'summary_rows': len(summary),
         'result_rows': len(results),
-        'geometry_features': len(geometry.get('features') or []),
+        'geometry_features': geometry_feature_count(geometry),
         'technical_readiness': quality.get('derived_validations', {}).get('technical_readiness_score', quality.get('derived_validations', {}).get('readiness_score')),
         'substantive_readiness': quality.get('derived_validations', {}).get('substantive_coverage_score'),
         'issues': issues,

@@ -6029,3 +6029,115 @@ body[data-site-page="dashboard"] #loading-overlay.hidden {
   display: none !important;
 }
 
+/* ============================================================ */
+/* dashboard cleanup round — keep the landing view as           */
+/* GERDA-like as possible: controls + legend + map + selection  */
+/* dock. Detail stays in its own tab.                           */
+/* ============================================================ */
+
+body[data-site-page="dashboard"][data-dashboard-view="dashboard"] .toolbar,
+body[data-site-page="dashboard"][data-dashboard-view="dashboard"] #active-filter-chips,
+body[data-site-page="dashboard"][data-dashboard-view="dashboard"] .jump-bar,
+body[data-site-page="dashboard"][data-dashboard-view="dashboard"] .dashboard-intro-strip,
+body[data-site-page="dashboard"][data-dashboard-view="dashboard"] .site-hero,
+body[data-site-page="dashboard"][data-dashboard-view="dashboard"] .signature-panel,
+body[data-site-page="dashboard"][data-dashboard-view="dashboard"] .site-layers-panel,
+body[data-site-page="dashboard"][data-dashboard-view="dashboard"] .method-explainers-panel,
+body[data-site-page="dashboard"][data-dashboard-view="dashboard"] .pathway-strip,
+body[data-site-page="dashboard"][data-dashboard-view="dashboard"] .quickstart-strip,
+body[data-site-page="dashboard"][data-dashboard-view="dashboard"] .question-workbench-panel,
+body[data-site-page="dashboard"][data-dashboard-view="dashboard"] .reading-guide-panel,
+body[data-site-page="dashboard"][data-dashboard-view="dashboard"] .briefing-panel,
+body[data-site-page="dashboard"][data-dashboard-view="dashboard"] #evidence-panel,
+body[data-site-page="dashboard"][data-dashboard-view="dashboard"] .data-package-panel,
+body[data-site-page="dashboard"][data-dashboard-view="dashboard"] #usage-notes-panel,
+body[data-site-page="dashboard"][data-dashboard-view="dashboard"] #release-studio-panel,
+body[data-site-page="dashboard"][data-dashboard-view="dashboard"] .faq-panel,
+body[data-site-page="dashboard"][data-dashboard-view="dashboard"] #overview-cards,
+body[data-site-page="dashboard"][data-dashboard-view="dashboard"] .insight-strip {
+  display: none !important;
+}
+
+body[data-site-page="dashboard"][data-dashboard-view="dashboard"] .map-and-detail,
+body[data-site-page="dashboard"][data-dashboard-view="profile"] .map-and-detail {
+  grid-template-columns: 1fr !important;
+}
+
+body[data-site-page="dashboard"][data-dashboard-view="dashboard"] .detail-panel {
+  display: none !important;
+}
+
+body[data-site-page="dashboard"][data-dashboard-view="profile"] .map-panel {
+  display: none !important;
+}
+
+body[data-site-page="dashboard"] .map-context-strip,
+body[data-site-page="dashboard"] #map-svg,
+body[data-site-page="dashboard"] #map-svg.is-canvas-backed {
+  display: none !important;
+  pointer-events: none !important;
+}
+
+body[data-site-page="dashboard"] #map-wrapper {
+  min-height: min(80vh, 860px);
+  border-radius: 8px;
+  background: #f7fafc;
+}
+
+body[data-site-page="dashboard"] #map-wrapper::before {
+  content: "Italia · comuni";
+}
+
+body[data-site-page="dashboard"] #map-wrapper::after {
+  content: "Clicca un comune, poi apri il dettaglio";
+}
+
+body[data-site-page="dashboard"] #map-canvas {
+  min-height: min(80vh, 860px);
+}
+
+body[data-site-page="dashboard"] .map-loading-inline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border: 1px solid rgba(17, 33, 58, 0.09);
+  border-radius: 8px;
+  background: #f8fbff;
+  color: #2b445f;
+  font-size: 0.84rem;
+  line-height: 1.4;
+}
+
+body[data-site-page="dashboard"] .map-loading-inline::before {
+  content: "";
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  border: 2px solid rgba(26, 70, 122, 0.22);
+  border-top-color: #1d4f8c;
+  animation: electio-spin 0.8s linear infinite;
+  flex-shrink: 0;
+}
+
+body[data-site-page="dashboard"] .map-loading-inline.hidden {
+  display: none !important;
+}
+
+body[data-site-page="dashboard"] .selection-dock {
+  border-top: 1px solid rgba(17, 33, 58, 0.08);
+  background: rgba(255,255,255,0.96);
+}
+
+body[data-site-page="dashboard"] .selection-dock:not(.hidden) {
+  display: block !important;
+}
+
+body[data-site-page="dashboard"] .selection-dock-main {
+  gap: 14px;
+}
+
+@keyframes electio-spin {
+  to { transform: rotate(360deg); }
+}
+

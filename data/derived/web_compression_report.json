@@ -4,30 +4,30 @@
     {
       "family": "municipalities",
       "year": "2021",
-      "source": "data/derived/geometries_web/municipalities_2021.geojson",
-      "gzip": "data/derived/geometries_web/municipalities_2021.geojson.gz",
-      "original_bytes": 3450075,
-      "compressed_bytes": 664774
+      "source": "data/derived/geometries_web/municipalities_2021.geojson.gz.gz",
+      "gzip": "data/derived/geometries_web/municipalities_2021.geojson.gz.gz.gz",
+      "original_bytes": 4613227,
+      "compressed_bytes": 4614689
     },
     {
       "family": "provinces",
       "year": "2021",
-      "source": "data/derived/geometries_web/provinces_2021.geojson",
-      "gzip": "data/derived/geometries_web/provinces_2021.geojson.gz",
-      "original_bytes": 122576,
-      "compressed_bytes": 41292
+      "source": "data/derived/geometries_web/provinces_2021.geojson.gz.gz",
+      "gzip": "data/derived/geometries_web/provinces_2021.geojson.gz.gz.gz",
+      "original_bytes": 72436,
+      "compressed_bytes": 72508
     }
   ],
   "summary_shards": {
     "format": "gzip",
-    "original_bytes": 51065765,
+    "original_bytes": 10745274,
     "compressed_bytes": 10745274,
-    "reduction_pct": 78.96
+    "reduction_pct": 0.0
   },
   "result_shards": {
     "format": "gzip",
-    "original_bytes": 530219797,
+    "original_bytes": 40564921,
     "compressed_bytes": 40564921,
-    "reduction_pct": 92.35
+    "reduction_pct": 0.0
   }
 }

@@ -165,8 +165,8 @@ def simplify_feature_collection(path: Path, out_path: Path, bundle_root: Path, t
 def main() -> None:
     parser = argparse.ArgumentParser(description="Build a web-optimized geometry pack from the full Italy boundary files.")
     parser.add_argument("--root", default=".", help="Project root")
-    parser.add_argument("--municipality-tolerance", type=float, default=1100.0, help="Simplification tolerance for municipality boundaries")
-    parser.add_argument("--province-tolerance", type=float, default=2000.0, help="Simplification tolerance for province boundaries")
+    parser.add_argument("--municipality-tolerance", type=float, default=50.0, help="Simplification tolerance for municipality boundaries")
+    parser.add_argument("--province-tolerance", type=float, default=900.0, help="Simplification tolerance for province boundaries")
     args = parser.parse_args()
 
     root = Path(args.root).resolve()

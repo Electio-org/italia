@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import gzip
 import hashlib
 import json
 from dataclasses import dataclass
@@ -37,10 +38,18 @@ class ItaliaCameraBundle:
 
     def read_csv(self, relpath: str, **kwargs) -> pd.DataFrame:
         kwargs.setdefault("low_memory", False)
-        return pd.read_csv(self.resolve(relpath), **kwargs)
+        path = self.resolve(relpath)
+        if path.suffix.lower() == '.gz':
+            with gzip.open(path, mode='rt', encoding='utf-8', newline='') as fh:
+                return pd.read_csv(fh, **kwargs)
+        return pd.read_csv(path, **kwargs)
 
     def read_json(self, relpath: str) -> Dict[str, Any]:
-        return json.loads(self.resolve(relpath).read_text(encoding='utf-8'))
+        path = self.resolve(relpath)
+        if path.suffix.lower() == '.gz':
+            with gzip.open(path, mode='rt', encoding='utf-8') as fh:
+                return json.load(fh)
+        return json.loads(path.read_text(encoding='utf-8'))
 
     def load_dataset(self, dataset_key: str, **kwargs):
         rel = self.files.get(dataset_key)
@@ -48,10 +57,16 @@ class ItaliaCameraBundle:
             raise KeyError(f"Dataset non dichiarato nel manifest: {dataset_key}")
         path = self.resolve(rel)
         suffix = path.suffix.lower()
+        if suffix == '.gz':
+            inner_suffix = Path(path.stem).suffix.lower()
+            if inner_suffix == '.csv':
+                return self.read_csv(rel, **kwargs)
+            if inner_suffix in {'.json', '.geojson', '.topojson'}:
+                return self.read_json(rel)
         if suffix == '.csv':
             kwargs.setdefault("low_memory", False)
             return pd.read_csv(path, **kwargs)
-        if suffix in {'.json', '.geojson'}:
+        if suffix in {'.json', '.geojson', '.topojson'}:
             return json.loads(path.read_text(encoding='utf-8'))
         raise ValueError(f"Formato non gestito: {path.name}")
 

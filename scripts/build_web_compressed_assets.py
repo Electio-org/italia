@@ -31,16 +31,37 @@ def gz_rel(path_rel: str, root: Path) -> str:
 def gzip_shards(index_path: Path, root: Path) -> dict[str, object]:
     index = json.loads(index_path.read_text(encoding="utf-8"))
     shards = index.get("shards") or {}
+    existing_uncompressed = index.get("shards_uncompressed") or {}
     compressed = {}
+    uncompressed = {}
     original_bytes = 0
     compressed_bytes = 0
     for key, shard_rel in shards.items():
         shard_path = root / shard_rel
+        normalized_rel = shard_rel
+        if shard_path.name.endswith(".gz.gz"):
+            single_gz_path = Path(str(shard_path)[:-3])
+            if single_gz_path.exists():
+                shard_path = single_gz_path
+                normalized_rel = rel(single_gz_path, root)
+        if shard_path.suffix.lower() == ".gz":
+            compressed[key] = normalized_rel
+            compressed_bytes += shard_path.stat().st_size
+            source_rel = existing_uncompressed.get(key)
+            source_path = root / source_rel if source_rel else shard_path.with_suffix("")
+            if source_path.exists():
+                uncompressed[key] = rel(source_path, root)
+                original_bytes += source_path.stat().st_size
+            else:
+                uncompressed[key] = normalized_rel
+                original_bytes += shard_path.stat().st_size
+            continue
         gz_path = gzip_file(shard_path)
         original_bytes += shard_path.stat().st_size
         compressed_bytes += gz_path.stat().st_size
         compressed[key] = rel(gz_path, root)
-    index["shards_uncompressed"] = shards
+        uncompressed[key] = shard_rel
+    index["shards_uncompressed"] = uncompressed
     index["shards"] = compressed
     index["compression"] = {
         "format": "gzip",
