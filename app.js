@@ -147,7 +147,10 @@ const state = {
   mapCanvasMoveFrame: null,
   mapCanvasZoomFrame: null,
   mapZoomTarget: null,
-  lastAutoZoomMunicipality: null
+  lastAutoZoomMunicipality: null,
+  // Layer visibility for GERDA-style border toggles. comuni are auto-hidden
+  // at low zoom for performance (see drawCanvasMap).
+  layerVisibility: { comuni: true, province: true, regioni: true }
 };
 
 state.geometryPack = null;
@@ -2404,6 +2407,38 @@ function buildCanvasMapCache(projection) {
   };
   const items = (state.geometry?.features || []).map(toItem).filter(Boolean);
   const provinceItems = (state.provinceGeometry?.features || []).map(toItem).filter(Boolean);
+  // Topology-driven border meshes. Using topojson.mesh() with filters on
+  // province_code / region_code means each internal arc is drawn EXACTLY
+  // ONCE at its highest administrative level — fixes the "double line"
+  // artifact and collapses ~8000 per-polygon strokes into 3-4 strokes per
+  // frame. Falls back gracefully if the topology wasn't preserved.
+  const topology = state.geometry?.__topology;
+  const topologyObjectKey = state.geometry?.__topologyObjectKey;
+  let meshes = null;
+  if (topology && topologyObjectKey && topology.objects?.[topologyObjectKey] && window.topojson?.mesh) {
+    const topoObject = topology.objects[topologyObjectKey];
+    const meshToPath = filter => {
+      try {
+        const mesh = topojson.mesh(topology, topoObject, filter);
+        const d = mesh && path(mesh);
+        return d ? new Path2D(d) : null;
+      } catch (err) {
+        console.warn('mesh build failed', err);
+        return null;
+      }
+    };
+    meshes = {
+      outline: meshToPath((a, b) => a === b),
+      regions: meshToPath((a, b) => a !== b
+        && (a.properties?.region_code ?? null) !== (b.properties?.region_code ?? null)),
+      provinces: meshToPath((a, b) => a !== b
+        && (a.properties?.region_code ?? null) === (b.properties?.region_code ?? null)
+        && (a.properties?.province_code ?? null) !== (b.properties?.province_code ?? null)),
+      comuni: meshToPath((a, b) => a !== b
+        && (a.properties?.region_code ?? null) === (b.properties?.region_code ?? null)
+        && (a.properties?.province_code ?? null) === (b.properties?.province_code ?? null))
+    };
+  }
   const hitGridCellSize = 32;
   const hitGrid = new Map();
   const addToGrid = (cellKey, index) => {
@@ -2427,6 +2462,7 @@ function buildCanvasMapCache(projection) {
     key,
     items,
     provinceItems,
+    meshes,
     hitGrid,
     hitGridCellSize,
     itemsByKey: new Map(items.map(item => [item.key, item]))
@@ -2522,23 +2558,69 @@ function drawCanvasMap(transform = state.mapCanvasTransform || d3.zoomIdentity) 
     ctx.fill(item.path);
   });
 
-  ctx.globalAlpha = 0.55;
-  ctx.strokeStyle = '#1e293b';
-  ctx.lineWidth = 0.7 * strokeScale;
-  render.cache.items.forEach(item => {
-    const row = render.rowByJoinKey.get(item.key);
-    const mid = row?.municipality_id;
-    if (mid && mid === state.selectedMunicipalityId) return;
-    if (mid && state.compareMunicipalityIds.includes(mid)) return;
-    ctx.stroke(item.path);
-  });
+  const meshes = render.cache.meshes;
+  const layers = state.layerVisibility || { comuni: true, province: true, regioni: true };
+  // Auto-hide comune borders when zoomed too far out — they collapse into
+  // visual noise below ~2.5× and eating perf for nothing. Province and
+  // region borders always render (they're the overview structure).
+  const k = Math.max(1, transform.k);
+  const showComuni = layers.comuni !== false && k >= 2.5;
+  const showProvince = layers.province !== false;
+  const showRegioni = layers.regioni !== false;
 
-  ctx.globalAlpha = 0.9;
-  ctx.strokeStyle = '#0f172a';
-  ctx.lineWidth = 1.4 * strokeScale;
-  render.cache.provinceItems.forEach(item => {
-    ctx.stroke(item.path);
-  });
+  if (meshes) {
+    // 1. Comuni — thinnest, only when zoomed in enough
+    if (showComuni && meshes.comuni) {
+      ctx.globalAlpha = 0.55;
+      ctx.strokeStyle = '#1e293b';
+      ctx.lineWidth = 0.7 * strokeScale;
+      ctx.stroke(meshes.comuni);
+    }
+    // 2. Province — medium, only where they differ from regions
+    if (showProvince && meshes.provinces) {
+      ctx.globalAlpha = 0.85;
+      ctx.strokeStyle = '#0f172a';
+      ctx.lineWidth = 1.2 * strokeScale;
+      ctx.stroke(meshes.provinces);
+    }
+    // 3. Regioni — heaviest interior border
+    if (showRegioni && meshes.regions) {
+      ctx.globalAlpha = 0.95;
+      ctx.strokeStyle = '#020617';
+      ctx.lineWidth = 1.8 * strokeScale;
+      ctx.stroke(meshes.regions);
+    }
+    // 4. Outline — always on, outermost coastline
+    if (meshes.outline) {
+      ctx.globalAlpha = 1;
+      ctx.strokeStyle = '#020617';
+      ctx.lineWidth = 1.6 * strokeScale;
+      ctx.stroke(meshes.outline);
+    }
+  } else {
+    // Fallback path: topology not available (older geometry packs).
+    // Keeps the old behavior so the app never goes borderless.
+    if (showComuni) {
+      ctx.globalAlpha = 0.55;
+      ctx.strokeStyle = '#1e293b';
+      ctx.lineWidth = 0.7 * strokeScale;
+      render.cache.items.forEach(item => {
+        const row = render.rowByJoinKey.get(item.key);
+        const mid = row?.municipality_id;
+        if (mid && mid === state.selectedMunicipalityId) return;
+        if (mid && state.compareMunicipalityIds.includes(mid)) return;
+        ctx.stroke(item.path);
+      });
+    }
+    if (showProvince) {
+      ctx.globalAlpha = 0.9;
+      ctx.strokeStyle = '#0f172a';
+      ctx.lineWidth = 1.4 * strokeScale;
+      render.cache.provinceItems.forEach(item => {
+        ctx.stroke(item.path);
+      });
+    }
+  }
 
   ctx.globalAlpha = 1;
   render.cache.items.forEach(item => {
@@ -4218,6 +4300,17 @@ function bindEvents() {
     else serializeSvgToPng(q('map-svg'), `map_${state.selectedElection || 'all'}.png`);
     showToast('Snapshot mappa avviato.');
   });
+  const bindLayerToggle = (el, layerKey) => {
+    if (!el) return;
+    el.checked = state.layerVisibility[layerKey] !== false;
+    el.addEventListener('change', () => {
+      state.layerVisibility[layerKey] = !!el.checked;
+      drawCanvasMap(state.mapCanvasTransform);
+    });
+  };
+  bindLayerToggle(els.layerToggleRegioni, 'regioni');
+  bindLayerToggle(els.layerToggleProvince, 'province');
+  bindLayerToggle(els.layerToggleComuni, 'comuni');
   els.exportTimelinePngBtn?.addEventListener('click', () => { serializeSvgToPng(q('timeline-chart'), `timeline_${state.selectedMunicipalityId || 'none'}.png`); showToast('Snapshot timeline avviato.'); });
   els.exportHeatmapPngBtn?.addEventListener('click', () => { serializeSvgToPng(q('heatmap-chart'), `heatmap_${state.selectedMunicipalityId || 'none'}.png`); showToast('Snapshot heatmap avviato.'); });
   els.exportAuditBtn?.addEventListener('click', () => { exportJSON(auditPayload(), `audit_${state.selectedElection || 'all'}.json`); showToast('Audit esportato.'); });
@@ -5099,6 +5192,9 @@ async function init() {
     sidebarLegend: q('sidebar-legend'),
     sidebarQuickStats: q('sidebar-quick-stats'),
     sidebarDownloadPngBtn: q('sidebar-download-png-btn'),
+    layerToggleRegioni: q('layer-toggle-regioni'),
+    layerToggleProvince: q('layer-toggle-province'),
+    layerToggleComuni: q('layer-toggle-comuni'),
     mapCanvas: q('map-canvas'),
     mapLoading: q('map-loading'),
     mapDetailCta: q('map-detail-cta'),

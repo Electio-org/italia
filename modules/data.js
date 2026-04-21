@@ -60,7 +60,15 @@ export async function fetchCsvFile(path) {
 export function parseGeometryObject(obj) {
   if (obj?.type === 'Topology') {
     const key = Object.keys(obj.objects || {})[0];
-    return topojson.feature(obj, obj.objects[key]);
+    const fc = topojson.feature(obj, obj.objects[key]);
+    // Stash topology on the collection so downstream callers (map canvas)
+    // can build topojson.mesh() layers for comune / provincia / regione
+    // borders. Non-enumerable so JSON.stringify stays clean.
+    try {
+      Object.defineProperty(fc, '__topology', { value: obj, enumerable: false, configurable: true });
+      Object.defineProperty(fc, '__topologyObjectKey', { value: key, enumerable: false, configurable: true });
+    } catch (_) { /* older runtimes */ }
+    return fc;
   }
   return obj;
 }

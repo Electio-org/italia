@@ -264,6 +264,21 @@
       <section class="panel map-companion" aria-label="Contesto mappa">
         <div id="sidebar-legend" class="sidebar-legend" aria-live="polite"></div>
         <div id="sidebar-quick-stats" class="sidebar-quick-stats" aria-live="polite"></div>
+        <fieldset class="sidebar-layers" aria-label="Livelli mappa">
+          <legend>Confini</legend>
+          <label class="sidebar-layer-toggle">
+            <input type="checkbox" id="layer-toggle-regioni" checked />
+            <span>Regioni</span>
+          </label>
+          <label class="sidebar-layer-toggle">
+            <input type="checkbox" id="layer-toggle-province" checked />
+            <span>Province</span>
+          </label>
+          <label class="sidebar-layer-toggle">
+            <input type="checkbox" id="layer-toggle-comuni" checked />
+            <span>Comuni</span>
+          </label>
+        </fieldset>
         <div class="sidebar-download-row">
           <button type="button" id="sidebar-download-png-btn" class="ghost-btn small-btn sidebar-download-btn" aria-label="Scarica la mappa corrente come PNG">Scarica mappa (PNG)</button>
         </div>
