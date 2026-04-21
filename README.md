@@ -1,10 +1,13 @@
 # Electio Italia
 
-Public-facing electoral atlas of Italy — an all-country, municipality-level static explorer for `Camera dei Deputati` elections and the `Assemblea Costituente` 1946 vote.
+Public-facing electoral atlas of Italy — mapping every Italian election, from the post-war period onward, at the **municipal level**.
 
 This repository is the focused home for the national build: a web dashboard, a structured derived-data bundle, and lightweight programmatic access for research and reuse. Data is sourced from official Eligendo open-data archives.
 
-**Live site:** https://electio.eu/ (GitHub Pages, once enabled — see "Deploy" below).
+**Current coverage (shipped):** `Camera dei Deputati` (1948–2022) + `Assemblea Costituente` 1946.
+**Roadmap:** `Senato`, `Parlamento Europeo`, `Regionali`, `Comunali`, `Referendum` — all at the municipal level, all from 1946 onward.
+
+**Live site:** https://simoneghezzicolombo.github.io/electio/ (GitHub Pages; a custom domain can be added later by restoring the `CNAME` file).
 
 ## What is in this repository
 
@@ -14,12 +17,13 @@ This repository is the focused home for the national build: a web dashboard, a s
 - Programmatic loaders for Python and R under `clients/`.
 - Validation scripts for bundle integrity, frontend sanity checks, and loader smoke tests.
 
-## Current scope
+## Current scope & roadmap
 
-- Geography: Italy
-- Election family: `Camera dei Deputati` plus `Assemblea Costituente 1946`
-- Granularity: primarily municipal, with province and region context layers
-- Product style: public-facing and explorable, but structured as a data product rather than a one-off dashboard
+- **Geography:** Italy — all ~7,900 comuni, with province and region context layers
+- **Granularity:** primarily municipal
+- **Election families shipped:** `Camera dei Deputati` (1948–2022) + `Assemblea Costituente` 1946
+- **Roadmap (next waves):** `Senato della Repubblica` · `Parlamento Europeo` · `Regionali` · `Comunali` · `Referendum`
+- **Product style:** public-facing and explorable, but structured as a data product rather than a one-off dashboard
 
 ## Main entry points
 
@@ -49,14 +53,15 @@ Then open `http://127.0.0.1:8765/`.
 
 ## Deploy (GitHub Pages)
 
-The repository root is the Pages site. A `.nojekyll` file disables Jekyll, and a `CNAME` file maps the site to `electio.eu`.
+The repository root is the Pages site. A `.nojekyll` file disables Jekyll.
 
 1. **GitHub → Settings → Pages**: source = `main` branch, folder = `/ (root)`.
-2. **Custom domain**: already set via `CNAME`. Configure DNS at your registrar:
-   - `ALIAS`/`ANAME` (or `A` records to GitHub Pages IPs `185.199.108-111.153`) on apex `electio.eu`
-   - `CNAME` on `www.electio.eu` → `simoneghezzicolombo.github.io`
-3. **Enforce HTTPS**: enable it in Pages settings after DNS propagates.
-4. **Large downloads**: `municipality_results_long.csv` (506 MB) and full-res GeoJSON files (LFS) are not served by Pages. Publish them as GitHub Release assets and update the links in `data-download.html` accordingly.
+2. **Default URL**: `https://<owner>.github.io/<repo>/`. For this repository that is `https://simoneghezzicolombo.github.io/electio/`.
+3. **Custom domain (optional)**: create a `CNAME` file at the repo root containing the domain (e.g. `electio.eu`), then configure DNS at your registrar:
+   - `A` records on the apex → `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`
+   - `CNAME` on the `www` subdomain → `<owner>.github.io`
+   - Enable **Enforce HTTPS** after DNS propagates.
+4. **Large downloads**: `municipality_results_long.csv` (506 MB) and full-resolution GeoJSON files (LFS) are not served by Pages. Publish them as GitHub Release assets and update the links in `data-download.html` accordingly.
 
 ## Validation
 
