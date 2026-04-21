@@ -4729,6 +4729,19 @@ button:hover {
   color: var(--accent);
 }
 
+.site-footer-copy {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 14px 28px 22px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(220, 231, 245, 0.72);
+  font-size: 0.82rem;
+}
+.site-footer-copy p { margin: 0; }
+@media (max-width: 860px) {
+  .site-footer-copy { padding-left: 16px; padding-right: 16px; }
+}
+
 @media (max-width: 1140px) {
   .app-shell {
     grid-template-columns: 1fr;
