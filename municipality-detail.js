@@ -24,12 +24,14 @@ function escapeHtml(value) {
 }
 
 function fmtPct(value) {
+  if (value == null || value === '') return '—';
   const n = Number(value);
   if (!Number.isFinite(n)) return '—';
   return `${n.toFixed(2)}%`;
 }
 
 function fmtInt(value) {
+  if (value == null || value === '') return '—';
   const n = Number(value);
   if (!Number.isFinite(n)) return '—';
   return n.toLocaleString('it-IT');

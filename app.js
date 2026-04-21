@@ -1762,6 +1762,13 @@ function requestRender() {
   });
 }
 
+// Double-rAF so the loading overlay DOM change paints before the blocking
+// renderAll starts. Without this the spinner is shown and hidden in the same
+// frame and never becomes visible.
+function deferAfterLoadingPaint(fn) {
+  window.requestAnimationFrame(() => window.requestAnimationFrame(fn));
+}
+
 function invalidateDerivedCaches() {
   state.metricCaches = {};
   state.selectorCaches = {};
@@ -4078,8 +4085,12 @@ function bindEvents() {
       }
       invalidateDerivedCaches();
       state.tablePage = 1;
-      readControls();
-      requestRender();
+      if (loadingTriggerSelects.has(el)) {
+        deferAfterLoadingPaint(() => { readControls(); requestRender(); });
+      } else {
+        readControls();
+        requestRender();
+      }
     });
   });
 
@@ -4094,8 +4105,7 @@ function bindEvents() {
     els.electionSelect.value = label.value;
     updateElectionSlider();
     state.tablePage = 1;
-    readControls();
-    requestRender();
+    deferAfterLoadingPaint(() => { readControls(); requestRender(); });
   });
   els.prevElectionBtn.addEventListener('click', () => stepElection(-1));
   els.nextElectionBtn.addEventListener('click', () => stepElection(1));
