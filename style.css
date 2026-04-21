@@ -5483,11 +5483,142 @@ body.basic-mode .sidebar-tools {
 }
 
 /* ============================================================ */
-/* gerda-style clean dashboard (desktop, basic default mode)    */
+/* gerda-minimal dashboard (always-on, all UI levels)           */
 /*                                                              */
-/* Strips the secondary chrome so the dashboard reads as a map- */
-/* first surface: topbar (brand + controls) / map / profile.    */
-/* Extra panels are still available in "Esperto" UI mode.       */
+/* Public-facing atlas should render as a map-first surface:    */
+/* thin topbar, compact control strip, full map, compact        */
+/* profile card. Every secondary panel, narrative section,      */
+/* redundant header and explainer is hidden unconditionally.    */
+/* ============================================================ */
+
+/* (1) Global dashboard-page kill-list. These selectors apply   */
+/* regardless of uiLevel so the public URL is always minimal.   */
+body[data-site-page="dashboard"] .dashboard-intro-strip,
+body[data-site-page="dashboard"] .dashboard-section-tabs,
+body[data-site-page="dashboard"] .site-hero,
+body[data-site-page="dashboard"] .signature-panel,
+body[data-site-page="dashboard"] .site-layers-panel,
+body[data-site-page="dashboard"] .method-explainers-panel,
+body[data-site-page="dashboard"] .pathway-strip,
+body[data-site-page="dashboard"] .quickstart-strip,
+body[data-site-page="dashboard"] .question-workbench-panel,
+body[data-site-page="dashboard"] .reading-guide-panel,
+body[data-site-page="dashboard"] .briefing-panel,
+body[data-site-page="dashboard"] .evidence-panel,
+body[data-site-page="dashboard"] .faq-panel,
+body[data-site-page="dashboard"] .release-studio-panel,
+body[data-site-page="dashboard"] .audit-panel,
+body[data-site-page="dashboard"] .transitions-panel,
+body[data-site-page="dashboard"] .analysis-grid,
+body[data-site-page="dashboard"] .insights-grid,
+body[data-site-page="dashboard"] .research-grid,
+body[data-site-page="dashboard"] .advanced-grid,
+body[data-site-page="dashboard"] .compare-map-grid,
+body[data-site-page="dashboard"] .swipe-compare-box,
+body[data-site-page="dashboard"] .insight-strip,
+body[data-site-page="dashboard"] .overview-grid,
+body[data-site-page="dashboard"] #overview-cards,
+body[data-site-page="dashboard"] .data-package-panel,
+body[data-site-page="dashboard"] .usage-notes-panel,
+body[data-site-page="dashboard"] #usage-notes-panel,
+body[data-site-page="dashboard"] .methodology-panel,
+body[data-site-page="dashboard"] .toolbar,
+body[data-site-page="dashboard"] .jump-bar,
+body[data-site-page="dashboard"] .filter-chip-bar,
+body[data-site-page="dashboard"] .quick-actions-panel,
+body[data-site-page="dashboard"] .modes-panel,
+body[data-site-page="dashboard"] .audience-panel,
+body[data-site-page="dashboard"] .preferences-panel,
+body[data-site-page="dashboard"] .saved-views-panel,
+body[data-site-page="dashboard"] .recent-panel,
+body[data-site-page="dashboard"] .status-panel,
+body[data-site-page="dashboard"] .local-bundle-panel,
+body[data-site-page="dashboard"] .external-panel,
+body[data-site-page="dashboard"] .sidebar-tools,
+body[data-site-page="dashboard"] .map-context-strip,
+body[data-site-page="dashboard"] .detail-narrative-grid,
+body[data-site-page="dashboard"] .detail-lineage-grid,
+body[data-site-page="dashboard"] .detail-chart-block {
+  display: none !important;
+}
+
+/* (2) Hide the sidebar brand block on desktop: the site header  */
+/* already shows the brand so this is pure duplication.          */
+@media (min-width: 960px) {
+  body[data-site-page="dashboard"] .sidebar .brand {
+    display: none !important;
+  }
+}
+
+/* (3) Hide secondary profile sections until a municipality is   */
+/* selected. The JS reveals them via state changes; in the       */
+/* default empty state only the main profile card is shown.     */
+body[data-site-page="dashboard"] .detail-panel .detail-summary-shell > .detail-meta-block:nth-child(2),
+body[data-site-page="dashboard"] .detail-panel .detail-meta-block:has(#trajectory-report),
+body[data-site-page="dashboard"] .detail-panel .detail-meta-block:has(#compare-chip-list) {
+  display: none !important;
+}
+
+/* (4) Header: shrink brand subtitle so the topbar does not      */
+/* shout. The subtitle is still visible but in-line small.       */
+/* Scoped to dashboard only — other pages keep their header.     */
+body[data-site-page="dashboard"] .site-brand-subtitle {
+  font-size: 0.78rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  color: var(--muted) !important;
+}
+body[data-site-page="dashboard"] .site-brand-monogram {
+  width: 32px !important;
+  height: 32px !important;
+  font-size: 0.82rem !important;
+}
+body[data-site-page="dashboard"] .site-header { padding: 6px 0 !important; }
+
+/* (5) Slim the control panel. Keep Elezione, Mostra in mappa,  */
+/* Partito and the timeline. Hide the rest (they are still      */
+/* reachable via Controlli avanzati and URL hash state).        */
+body[data-site-page="dashboard"] .sidebar .panel.control-panel > label:has(#municipality-search),
+body[data-site-page="dashboard"] .sidebar .panel.control-panel label:has(#compare-election-select),
+body[data-site-page="dashboard"] .sidebar .panel.control-panel label:has(#party-mode-select),
+body[data-site-page="dashboard"] .sidebar .panel.control-panel label:has(#geometry-reference-select),
+body[data-site-page="dashboard"] .sidebar .panel.control-panel .two-col:has(#territorial-mode-select) {
+  display: none !important;
+}
+
+/* (6) Compact reset button + panel header stay out of the way. */
+body[data-site-page="dashboard"] .sidebar .panel.control-panel .panel-header .ghost-btn#reset-btn {
+  align-self: center;
+}
+
+/* (7) Map-panel header stays hidden on desktop: the canvas is  */
+/* clearly the map, the h2 label is noise. Keep the fullscreen  */
+/* + reset buttons as a floating toolbar on the canvas edge.    */
+@media (min-width: 960px) {
+  body[data-site-page="dashboard"] .map-panel > .panel-header {
+    display: none !important;
+  }
+  body[data-site-page="dashboard"] .map-header-actions {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    z-index: 6;
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: saturate(140%) blur(6px);
+    padding: 6px 8px;
+    border-radius: 10px;
+    border: 1px solid rgba(17, 33, 58, 0.08);
+    display: none; /* re-enable if legend has content */
+  }
+  body[data-site-page="dashboard"] .map-panel { position: relative; }
+}
+
+/* (8) Detail panel: empty state is understated; no subtitle.   */
+body[data-site-page="dashboard"] .detail-panel > .panel-header .panel-subtitle {
+  display: none !important;
+}
+
 /* ============================================================ */
 
 @media (min-width: 960px) {
