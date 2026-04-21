@@ -2501,8 +2501,12 @@ function drawCanvasMap(transform = state.mapCanvasTransform || d3.zoomIdentity) 
   ctx.scale(dpr, dpr);
   ctx.translate(transform.x, transform.y);
   ctx.scale(transform.k, transform.k);
-  ctx.lineJoin = 'round';
-  ctx.lineCap = 'round';
+  // Miter joins give crisper borders than 'round' at zoom — round joins
+  // put a little dot at every vertex which, with hundreds of vertices per
+  // comune, reads as a fuzzy outline.
+  ctx.lineJoin = 'miter';
+  ctx.lineCap = 'butt';
+  ctx.miterLimit = 2;
   const strokeScale = 1 / Math.max(1, transform.k);
 
   // Fill first, then draw all strokes on top (avoids adjacent fills
@@ -3855,7 +3859,7 @@ function enableMapZoom() {
   const canvas = d3.select(els.mapCanvas);
   if (!state.mapCanvasZoomBehavior) {
     state.mapCanvasZoomBehavior = d3.zoom()
-      .scaleExtent([1, 9])
+      .scaleExtent([1, 48])
       .on('zoom', event => drawCanvasMapSoon(event.transform));
     canvas.call(state.mapCanvasZoomBehavior);
   }
@@ -3884,7 +3888,7 @@ function zoomToSelectedMunicipality() {
   const dy = y1 - y0;
   const x = (x0 + x1) / 2;
   const y = (y0 + y1) / 2;
-  const scale = Math.max(1, Math.min(8, 0.8 / Math.max(dx / width, dy / height)));
+  const scale = Math.max(1, Math.min(32, 0.8 / Math.max(dx / width, dy / height)));
   const transform = d3.zoomIdentity.translate(width / 2, height / 2).scale(scale).translate(-x, -y);
   d3.select(els.mapCanvas).transition().duration(220).call(state.mapZoomBehavior.transform, transform);
 }
