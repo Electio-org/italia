@@ -5647,7 +5647,7 @@ body[data-site-page="dashboard"] .detail-panel > .panel-header .panel-subtitle {
   /* In basic mode hide the secondary sidebar panels entirely: they were  */
   /* already relegated below the strip, but the topbar is the whole UI   */
   /* visible in the viewport, so leaving them there leaks into the map.  */
-  body[data-site-page="dashboard"].basic-mode .sidebar > :not(.brand):not(.control-panel) {
+  body[data-site-page="dashboard"].basic-mode .sidebar > :not(.brand):not(.control-panel):not(.map-companion) {
     display: none !important;
   }
 
