@@ -301,15 +301,18 @@ def ensure_contract_csv(path: Path, headers: List[str]) -> None:
 def geometry_manifest_files(output_root: Path) -> dict:
     derived = output_root / "data" / "derived"
     geom_dir = derived / "geometries"
-    municipality_files = {}
-    province_files = {}
+    municipality_files: dict[str, str] = {}
+    province_files: dict[str, str] = {}
     if geom_dir.exists():
-        for path in sorted(geom_dir.glob('municipalities_*.geojson')):
-            year = path.stem.split('_')[-1]
-            municipality_files[year] = str(path.relative_to(output_root)).replace('\\', '/')
-        for path in sorted(geom_dir.glob('provinces_*.geojson')):
-            year = path.stem.split('_')[-1]
-            province_files[year] = str(path.relative_to(output_root)).replace('\\', '/')
+        # Prefer TopoJSON over GeoJSON for the same year (the runtime format),
+        # but keep GeoJSON as the fallback when only it is present.
+        def _collect(prefix: str, bucket: dict[str, str]) -> None:
+            for ext in ('.topojson', '.geojson'):
+                for path in sorted(geom_dir.glob(f'{prefix}_*{ext}')):
+                    year = path.stem.split('_')[-1]
+                    bucket.setdefault(year, str(path.relative_to(output_root)).replace('\\', '/'))
+        _collect('municipalities', municipality_files)
+        _collect('provinces', province_files)
     if municipality_files:
         latest_year = sorted(municipality_files, key=lambda x: int(x))[-1]
         geometry = municipality_files[latest_year]
