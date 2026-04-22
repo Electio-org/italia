@@ -35,8 +35,11 @@ function incrementCount(map, key, by = 1) {
 }
 
 function summaryStats(acc) {
+  const weightedDenom = acc.valid_votes || 0;
   return {
     turnout_pct: acc.electors > 0 ? (acc.voters / acc.electors) * 100 : mean(acc.turnout_values),
+    margin: weightedDenom > 0 ? (acc.margin_weighted_total / weightedDenom) : mean(acc.margin_values),
+    first_party_share: weightedDenom > 0 ? (acc.first_party_share_weighted_total / weightedDenom) : mean(acc.first_party_share_values),
     n: acc.n,
     electors: acc.electors,
     voters: acc.voters,
@@ -46,13 +49,34 @@ function summaryStats(acc) {
 
 function addToSummaryAcc(map, key, row) {
   if (!key) return null;
-  const acc = map.get(key) || { electors: 0, voters: 0, valid_votes: 0, n: 0, turnout_values: [] };
+  const acc = map.get(key) || {
+    electors: 0,
+    voters: 0,
+    valid_votes: 0,
+    n: 0,
+    turnout_values: [],
+    margin_values: [],
+    first_party_share_values: [],
+    margin_weighted_total: 0,
+    first_party_share_weighted_total: 0
+  };
   acc.electors += safeNumber(row.electors) || 0;
   acc.voters += safeNumber(row.voters) || 0;
-  acc.valid_votes += safeNumber(row.valid_votes) || 0;
+  const validVotes = safeNumber(row.valid_votes) || 0;
+  acc.valid_votes += validVotes;
   acc.n += 1;
   const turnout = safeNumber(row.turnout_pct);
+  const margin = safeNumber(row.first_second_margin);
+  const firstPartyShare = safeNumber(row.first_party_share);
   if (Number.isFinite(turnout)) acc.turnout_values.push(turnout);
+  if (Number.isFinite(margin)) {
+    acc.margin_values.push(margin);
+    acc.margin_weighted_total += margin * validVotes;
+  }
+  if (Number.isFinite(firstPartyShare)) {
+    acc.first_party_share_values.push(firstPartyShare);
+    acc.first_party_share_weighted_total += firstPartyShare * validVotes;
+  }
   map.set(key, acc);
   return acc;
 }

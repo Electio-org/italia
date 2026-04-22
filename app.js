@@ -356,6 +356,8 @@ function ensureVisibleSummary({ silent = true } = {}) {
 
 function applyResultsHydrationOutcome(report, { silent = true } = {}) {
   if (!report || (!report.loadedRows && !(report.loadedKeys || []).length)) return;
+  refreshPartySelector();
+  syncMetricScopedControls();
   invalidateDerivedCaches();
   renderStatusPanel();
   requestRender();
@@ -517,9 +519,10 @@ function electionLabelByKey(key) {
 }
 
 function metricNeedsPartyResults() {
+  if (['party_share', 'swing_compare'].includes(state.selectedMetric)) return true;
   if (state.selectedMetric === 'concentration') return true;
   return Boolean(state.selectedParty)
-    && ['party_share', 'swing_compare', 'over_performance_province', 'over_performance_region'].includes(state.selectedMetric);
+    && ['over_performance_province', 'over_performance_region'].includes(state.selectedMetric);
 }
 
 function shouldHydratePartyResultsNow() {
@@ -718,6 +721,7 @@ function clearMunicipalitySelection() {
   state.compareMunicipalityIds = [];
   state.lastAutoZoomMunicipality = null;
   if (els.municipalitySearch) els.municipalitySearch.value = '';
+  hideTooltip();
   updateMunicipalityNoteUI();
   syncURLState();
 }
@@ -760,16 +764,67 @@ function restoreLocalState() {
   } catch {}
 }
 
+function partyOptionsForCurrentContext(mode = state.selectedPartyMode) {
+  const electionKeys = new Set([state.selectedElection, state.compareElection].filter(Boolean));
+  const scopedRows = (state.resultsLong || []).filter(row => !electionKeys.size || electionKeys.has(row.election_key));
+  const rows = scopedRows.length ? scopedRows : (state.resultsLong || []);
+  const values = rows.map(row => {
+    if (mode === 'bloc') return row.bloc || inferPartyMeta(row.party_std || row.party_raw).bloc;
+    if (mode === 'party_family') return row.party_family || inferPartyMeta(row.party_std || row.party_raw).family;
+    return row.party_std || inferPartyMeta(row.party_raw).display;
+  }).filter(Boolean);
+  return uniqueSorted(values);
+}
+
 function refreshPartySelector() {
   if (!els.partySelect) return;
-  const values = state.selectedPartyMode === 'bloc'
-    ? uniqueSorted(state.resultsLong.map(r => r.bloc || inferPartyMeta(r.party_std || r.party_raw).bloc).filter(Boolean))
-    : state.selectedPartyMode === 'party_family'
-      ? uniqueSorted(state.resultsLong.map(r => r.party_family || inferPartyMeta(r.party_std || r.party_raw).family).filter(Boolean))
-      : uniqueSorted(state.resultsLong.map(r => r.party_std || inferPartyMeta(r.party_raw).display).filter(Boolean));
+  const values = partyOptionsForCurrentContext();
   els.partySelect.innerHTML = values.map(v => `<option value="${escapeHtml(v)}">${escapeHtml(v)}</option>`).join('');
   if (!values.includes(state.selectedParty)) state.selectedParty = values[0] || FALLBACK_PARTY_OPTIONS[0];
   els.partySelect.value = state.selectedParty || '';
+}
+
+function setControlVisibility(control, visible) {
+  const label = control?.closest('label');
+  if (!label) return;
+  label.classList.toggle('hidden', !visible);
+  label.setAttribute('aria-hidden', visible ? 'false' : 'true');
+  control.disabled = !visible;
+}
+
+function syncPrimaryControlRows() {
+  document.querySelectorAll('.control-panel .two-col-main').forEach(row => {
+    const visibleCount = [...row.querySelectorAll(':scope > label')].filter(label => !label.classList.contains('hidden')).length;
+    row.classList.toggle('single-control-row', visibleCount <= 1);
+  });
+}
+
+function syncMetricScopedControls() {
+  const partyScoped = ['party_share', 'swing_compare'].includes(state.selectedMetric);
+  setControlVisibility(els.compareElectionSelect, metricNeedsCompare());
+  setControlVisibility(els.partyModeSelect, partyScoped);
+  setControlVisibility(els.partySelect, partyScoped);
+  syncPrimaryControlRows();
+}
+
+function relocateAdvancedDashboardControls() {
+  const grid = document.querySelector('.advanced-sidebar-grid');
+  if (!grid || grid.dataset.controlsRelocated === 'true') return;
+  grid.dataset.controlsRelocated = 'true';
+  const moveLabel = control => control?.closest('label') || null;
+  const removeIfEmpty = node => {
+    if (!node) return;
+    const hasVisibleChildren = [...node.children].some(child => child.matches('label, .time-nav-box'));
+    if (!hasVisibleChildren) node.remove();
+  };
+  const mainRow = els.territorialModeSelect?.closest('.two-col');
+  const row = document.createElement('div');
+  row.className = 'two-col';
+  [moveLabel(els.territorialModeSelect), moveLabel(els.paletteSelect)].filter(Boolean).forEach(node => row.appendChild(node));
+  if (row.children.length) grid.prepend(row);
+  const timeNav = els.electionSlider?.closest('.time-nav-box');
+  if (timeNav) grid.insertBefore(timeNav, grid.children[row.children.length ? 1 : 0] || grid.firstChild);
+  removeIfEmpty(mainRow);
 }
 
 function updateElectionSlider() {
@@ -844,6 +899,7 @@ function setupControls() {
     els.customIndicatorSelect.value = state.selectedCustomIndicator || '';
   }
   refreshPartySelector();
+  syncMetricScopedControls();
   if (els.municipalityList) els.municipalityList.innerHTML = state.municipalities.map(m => `<option value="${escapeHtml(m.name_current || m.municipality_name)}"></option>`).join('');
 }
 
@@ -852,6 +908,7 @@ function readControls() {
   if (els.compareElectionSelect) state.compareElection = els.compareElectionSelect.value || null;
   if (els.metricSelect) state.selectedMetric = sanitizeSelectedMetric(els.metricSelect.value || state.selectedMetric);
   if (els.partyModeSelect) state.selectedPartyMode = els.partyModeSelect.value || state.selectedPartyMode;
+  refreshPartySelector();
   if (els.partySelect) state.selectedParty = els.partySelect.value || state.selectedParty;
   if (els.customIndicatorSelect) state.selectedCustomIndicator = els.customIndicatorSelect.value || null;
   if (els.territorialModeSelect) state.territorialMode = els.territorialModeSelect.value || state.territorialMode;
@@ -869,6 +926,7 @@ function readControls() {
   if (els.swipePosition) state.swipePosition = safeNumber(els.swipePosition.value) ?? state.swipePosition;
   if (els.densitySelect) state.uiDensity = els.densitySelect.value || state.uiDensity;
   if (els.visionModeSelect) state.visionMode = els.visionModeSelect.value || state.visionMode;
+  syncMetricScopedControls();
   updateBodyAppearance();
   syncActiveGeometry(state, registerIssue).then(() => {
     requestRender();
@@ -972,7 +1030,7 @@ function ensureActiveSelectionForQuestions() {
     return;
   }
   if (state.selectedParty) return;
-  const options = state.indices?.partyOptionsByMode?.[state.selectedPartyMode] || [];
+  const options = partyOptionsForCurrentContext();
   state.selectedParty = options[0] || state.selectedParty || FALLBACK_PARTY_OPTIONS[0] || null;
 }
 
@@ -2117,7 +2175,7 @@ function renderActiveFilterChips() {
   if (state.selectedElection) chips.push(['Anno', state.elections.find(d => d.election_key === state.selectedElection)?.election_label || state.selectedElection]);
   if (state.compareElection) chips.push(['Confronto', state.elections.find(d => d.election_key === state.compareElection)?.election_label || state.compareElection]);
   chips.push(['Indicatore', metricLabel()]);
-  if (state.selectedParty && state.selectedMetric !== 'custom_indicator') chips.push([state.selectedPartyMode === 'party_std' ? 'Partito' : state.selectedPartyMode === 'party_family' ? 'Famiglia' : 'Blocco', state.selectedParty]);
+  if (state.selectedParty && ['party_share', 'swing_compare'].includes(state.selectedMetric)) chips.push([state.selectedPartyMode === 'party_std' ? 'Partito' : state.selectedPartyMode === 'party_family' ? 'Famiglia' : 'Blocco', state.selectedParty]);
   if (state.selectedMetric === 'custom_indicator' && state.selectedCustomIndicator) chips.push(['Indicatore custom', customIndicatorMeta(state.selectedCustomIndicator).label]);
   if (state.selectedAreaPreset && state.selectedAreaPreset !== 'all' && state.selectedAreaPreset !== 'custom') chips.push(['Area', AREA_PRESETS.find(d => d.value === state.selectedAreaPreset)?.label || state.selectedAreaPreset]);
   if (state.selectedProvinceSet.size) chips.push(['Province', [...state.selectedProvinceSet].join(', ')]);
@@ -2135,7 +2193,7 @@ function renderActiveFilterChips() {
 function metricLabel() {
   const labels = {
     first_party: 'Leadership locale',
-    party_share: 'Quota selezione attiva',
+    party_share: 'Quota partito',
     turnout: 'Affluenza',
     margin: 'Margine 1°-2°',
     dominant_block: 'Blocco dominante',
@@ -2399,7 +2457,7 @@ function renderMap() {
   renderQuickStats(rows);
 
   const projection = makeGeoProjection(state.geometry, 960, 680);
-  const anySelection = Boolean(state.selectedMunicipalityId);
+  const anySelection = Boolean(state.selectedMunicipalityId || state.compareMunicipalityIds.length);
 
   if (!els.mapCanvas || typeof Path2D !== 'function') {
     showMapMessage('Mappa non disponibile: il browser non supporta Canvas Path2D.');
@@ -2501,7 +2559,8 @@ function buildCanvasMapCache(projection) {
     meshes,
     hitGrid,
     hitGridCellSize,
-    itemsByKey: new Map(items.map(item => [item.key, item]))
+    itemsByKey: new Map(items.map(item => [item.key, item])),
+    itemsByMunicipalityId: new Map(items.map(item => [String(item.feature?.properties?.municipality_id || ''), item]).filter(([key]) => key))
   };
   return state.mapCanvasCache;
 }
@@ -2550,6 +2609,7 @@ function setupCanvasMapHandlers() {
 
 const CANVAS_LOGICAL_WIDTH = 960;
 const CANVAS_LOGICAL_HEIGHT = 680;
+const CANVAS_SELECTION_FADE_ALPHA = 0.42;
 
 function canvasBackingRatio() {
   return Math.max(1, Math.min(3, window.devicePixelRatio || 1));
@@ -2587,9 +2647,12 @@ function renderCanvasMap({ rows, rowByJoinKey, scaleInfo, projection, anySelecti
     state.selectedTerritorialStatus,
     state.territorialMode,
     state.geometryReferenceYear,
+    [...state.selectedProvinceSet].sort().join(','),
+    state.selectedAreaPreset,
     rows?.length || 0
   ].join('|');
-  state.mapCanvasRender = { cache, rowByJoinKey, scaleInfo, anySelection, renderSignature };
+  const rowByMunicipalityId = new Map(rows.map(row => [String(row.municipality_id || ''), row]).filter(([key]) => key));
+  state.mapCanvasRender = { cache, rowByJoinKey, rowByMunicipalityId, scaleInfo, anySelection, renderSignature };
   drawCanvasMap(transform);
 }
 
@@ -2623,6 +2686,20 @@ function buildBakedChoropleth(render) {
   return off;
 }
 
+function canvasHighlightedEntries(render) {
+  const entries = [];
+  const ids = [];
+  if (state.selectedMunicipalityId) ids.push({ id: String(state.selectedMunicipalityId), kind: 'selected' });
+  state.compareMunicipalityIds.forEach(id => ids.push({ id: String(id), kind: 'compared' }));
+  ids.forEach(({ id, kind }) => {
+    const item = render.cache.itemsByMunicipalityId?.get(id);
+    if (!item) return;
+    const row = render.rowByMunicipalityId?.get(id) || render.rowByJoinKey.get(item.key) || null;
+    entries.push({ item, row, kind });
+  });
+  return entries;
+}
+
 function drawCanvasMap(transform = state.mapCanvasTransform || d3.zoomIdentity) {
   const canvas = els.mapCanvas;
   const ctx = resizeCanvasBackingStore(canvas);
@@ -2644,7 +2721,8 @@ function drawCanvasMap(transform = state.mapCanvasTransform || d3.zoomIdentity) 
   const strokeScale = 1 / Math.max(1, transform.k);
   const anySelection = render.anySelection;
   const selectedId = state.selectedMunicipalityId;
-  const comparedIds = state.compareMunicipalityIds;
+  const comparedIds = new Set(state.compareMunicipalityIds);
+  const highlightedEntries = anySelection ? canvasHighlightedEntries(render) : [];
 
   // Two rendering strategies for the fill layer:
   //   - Low zoom (k < 4): blit the baked choropleth through the transform.
@@ -2657,17 +2735,11 @@ function drawCanvasMap(transform = state.mapCanvasTransform || d3.zoomIdentity) 
   const useBaked = transform.k < 4;
   if (useBaked) {
     const baked = buildBakedChoropleth(render);
-    ctx.globalAlpha = anySelection ? 0.28 : 1;
+    ctx.globalAlpha = anySelection ? CANVAS_SELECTION_FADE_ALPHA : 1;
     ctx.drawImage(baked, 0, 0, CANVAS_LOGICAL_WIDTH, CANVAS_LOGICAL_HEIGHT);
     ctx.globalAlpha = 1;
-    if (anySelection) {
-      // Re-fill selected/compared on top so they pop out of the faded blit.
-      render.cache.items.forEach(item => {
-        const row = render.rowByJoinKey.get(item.key);
-        const mid = row?.municipality_id;
-        const selected = mid && mid === selectedId;
-        const compared = mid && comparedIds.includes(mid);
-        if (!selected && !compared) return;
+    if (highlightedEntries.length) {
+      highlightedEntries.forEach(({ item, row }) => {
         ctx.fillStyle = row ? render.scaleInfo.colorFor(row.__metric_value) : '#e2e8f0';
         ctx.fill(item.path);
       });
@@ -2690,7 +2762,7 @@ function drawCanvasMap(transform = state.mapCanvasTransform || d3.zoomIdentity) 
       const row = render.rowByJoinKey.get(item.key);
       const mid = row?.municipality_id;
       const selected = mid && mid === selectedId;
-      const compared = mid && comparedIds.includes(mid);
+      const compared = mid && comparedIds.has(mid);
       const isFaded = anySelection && mid && !selected && !compared;
       (isFaded ? faded : visible).push({ item, row });
     });
@@ -2700,7 +2772,7 @@ function drawCanvasMap(transform = state.mapCanvasTransform || d3.zoomIdentity) 
       ctx.fill(item.path);
     });
     if (faded.length) {
-      ctx.globalAlpha = 0.32;
+      ctx.globalAlpha = CANVAS_SELECTION_FADE_ALPHA;
       faded.forEach(({ item, row }) => {
         ctx.fillStyle = row ? render.scaleInfo.colorFor(row.__metric_value) : '#e2e8f0';
         ctx.fill(item.path);
@@ -2774,12 +2846,9 @@ function drawCanvasMap(transform = state.mapCanvasTransform || d3.zoomIdentity) 
   }
 
   ctx.globalAlpha = 1;
-  render.cache.items.forEach(item => {
-    const row = render.rowByJoinKey.get(item.key);
+  highlightedEntries.forEach(({ item, row, kind }) => {
     const mid = row?.municipality_id;
-    const selected = mid && mid === state.selectedMunicipalityId;
-    const compared = mid && state.compareMunicipalityIds.includes(mid);
-    if (!selected && !compared) return;
+    const selected = kind === 'selected';
     ctx.strokeStyle = selected ? '#0f172a' : municipalityColor(mid);
     ctx.lineWidth = (selected ? 2.8 : 1.9) * strokeScale;
     ctx.stroke(item.path);
@@ -4359,7 +4428,7 @@ function bindEvents() {
       // in order to see that party's share on the map — auto-switch the
       // metric so the user doesn't have to do it separately. Keep the
       // signal if they're already on a party-scoped metric.
-      if (el === els.partySelect && els.metricSelect && !['party_share', 'swing_compare'].includes(els.metricSelect.value)) {
+      if ([els.partySelect, els.partyModeSelect].includes(el) && els.metricSelect && !['party_share', 'swing_compare'].includes(els.metricSelect.value)) {
         els.metricSelect.value = 'party_share';
       }
       if (el === els.areaPresetSelect) {
@@ -5541,6 +5610,7 @@ async function init() {
     const bootParams = new URLSearchParams(location.hash.startsWith('#') ? location.hash.slice(1) : '');
     if (!bootParams.has('uiLevel')) state.uiLevel = 'basic';
     if (!bootParams.has('audienceMode')) state.audienceMode = 'public';
+    relocateAdvancedDashboardControls();
     setupControls();
     invalidateDerivedCaches();
     renderStatusPanel();

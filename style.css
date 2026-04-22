@@ -3282,6 +3282,7 @@ button:hover { border-color:var(--accent); background:#f7fbff; transform:none; }
 .dashboard-section-tabs .dashboard-tab.is-active { background:#173455; color:#fff; }
 .control-panel .panel-subtitle { margin-top:4px; }
 .two-col-main { margin-bottom:2px; }
+.control-panel .two-col-main.single-control-row { grid-template-columns:minmax(0,1fr) !important; }
 .advanced-sidebar-details { margin-top:14px; border-top:1px solid var(--line-soft); padding-top:14px; }
 .advanced-sidebar-details summary { cursor:pointer; color:#1f3552; font-weight:600; margin-bottom:12px; }
 .advanced-sidebar-grid { margin-top:14px; }
