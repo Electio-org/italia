@@ -6048,6 +6048,38 @@ body[data-site-page="dashboard"] .quick-stats-empty {
   color: var(--muted);
 }
 
+body[data-site-page="dashboard"] .sidebar-layers {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 0 12px;
+  margin: 0;
+  border: 0;
+  border-top: 1px solid var(--line-soft, #e5e9f2);
+}
+body[data-site-page="dashboard"] .sidebar-layers legend {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 0;
+  margin-bottom: 2px;
+}
+body[data-site-page="dashboard"] .sidebar-layer-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  user-select: none;
+}
+body[data-site-page="dashboard"] .sidebar-layer-toggle input[type="checkbox"] {
+  margin: 0;
+  width: 14px;
+  height: 14px;
+  accent-color: #0f172a;
+}
 body[data-site-page="dashboard"] .sidebar-download-row {
   display: flex;
   padding-top: 12px;
