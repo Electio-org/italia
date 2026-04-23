@@ -146,6 +146,7 @@ const state = {
   mapCanvasTransform: null,
   mapCanvasMoveFrame: null,
   mapCanvasZoomFrame: null,
+  mapInteractionRenderQueued: false,
   mapZoomTarget: null,
   lastAutoZoomMunicipality: null,
   // Layer visibility for GERDA-style border toggles. comuni are auto-hidden
@@ -225,6 +226,18 @@ function customIndicatorMeta(key) {
 
 function metricNeedsCompare() {
   return ['swing_compare', 'delta_turnout'].includes(state.selectedMetric);
+}
+
+function metricUsesCompare(metric = state.selectedMetric) {
+  return ['swing_compare', 'delta_turnout'].includes(metric);
+}
+
+function metricUsesPartySelection(metric = state.selectedMetric) {
+  return ['party_share', 'swing_compare', 'over_performance_province', 'over_performance_region', 'concentration'].includes(metric);
+}
+
+function metricUsesPartyMode(metric = state.selectedMetric) {
+  return metric === 'dominant_block' || metricUsesPartySelection(metric);
 }
 
 function audienceMeta() {
@@ -1655,21 +1668,31 @@ function toggleTimelinePlayback() {
   state.playbackTimer = setInterval(() => stepElection(1), 1200);
 }
 
-function stepElection(delta) {
+async function stepElection(delta) {
   const idx = state.electionLabels.findIndex(d => d.value === state.selectedElection);
   if (idx === -1) return;
   const next = state.electionLabels[(idx + delta + state.electionLabels.length) % state.electionLabels.length];
+  setMapLoading(true, 'Caricamento dati elezione…');
   state.selectedElection = next.value;
   setupControls();
-  readControls();
+  await runRenderWithLoadingDismissAsync(async () => {
+    readControls();
+    await prepareMapForSmoothUse({ aggressive: true });
+    requestRender();
+  });
 }
 
-function swapSelectedElections() {
+async function swapSelectedElections() {
   const tmp = state.selectedElection;
   state.selectedElection = state.compareElection;
   state.compareElection = tmp;
   setupControls();
-  readControls();
+  setMapLoading(true, 'Caricamento dati elezione…');
+  await runRenderWithLoadingDismissAsync(async () => {
+    readControls();
+    await prepareMapForSmoothUse({ aggressive: true });
+    requestRender();
+  });
 }
 
 function initCollapsiblePanels() {
@@ -1913,33 +1936,41 @@ function requestRender() {
   });
 }
 
-// Double-rAF so the loading overlay DOM change paints before the blocking
-// renderAll starts. Without this the spinner is shown and hidden in the same
-// frame and never becomes visible.
-function deferAfterLoadingPaint(fn) {
-  window.requestAnimationFrame(() => window.requestAnimationFrame(fn));
+function waitForAnimationFrames(count = 1) {
+  return new Promise(resolve => {
+    const step = remaining => {
+      if (remaining <= 0) {
+        resolve();
+        return;
+      }
+      window.requestAnimationFrame(() => step(remaining - 1));
+    };
+    step(Math.max(1, count));
+  });
 }
 
-// Run a readControls+requestRender paired with a loading indicator. The
-// spinner is dismissed only after renderAll completes (one rAF after
-// requestRender schedules it). Any unrelated requestRender firing during the
-// deferral cannot hide the spinner because mapLoadingOwed gates the hide.
-function runRenderWithLoadingDismiss(doWork) {
-  deferAfterLoadingPaint(() => {
-    try {
-      doWork();
-    } catch (err) {
-      // Don't let a downstream failure leak a permanently-visible overlay:
-      // the matching setMapLoading(false) still runs in the finally-style
-      // post-render rAF below.
-      console.error('[runRenderWithLoadingDismiss]', err);
+function requestMapInteractionRender() {
+  if (state.mapInteractionRenderQueued) return;
+  state.mapInteractionRenderQueued = true;
+  window.requestAnimationFrame(() => {
+    state.mapInteractionRenderQueued = false;
+    if (state.mapCanvasRender) {
+      state.mapCanvasRender.anySelection = Boolean(state.selectedMunicipalityId || state.compareMunicipalityIds.length);
+      drawCanvasMap(state.mapCanvasTransform || d3.zoomIdentity);
     }
-    // Hide one frame after the render rAF runs, so renderAll has already
-    // swapped the canvas contents when the spinner comes down.
-    window.requestAnimationFrame(() => {
-      window.requestAnimationFrame(() => setMapLoading(false));
-    });
+    renderSelectionDock();
   });
+}
+
+async function runRenderWithLoadingDismissAsync(doWork) {
+  await waitForAnimationFrames(2);
+  try {
+    await doWork();
+  } catch (err) {
+    console.error('[runRenderWithLoadingDismissAsync]', err);
+  }
+  await waitForAnimationFrames(2);
+  setMapLoading(false);
 }
 
 function invalidateDerivedCaches() {
@@ -2482,13 +2513,14 @@ function renderWarnings(rows) {
 }
 
 function currentMapRenderKey() {
+  const metric = state.selectedMetric;
   return JSON.stringify({
     selectedElection: state.selectedElection,
-    compareElection: state.compareElection,
-    selectedMetric: state.selectedMetric,
-    selectedPartyMode: state.selectedPartyMode,
-    selectedParty: state.selectedParty,
-    selectedCustomIndicator: state.selectedCustomIndicator,
+    compareElection: metricUsesCompare(metric) ? state.compareElection : null,
+    selectedMetric: metric,
+    selectedPartyMode: metricUsesPartyMode(metric) ? state.selectedPartyMode : null,
+    selectedParty: metricUsesPartySelection(metric) ? state.selectedParty : null,
+    selectedCustomIndicator: metric === 'custom_indicator' ? state.selectedCustomIndicator : null,
     territorialMode: state.territorialMode,
     geometryReferenceYear: state.geometryReferenceYear,
     selectedCompleteness: state.selectedCompleteness,
@@ -2557,6 +2589,27 @@ function canvasGeometryCacheKey(projection) {
   const featureCount = state.geometry?.features?.length || 0;
   const provinceCount = state.provinceGeometry?.features?.length || 0;
   return `${geometryYear}|${years}|${featureCount}|${provinceCount}|${projection?.constructor?.name || 'projection'}`;
+}
+
+function mapRenderSignatureForRows(rows) {
+  const metric = state.selectedMetric;
+  return [
+    state.selectedElection,
+    metricUsesCompare(metric) ? state.compareElection : '',
+    metric,
+    metricUsesPartySelection(metric) ? state.selectedParty : '',
+    metricUsesPartyMode(metric) ? state.selectedPartyMode : '',
+    state.selectedPalette,
+    state.sameScaleAcrossYears,
+    state.minSharePct,
+    state.selectedCompleteness,
+    state.selectedTerritorialStatus,
+    state.territorialMode,
+    state.geometryReferenceYear,
+    [...state.selectedProvinceSet].sort().join(','),
+    state.selectedAreaPreset,
+    rows?.length || 0
+  ].join('|');
 }
 
 function buildCanvasMapCache(projection) {
@@ -2635,7 +2688,8 @@ function buildCanvasMapCache(projection) {
     hitGrid,
     hitGridCellSize,
     itemsByKey: new Map(items.map(item => [item.key, item])),
-    itemsByMunicipalityId: new Map(items.map(item => [String(item.feature?.properties?.municipality_id || ''), item]).filter(([key]) => key))
+    itemsByMunicipalityId: new Map(items.map(item => [String(item.feature?.properties?.municipality_id || ''), item]).filter(([key]) => key)),
+    bakedStore: new Map()
   };
   return state.mapCanvasCache;
 }
@@ -2662,7 +2716,7 @@ function setupCanvasMapHandlers() {
       // the map stops being faded and the user can read it again.
       if (state.selectedMunicipalityId || state.compareMunicipalityIds.length) {
         clearMunicipalitySelection();
-        requestRender();
+        requestMapInteractionRender();
       }
       return;
     }
@@ -2674,11 +2728,11 @@ function setupCanvasMapHandlers() {
     // way out of a selection without hunting for an X button.
     if (row.municipality_id === state.selectedMunicipalityId) {
       clearMunicipalitySelection();
-      requestRender();
+      requestMapInteractionRender();
       return;
     }
     selectMunicipality(row.municipality_id, { updateSearch: true });
-    requestRender();
+    requestMapInteractionRender();
   });
 }
 
@@ -2700,34 +2754,27 @@ function resizeCanvasBackingStore(canvas) {
   return canvas.getContext('2d', { alpha: true });
 }
 
+function createCanvasRenderPayload(rows, projection, anySelection, scaleInfo = colorScaleForRows(rows)) {
+  const cache = buildCanvasMapCache(projection);
+  const rowByJoinKey = new Map(rows.map(row => [rowJoinKey(row), row]));
+  const rowByMunicipalityId = new Map(rows.map(row => [String(row.municipality_id || ''), row]).filter(([key]) => key));
+  return {
+    cache,
+    rowByJoinKey,
+    rowByMunicipalityId,
+    scaleInfo,
+    anySelection,
+    renderSignature: mapRenderSignatureForRows(rows)
+  };
+}
+
 function renderCanvasMap({ rows, rowByJoinKey, scaleInfo, projection, anySelection }) {
   const canvas = els.mapCanvas;
   const ctx = resizeCanvasBackingStore(canvas);
   if (!canvas || !ctx) return;
   setupCanvasMapHandlers();
-  const cache = buildCanvasMapCache(projection);
   const transform = state.mapCanvasTransform || d3.zoomIdentity;
-  // Signature gates the offscreen choropleth cache — it must invalidate
-  // when the data/metric/palette changes but NOT on every pan/zoom.
-  const renderSignature = [
-    state.selectedElection,
-    state.compareElection,
-    state.selectedMetric,
-    state.selectedParty,
-    state.selectedPartyMode,
-    state.selectedPalette,
-    state.sameScaleAcrossYears,
-    state.minSharePct,
-    state.selectedCompleteness,
-    state.selectedTerritorialStatus,
-    state.territorialMode,
-    state.geometryReferenceYear,
-    [...state.selectedProvinceSet].sort().join(','),
-    state.selectedAreaPreset,
-    rows?.length || 0
-  ].join('|');
-  const rowByMunicipalityId = new Map(rows.map(row => [String(row.municipality_id || ''), row]).filter(([key]) => key));
-  state.mapCanvasRender = { cache, rowByJoinKey, rowByMunicipalityId, scaleInfo, anySelection, renderSignature };
+  state.mapCanvasRender = createCanvasRenderPayload(rows, projection, anySelection, scaleInfo);
   drawCanvasMap(transform);
 }
 
@@ -2737,9 +2784,10 @@ function renderCanvasMap({ rows, rowByJoinKey, scaleInfo, projection, anySelecti
 // per frame collapse to a single drawImage at low zoom.
 function buildBakedChoropleth(render) {
   const key = `${render.renderSignature}`;
-  if (render.cache.bakedKey === key && render.cache.baked) return render.cache.baked;
+  const store = render.cache.bakedStore || (render.cache.bakedStore = new Map());
+  if (store.has(key)) return store.get(key);
   const dpr = canvasBackingRatio();
-  const off = render.cache.baked || document.createElement('canvas');
+  const off = document.createElement('canvas');
   off.width = Math.round(CANVAS_LOGICAL_WIDTH * dpr);
   off.height = Math.round(CANVAS_LOGICAL_HEIGHT * dpr);
   const bctx = off.getContext('2d');
@@ -2756,9 +2804,74 @@ function buildBakedChoropleth(render) {
     bctx.fillStyle = row ? render.scaleInfo.colorFor(row.__metric_value) : '#e2e8f0';
     bctx.fill(item.path);
   });
-  render.cache.baked = off;
-  render.cache.bakedKey = key;
+  store.set(key, off);
+  while (store.size > 18) {
+    const oldest = store.keys().next().value;
+    store.delete(oldest);
+  }
   return off;
+}
+
+function withTemporaryMapState(overrides, fn) {
+  const snapshot = {
+    selectedMetric: state.selectedMetric,
+    selectedParty: state.selectedParty,
+    selectedPartyMode: state.selectedPartyMode,
+    compareElection: state.compareElection
+  };
+  Object.assign(state, overrides || {});
+  try {
+    return fn();
+  } finally {
+    Object.assign(state, snapshot);
+  }
+}
+
+function warmCurrentMapSignature(projection) {
+  const rows = filteredRowsWithMetric(state, { matchesCompleteness, matchesTerritorialStatus });
+  if (!rows.length) return;
+  const render = createCanvasRenderPayload(rows, projection, false);
+  buildBakedChoropleth(render);
+}
+
+async function prepareMapForSmoothUse({ aggressive = false } = {}) {
+  const electionKeys = [state.selectedElection];
+  if (state.compareElection && metricNeedsCompare()) electionKeys.push(state.compareElection);
+  await ensureSummaryForElections(state, electionKeys.filter(Boolean), { buildIndices: updateIndices, registerIssue });
+  await ensureResultsForElections(state, [state.selectedElection, ...(state.compareElection && metricNeedsCompare() ? [state.compareElection] : [])].filter(Boolean), { buildIndices: updateIndices, registerIssue });
+  refreshPartySelector();
+  syncMetricScopedControls();
+  if (!state.geometry?.features?.length) return;
+  const projection = makeGeoProjection(state.geometry, CANVAS_LOGICAL_WIDTH, CANVAS_LOGICAL_HEIGHT);
+  buildCanvasMapCache(projection);
+  warmCurrentMapSignature(projection);
+  const warmConfigs = [
+    { selectedMetric: 'turnout', selectedParty: null, selectedPartyMode: 'party_raw' },
+    { selectedMetric: 'margin', selectedParty: null, selectedPartyMode: 'party_raw' },
+    { selectedMetric: 'dominant_block', selectedParty: null, selectedPartyMode: 'bloc' }
+  ];
+  const partyOptions = partyOptionsForCurrentContext('party_raw');
+  const warmPartyCount = aggressive ? 8 : 3;
+  partyOptions.slice(0, warmPartyCount).forEach(party => {
+    warmConfigs.push({ selectedMetric: 'party_share', selectedParty: party, selectedPartyMode: 'party_raw' });
+  });
+  const seen = new Set();
+  warmConfigs.forEach(config => {
+    const key = `${config.selectedMetric}|${config.selectedParty || ''}|${config.selectedPartyMode || ''}`;
+    if (seen.has(key)) return;
+    seen.add(key);
+    withTemporaryMapState(config, () => warmCurrentMapSignature(projection));
+  });
+}
+
+function canInstantRenderCurrentMap() {
+  if (!state.geometry?.features?.length) return false;
+  const bakedStore = state.mapCanvasCache?.bakedStore;
+  if (!bakedStore?.size) return false;
+  if (metricNeedsPartyResults() && !(state.indices.resultCountByElection?.get(state.selectedElection) > 0)) return false;
+  const rows = filteredRowsWithMetric(state, { matchesCompleteness, matchesTerritorialStatus });
+  if (!rows.length) return false;
+  return bakedStore.has(mapRenderSignatureForRows(rows));
 }
 
 function canvasHighlightedEntries(render) {
@@ -4467,7 +4580,7 @@ function handleMunicipalitySearch() {
   const selectedId = foundMunicipality?.municipality_id || foundAlias?.municipality_id || foundSummary?.municipality_id;
   if (selectedId) {
     selectMunicipality(selectedId, { updateSearch: false });
-    requestRender();
+    requestMapInteractionRender();
   }
 }
 
@@ -4499,13 +4612,7 @@ function bindEvents() {
   });
   const loadingTriggerSelects = new Set([els.electionSelect, els.compareElectionSelect, els.metricSelect, els.partySelect, els.customIndicatorSelect, els.partyModeSelect, els.paletteSelect, els.provinceSelect, els.areaPresetSelect].filter(Boolean));
   [els.electionSelect, els.compareElectionSelect, els.provinceSelect, els.areaPresetSelect, els.metricSelect, els.partySelect, els.customIndicatorSelect, els.partyModeSelect, els.territorialModeSelect, els.completenessSelect, els.territorialStatusSelect, els.sameScaleCheckbox, els.paletteSelect, els.tableSortSelect, els.showNotesCheckbox, els.trajectoryModeSelect, els.densitySelect, els.visionModeSelect].filter(Boolean).forEach(el => {
-    el.addEventListener('change', () => {
-      if (loadingTriggerSelects.has(el)) {
-        const message = el === els.electionSelect || el === els.compareElectionSelect
-          ? 'Caricamento dati elezione…'
-          : 'Aggiornamento mappa…';
-        setMapLoading(true, message);
-      }
+    el.addEventListener('change', async () => {
       if (el === els.metricSelect) {
         const nextMetric = sanitizeSelectedMetric(els.metricSelect.value || state.selectedMetric);
         state.selectedPartyMode = normalizeGroupModeForMetric(nextMetric);
@@ -4535,10 +4642,24 @@ function bindEvents() {
       }
       invalidateDerivedCaches();
       state.tablePage = 1;
+      readControls();
       if (loadingTriggerSelects.has(el)) {
-        runRenderWithLoadingDismiss(() => { readControls(); requestRender(); });
+        const needsHeavyWarmup = !canInstantRenderCurrentMap();
+        if (!needsHeavyWarmup) {
+          requestRender();
+          return;
+        }
+        const message = el === els.electionSelect || el === els.compareElectionSelect
+          ? 'Caricamento dati elezione…'
+          : 'Aggiornamento mappa…';
+        setMapLoading(true, message);
+        await runRenderWithLoadingDismissAsync(async () => {
+          await prepareMapForSmoothUse({
+            aggressive: el === els.electionSelect || el === els.compareElectionSelect || el === els.provinceSelect || el === els.areaPresetSelect
+          });
+          requestRender();
+        });
       } else {
-        readControls();
         requestRender();
       }
     });
@@ -4546,7 +4667,7 @@ function bindEvents() {
 
   els.minShareInput.addEventListener('input', () => { state.tablePage = 1; readControls(); requestRender(); });
   els.swipePosition?.addEventListener('input', () => { readControls(); renderSwipeMap(); syncURLState(); });
-  els.electionSlider.addEventListener('input', () => {
+  els.electionSlider.addEventListener('input', async () => {
     const idx = Number(els.electionSlider.value || 0);
     const label = (state.electionLabels || [])[idx];
     if (!label) return;
@@ -4555,7 +4676,11 @@ function bindEvents() {
     els.electionSelect.value = label.value;
     updateElectionSlider();
     state.tablePage = 1;
-    runRenderWithLoadingDismiss(() => { readControls(); requestRender(); });
+    await runRenderWithLoadingDismissAsync(async () => {
+      readControls();
+      await prepareMapForSmoothUse({ aggressive: true });
+      requestRender();
+    });
   });
   els.prevElectionBtn.addEventListener('click', () => stepElection(-1));
   els.nextElectionBtn.addEventListener('click', () => stepElection(1));
@@ -4607,7 +4732,7 @@ function bindEvents() {
     window.location.href = `municipality-detail.html?${params.toString()}`;
   });
   els.selectionDockCompareBtn?.addEventListener('click', () => q('comparison-panel-content')?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
-  els.selectionDockClearBtn?.addEventListener('click', () => { clearMunicipalitySelection(); requestRender(); });
+  els.selectionDockClearBtn?.addEventListener('click', () => { clearMunicipalitySelection(); requestMapInteractionRender(); });
   const debouncedMunicipalitySearch = debounce(() => handleMunicipalitySearch(), 140);
   const debouncedTableFilter = debounce(() => { state.tablePage = 1; renderTable(); }, 120);
   els.municipalitySearch.addEventListener('change', handleMunicipalitySearch);
@@ -4708,7 +4833,7 @@ function bindEvents() {
     if (event.key === 'f' || event.key === 'F') { toggleFocusMode(); requestRender(); }
     if (event.key === 'Escape') {
       clearMunicipalitySelection();
-      requestRender();
+      requestMapInteractionRender();
     }
     if ((event.key === 's' || event.key === 'S') && (event.altKey || event.shiftKey)) {
       event.preventDefault();
@@ -5730,7 +5855,7 @@ async function init() {
   });
 
   try {
-    setLoading(true, 'Caricamento dataset, geometrie e indici…');
+    setLoading(true, 'Caricamento dataset, geometrie e cache mappa…');
     await loadData(state, { buildIndices: updateIndices, registerIssue });
     restoreLocalState();
     restoreURLState();
@@ -5746,7 +5871,9 @@ async function init() {
     initCollapsiblePanels();
     updateBodyAppearance();
     toggleFocusMode(state.focusMode);
+    await prepareMapForSmoothUse({ aggressive: true });
     requestRender();
+    await waitForAnimationFrames(2);
     setLoading(false);
     if (!state.onboardingDismissed && new URLSearchParams(window.location.search).get('onboarding') === '1') openOnboarding();
     showToast('Explorer pronto. Controlla audit e metodo se i dati sono parziali.', 'success', 2600);
