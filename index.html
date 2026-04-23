@@ -258,6 +258,20 @@
       <section class="panel map-companion" aria-label="Contesto mappa">
         <div id="sidebar-legend" class="sidebar-legend" aria-live="polite"></div>
         <div id="sidebar-quick-stats" class="sidebar-quick-stats" aria-live="polite"></div>
+        <div id="selection-dock" class="selection-dock hidden" aria-live="polite">
+          <div class="selection-dock-main">
+            <div class="selection-dock-copy">
+              <div class="eyebrow">Comune selezionato</div>
+              <strong id="selection-dock-title">Nessun comune selezionato</strong>
+              <div id="selection-dock-meta" class="helper-text">Clicca un comune nella mappa per vedere il riepilogo essenziale.</div>
+            </div>
+            <div id="selection-dock-stats" class="selection-dock-stats"></div>
+            <div class="selection-dock-actions">
+              <button type="button" id="selection-dock-open-btn">Vai al dettaglio</button>
+              <button type="button" id="selection-dock-clear-btn" class="ghost-btn">Deseleziona</button>
+            </div>
+          </div>
+        </div>
         <fieldset class="sidebar-layers" aria-label="Livelli mappa">
           <legend>Confini</legend>
           <label class="sidebar-layer-toggle">
@@ -1135,20 +1149,6 @@
         <p>&copy; 2026 Simone Ghezzi Colombo &middot; Electio Italia &middot; Dati &amp; codice pubblicati con attribuzione.</p>
       </div>
     </footer>
-    </div>
-  </div>
-
-  <div id="selection-dock" class="selection-dock hidden">
-    <div class="selection-dock-main">
-      <div>
-        <div class="eyebrow">Contesto attivo</div>
-        <strong id="selection-dock-title">Nessun comune selezionato</strong>
-        <div id="selection-dock-meta" class="helper-text">Seleziona un comune o usa il comparatore.</div>
-      </div>
-      <div class="selection-dock-actions">
-        <button type="button" id="selection-dock-open-btn">Apri dettaglio comune</button>
-        <button type="button" id="selection-dock-clear-btn" class="ghost-btn">Chiudi</button>
-      </div>
     </div>
   </div>
 

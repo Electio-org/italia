@@ -5406,22 +5406,40 @@ results <- read.csv('${escapeHtml(resultsPath)}')</pre>
 function renderSelectionDock() {
   if (!els.selectionDock || !els.selectionDockTitle || !els.selectionDockMeta) return;
   const mid = state.selectedMunicipalityId;
-  const compareN = state.compareMunicipalityIds.length;
-  const visible = Boolean(mid || compareN);
+  const visible = Boolean(mid);
   els.selectionDock.classList.toggle('hidden', !visible);
-  if (!visible) return;
-  const currentRow = mid ? (getSummaryRow(state, state.selectedElection, mid) || null) : null;
+  if (!visible) {
+    if (els.selectionDockStats) els.selectionDockStats.innerHTML = '';
+    return;
+  }
+  const currentRow = getSummaryRow(state, state.selectedElection, mid) || null;
   const activeShare = currentRow && state.selectedParty ? aggregateShareFor(state, currentRow.election_key, mid, state.selectedParty) : null;
-  const metaBits = [
-    currentRow ? electionLabelByKey(currentRow.election_key || state.selectedElection) : null,
-    currentRow ? `${leadingPartyLabelFor(currentRow)} in testa` : null,
-    Number.isFinite(currentRow?.turnout_pct) ? `affluenza ${fmtPct(currentRow.turnout_pct)}%` : null,
-    Number.isFinite(currentRow?.first_second_margin) ? `margine ${fmtPct(currentRow.first_second_margin)} pt` : null,
-    activeShare != null && state.selectedMetric === 'party_share' && state.selectedParty ? `${state.selectedParty} ${fmtPct(activeShare)}%` : null,
-    compareN ? `${fmtInt(compareN)} nel comparatore` : null
-  ].filter(Boolean);
-  els.selectionDockTitle.textContent = mid ? municipalityLabelById(mid) : 'Nessun comune principale';
-  els.selectionDockMeta.textContent = metaBits.join(' · ') || `${compareN} comuni nel comparatore${mid ? ' · profilo attivo' : ''}`;
+  const metricValue = currentRow ? getMetricValue(state, currentRow) : null;
+  const leaderLabel = currentRow ? leadingPartyLabelFor(currentRow) : null;
+  const topBlock = currentRow?.dominant_block || null;
+  const stats = [
+    ['Elezione', currentRow ? electionLabelByKey(currentRow.election_key || state.selectedElection) : electionLabelByKey(state.selectedElection)],
+    ['Valore in mappa', currentRow ? formatMetricValue(metricValue) : 'n/d'],
+    ['Partito in testa', leaderLabel || 'n/d'],
+    ['Affluenza', Number.isFinite(currentRow?.turnout_pct) ? `${fmtPct(currentRow.turnout_pct)}%` : 'n/d'],
+    ['Margine', Number.isFinite(currentRow?.first_second_margin) ? `${fmtPct(currentRow.first_second_margin)} pt` : 'n/d'],
+    ['Blocco', topBlock || 'n/d']
+  ];
+  if (state.selectedMetric === 'party_share' && state.selectedParty) {
+    stats[1] = [state.selectedParty, activeShare != null ? `${fmtPct(activeShare)}%` : 'n/d'];
+  }
+  if (state.selectedMetric === 'dominant_block') {
+    stats[1] = ['Blocco in mappa', topBlock || 'n/d'];
+  }
+  els.selectionDockTitle.textContent = municipalityLabelById(mid);
+  els.selectionDockMeta.textContent = currentRow?.province ? `Provincia di ${currentRow.province}` : "Quadro rapido sull'elezione attiva";
+  if (els.selectionDockStats) {
+    els.selectionDockStats.innerHTML = stats.map(([label, value]) => `
+      <div class="selection-dock-stat">
+        <span>${escapeHtml(label)}</span>
+        <strong>${escapeHtml(value || 'n/d')}</strong>
+      </div>`).join('');
+  }
 }
 
 function renderViewHealthPill() {
@@ -5698,6 +5716,7 @@ async function init() {
     selectionDock: q('selection-dock'),
     selectionDockTitle: q('selection-dock-title'),
     selectionDockMeta: q('selection-dock-meta'),
+    selectionDockStats: q('selection-dock-stats'),
     selectionDockOpenBtn: q('selection-dock-open-btn'),
     selectionDockCompareBtn: q('selection-dock-compare-btn'),
     selectionDockClearBtn: q('selection-dock-clear-btn'),

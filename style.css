@@ -6137,6 +6137,241 @@ body[data-site-page="dashboard"] .selection-dock-actions {
   justify-content: flex-end;
 }
 
+/* ============================================================ */
+/* GERDA-copy dashboard cleanup                                 */
+/* ============================================================ */
+
+body[data-site-page="dashboard"] .site-brand-subtitle,
+body[data-site-page="dashboard"] .map-detail-cta,
+body[data-site-page="dashboard"] #map-wrapper::after {
+  display: none !important;
+}
+
+body[data-site-page="dashboard"] .site-nav-icon {
+  display: none !important;
+}
+
+body[data-site-page="dashboard"] .selection-dock {
+  position: static !important;
+  left: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  transform: none !important;
+  width: 100% !important;
+  z-index: auto !important;
+  padding: 12px 0 0 !important;
+  border: 0 !important;
+  border-top: 1px solid var(--line-soft, #e5e9f2) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}
+
+body[data-site-page="dashboard"] .selection-dock-main {
+  display: grid !important;
+  gap: 12px !important;
+  align-items: start !important;
+  min-width: 0 !important;
+  width: 100% !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+body[data-site-page="dashboard"] .selection-dock-copy {
+  display: grid;
+  gap: 4px;
+}
+
+body[data-site-page="dashboard"] .selection-dock-copy .eyebrow {
+  margin-bottom: 0;
+}
+
+body[data-site-page="dashboard"] .selection-dock-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 10px;
+}
+
+body[data-site-page="dashboard"] .selection-dock-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+body[data-site-page="dashboard"] .selection-dock-stat span {
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+body[data-site-page="dashboard"] .selection-dock-stat strong {
+  font-size: 0.96rem;
+  color: var(--text);
+}
+
+body[data-site-page="dashboard"] .selection-dock-actions {
+  justify-content: stretch !important;
+}
+
+body[data-site-page="dashboard"] .selection-dock-actions button {
+  flex: 1 1 0;
+}
+
+@media (min-width: 960px) {
+  body[data-site-page="dashboard"] .app-shell {
+    grid-template-columns: 320px minmax(0, 1fr) !important;
+    gap: 24px !important;
+    align-items: start !important;
+  }
+
+  body[data-site-page="dashboard"] .sidebar {
+    position: sticky !important;
+    top: 16px !important;
+    align-self: start !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 14px !important;
+    padding: 16px !important;
+    border: 1px solid var(--line-soft, #e5e9f2) !important;
+    border-radius: 14px !important;
+    border-bottom: 1px solid var(--line-soft, #e5e9f2) !important;
+    background: rgba(255, 255, 255, 0.78) !important;
+    backdrop-filter: blur(18px) !important;
+    box-shadow: 0 18px 42px rgba(15, 23, 42, 0.08) !important;
+    overflow: visible !important;
+    color: #0f172a !important;
+  }
+
+  body[data-site-page="dashboard"] .sidebar > .brand,
+  body[data-site-page="dashboard"] .sidebar > :not(.control-panel):not(.map-companion) {
+    display: none !important;
+  }
+
+  body[data-site-page="dashboard"] .main-content {
+    padding: 18px 0 28px !important;
+  }
+
+  body[data-site-page="dashboard"] .sidebar .panel.control-panel {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 12px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+
+  body[data-site-page="dashboard"] .sidebar .panel.control-panel .panel-header {
+    display: none !important;
+  }
+
+  body[data-site-page="dashboard"] .sidebar .panel.control-panel .panel-subtitle {
+    display: none !important;
+  }
+
+  body[data-site-page="dashboard"] .sidebar .panel.control-panel .two-col,
+  body[data-site-page="dashboard"] .sidebar .panel.control-panel .two-col-main {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  body[data-site-page="dashboard"] .sidebar .panel.control-panel label {
+    margin-bottom: 0 !important;
+    gap: 4px !important;
+    font-size: 0.72rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.05em !important;
+    text-transform: uppercase !important;
+    color: var(--muted) !important;
+  }
+
+  body[data-site-page="dashboard"] .sidebar .panel.control-panel input,
+  body[data-site-page="dashboard"] .sidebar .panel.control-panel select {
+    padding: 10px 12px !important;
+    border-radius: 10px !important;
+    border: 1px solid rgba(148, 163, 184, 0.28) !important;
+    background: #ffffff !important;
+    color: #0f172a !important;
+    box-shadow: none !important;
+  }
+
+  body[data-site-page="dashboard"] .sidebar .panel.control-panel .advanced-sidebar-details {
+    margin-top: 2px;
+    padding-top: 10px;
+    border-top: 1px solid var(--line-soft, #e5e9f2);
+  }
+
+  body[data-site-page="dashboard"] .sidebar .panel.control-panel .advanced-sidebar-details > summary {
+    font-size: 0.74rem !important;
+    letter-spacing: 0.05em !important;
+    text-transform: uppercase !important;
+    color: var(--muted) !important;
+    font-weight: 600 !important;
+  }
+
+  body[data-site-page="dashboard"] .sidebar .panel.map-companion {
+    margin: 0 !important;
+    padding: 14px 0 0 !important;
+    border: 0 !important;
+    border-top: 1px solid var(--line-soft, #e5e9f2) !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  body[data-site-page="dashboard"] .sidebar .helper-text,
+  body[data-site-page="dashboard"] .sidebar .quick-stats-header,
+  body[data-site-page="dashboard"] .sidebar .quick-stat dt,
+  body[data-site-page="dashboard"] .sidebar .legend-caption,
+  body[data-site-page="dashboard"] .sidebar .legend-caption.subtle,
+  body[data-site-page="dashboard"] .sidebar .selection-dock-stat span,
+  body[data-site-page="dashboard"] .sidebar .selection-dock-copy .eyebrow {
+    color: #64748b !important;
+  }
+
+  body[data-site-page="dashboard"] .sidebar .legend-item,
+  body[data-site-page="dashboard"] .sidebar .quick-stat dd,
+  body[data-site-page="dashboard"] .sidebar .selection-dock-copy strong,
+  body[data-site-page="dashboard"] .sidebar .selection-dock-stat strong,
+  body[data-site-page="dashboard"] .sidebar .sidebar-layers,
+  body[data-site-page="dashboard"] .sidebar .sidebar-layers span {
+    color: #0f172a !important;
+  }
+
+  body[data-site-page="dashboard"] .map-and-detail {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 0 !important;
+  }
+
+  body[data-site-page="dashboard"] .map-panel {
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    min-height: auto !important;
+  }
+
+  body[data-site-page="dashboard"] #map-wrapper {
+    min-height: min(78vh, 840px) !important;
+    border-radius: 10px !important;
+    border: 1px solid var(--line-soft, #e5e9f2) !important;
+  }
+}
+
+@media (max-width: 959.98px) {
+  body[data-site-page="dashboard"] .selection-dock-stats {
+    grid-template-columns: 1fr;
+  }
+}
+
 
 /* ---------------------------------------------------------------
    Municipality detail page (municipality-detail.html)
