@@ -28,7 +28,7 @@ export function createAnalysisModes(state) {
       description: 'Vista generale neutra: affluenza e copertura, senza suggerire una narrativa di partito finché non la scegli tu.',
       apply() {
         state.selectedMetric = 'turnout';
-        state.selectedPartyMode = 'party_std';
+        state.selectedPartyMode = 'party_raw';
         state.selectedPalette = 'sequential';
         state.sameScaleAcrossYears = true;
         state.focusMode = false;
@@ -50,7 +50,7 @@ export function createAnalysisModes(state) {
         state.selectedMetric = 'party_share';
         state.selectedPalette = 'sequential';
         state.trajectoryMode = 'selected_vs_context';
-        if (state.selectedPartyMode === 'bloc') state.selectedPartyMode = 'party_std';
+        if (state.selectedPartyMode === 'bloc') state.selectedPartyMode = 'party_raw';
       }
     },
     diagnose: {

@@ -93,43 +93,48 @@
           <datalist id="municipality-list"></datalist>
         </label>
 
-        <div class="two-col two-col-main">
+        <div class="two-col two-col-main single-control-row">
           <label>
             Elezione
             <select id="election-select"></select>
           </label>
-          <label>
-            Confronta con
-            <select id="compare-election-select"></select>
-          </label>
         </div>
 
-        <div class="two-col two-col-main">
+        <div class="two-col two-col-main single-control-row">
           <label>
             Mostra in mappa
             <select id="metric-select">
               <option value="party_share">Quota del partito</option>
               <option value="turnout">Affluenza</option>
+              <option value="dominant_block">Blocchi / coalizioni</option>
               <option value="margin">Margine del vincente</option>
-              <option value="swing_compare">Scarto vs elezione di confronto</option>
-            </select>
-          </label>
-          <label>
-            Quota per
-            <select id="party-mode-select">
-              <option value="party_std">Partito</option>
-              <option value="party_family">Famiglia</option>
-              <option value="bloc">Blocco</option>
             </select>
           </label>
         </div>
 
-        <div class="two-col two-col-main">
-          <label>
-            Soggetto
+        <div class="two-col two-col-main single-control-row">
+          <label class="hidden" aria-hidden="true">
+            Partito
             <select id="party-select"></select>
           </label>
         </div>
+
+        <div class="two-col two-col-main single-control-row">
+          <label class="hidden" aria-hidden="true">
+            Confronta con
+            <select id="compare-election-select"></select>
+          </label>
+        </div>
+
+        <label class="hidden" aria-hidden="true">
+          Quota per
+          <select id="party-mode-select">
+            <option value="party_raw">Partito storico</option>
+            <option value="party_std">Partito standardizzato</option>
+            <option value="party_family">Famiglia</option>
+            <option value="bloc">Blocco</option>
+          </select>
+        </label>
 
         <div class="two-col two-col-main">
           <label>
@@ -240,10 +245,10 @@
             <div class="preset-box">
               <div class="helper-text">Preset rapidi</div>
               <div class="preset-grid">
-                <button type="button" class="preset-btn" data-preset-metric="margin" data-preset-palette="diverging">Margine</button>
                 <button type="button" class="preset-btn" data-preset-metric="party_share">Quota partito</button>
                 <button type="button" class="preset-btn" data-preset-metric="turnout" data-preset-palette="sequential">Affluenza</button>
-                <button type="button" class="preset-btn" data-preset-metric="swing_compare" data-preset-palette="diverging">Scarto</button>
+                <button type="button" class="preset-btn" data-preset-metric="dominant_block">Blocchi</button>
+                <button type="button" class="preset-btn" data-preset-metric="margin" data-preset-palette="diverging">Margine</button>
               </div>
             </div>
           </div>

@@ -1,7 +1,7 @@
 import { safeNumber, mean } from './shared.js';
 import { currentGeometryJoinSet, rowJoinKey } from './data.js';
 
-const GROUP_MODES = ['party_std', 'party_family', 'bloc'];
+const GROUP_MODES = ['party_raw', 'party_std', 'party_family', 'bloc'];
 
 function emptyIndexState(state) {
   state.indices = {
@@ -14,12 +14,12 @@ function emptyIndexState(state) {
     lineageMap: new Map((state.lineage || []).map(r => [r.municipality_id_stable || r.municipality_id || r.municipality_id_current, r])),
     provinceSummaryMap: new Map(),
     regionSummaryMap: new Map(),
-    provinceGroupMaps: { party_std: new Map(), party_family: new Map(), bloc: new Map() },
-    regionGroupMaps: { party_std: new Map(), party_family: new Map(), bloc: new Map() },
+    provinceGroupMaps: { party_raw: new Map(), party_std: new Map(), party_family: new Map(), bloc: new Map() },
+    regionGroupMaps: { party_raw: new Map(), party_std: new Map(), party_family: new Map(), bloc: new Map() },
     __provinceAcc: new Map(),
     __regionAcc: new Map(),
-    __provinceVotes: { party_std: new Map(), party_family: new Map(), bloc: new Map() },
-    __regionVotes: { party_std: new Map(), party_family: new Map(), bloc: new Map() }
+    __provinceVotes: { party_raw: new Map(), party_std: new Map(), party_family: new Map(), bloc: new Map() },
+    __regionVotes: { party_raw: new Map(), party_std: new Map(), party_family: new Map(), bloc: new Map() }
   };
 }
 
@@ -161,7 +161,7 @@ export function getResultsRows(state, electionKey, municipalityId) {
 export function aggregateShareFor(state, electionKey, municipalityId, selectedParty = state.selectedParty) {
   const rows = getResultsRows(state, electionKey, municipalityId);
   if (!rows.length || !selectedParty) return null;
-  const field = state.selectedPartyMode === 'bloc' ? 'bloc' : state.selectedPartyMode;
+  const field = state.selectedPartyMode === 'bloc' ? 'bloc' : (state.selectedPartyMode || 'party_raw');
   const matches = rows.filter(r => String(r[field] || '') === String(selectedParty));
   return matches.length ? d3.sum(matches, r => safeNumber(r.vote_share) || 0) : null;
 }
