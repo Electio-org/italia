@@ -3270,7 +3270,7 @@ button:hover { border-color:var(--accent); background:#f7fbff; transform:none; }
 .pill, .meta-pill { background:#f6f9fc; color:#27476d; border:1px solid var(--line-soft); }
 .pill.muted { color: var(--muted); }
 .toolbar { background:transparent; border:none; box-shadow:none; padding:0; margin-bottom:8px; }
-.filter-chip-bar, .jump-bar, .site-hero, .signature-panel, .site-layers-panel, .method-explainers-panel, .pathway-strip, .quickstart-strip, .question-workbench-panel, .reading-guide-panel, .insight-strip, .selection-dock, .modes-panel, .audience-panel, .preferences-panel, .saved-views-panel, .recent-panel, .external-panel, .methodology-panel.section-view-method, .quick-actions-panel, .local-bundle-panel, .status-panel, .warning-strip, #overview-cards { display:none !important; }
+.filter-chip-bar, .jump-bar, .site-hero, .signature-panel, .site-layers-panel, .method-explainers-panel, .pathway-strip, .quickstart-strip, .question-workbench-panel, .reading-guide-panel, .insight-strip, .modes-panel, .audience-panel, .preferences-panel, .saved-views-panel, .recent-panel, .external-panel, .methodology-panel.section-view-method, .quick-actions-panel, .local-bundle-panel, .status-panel, .warning-strip, #overview-cards { display:none !important; }
 .dashboard-intro-strip { background:transparent; border:none; box-shadow:none; padding:8px 0 8px; margin-bottom:10px; }
 .dashboard-intro-strip h1 { margin:0 0 8px; font-size:2.65rem; letter-spacing:-0.03em; line-height:1.05; }
 .dashboard-intro-text { margin:0; font-size:1.05rem; line-height:1.65; max-width:980px; }
@@ -5591,11 +5591,7 @@ body[data-site-page="dashboard"] .site-header { padding: 6px 0 !important; }
 /* (5) Slim the control panel. Keep Elezione, Mostra in mappa,  */
 /* Partito and the timeline. Hide the rest (they are still      */
 /* reachable via Controlli avanzati and URL hash state).        */
-body[data-site-page="dashboard"] .sidebar .panel.control-panel > label:has(#municipality-search),
-body[data-site-page="dashboard"] .sidebar .panel.control-panel label:has(#compare-election-select),
-body[data-site-page="dashboard"] .sidebar .panel.control-panel label:has(#party-mode-select),
-body[data-site-page="dashboard"] .sidebar .panel.control-panel label:has(#geometry-reference-select),
-body[data-site-page="dashboard"] .sidebar .panel.control-panel .two-col:has(#territorial-mode-select) {
+body[data-site-page="dashboard"] .sidebar .panel.control-panel label:has(#party-mode-select) {
   display: none !important;
 }
 
@@ -5807,16 +5803,11 @@ body[data-site-page="programmatic-access"] .site-doc-main .card .card-body {
 }
 .skip-link:focus { top: 8px !important; }
 
-/* (C) Kill the remaining sidebar noise on the dashboard:        */
-/*     • "Controlli avanzati" details (advanced-sidebar-details) */
-/*     • Time-nav row (prev/next/play + slider) — the Elezione   */
-/*       dropdown already covers year selection, GERDA-style.    */
-/*     • Panel-header h2 "Controlli mappa" + its subtitle.       */
-body[data-site-page="dashboard"] .advanced-sidebar-details,
-body[data-site-page="dashboard"] .sidebar .panel.control-panel .time-nav-box,
-body[data-site-page="dashboard"] .sidebar .panel.control-panel .compact-time-nav,
-body[data-site-page="dashboard"] .sidebar .panel.control-panel .panel-header > div > h2,
-body[data-site-page="dashboard"] .sidebar .panel.control-panel .panel-header > div > p.panel-subtitle {
+/* (C) Hide only stale top-level leftovers after controls are moved */
+/*     into "Strumenti avanzati". Keep the section header visible   */
+/*     so the sidebar still reads as "Esplora il voto".             */
+body[data-site-page="dashboard"] .sidebar .panel.control-panel > .time-nav-box,
+body[data-site-page="dashboard"] .sidebar .panel.control-panel > .two-col:has(#territorial-mode-select) {
   display: none !important;
 }
 
@@ -6132,6 +6123,18 @@ body[data-site-page="dashboard"] #loading-overlay {
 }
 body[data-site-page="dashboard"] #loading-overlay.hidden {
   display: none !important;
+}
+
+body[data-site-page="dashboard"] .selection-dock {
+  left: auto;
+  right: 18px;
+  width: min(620px, calc(100vw - 32px));
+}
+body[data-site-page="dashboard"] .selection-dock-main {
+  align-items: flex-end;
+}
+body[data-site-page="dashboard"] .selection-dock-actions {
+  justify-content: flex-end;
 }
 
 

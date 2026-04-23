@@ -4598,7 +4598,14 @@ function bindEvents() {
   els.copyHeroPythonBtn?.addEventListener('click', () => copyTextToClipboard(buildProgrammaticSnippet('python'), 'Snippet Python copiato.'));
   els.copyReleasePythonBtn?.addEventListener('click', () => copyTextToClipboard(buildProgrammaticSnippet('python'), 'Snippet Python copiato.'));
   els.copyCitationBtn?.addEventListener('click', () => copyTextToClipboard(buildProjectCitation(), 'Citazione progetto copiata.'));
-  els.selectionDockOpenBtn?.addEventListener('click', () => q('municipality-profile')?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+  els.selectionDockOpenBtn?.addEventListener('click', () => {
+    if (!state.selectedMunicipalityId) return;
+    const params = new URLSearchParams({
+      id: state.selectedMunicipalityId,
+      election: state.selectedElection || ''
+    });
+    window.location.href = `municipality-detail.html?${params.toString()}`;
+  });
   els.selectionDockCompareBtn?.addEventListener('click', () => q('comparison-panel-content')?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
   els.selectionDockClearBtn?.addEventListener('click', () => { clearMunicipalitySelection(); requestRender(); });
   const debouncedMunicipalitySearch = debounce(() => handleMunicipalitySearch(), 140);
