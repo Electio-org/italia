@@ -1,7 +1,7 @@
 import { safeNumber, mean } from './shared.js';
 import { currentGeometryJoinSet, rowJoinKey } from './data.js';
 
-const GROUP_MODES = ['party_std', 'party_family', 'bloc'];
+const GROUP_MODES = ['party_raw', 'party_std', 'party_family', 'bloc'];
 
 function emptyIndexState(state) {
   state.indices = {
@@ -14,12 +14,12 @@ function emptyIndexState(state) {
     lineageMap: new Map((state.lineage || []).map(r => [r.municipality_id_stable || r.municipality_id || r.municipality_id_current, r])),
     provinceSummaryMap: new Map(),
     regionSummaryMap: new Map(),
-    provinceGroupMaps: { party_std: new Map(), party_family: new Map(), bloc: new Map() },
-    regionGroupMaps: { party_std: new Map(), party_family: new Map(), bloc: new Map() },
+    provinceGroupMaps: { party_raw: new Map(), party_std: new Map(), party_family: new Map(), bloc: new Map() },
+    regionGroupMaps: { party_raw: new Map(), party_std: new Map(), party_family: new Map(), bloc: new Map() },
     __provinceAcc: new Map(),
     __regionAcc: new Map(),
-    __provinceVotes: { party_std: new Map(), party_family: new Map(), bloc: new Map() },
-    __regionVotes: { party_std: new Map(), party_family: new Map(), bloc: new Map() }
+    __provinceVotes: { party_raw: new Map(), party_std: new Map(), party_family: new Map(), bloc: new Map() },
+    __regionVotes: { party_raw: new Map(), party_std: new Map(), party_family: new Map(), bloc: new Map() }
   };
 }
 
@@ -35,8 +35,11 @@ function incrementCount(map, key, by = 1) {
 }
 
 function summaryStats(acc) {
+  const weightedDenom = acc.valid_votes || 0;
   return {
     turnout_pct: acc.electors > 0 ? (acc.voters / acc.electors) * 100 : mean(acc.turnout_values),
+    margin: weightedDenom > 0 ? (acc.margin_weighted_total / weightedDenom) : mean(acc.margin_values),
+    first_party_share: weightedDenom > 0 ? (acc.first_party_share_weighted_total / weightedDenom) : mean(acc.first_party_share_values),
     n: acc.n,
     electors: acc.electors,
     voters: acc.voters,
@@ -46,13 +49,34 @@ function summaryStats(acc) {
 
 function addToSummaryAcc(map, key, row) {
   if (!key) return null;
-  const acc = map.get(key) || { electors: 0, voters: 0, valid_votes: 0, n: 0, turnout_values: [] };
+  const acc = map.get(key) || {
+    electors: 0,
+    voters: 0,
+    valid_votes: 0,
+    n: 0,
+    turnout_values: [],
+    margin_values: [],
+    first_party_share_values: [],
+    margin_weighted_total: 0,
+    first_party_share_weighted_total: 0
+  };
   acc.electors += safeNumber(row.electors) || 0;
   acc.voters += safeNumber(row.voters) || 0;
-  acc.valid_votes += safeNumber(row.valid_votes) || 0;
+  const validVotes = safeNumber(row.valid_votes) || 0;
+  acc.valid_votes += validVotes;
   acc.n += 1;
   const turnout = safeNumber(row.turnout_pct);
+  const margin = safeNumber(row.first_second_margin);
+  const firstPartyShare = safeNumber(row.first_party_share);
   if (Number.isFinite(turnout)) acc.turnout_values.push(turnout);
+  if (Number.isFinite(margin)) {
+    acc.margin_values.push(margin);
+    acc.margin_weighted_total += margin * validVotes;
+  }
+  if (Number.isFinite(firstPartyShare)) {
+    acc.first_party_share_values.push(firstPartyShare);
+    acc.first_party_share_weighted_total += firstPartyShare * validVotes;
+  }
   map.set(key, acc);
   return acc;
 }
@@ -137,7 +161,7 @@ export function getResultsRows(state, electionKey, municipalityId) {
 export function aggregateShareFor(state, electionKey, municipalityId, selectedParty = state.selectedParty) {
   const rows = getResultsRows(state, electionKey, municipalityId);
   if (!rows.length || !selectedParty) return null;
-  const field = state.selectedPartyMode === 'bloc' ? 'bloc' : state.selectedPartyMode;
+  const field = state.selectedPartyMode === 'bloc' ? 'bloc' : (state.selectedPartyMode || 'party_raw');
   const matches = rows.filter(r => String(r[field] || '') === String(selectedParty));
   return matches.length ? d3.sum(matches, r => safeNumber(r.vote_share) || 0) : null;
 }

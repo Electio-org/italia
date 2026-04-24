@@ -81,8 +81,8 @@
       <section class="panel control-panel">
         <div class="panel-header tight">
           <div>
-            <h2>Controlli mappa</h2>
-            <p class="panel-subtitle">Anno, metrica, confronto e base geometrica in un unico pannello.</p>
+            <h2>Esplora il voto</h2>
+            <p class="panel-subtitle">Comune, elezione, metrica e partito: il flusso base resta tutto qui.</p>
           </div>
           <button type="button" id="reset-btn" class="ghost-btn small-btn">Reset</button>
         </div>
@@ -93,57 +93,48 @@
           <datalist id="municipality-list"></datalist>
         </label>
 
-        <div class="two-col two-col-main">
+        <div class="two-col two-col-main single-control-row">
           <label>
             Elezione
             <select id="election-select"></select>
           </label>
+        </div>
+
+        <div class="two-col two-col-main single-control-row">
           <label>
+            Mostra in mappa
+            <select id="metric-select">
+              <option value="party_share">Quota del partito</option>
+              <option value="turnout">Affluenza</option>
+              <option value="dominant_block">Blocchi / coalizioni</option>
+              <option value="margin">Margine del vincente</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="two-col two-col-main single-control-row">
+          <label class="hidden" aria-hidden="true">
+            Partito
+            <select id="party-select"></select>
+          </label>
+        </div>
+
+        <div class="two-col two-col-main single-control-row">
+          <label class="hidden" aria-hidden="true">
             Confronta con
             <select id="compare-election-select"></select>
           </label>
         </div>
 
-        <div class="two-col two-col-main">
-          <label>
-            Mostra in mappa
-            <select id="metric-select">
-              <option value="first_party">Primo partito</option>
-              <option value="party_share">Quota selezionata</option>
-              <option value="turnout">Affluenza</option>
-              <option value="margin">Margine del vincente</option>
-              <option value="dominant_block">Blocco dominante</option>
-              <option value="swing_compare">Scarto vs confronto</option>
-              <option value="delta_turnout">Delta affluenza</option>
-              <option value="volatility">Volatilità storica</option>
-              <option value="dominance_changes">Cambi di dominanza</option>
-              <option value="concentration">Concentrazione del voto</option>
-              <option value="over_performance_province">Scarto vs provincia</option>
-              <option value="over_performance_region">Scarto vs Italia</option>
-              <option value="stability_index">Indice di stabilità</option>
-              <option value="custom_indicator">Indicatore esterno</option>
-            </select>
-          </label>
-          <label>
-            Livello selezione
-            <select id="party-mode-select">
-              <option value="party_std">Partito</option>
-              <option value="party_family">Famiglia</option>
-              <option value="bloc">Blocco</option>
-            </select>
-          </label>
-        </div>
-
-        <div class="two-col two-col-main">
-          <label>
-            Partito / famiglia / blocco
-            <select id="party-select"></select>
-          </label>
-          <label>
-            Base geometrica
-            <select id="geometry-reference-select"></select>
-          </label>
-        </div>
+        <label class="hidden" aria-hidden="true">
+          Quota per
+          <select id="party-mode-select">
+            <option value="party_raw">Partito storico</option>
+            <option value="party_std">Partito standardizzato</option>
+            <option value="party_family">Famiglia</option>
+            <option value="bloc">Blocco</option>
+          </select>
+        </label>
 
         <div class="two-col two-col-main">
           <label>
@@ -179,8 +170,13 @@
         </div>
 
         <details class="advanced-sidebar-details">
-          <summary>Controlli avanzati</summary>
+          <summary>Strumenti avanzati</summary>
           <div class="advanced-sidebar-grid">
+            <label>
+              Base geometrica
+              <select id="geometry-reference-select"></select>
+            </label>
+
             <label>
               Area
               <select id="area-preset-select"></select>
@@ -249,12 +245,10 @@
             <div class="preset-box">
               <div class="helper-text">Preset rapidi</div>
               <div class="preset-grid">
-                <button type="button" class="preset-btn" data-preset-metric="first_party" data-preset-mode="party_std">Primo partito</button>
-                <button type="button" class="preset-btn" data-preset-metric="party_share">Quota selezionata</button>
+                <button type="button" class="preset-btn" data-preset-metric="party_share">Quota partito</button>
                 <button type="button" class="preset-btn" data-preset-metric="turnout" data-preset-palette="sequential">Affluenza</button>
-                <button type="button" class="preset-btn" data-preset-metric="swing_compare" data-preset-palette="diverging">Scarto</button>
-                <button type="button" class="preset-btn" data-preset-metric="volatility" data-preset-palette="sequential">Volatilità</button>
-                <button type="button" class="preset-btn" data-preset-metric="dominant_block" data-preset-mode="bloc">Blocchi</button>
+                <button type="button" class="preset-btn" data-preset-metric="dominant_block">Blocchi</button>
+                <button type="button" class="preset-btn" data-preset-metric="margin" data-preset-palette="diverging">Margine</button>
               </div>
             </div>
           </div>
@@ -264,6 +258,20 @@
       <section class="panel map-companion" aria-label="Contesto mappa">
         <div id="sidebar-legend" class="sidebar-legend" aria-live="polite"></div>
         <div id="sidebar-quick-stats" class="sidebar-quick-stats" aria-live="polite"></div>
+        <div id="selection-dock" class="selection-dock hidden" aria-live="polite">
+          <div class="selection-dock-main">
+            <div class="selection-dock-copy">
+              <div class="eyebrow">Comune selezionato</div>
+              <strong id="selection-dock-title">Nessun comune selezionato</strong>
+              <div id="selection-dock-meta" class="helper-text">Clicca un comune nella mappa per vedere il riepilogo essenziale.</div>
+            </div>
+            <div id="selection-dock-stats" class="selection-dock-stats"></div>
+            <div class="selection-dock-actions">
+              <button type="button" id="selection-dock-open-btn">Vai al dettaglio</button>
+              <button type="button" id="selection-dock-clear-btn" class="ghost-btn">Deseleziona</button>
+            </div>
+          </div>
+        </div>
         <fieldset class="sidebar-layers" aria-label="Livelli mappa">
           <legend>Confini</legend>
           <label class="sidebar-layer-toggle">
@@ -829,13 +837,13 @@
           <div class="panel-header">
             <div>
               <h2>Profilo del comune</h2>
-              <p class="panel-subtitle">Anagrafica, confronto con provincia/Italia, linea temporale, lineage.</p>
+              <p class="panel-subtitle">Quadro rapido del comune selezionato, con contesto essenziale e approfondimenti sotto.</p>
             </div>
           </div>
 
           <div class="detail-summary-shell">
             <div class="detail-meta-block">
-              <div class="detail-section-title">Scheda del caso</div>
+              <div class="detail-section-title">Quadro rapido</div>
               <div id="municipality-profile" class="empty-state">Seleziona un comune dalla mappa o dalla ricerca.</div>
             </div>
             <div class="detail-meta-block">
@@ -982,7 +990,7 @@
                   <th>Scheda comune</th>
                   <th>Provincia</th>
                   <th>Affluenza</th>
-                  <th>Primo partito</th>
+                  <th>Leadership locale</th>
                   <th>Quota attiva</th>
                   <th>Δ confronto</th>
                   <th>Volatilità</th>
@@ -1141,21 +1149,6 @@
         <p>&copy; 2026 Simone Ghezzi Colombo &middot; Electio Italia &middot; Dati &amp; codice pubblicati con attribuzione.</p>
       </div>
     </footer>
-    </div>
-  </div>
-
-  <div id="selection-dock" class="selection-dock hidden">
-    <div class="selection-dock-main">
-      <div>
-        <div class="eyebrow">Contesto attivo</div>
-        <strong id="selection-dock-title">Nessun comune selezionato</strong>
-        <div id="selection-dock-meta" class="helper-text">Seleziona un comune o usa il comparatore.</div>
-      </div>
-      <div class="selection-dock-actions">
-        <button type="button" id="selection-dock-open-btn">Apri profilo</button>
-        <button type="button" id="selection-dock-compare-btn" class="ghost-btn">Vai ai confronti</button>
-        <button type="button" id="selection-dock-clear-btn" class="ghost-btn">Pulisci</button>
-      </div>
     </div>
   </div>
 

@@ -3270,7 +3270,7 @@ button:hover { border-color:var(--accent); background:#f7fbff; transform:none; }
 .pill, .meta-pill { background:#f6f9fc; color:#27476d; border:1px solid var(--line-soft); }
 .pill.muted { color: var(--muted); }
 .toolbar { background:transparent; border:none; box-shadow:none; padding:0; margin-bottom:8px; }
-.filter-chip-bar, .jump-bar, .site-hero, .signature-panel, .site-layers-panel, .method-explainers-panel, .pathway-strip, .quickstart-strip, .question-workbench-panel, .reading-guide-panel, .insight-strip, .selection-dock, .modes-panel, .audience-panel, .preferences-panel, .saved-views-panel, .recent-panel, .external-panel, .methodology-panel.section-view-method, .quick-actions-panel, .local-bundle-panel, .status-panel, .warning-strip, #overview-cards { display:none !important; }
+.filter-chip-bar, .jump-bar, .site-hero, .signature-panel, .site-layers-panel, .method-explainers-panel, .pathway-strip, .quickstart-strip, .question-workbench-panel, .reading-guide-panel, .insight-strip, .modes-panel, .audience-panel, .preferences-panel, .saved-views-panel, .recent-panel, .external-panel, .methodology-panel.section-view-method, .quick-actions-panel, .local-bundle-panel, .status-panel, .warning-strip, #overview-cards { display:none !important; }
 .dashboard-intro-strip { background:transparent; border:none; box-shadow:none; padding:8px 0 8px; margin-bottom:10px; }
 .dashboard-intro-strip h1 { margin:0 0 8px; font-size:2.65rem; letter-spacing:-0.03em; line-height:1.05; }
 .dashboard-intro-text { margin:0; font-size:1.05rem; line-height:1.65; max-width:980px; }
@@ -3282,6 +3282,7 @@ button:hover { border-color:var(--accent); background:#f7fbff; transform:none; }
 .dashboard-section-tabs .dashboard-tab.is-active { background:#173455; color:#fff; }
 .control-panel .panel-subtitle { margin-top:4px; }
 .two-col-main { margin-bottom:2px; }
+.control-panel .two-col-main.single-control-row { grid-template-columns:minmax(0,1fr) !important; }
 .advanced-sidebar-details { margin-top:14px; border-top:1px solid var(--line-soft); padding-top:14px; }
 .advanced-sidebar-details summary { cursor:pointer; color:#1f3552; font-weight:600; margin-bottom:12px; }
 .advanced-sidebar-grid { margin-top:14px; }
@@ -4639,6 +4640,17 @@ button:hover {
   margin-top: 10px;
 }
 
+.detail-inline-note {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+.detail-inline-note strong {
+  color: var(--accent-deep);
+}
+
 .detail-panel .trajectory-toolbar {
   margin-bottom: 0;
 }
@@ -5579,11 +5591,7 @@ body[data-site-page="dashboard"] .site-header { padding: 6px 0 !important; }
 /* (5) Slim the control panel. Keep Elezione, Mostra in mappa,  */
 /* Partito and the timeline. Hide the rest (they are still      */
 /* reachable via Controlli avanzati and URL hash state).        */
-body[data-site-page="dashboard"] .sidebar .panel.control-panel > label:has(#municipality-search),
-body[data-site-page="dashboard"] .sidebar .panel.control-panel label:has(#compare-election-select),
-body[data-site-page="dashboard"] .sidebar .panel.control-panel label:has(#party-mode-select),
-body[data-site-page="dashboard"] .sidebar .panel.control-panel label:has(#geometry-reference-select),
-body[data-site-page="dashboard"] .sidebar .panel.control-panel .two-col:has(#territorial-mode-select) {
+body[data-site-page="dashboard"] .sidebar .panel.control-panel label:has(#party-mode-select) {
   display: none !important;
 }
 
@@ -5795,16 +5803,11 @@ body[data-site-page="programmatic-access"] .site-doc-main .card .card-body {
 }
 .skip-link:focus { top: 8px !important; }
 
-/* (C) Kill the remaining sidebar noise on the dashboard:        */
-/*     • "Controlli avanzati" details (advanced-sidebar-details) */
-/*     • Time-nav row (prev/next/play + slider) — the Elezione   */
-/*       dropdown already covers year selection, GERDA-style.    */
-/*     • Panel-header h2 "Controlli mappa" + its subtitle.       */
-body[data-site-page="dashboard"] .advanced-sidebar-details,
-body[data-site-page="dashboard"] .sidebar .panel.control-panel .time-nav-box,
-body[data-site-page="dashboard"] .sidebar .panel.control-panel .compact-time-nav,
-body[data-site-page="dashboard"] .sidebar .panel.control-panel .panel-header > div > h2,
-body[data-site-page="dashboard"] .sidebar .panel.control-panel .panel-header > div > p.panel-subtitle {
+/* (C) Hide only stale top-level leftovers after controls are moved */
+/*     into "Strumenti avanzati". Keep the section header visible   */
+/*     so the sidebar still reads as "Esplora il voto".             */
+body[data-site-page="dashboard"] .sidebar .panel.control-panel > .time-nav-box,
+body[data-site-page="dashboard"] .sidebar .panel.control-panel > .two-col:has(#territorial-mode-select) {
   display: none !important;
 }
 
@@ -6120,6 +6123,253 @@ body[data-site-page="dashboard"] #loading-overlay {
 }
 body[data-site-page="dashboard"] #loading-overlay.hidden {
   display: none !important;
+}
+
+body[data-site-page="dashboard"] .selection-dock {
+  left: auto;
+  right: 18px;
+  width: min(620px, calc(100vw - 32px));
+}
+body[data-site-page="dashboard"] .selection-dock-main {
+  align-items: flex-end;
+}
+body[data-site-page="dashboard"] .selection-dock-actions {
+  justify-content: flex-end;
+}
+
+/* ============================================================ */
+/* GERDA-copy dashboard cleanup                                 */
+/* ============================================================ */
+
+body[data-site-page="dashboard"] .site-brand-subtitle,
+body[data-site-page="dashboard"] .map-detail-cta,
+body[data-site-page="dashboard"] #map-wrapper::after {
+  display: none !important;
+}
+
+body[data-site-page="dashboard"] .site-nav-icon {
+  display: none !important;
+}
+
+body[data-site-page="dashboard"] .selection-dock {
+  position: static !important;
+  left: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  transform: none !important;
+  width: 100% !important;
+  z-index: auto !important;
+  padding: 12px 0 0 !important;
+  border: 0 !important;
+  border-top: 1px solid var(--line-soft, #e5e9f2) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}
+
+body[data-site-page="dashboard"] .selection-dock-main {
+  display: grid !important;
+  gap: 12px !important;
+  align-items: start !important;
+  min-width: 0 !important;
+  width: 100% !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+body[data-site-page="dashboard"] .selection-dock-copy {
+  display: grid;
+  gap: 4px;
+}
+
+body[data-site-page="dashboard"] .selection-dock-copy .eyebrow {
+  margin-bottom: 0;
+}
+
+body[data-site-page="dashboard"] .selection-dock-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 10px;
+}
+
+body[data-site-page="dashboard"] .selection-dock-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+body[data-site-page="dashboard"] .selection-dock-stat span {
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+body[data-site-page="dashboard"] .selection-dock-stat strong {
+  font-size: 0.96rem;
+  color: var(--text);
+}
+
+body[data-site-page="dashboard"] .selection-dock-actions {
+  justify-content: stretch !important;
+}
+
+body[data-site-page="dashboard"] .selection-dock-actions button {
+  flex: 1 1 0;
+}
+
+@media (min-width: 960px) {
+  body[data-site-page="dashboard"] .app-shell {
+    grid-template-columns: 320px minmax(0, 1fr) !important;
+    gap: 24px !important;
+    align-items: start !important;
+  }
+
+  body[data-site-page="dashboard"] .sidebar {
+    position: sticky !important;
+    top: 16px !important;
+    align-self: start !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 14px !important;
+    padding: 16px !important;
+    border: 1px solid var(--line-soft, #e5e9f2) !important;
+    border-radius: 14px !important;
+    border-bottom: 1px solid var(--line-soft, #e5e9f2) !important;
+    background: rgba(255, 255, 255, 0.78) !important;
+    backdrop-filter: blur(18px) !important;
+    box-shadow: 0 18px 42px rgba(15, 23, 42, 0.08) !important;
+    overflow: visible !important;
+    color: #0f172a !important;
+  }
+
+  body[data-site-page="dashboard"] .sidebar > .brand,
+  body[data-site-page="dashboard"] .sidebar > :not(.control-panel):not(.map-companion) {
+    display: none !important;
+  }
+
+  body[data-site-page="dashboard"] .main-content {
+    padding: 18px 0 28px !important;
+  }
+
+  body[data-site-page="dashboard"] .sidebar .panel.control-panel {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 12px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+
+  body[data-site-page="dashboard"] .sidebar .panel.control-panel .panel-header {
+    display: none !important;
+  }
+
+  body[data-site-page="dashboard"] .sidebar .panel.control-panel .panel-subtitle {
+    display: none !important;
+  }
+
+  body[data-site-page="dashboard"] .sidebar .panel.control-panel .two-col,
+  body[data-site-page="dashboard"] .sidebar .panel.control-panel .two-col-main {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  body[data-site-page="dashboard"] .sidebar .panel.control-panel label {
+    margin-bottom: 0 !important;
+    gap: 4px !important;
+    font-size: 0.72rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.05em !important;
+    text-transform: uppercase !important;
+    color: var(--muted) !important;
+  }
+
+  body[data-site-page="dashboard"] .sidebar .panel.control-panel input,
+  body[data-site-page="dashboard"] .sidebar .panel.control-panel select {
+    padding: 10px 12px !important;
+    border-radius: 10px !important;
+    border: 1px solid rgba(148, 163, 184, 0.28) !important;
+    background: #ffffff !important;
+    color: #0f172a !important;
+    box-shadow: none !important;
+  }
+
+  body[data-site-page="dashboard"] .sidebar .panel.control-panel .advanced-sidebar-details {
+    margin-top: 2px;
+    padding-top: 10px;
+    border-top: 1px solid var(--line-soft, #e5e9f2);
+  }
+
+  body[data-site-page="dashboard"] .sidebar .panel.control-panel .advanced-sidebar-details > summary {
+    font-size: 0.74rem !important;
+    letter-spacing: 0.05em !important;
+    text-transform: uppercase !important;
+    color: var(--muted) !important;
+    font-weight: 600 !important;
+  }
+
+  body[data-site-page="dashboard"] .sidebar .panel.map-companion {
+    margin: 0 !important;
+    padding: 14px 0 0 !important;
+    border: 0 !important;
+    border-top: 1px solid var(--line-soft, #e5e9f2) !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  body[data-site-page="dashboard"] .sidebar .helper-text,
+  body[data-site-page="dashboard"] .sidebar .quick-stats-header,
+  body[data-site-page="dashboard"] .sidebar .quick-stat dt,
+  body[data-site-page="dashboard"] .sidebar .legend-caption,
+  body[data-site-page="dashboard"] .sidebar .legend-caption.subtle,
+  body[data-site-page="dashboard"] .sidebar .selection-dock-stat span,
+  body[data-site-page="dashboard"] .sidebar .selection-dock-copy .eyebrow {
+    color: #64748b !important;
+  }
+
+  body[data-site-page="dashboard"] .sidebar .legend-item,
+  body[data-site-page="dashboard"] .sidebar .quick-stat dd,
+  body[data-site-page="dashboard"] .sidebar .selection-dock-copy strong,
+  body[data-site-page="dashboard"] .sidebar .selection-dock-stat strong,
+  body[data-site-page="dashboard"] .sidebar .sidebar-layers,
+  body[data-site-page="dashboard"] .sidebar .sidebar-layers span {
+    color: #0f172a !important;
+  }
+
+  body[data-site-page="dashboard"] .map-and-detail {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 0 !important;
+  }
+
+  body[data-site-page="dashboard"] .map-panel {
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    min-height: auto !important;
+  }
+
+  body[data-site-page="dashboard"] #map-wrapper {
+    min-height: min(78vh, 840px) !important;
+    border-radius: 10px !important;
+    border: 1px solid var(--line-soft, #e5e9f2) !important;
+  }
+}
+
+@media (max-width: 959.98px) {
+  body[data-site-page="dashboard"] .selection-dock-stats {
+    grid-template-columns: 1fr;
+  }
 }
 
 
