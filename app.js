@@ -4692,10 +4692,14 @@ function bindEvents() {
     });
   });
 
-  // Debounced spinner on the min-share slider: increment the loading
-  // counter once per gesture (first input event), debounce the actual
-  // render+dismiss so we don't run a heavy render on every pixel of
-  // slider drag.
+  // Debounced spinner on the min-share slider. Counter discipline: every
+  // setMapLoading(true) here is matched by exactly one
+  // runRenderWithLoadingDismissAsync. minSharePending guards the increment
+  // so we don't over-count while the user is still dragging — but we must
+  // reset it BEFORE awaiting the render, otherwise a fresh input arriving
+  // between two renders could spawn an extra runRenderWithLoadingDismissAsync
+  // (one extra setMapLoading(false)) without a matching increment, stealing
+  // a concurrent operation's spinner counter (Devin Review on PR #11).
   let minSharePending = false;
   let minShareDebounce = null;
   els.minShareInput.addEventListener('input', () => {
@@ -4708,8 +4712,11 @@ function bindEvents() {
     if (minShareDebounce) window.clearTimeout(minShareDebounce);
     minShareDebounce = window.setTimeout(async () => {
       minShareDebounce = null;
-      await runRenderWithLoadingDismissAsync(async () => { requestRender(); });
+      // Allow a subsequent input to schedule its own setMapLoading(true)
+      // before we await; that input's increment will be matched by its
+      // own scheduled render-dismiss.
       minSharePending = false;
+      await runRenderWithLoadingDismissAsync(async () => { requestRender(); });
     }, 140);
   });
   els.swipePosition?.addEventListener('input', () => { readControls(); renderSwipeMap(); syncURLState(); });
