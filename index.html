@@ -258,6 +258,7 @@
       <section class="panel map-companion" aria-label="Contesto mappa">
         <div id="sidebar-legend" class="sidebar-legend" aria-live="polite"></div>
         <div id="sidebar-quick-stats" class="sidebar-quick-stats" aria-live="polite"></div>
+        <div id="sidebar-party-results" class="sidebar-party-results" aria-live="polite"></div>
         <div id="selection-dock" class="selection-dock hidden" aria-live="polite">
           <div class="selection-dock-main">
             <div class="selection-dock-copy">
@@ -1218,7 +1219,7 @@
 <script src="vendor/tabler/core/tabler.min.js"></script>
 <script src="tabler-enhance.js"></script>
 <script type="module" src="app.js"></script>
-  <div id="loading-overlay" class="loading-overlay hidden"><div class="loading-card"><div class="loading-orb"></div><div><strong>Sto preparando l'explorer</strong><div class="helper-text">Caricamento dati, indici, geometrie e controlli…</div></div></div></div>
+  <div id="loading-overlay" class="loading-overlay" aria-busy="true" aria-live="polite"><div class="loading-card"><div class="loading-orb"></div><div><strong>Sto preparando la mappa</strong><div class="helper-text">Caricamento dati, geometrie e cache mappa…</div></div></div></div>
   <div id="toast-stack" class="toast-stack" aria-live="polite"></div>
   <div id="command-palette" class="command-palette hidden">
     <div class="command-palette-backdrop" data-close-command="true"></div>

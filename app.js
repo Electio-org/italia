@@ -841,6 +841,12 @@ function refreshPartySelector() {
   if (!els.partySelect) return;
   const mode = normalizeGroupModeForMetric();
   const values = partyOptionsForCurrentContext(mode);
+  // Capture the current dropdown value BEFORE we rewrite innerHTML — if the
+  // user has just picked a new option from the dropdown, that pick is the
+  // most authoritative signal of intent and must be preserved through the
+  // re-render. Without this, readControls() → refreshPartySelector() would
+  // overwrite the user's fresh pick with the old `state.selectedParty`.
+  const currentDropdownValue = els.partySelect.value || '';
   if (!values.length) {
     els.partySelect.innerHTML = `<option value="">${escapeHtml(state.selectedMetric === 'party_share' ? 'Caricamento partiti…' : 'Nessuna selezione')}</option>`;
     state.selectedParty = null;
@@ -848,7 +854,11 @@ function refreshPartySelector() {
     return;
   }
   els.partySelect.innerHTML = values.map(v => `<option value="${escapeHtml(v)}">${escapeHtml(v)}</option>`).join('');
-  if (!values.includes(state.selectedParty)) state.selectedParty = values[0] || FALLBACK_PARTY_OPTIONS[0];
+  if (currentDropdownValue && values.includes(currentDropdownValue)) {
+    state.selectedParty = currentDropdownValue;
+  } else if (!values.includes(state.selectedParty)) {
+    state.selectedParty = values[0] || FALLBACK_PARTY_OPTIONS[0];
+  }
   els.partySelect.value = state.selectedParty || '';
 }
 
@@ -1959,6 +1969,7 @@ function requestMapInteractionRender() {
       drawCanvasMap(state.mapCanvasTransform || d3.zoomIdentity);
     }
     renderSelectionDock();
+    renderPartyResults();
   });
 }
 
@@ -2455,6 +2466,108 @@ function renderQuickStats(rows) {
     </dl>`;
 }
 
+function renderPartyResults() {
+  const host = els.sidebarPartyResults;
+  if (!host) return;
+  const electionKey = state.selectedElection;
+  const allRows = (state.resultsLong || []).filter(row => row.election_key === electionKey);
+  if (!allRows.length) {
+    host.innerHTML = '';
+    return;
+  }
+  const mode = state.selectedPartyMode || 'party_raw';
+  const partyKey = row => {
+    if (mode === 'bloc') return row.bloc || row.party_raw || '';
+    if (mode === 'party_std') return row.party_std || row.party_raw || '';
+    if (mode === 'party_family') return row.party_family || row.party_std || row.party_raw || '';
+    return row.party_raw || row.party_std || '';
+  };
+  const selectedId = state.selectedMunicipalityId || null;
+  const selectedRows = selectedId
+    ? allRows.filter(r => String(r.municipality_id) === String(selectedId))
+    : null;
+  const isComune = !!(selectedRows && selectedRows.length);
+  const totals = new Map();
+  if (isComune) {
+    // Selected comune: vote_share is already per-comune percentage. Sum it
+    // by party (handles list aggregation when same party appears on multiple
+    // lists).
+    selectedRows.forEach(row => {
+      const key = String(partyKey(row)).trim();
+      if (!key) return;
+      const share = safeNumber(row.vote_share);
+      if (!Number.isFinite(share)) return;
+      const cur = totals.get(key) || { share: 0, votes: 0 };
+      cur.share += share;
+      cur.votes += safeNumber(row.votes) || 0;
+      totals.set(key, cur);
+    });
+  } else {
+    // National view: vote_share is per-comune so we must weight by votes to
+    // get the country-wide share. votes_total per comune is the sum of all
+    // valid party votes for that comune.
+    let grandVotes = 0;
+    allRows.forEach(row => {
+      const v = safeNumber(row.votes);
+      if (Number.isFinite(v)) grandVotes += v;
+    });
+    if (grandVotes <= 0) {
+      host.innerHTML = '';
+      return;
+    }
+    allRows.forEach(row => {
+      const key = String(partyKey(row)).trim();
+      if (!key) return;
+      const v = safeNumber(row.votes);
+      if (!Number.isFinite(v)) return;
+      const cur = totals.get(key) || { share: 0, votes: 0 };
+      cur.votes += v;
+      totals.set(key, cur);
+    });
+    totals.forEach(entry => { entry.share = grandVotes > 0 ? (entry.votes / grandVotes) * 100 : 0; });
+  }
+  const ranked = [...totals.entries()]
+    .map(([label, v]) => ({ label, share: v.share, votes: v.votes }))
+    .filter(d => Number.isFinite(d.share) && d.share > 0)
+    .sort((a, b) => (b.share - a.share) || (b.votes - a.votes))
+    .slice(0, 8);
+  if (!ranked.length) {
+    host.innerHTML = '';
+    return;
+  }
+  let scopeLabel;
+  if (isComune) {
+    const muni = state.municipalities.find(m => String(m.municipality_id) === String(selectedId));
+    const name = muni?.name_current || muni?.municipality_name || `Comune ${selectedId}`;
+    scopeLabel = `${escapeHtml(name)} · ${escapeHtml(electionLabelFor(electionKey))}`;
+  } else {
+    scopeLabel = `Italia · ${escapeHtml(electionLabelFor(electionKey))}`;
+  }
+  const max = ranked[0].share || 1;
+  host.innerHTML = `
+    <div class="party-results-header">
+      <div class="eyebrow">${isComune ? 'Risultati nel comune' : 'Risultati nazionali'}</div>
+      <div class="party-results-scope">${scopeLabel}</div>
+    </div>
+    <ol class="party-results-list">
+      ${ranked.map(r => `
+        <li class="party-results-row" data-party="${escapeHtml(r.label)}">
+          <span class="party-results-swatch" style="background:${getGroupColor(r.label)}"></span>
+          <span class="party-results-label">${escapeHtml(r.label)}</span>
+          <span class="party-results-bar"><span class="party-results-bar-fill" style="width:${Math.max(2, Math.min(100, (r.share / max) * 100))}%; background:${getGroupColor(r.label)}"></span></span>
+          <span class="party-results-pct">${fmtPct(r.share)}%</span>
+        </li>`).join('')}
+    </ol>`;
+}
+
+function electionLabelFor(electionKey) {
+  if (!electionKey) return '';
+  const found = state.electionLabels?.find(d => d.value === electionKey);
+  if (found?.label) return found.label;
+  const election = state.elections?.find(e => e.election_key === electionKey);
+  return election?.election_label || election?.election_year || electionKey;
+}
+
 function renderOverviewCards(rows) {
   const avgTurnout = mean(rows.map(r => r.turnout_pct));
   const avgPartyShare = mean(rows.map(r => r.__party_share));
@@ -2553,6 +2666,7 @@ function renderMap() {
     showMapMessage('Geografia non disponibile. Inserisci un <code>GeoJSON</code> o <code>TopoJSON</code> reale e aggiorna il percorso nel <code>manifest.json</code>.');
     renderLegend(null);
     renderQuickStats([]);
+    renderPartyResults();
     state.lastMapRenderKey = renderKey;
     return;
   }
@@ -2562,6 +2676,7 @@ function renderMap() {
   const scaleInfo = colorScaleForRows(rows);
   renderLegend(scaleInfo);
   renderQuickStats(rows);
+  renderPartyResults();
 
   const projection = makeGeoProjection(state.geometry, 960, 680);
   const anySelection = Boolean(state.selectedMunicipalityId || state.compareMunicipalityIds.length);
@@ -2653,8 +2768,17 @@ function buildCanvasMapCache(projection) {
       outline: meshToPath((a, b) => a === b),
       regions: meshToPath((a, b) => a !== b
         && (a.properties?.region_code ?? null) !== (b.properties?.region_code ?? null)),
+      // Province borders that are NOT also region borders (intra-region only).
+      // Drawn together with `regions` to avoid double-strokes when both
+      // layers are visible.
       provinces: meshToPath((a, b) => a !== b
         && (a.properties?.region_code ?? null) === (b.properties?.region_code ?? null)
+        && (a.properties?.province_code ?? null) !== (b.properties?.province_code ?? null)),
+      // ALL province borders, including those that double as region borders.
+      // Used as the "Province" stroke when the user hides the Regioni layer:
+      // a region border is by definition also a province border, so hiding
+      // regions must NOT swallow those arcs from the provinces view.
+      provincesAll: meshToPath((a, b) => a !== b
         && (a.properties?.province_code ?? null) !== (b.properties?.province_code ?? null)),
       comuni: meshToPath((a, b) => a !== b
         && (a.properties?.region_code ?? null) === (b.properties?.region_code ?? null)
@@ -3010,12 +3134,20 @@ function drawCanvasMap(transform = state.mapCanvasTransform || d3.zoomIdentity) 
       ctx.lineWidth = 0.7 * strokeScale;
       ctx.stroke(meshes.comuni);
     }
-    // 2. Province — medium, only where they differ from regions
-    if (showProvince && meshes.provinces) {
-      ctx.globalAlpha = 0.85;
-      ctx.strokeStyle = '#0f172a';
-      ctx.lineWidth = 1.2 * strokeScale;
-      ctx.stroke(meshes.provinces);
+    // 2. Province — when Regioni is also visible, draw only intra-region
+    //    province arcs (regions handle the rest, no double-stroke). When
+    //    Regioni is hidden, draw ALL province arcs so the regional borders
+    //    (which are also provincial) don't disappear.
+    if (showProvince) {
+      const provincesPath = showRegioni
+        ? meshes.provinces
+        : (meshes.provincesAll || meshes.provinces);
+      if (provincesPath) {
+        ctx.globalAlpha = 0.85;
+        ctx.strokeStyle = '#0f172a';
+        ctx.lineWidth = 1.2 * strokeScale;
+        ctx.stroke(provincesPath);
+      }
     }
     // 3. Regioni — heaviest interior border
     if (showRegioni && meshes.regions) {
@@ -5748,6 +5880,7 @@ async function init() {
     legend: q('legend'),
     sidebarLegend: q('sidebar-legend'),
     sidebarQuickStats: q('sidebar-quick-stats'),
+    sidebarPartyResults: q('sidebar-party-results'),
     sidebarDownloadPngBtn: q('sidebar-download-png-btn'),
     layerToggleRegioni: q('layer-toggle-regioni'),
     layerToggleProvince: q('layer-toggle-province'),
