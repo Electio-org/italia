@@ -1969,6 +1969,7 @@ function requestMapInteractionRender() {
       drawCanvasMap(state.mapCanvasTransform || d3.zoomIdentity);
     }
     renderSelectionDock();
+    renderPartyResults();
   });
 }
 
