@@ -403,11 +403,18 @@ function renderLeaderChart(rows) {
     return;
   }
 
-  const width = Math.max(320, container.clientWidth || 480);
+  const containerWidth = Math.max(320, container.clientWidth || 480);
   const margin = { top: 14, right: 12, bottom: 28, left: 12 };
   const tileH = 40;
   const tileGap = 4;
-  const tileW = Math.max(48, (width - margin.left - margin.right - tileGap * (items.length - 1)) / items.length);
+  // Honor a minimum tile width so labels stay legible, but expand the viewBox
+  // (not the container) so all tiles fit. The SVG's `preserveAspectRatio` then
+  // scales the whole strip down to the container — chart shrinks vertically a
+  // touch instead of clipping the right-hand tiles.
+  const naturalTileW = (containerWidth - margin.left - margin.right - tileGap * Math.max(0, items.length - 1)) / Math.max(1, items.length);
+  const tileW = Math.max(40, naturalTileW);
+  const layoutWidth = margin.left + margin.right + items.length * tileW + Math.max(0, items.length - 1) * tileGap;
+  const width = Math.max(containerWidth, layoutWidth);
   const height = margin.top + tileH + margin.bottom;
 
   const svg = svgEl('svg', {
