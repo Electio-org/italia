@@ -245,6 +245,7 @@ function audienceMeta() {
 }
 
 const PUBLIC_METRICS = new Set([
+  'first_party',
   'turnout',
   'party_share',
   'margin',
@@ -261,7 +262,6 @@ const PUBLIC_METRICS = new Set([
 ]);
 
 function sanitizeSelectedMetric(metric) {
-  if (metric === 'first_party') return 'margin';
   return PUBLIC_METRICS.has(metric) ? metric : 'turnout';
 }
 
@@ -391,12 +391,24 @@ function applyResultsHydrationOutcome(report, { silent = true } = {}) {
 }
 
 function ensureVisibleResults({ silent = true } = {}) {
-  return ensureResultsForElections(state, visibleElectionKeysForResults(), {
+  const requestedKeys = visibleElectionKeysForResults();
+  state.partyResultsLoading = true;
+  if (els.partySelect && state.selectedMetric === 'party_share') refreshPartySelector();
+  return ensureResultsForElections(state, requestedKeys, {
     buildIndices: updateIndices,
     registerIssue
   }).then(report => {
+    state.partyResultsLoading = false;
     applyResultsHydrationOutcome(report, { silent });
+    // Always refresh the selector after a load attempt completes — even if the
+    // shard returned 0 rows we need to flip the placeholder from
+    // "Caricamento partiti…" to a clear "Nessun partito disponibile…" message.
+    refreshPartySelector();
     return report;
+  }).catch(err => {
+    state.partyResultsLoading = false;
+    refreshPartySelector();
+    throw err;
   });
 }
 
@@ -848,7 +860,19 @@ function refreshPartySelector() {
   // overwrite the user's fresh pick with the old `state.selectedParty`.
   const currentDropdownValue = els.partySelect.value || '';
   if (!values.length) {
-    els.partySelect.innerHTML = `<option value="">${escapeHtml(state.selectedMetric === 'party_share' ? 'Caricamento partiti…' : 'Nessuna selezione')}</option>`;
+    let placeholder;
+    if (state.selectedMetric === 'party_share') {
+      if (state.partyResultsLoading) placeholder = 'Caricamento partiti…';
+      else {
+        const coverage = state.selectedElection ? electionCoverageFor(state, state.selectedElection) : null;
+        placeholder = coverage && coverage.results
+          ? 'Nessun partito disponibile per questa vista'
+          : 'Risultati di partito non disponibili per questa elezione';
+      }
+    } else {
+      placeholder = 'Nessuna selezione';
+    }
+    els.partySelect.innerHTML = `<option value="">${escapeHtml(placeholder)}</option>`;
     state.selectedParty = null;
     els.partySelect.value = '';
     return;
@@ -2780,9 +2804,19 @@ function buildCanvasMapCache(projection) {
       // regions must NOT swallow those arcs from the provinces view.
       provincesAll: meshToPath((a, b) => a !== b
         && (a.properties?.province_code ?? null) !== (b.properties?.province_code ?? null)),
+      // Comuni borders strictly inside a province (no province/region duplicates).
+      // Drawn when Province is also visible, to avoid double-strokes.
       comuni: meshToPath((a, b) => a !== b
         && (a.properties?.region_code ?? null) === (b.properties?.region_code ?? null)
-        && (a.properties?.province_code ?? null) === (b.properties?.province_code ?? null))
+        && (a.properties?.province_code ?? null) === (b.properties?.province_code ?? null)),
+      // Comuni borders inside a region (cross-province ok, no region-border duplicates).
+      // Used when Province is hidden but Regioni is still visible.
+      comuniWithinRegion: meshToPath((a, b) => a !== b
+        && (a.properties?.region_code ?? null) === (b.properties?.region_code ?? null)),
+      // ALL comuni borders. Used when both Province and Regioni are hidden so the
+      // arcs that double as province/region borders don't disappear from the
+      // comuni view.
+      comuniAll: meshToPath((a, b) => a !== b)
     };
   }
   const hitGridCellSize = 32;
@@ -3127,12 +3161,24 @@ function drawCanvasMap(transform = state.mapCanvasTransform || d3.zoomIdentity) 
   const showRegioni = layers.regioni !== false;
 
   if (meshes) {
-    // 1. Comuni — thinnest, only when zoomed in enough
-    if (showComuni && meshes.comuni) {
-      ctx.globalAlpha = 0.55;
-      ctx.strokeStyle = '#1e293b';
-      ctx.lineWidth = 0.7 * strokeScale;
-      ctx.stroke(meshes.comuni);
+    // 1. Comuni — thinnest, only when zoomed in enough.
+    //    Pick the mesh variant that includes all arcs not already drawn by an
+    //    upper layer:
+    //      • Province visible → intra-province only (avoid double-stroke)
+    //      • Province hidden, Regioni visible → intra-region (no region dup)
+    //      • Both hidden → all comuni borders, including the ones that double
+    //        as province/region borders (otherwise they'd vanish entirely)
+    if (showComuni) {
+      let comuniPath;
+      if (showProvince) comuniPath = meshes.comuni;
+      else if (showRegioni) comuniPath = meshes.comuniWithinRegion || meshes.comuni;
+      else comuniPath = meshes.comuniAll || meshes.comuniWithinRegion || meshes.comuni;
+      if (comuniPath) {
+        ctx.globalAlpha = 0.55;
+        ctx.strokeStyle = '#1e293b';
+        ctx.lineWidth = 0.7 * strokeScale;
+        ctx.stroke(comuniPath);
+      }
     }
     // 2. Province — when Regioni is also visible, draw only intra-region
     //    province arcs (regions handle the rest, no double-stroke). When
