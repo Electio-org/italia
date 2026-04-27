@@ -2476,6 +2476,7 @@ function renderPartyResults() {
   }
   const mode = state.selectedPartyMode || 'party_raw';
   const partyKey = row => {
+    if (mode === 'bloc') return row.bloc || row.party_raw || '';
     if (mode === 'party_std') return row.party_std || row.party_raw || '';
     if (mode === 'party_family') return row.party_family || row.party_std || row.party_raw || '';
     return row.party_raw || row.party_std || '';
@@ -2537,7 +2538,7 @@ function renderPartyResults() {
   if (isComune) {
     const muni = state.municipalities.find(m => String(m.municipality_id) === String(selectedId));
     const name = muni?.name_current || muni?.municipality_name || `Comune ${selectedId}`;
-    scopeLabel = `${name} · ${escapeHtml(electionLabelFor(electionKey))}`;
+    scopeLabel = `${escapeHtml(name)} · ${escapeHtml(electionLabelFor(electionKey))}`;
   } else {
     scopeLabel = `Italia · ${escapeHtml(electionLabelFor(electionKey))}`;
   }
@@ -2550,9 +2551,9 @@ function renderPartyResults() {
     <ol class="party-results-list">
       ${ranked.map(r => `
         <li class="party-results-row" data-party="${escapeHtml(r.label)}">
-          <span class="party-results-swatch" style="background:${getPartyColor(r.label)}"></span>
+          <span class="party-results-swatch" style="background:${getGroupColor(r.label)}"></span>
           <span class="party-results-label">${escapeHtml(r.label)}</span>
-          <span class="party-results-bar"><span class="party-results-bar-fill" style="width:${Math.max(2, Math.min(100, (r.share / max) * 100))}%; background:${getPartyColor(r.label)}"></span></span>
+          <span class="party-results-bar"><span class="party-results-bar-fill" style="width:${Math.max(2, Math.min(100, (r.share / max) * 100))}%; background:${getGroupColor(r.label)}"></span></span>
           <span class="party-results-pct">${fmtPct(r.share)}%</span>
         </li>`).join('')}
     </ol>`;
