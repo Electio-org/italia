@@ -6501,3 +6501,82 @@ body[data-site-page="municipality-detail"] .detail-placeholder-muted {
   color: #94a3b8;
   font-style: italic;
 }
+body[data-site-page="municipality-detail"] .detail-charts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 18px;
+  margin-top: 12px;
+}
+body[data-site-page="municipality-detail"] .detail-chart-card {
+  background: #ffffff;
+  border: 1px solid var(--line-soft, #e2e8f0);
+  border-radius: 14px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+body[data-site-page="municipality-detail"] .detail-chart-head h3 {
+  margin: 0 0 4px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #0f172a;
+}
+body[data-site-page="municipality-detail"] .detail-chart-head p {
+  margin: 0;
+  font-size: 13px;
+  color: #64748b;
+}
+body[data-site-page="municipality-detail"] .detail-chart-body {
+  position: relative;
+  min-height: 200px;
+}
+body[data-site-page="municipality-detail"] .detail-chart-body svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  font-family: inherit;
+}
+body[data-site-page="municipality-detail"] .detail-chart-body svg .axis text {
+  fill: #64748b;
+  font-size: 11px;
+}
+body[data-site-page="municipality-detail"] .detail-chart-body svg .axis line,
+body[data-site-page="municipality-detail"] .detail-chart-body svg .axis path,
+body[data-site-page="municipality-detail"] .detail-chart-body svg .grid line {
+  stroke: #e2e8f0;
+  stroke-width: 1;
+}
+body[data-site-page="municipality-detail"] .detail-chart-body svg .series-line {
+  fill: none;
+  stroke: #2563eb;
+  stroke-width: 2;
+}
+body[data-site-page="municipality-detail"] .detail-chart-body svg .series-dot {
+  fill: #2563eb;
+}
+body[data-site-page="municipality-detail"] .detail-chart-body svg .series-bar {
+  fill: #6366f1;
+}
+body[data-site-page="municipality-detail"] .detail-chart-body svg .series-bar-neg {
+  fill: #ef4444;
+}
+body[data-site-page="municipality-detail"] .detail-chart-body svg .leader-tile rect {
+  stroke: #ffffff;
+  stroke-width: 1;
+}
+body[data-site-page="municipality-detail"] .detail-chart-body svg .leader-tile text.leader-name {
+  fill: #ffffff;
+  font-weight: 600;
+  font-size: 11px;
+}
+body[data-site-page="municipality-detail"] .detail-chart-body svg .leader-tile text.leader-share {
+  fill: rgba(255,255,255,0.85);
+  font-size: 10px;
+}
+body[data-site-page="municipality-detail"] .detail-chart-body svg .chart-empty {
+  fill: #94a3b8;
+  font-size: 12px;
+  font-style: italic;
+}
