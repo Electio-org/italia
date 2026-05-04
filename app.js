@@ -862,8 +862,27 @@ function refreshPartySelector() {
   if (!values.length) {
     let placeholder;
     if (state.selectedMetric === 'party_share') {
-      if (state.partyResultsLoading) placeholder = 'Caricamento partiti…';
-      else {
+      // The party-results shards are loaded lazily, one election at a time.
+      // If the shard for the current election has not been hydrated yet we
+      // must show "Caricamento partiti…" — even if `partyResultsLoading`
+      // hasn't been flipped to true yet (it's only set inside
+      // ensureVisibleResults, which runs *after* the synchronous
+      // refreshPartySelector pass triggered by readControls). Otherwise
+      // the user briefly sees "Nessun partito disponibile" right after
+      // switching to Quota partito on an as-yet-unloaded election.
+      const shardKnown = !!state.resultsLongShardPaths?.[state.selectedElection];
+      const shardHydrated = state.resultsLongFullLoaded || !!state.loadedResultElectionKeys?.has(state.selectedElection);
+      const shardPending = shardKnown && !shardHydrated;
+      if (state.partyResultsLoading || shardPending) {
+        placeholder = 'Caricamento partiti…';
+        // Kick off a load if nothing is in-flight. This is a defence in
+        // depth against any code path that calls refreshPartySelector
+        // without going through ensureVisibleResults (e.g. the boot
+        // sequence on a deep-link to ?metric=party_share).
+        if (shardPending && !state.partyResultsLoading && !state.resultsLoadPromises?.has(state.selectedElection)) {
+          ensureVisibleResults({ silent: true });
+        }
+      } else {
         const coverage = state.selectedElection ? electionCoverageFor(state, state.selectedElection) : null;
         placeholder = coverage && coverage.results
           ? 'Nessun partito disponibile per questa vista'
