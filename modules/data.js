@@ -653,32 +653,40 @@ export async function ensureResultsForElections(state, electionKeys, { buildIndi
   });
 
   const chunks = await Promise.all(tasks);
-  const fresh = [];
   const loadedKeys = [];
   const failedKeys = [];
+  const freshChunks = [];
   chunks.forEach(chunk => {
     if (!chunk?.key || state.loadedResultElectionKeys?.has(chunk.key)) return;
-    // Only mark a shard as "loaded" when it actually delivered rows. If the
-    // fetch errored or returned an empty payload, keep the key unflagged so
-    // the next ensureResultsForElections call retries instead of returning
-    // alreadyLoaded — otherwise a single transient network blip would leave
-    // the user permanently stuck on "Nessun partito disponibile".
     if (chunk.error || !chunk.rows?.length) {
       failedKeys.push(chunk.key);
       return;
     }
     state.loadedResultElectionKeys?.add(chunk.key);
     loadedKeys.push(chunk.key);
-    fresh.push(...chunk.rows);
+    freshChunks.push(chunk.rows);
   });
-  if (fresh.length) state.resultsLong = state.resultsLong.concat(fresh);
-  if (fresh.length || loadedKeys.length) {
-    if (typeof buildIndices === 'function') buildIndices({ resultRows: fresh });
+  // Concatenate without spread to avoid V8's argument-count RangeError on
+  // large shards (camera_2006 has 135k rows, camera_2013 has 139k rows;
+  // anything >~125k args triggers "Maximum call stack size exceeded" in
+  // Array.prototype.push(...rows). state.resultsLong.concat() uses an
+  // internal copy that has no such limit.
+  let freshTotal = 0;
+  freshChunks.forEach(rows => { freshTotal += rows.length; });
+  if (freshTotal) {
+    state.resultsLong = freshChunks.reduce((acc, rows) => acc.concat(rows), state.resultsLong);
   }
+  if (freshTotal || loadedKeys.length) {
+    if (typeof buildIndices === 'function') {
+      const flat = freshChunks.length === 1 ? freshChunks[0] : freshChunks.reduce((acc, rows) => acc.concat(rows), []);
+      buildIndices({ resultRows: flat });
+    }
+  }
+  const freshLength = freshTotal;
   if (state.resultsLongDeclaredRows && state.resultsLong.length >= state.resultsLongDeclaredRows) {
     state.resultsHydrationComplete = true;
   }
-  return { strategy: 'by_election', loadedKeys, loadedRows: fresh.length, failedKeys };
+  return { strategy: 'by_election', loadedKeys, loadedRows: freshLength, failedKeys };
 }
 
 export async function loadData(state, { buildIndices, registerIssue = () => {} } = {}) {
