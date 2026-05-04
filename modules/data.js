@@ -655,11 +655,21 @@ export async function ensureResultsForElections(state, electionKeys, { buildIndi
   const chunks = await Promise.all(tasks);
   const fresh = [];
   const loadedKeys = [];
+  const failedKeys = [];
   chunks.forEach(chunk => {
     if (!chunk?.key || state.loadedResultElectionKeys?.has(chunk.key)) return;
+    // Only mark a shard as "loaded" when it actually delivered rows. If the
+    // fetch errored or returned an empty payload, keep the key unflagged so
+    // the next ensureResultsForElections call retries instead of returning
+    // alreadyLoaded — otherwise a single transient network blip would leave
+    // the user permanently stuck on "Nessun partito disponibile".
+    if (chunk.error || !chunk.rows?.length) {
+      failedKeys.push(chunk.key);
+      return;
+    }
     state.loadedResultElectionKeys?.add(chunk.key);
     loadedKeys.push(chunk.key);
-    if (chunk.rows?.length) fresh.push(...chunk.rows);
+    fresh.push(...chunk.rows);
   });
   if (fresh.length) state.resultsLong = state.resultsLong.concat(fresh);
   if (fresh.length || loadedKeys.length) {
@@ -668,7 +678,7 @@ export async function ensureResultsForElections(state, electionKeys, { buildIndi
   if (state.resultsLongDeclaredRows && state.resultsLong.length >= state.resultsLongDeclaredRows) {
     state.resultsHydrationComplete = true;
   }
-  return { strategy: 'by_election', loadedKeys, loadedRows: fresh.length };
+  return { strategy: 'by_election', loadedKeys, loadedRows: fresh.length, failedKeys };
 }
 
 export async function loadData(state, { buildIndices, registerIssue = () => {} } = {}) {
