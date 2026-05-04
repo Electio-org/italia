@@ -57,7 +57,8 @@ export const PARTY_FALLBACKS = [
   [/scelta civica|monti per l/i, { family: 'liberale-riformista', bloc: 'centro', color: '#fb923c', display: 'Scelta Civica' }],
   [/futuro e liberta|^fli$/i, { family: 'liberale-riformista', bloc: 'centro-destra', color: '#fdba74', display: 'FLI' }],
   [/fare per fermare/i, { family: 'liberale-riformista', bloc: 'centro', color: '#f59e0b', display: 'Fare' }],
-  [/^azione\b|^az$|italia viva|^iv$|renew|^calenda$/i, { family: 'liberale-riformista', bloc: 'centro', color: '#fb923c', display: 'Azione / IV' }],
+  [/lega d.?azione|movimento per le autonomie|^mpa$/i, { family: 'liberal-conservatore', bloc: 'centro-destra', color: '#3b82f6', display: "Lega d'Azione / MpA" }],
+  [/\bazione\b|^az$|italia viva|^iv$|renew|^calenda$/i, { family: 'liberale-riformista', bloc: 'centro', color: '#fb923c', display: 'Azione / IV' }],
   [/italia dei valori|di pietro|^idv$/i, { family: 'liberale-riformista', bloc: 'centro-sinistra', color: '#fcd34d', display: 'IdV' }],
   [/\+europa|piu europa/i, { family: 'liberale-riformista', bloc: 'centro', color: '#22d3ee', display: '+Europa' }],
   [/^pri\b|repubblican/i, { family: 'laico-repubblicano', bloc: 'centro', color: '#10b981', display: 'PRI' }],
@@ -80,7 +81,7 @@ export const PARTY_FALLBACKS = [
   [/casapound|forza nuova|fiamma tricolore|destra nazionale|\bmsi\b|movimento sociale|la destra|forza del popolo|italia agli italiani/i, { family: 'destra nazionale', bloc: 'destra', color: '#0d47a1', display: 'Destra naz.' }],
 
   // --- Populista ---
-  [/movimento 5 stelle|^m5s$|beppegrillo|impegno civico|grillo|conte/i, { family: 'populista', bloc: 'populista', color: '#f59e0b', display: 'M5S' }],
+  [/movimento 5 stelle|^m5s$|beppegrillo|impegno civico|\bgrillo\b|\bconte\b/i, { family: 'populista', bloc: 'populista', color: '#f59e0b', display: 'M5S' }],
 
   // --- Regional autonomista (extra) ---
   [/^svp$|sudtiroler|sud tirol|die freiheitlichen|union fur sud|valle d.aosta|union valdotaine/i, { family: 'regionalista', bloc: 'centro-destra', color: '#16a34a', display: 'Autonomisti' }],
