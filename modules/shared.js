@@ -159,15 +159,27 @@ export const FAMILY_COLORS = {
   'altro': '#64748b'
 };
 
+// Macro-aree d'Italia + alcune regioni di interesse storico/elettorale.
+// `regions` indica le regioni amministrative ISTAT da includere; il match
+// avviene contro la colonna `region` del comune (resa case-insensitive e
+// normalizzata da normalizeTextToken). `tokens` resta supportato come
+// fallback per match contro il nome della provincia (utile per cluster
+// trasversali tipo "Triangolo industriale").
 export const AREA_PRESETS = [
-  { value: 'all', label: 'Tutta la Lombardia', tokens: [] },
-  { value: 'brianza_milan', label: 'Milano + Brianza + Lecchese', tokens: ['milano', 'monza', 'brianza', 'lecco'] },
-  { value: 'insubria', label: 'Insubria / laghi', tokens: ['varese', 'como', 'lecco', 'sondrio'] },
-  { value: 'ovest', label: 'Lombardia occidentale', tokens: ['milano', 'varese', 'como', 'pavia', 'lodi', 'monza', 'brianza'] },
-  { value: 'est', label: 'Lombardia orientale', tokens: ['bergamo', 'brescia', 'cremona', 'mantova'] },
-  { value: 'alpina', label: 'Fascia alpina', tokens: ['sondrio', 'bergamo', 'brescia', 'lecco', 'como', 'varese'] },
-  { value: 'bassa', label: 'Bassa / padana', tokens: ['pavia', 'lodi', 'cremona', 'mantova'] },
-  { value: 'custom', label: 'Selezione manuale', tokens: null }
+  { value: 'all', label: 'Tutta Italia', regions: [], tokens: [] },
+  { value: 'nord_ovest', label: 'Nord-Ovest', regions: ['Piemonte', "Valle d'Aosta", 'Liguria', 'Lombardia'] },
+  { value: 'nord_est', label: 'Nord-Est', regions: ['Veneto', 'Trentino-Alto Adige', 'Friuli Venezia Giulia', 'Friuli-Venezia Giulia', 'Emilia-Romagna'] },
+  { value: 'centro', label: 'Centro', regions: ['Toscana', 'Umbria', 'Marche', 'Lazio'] },
+  { value: 'sud', label: 'Sud', regions: ['Abruzzo', 'Molise', 'Campania', 'Puglia', 'Basilicata', 'Calabria'] },
+  { value: 'isole', label: 'Isole', regions: ['Sicilia', 'Sardegna'] },
+  { value: 'lombardia', label: 'Lombardia', regions: ['Lombardia'] },
+  { value: 'piemonte', label: 'Piemonte', regions: ['Piemonte'] },
+  { value: 'veneto', label: 'Veneto', regions: ['Veneto'] },
+  { value: 'emilia_romagna', label: 'Emilia-Romagna', regions: ['Emilia-Romagna'] },
+  { value: 'lazio', label: 'Lazio', regions: ['Lazio'] },
+  { value: 'campania', label: 'Campania', regions: ['Campania'] },
+  { value: 'sicilia', label: 'Sicilia', regions: ['Sicilia'] },
+  { value: 'custom', label: 'Selezione manuale', regions: null, tokens: null }
 ];
 
 export const FALLBACK_PARTY_OPTIONS = [

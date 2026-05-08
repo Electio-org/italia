@@ -90,6 +90,30 @@ export function parseNumberFields(rows, fields) {
   });
 }
 
+// Canonical region names. The municipality master mixes "Friuli Venezia
+// Giulia" (203 comuni) and "Friuli-Venezia Giulia" (30 comuni) — normalising
+// at load time avoids the region selector splitting Friuli into two groups.
+const REGION_CANONICAL = new Map([
+  ['friuli-venezia giulia', 'Friuli Venezia Giulia'],
+  ['friuli venezia giulia', 'Friuli Venezia Giulia']
+]);
+
+function canonicalRegionName(value) {
+  if (value === null || value === undefined) return value;
+  const raw = String(value).trim();
+  if (!raw) return raw;
+  const canon = REGION_CANONICAL.get(raw.toLowerCase());
+  return canon || raw;
+}
+
+export function normalizeMunicipalityRegions(municipalities = []) {
+  return (municipalities || []).map(m => {
+    if (!m || typeof m !== 'object') return m;
+    const region = canonicalRegionName(m.region);
+    return region === m.region ? m : { ...m, region };
+  });
+}
+
 function parseSummaryRows(rows) {
   return parseNumberFields(rows, SUMMARY_NUMBER_FIELDS);
 }
@@ -407,22 +431,38 @@ export async function ensureSummaryForElections(state, electionKeys, { buildIndi
   });
 
   const chunks = await Promise.all(tasks);
-  const fresh = [];
   const loadedKeys = [];
+  const failedKeys = [];
+  const freshChunks = [];
   chunks.forEach(chunk => {
     if (!chunk?.key || state.loadedSummaryElectionKeys?.has(chunk.key)) return;
+    if (chunk.error || !chunk.rows?.length) {
+      failedKeys.push(chunk.key);
+      return;
+    }
     state.loadedSummaryElectionKeys?.add(chunk.key);
     loadedKeys.push(chunk.key);
-    if (chunk.rows?.length) fresh.push(...chunk.rows);
+    freshChunks.push(chunk.rows);
   });
-  if (fresh.length) state.summary = state.summary.concat(fresh);
-  if (fresh.length || loadedKeys.length) {
-    if (typeof buildIndices === 'function') buildIndices({ summaryRows: fresh });
+  // Use reduce+concat instead of fresh.push(...chunk.rows) to avoid V8's
+  // argument-count RangeError on large shards. Currently summary shards are
+  // small (~7.9k rows max per Camera election) but Senato/Europee/Regionali
+  // shards in the roadmap may grow past the ~125k argument limit.
+  let freshTotal = 0;
+  freshChunks.forEach(rows => { freshTotal += rows.length; });
+  if (freshTotal) {
+    state.summary = freshChunks.reduce((acc, rows) => acc.concat(rows), state.summary);
+  }
+  if (freshTotal || loadedKeys.length) {
+    if (typeof buildIndices === 'function') {
+      const flat = freshChunks.length === 1 ? freshChunks[0] : freshChunks.reduce((acc, rows) => acc.concat(rows), []);
+      buildIndices({ summaryRows: flat });
+    }
   }
   if (state.summaryDeclaredRows && state.summary.length >= state.summaryDeclaredRows) {
     state.summaryHydrationComplete = true;
   }
-  return { strategy: 'by_election', loadedKeys, loadedRows: fresh.length };
+  return { strategy: 'by_election', loadedKeys, loadedRows: freshTotal, failedKeys };
 }
 
 async function loadBundleWithManifest(state, manifest, resolver, { buildIndices, registerIssue = () => {}, source = 'embedded' } = {}) {
@@ -449,7 +489,7 @@ async function loadBundleWithManifest(state, manifest, resolver, { buildIndices,
     needsFallbackProvinceGeometry ? resolver.geometry(files.provinceGeometry).catch(() => null) : Promise.resolve(null)
   ]);
   state.elections = parseNumberFields(elections, ['election_year']).sort((a, b) => (a.election_year || 0) - (b.election_year || 0));
-  state.municipalities = municipalities;
+  state.municipalities = normalizeMunicipalityRegions(municipalities);
   state.municipalityLookupMaps = buildMunicipalityLookupMaps(state.municipalities);
   state.parties = parties;
   state.lineage = [];

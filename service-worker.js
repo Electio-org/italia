@@ -14,7 +14,7 @@
  * `cache.addAll()` that would reject the whole install on any 404.
  */
 
-const SW_VERSION = 'electio-v14-2026-04-27-shard-spread-fix';
+const SW_VERSION = 'electio-v15-2026-05-08-italy-area-presets';
 const SHELL_CACHE = `shell::${SW_VERSION}`;
 const DATA_CACHE = `data::${SW_VERSION}`;
 const NAV_FALLBACK = './index.html';

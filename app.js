@@ -2110,8 +2110,28 @@ function provinceValuesForPreset(presetValue, available) {
   const preset = AREA_PRESETS.find(d => d.value === presetValue);
   if (!preset || preset.value === 'all') return available.slice();
   if (preset.value === 'custom') return [...state.selectedProvinceSet];
-  const tokens = (preset.tokens || []).map(normalizeTextToken);
-  return available.filter(prov => tokens.some(token => normalizeTextToken(prov).includes(token)));
+  const regions = (preset.regions || []).map(normalizeTextToken).filter(Boolean);
+  const tokens = (preset.tokens || []).map(normalizeTextToken).filter(Boolean);
+  if (!regions.length && !tokens.length) return available.slice();
+  // Build province → region map from the municipalities master so a preset
+  // can target whole regions (e.g. "Lazio") without listing every province
+  // by name. Falls back to substring tokens for cross-region clusters.
+  const provinceRegionMap = state.provinceToRegionMap || (state.provinceToRegionMap = (() => {
+    const map = new Map();
+    (state.municipalities || []).forEach(m => {
+      const prov = String(m?.province_current || '').trim();
+      const reg = String(m?.region || '').trim();
+      if (prov && reg && !map.has(prov)) map.set(prov, reg);
+    });
+    return map;
+  })());
+  return available.filter(prov => {
+    const provNorm = normalizeTextToken(prov);
+    if (tokens.length && tokens.some(token => provNorm.includes(token))) return true;
+    if (!regions.length) return false;
+    const regionNorm = normalizeTextToken(provinceRegionMap.get(prov) || '');
+    return regions.includes(regionNorm);
+  });
 }
 
 function toggleFocusMode(force = null) {
