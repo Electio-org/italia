@@ -360,15 +360,24 @@ function renderTurnoutChart(rows, aggregates) {
   svg.appendChild(xAxis);
 
   // Reference series (Italia + provincia) sit BEHIND the comune line.
+  // The first surviving segment must be a `moveto` (`M`) regardless of how
+  // many leading points have null aggregate values — using the original
+  // index from `points.map` and filtering afterwards would emit a path that
+  // starts with `L`, drawing a stray diagonal from (0,0) to the first valid
+  // point. Track the "first emitted" state with a flag instead.
   const seriesGroup = svgEl('g');
-  const buildPath = (key) => points
-    .map((p, i) => {
+  const buildPath = (key) => {
+    let started = false;
+    const segments = [];
+    for (const p of points) {
       const v = p[key];
-      if (!Number.isFinite(v)) return null;
-      return `${i === 0 ? 'M' : 'L'}${xScale(p.year).toFixed(2)},${yScale(v).toFixed(2)}`;
-    })
-    .filter(Boolean)
-    .join(' ');
+      if (!Number.isFinite(v)) continue;
+      const cmd = started ? 'L' : 'M';
+      started = true;
+      segments.push(`${cmd}${xScale(p.year).toFixed(2)},${yScale(v).toFixed(2)}`);
+    }
+    return segments.join(' ');
+  };
   const nationPath = buildPath('nationTurnout');
   if (nationPath) {
     seriesGroup.appendChild(svgEl('path', {
