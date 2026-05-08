@@ -1,0 +1,2681 @@
+{
+  "generated_by": "scripts/inventory_eligendo_open_data.py",
+  "generated_at": "2026-05-08T15:52:55+00:00",
+  "source": {
+    "name": "Eligendo open data — Ministero dell'Interno",
+    "listing_url": "https://elezionistorico.interno.gov.it/eligendo/opendata.php",
+    "download_base_url": "https://elezionistorico.interno.gov.it",
+    "license": "Italian PSI directive (Dlgs 36/2006); see https://elezionistorico.interno.gov.it/eligendo/info_opendata.php for the official terms.",
+    "archive_format": "ZIP, semicolon-separated `.txt` per archive"
+  },
+  "families": [
+    {
+      "family": "assemblea_costituente",
+      "scope": "italy",
+      "granularity": "municipality",
+      "ingestion_status": "ingested",
+      "priority": null,
+      "notes": "Already ingested via scripts/rebuild_bundle_from_camera_opendata_archives.py and exposed in municipality_summary.csv together with Camera.",
+      "first_year_documented": 1946,
+      "last_year_documented": 1946,
+      "year_count": 1,
+      "archive_count": 1,
+      "items": [
+        {
+          "election_key": "assemblea_costituente_1946",
+          "year": 1946,
+          "election_date_iso": "1946-06-02",
+          "election_date_label": "02/06/1946",
+          "filename": "assemblea_costituente-19460602.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/assemblea_costituente/assemblea_costituente-19460602.zip",
+          "relative_path": "assemblea_costituente/assemblea_costituente-19460602.zip"
+        }
+      ]
+    },
+    {
+      "family": "camera",
+      "scope": "italy",
+      "granularity": "municipality",
+      "ingestion_status": "ingested",
+      "priority": null,
+      "notes": "Already ingested via scripts/rebuild_bundle_from_camera_opendata_archives.py. Each archive contains a per-municipality `.txt` file (semicolon-separated) with one row per municipality / list.",
+      "first_year_documented": 1948,
+      "last_year_documented": 2022,
+      "year_count": 19,
+      "archive_count": 19,
+      "items": [
+        {
+          "election_key": "camera_1948",
+          "year": 1948,
+          "election_date_iso": "1948-04-18",
+          "election_date_label": "18/04/1948",
+          "filename": "camera-19480418.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/camera/camera-19480418.zip",
+          "relative_path": "camera/camera-19480418.zip"
+        },
+        {
+          "election_key": "camera_1953",
+          "year": 1953,
+          "election_date_iso": "1953-06-07",
+          "election_date_label": "07/06/1953",
+          "filename": "camera-19530607.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/camera/camera-19530607.zip",
+          "relative_path": "camera/camera-19530607.zip"
+        },
+        {
+          "election_key": "camera_1958",
+          "year": 1958,
+          "election_date_iso": "1958-05-25",
+          "election_date_label": "25/05/1958",
+          "filename": "camera-19580525.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/camera/camera-19580525.zip",
+          "relative_path": "camera/camera-19580525.zip"
+        },
+        {
+          "election_key": "camera_1963",
+          "year": 1963,
+          "election_date_iso": "1963-04-28",
+          "election_date_label": "28/04/1963",
+          "filename": "camera-19630428.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/camera/camera-19630428.zip",
+          "relative_path": "camera/camera-19630428.zip"
+        },
+        {
+          "election_key": "camera_1968",
+          "year": 1968,
+          "election_date_iso": "1968-05-19",
+          "election_date_label": "19/05/1968",
+          "filename": "camera-19680519.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/camera/camera-19680519.zip",
+          "relative_path": "camera/camera-19680519.zip"
+        },
+        {
+          "election_key": "camera_1972",
+          "year": 1972,
+          "election_date_iso": "1972-05-07",
+          "election_date_label": "07/05/1972",
+          "filename": "camera-19720507.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/camera/camera-19720507.zip",
+          "relative_path": "camera/camera-19720507.zip"
+        },
+        {
+          "election_key": "camera_1976",
+          "year": 1976,
+          "election_date_iso": "1976-06-20",
+          "election_date_label": "20/06/1976",
+          "filename": "camera-19760620.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/camera/camera-19760620.zip",
+          "relative_path": "camera/camera-19760620.zip"
+        },
+        {
+          "election_key": "camera_1979",
+          "year": 1979,
+          "election_date_iso": "1979-06-03",
+          "election_date_label": "03/06/1979",
+          "filename": "camera-19790603.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/camera/camera-19790603.zip",
+          "relative_path": "camera/camera-19790603.zip"
+        },
+        {
+          "election_key": "camera_1983",
+          "year": 1983,
+          "election_date_iso": "1983-06-26",
+          "election_date_label": "26/06/1983",
+          "filename": "camera-19830626.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/camera/camera-19830626.zip",
+          "relative_path": "camera/camera-19830626.zip"
+        },
+        {
+          "election_key": "camera_1987",
+          "year": 1987,
+          "election_date_iso": "1987-06-14",
+          "election_date_label": "14/06/1987",
+          "filename": "camera-19870614.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/camera/camera-19870614.zip",
+          "relative_path": "camera/camera-19870614.zip"
+        },
+        {
+          "election_key": "camera_1992",
+          "year": 1992,
+          "election_date_iso": "1992-04-05",
+          "election_date_label": "05/04/1992",
+          "filename": "camera-19920405.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/camera/camera-19920405.zip",
+          "relative_path": "camera/camera-19920405.zip"
+        },
+        {
+          "election_key": "camera_1994",
+          "year": 1994,
+          "election_date_iso": "1994-03-27",
+          "election_date_label": "27/03/1994",
+          "filename": "camera-19940327.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/camera/camera-19940327.zip",
+          "relative_path": "camera/camera-19940327.zip"
+        },
+        {
+          "election_key": "camera_1996",
+          "year": 1996,
+          "election_date_iso": "1996-04-21",
+          "election_date_label": "21/04/1996",
+          "filename": "camera-19960421.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/camera/camera-19960421.zip",
+          "relative_path": "camera/camera-19960421.zip"
+        },
+        {
+          "election_key": "camera_2001",
+          "year": 2001,
+          "election_date_iso": "2001-05-13",
+          "election_date_label": "13/05/2001",
+          "filename": "camera-20010513.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/camera/camera-20010513.zip",
+          "relative_path": "camera/camera-20010513.zip"
+        },
+        {
+          "election_key": "camera_2006",
+          "year": 2006,
+          "election_date_iso": "2006-04-09",
+          "election_date_label": "09/04/2006",
+          "filename": "camera-20060409.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/camera/camera-20060409.zip",
+          "relative_path": "camera/camera-20060409.zip"
+        },
+        {
+          "election_key": "camera_2008",
+          "year": 2008,
+          "election_date_iso": "2008-04-13",
+          "election_date_label": "13/04/2008",
+          "filename": "camera-20080413.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/camera/camera-20080413.zip",
+          "relative_path": "camera/camera-20080413.zip"
+        },
+        {
+          "election_key": "camera_2013",
+          "year": 2013,
+          "election_date_iso": "2013-02-24",
+          "election_date_label": "24/02/2013",
+          "filename": "camera-20130224.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/camera/camera-20130224.zip",
+          "relative_path": "camera/camera-20130224.zip"
+        },
+        {
+          "election_key": "camera_2018",
+          "year": 2018,
+          "election_date_iso": "2018-03-04",
+          "election_date_label": "04/03/2018",
+          "filename": "camera-20180304.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/camera/camera-20180304.zip",
+          "relative_path": "camera/camera-20180304.zip"
+        },
+        {
+          "election_key": "camera_2022",
+          "year": 2022,
+          "election_date_iso": "2022-09-25",
+          "election_date_label": "25/09/2022",
+          "filename": "camera-20220925.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/camera/camera-20220925.zip",
+          "relative_path": "camera/camera-20220925.zip"
+        }
+      ]
+    },
+    {
+      "family": "comunali",
+      "scope": "municipality",
+      "granularity": "municipality",
+      "ingestion_status": "deferred",
+      "priority": "medium-low",
+      "notes": "Largest archive count by far (163+ files) because every comune votes on its own schedule and many years have multiple archives (one per regional batch / runoff). Ingestion is feasible but the data shape differs from Camera/Senato (mayoral candidates rather than party lists, runoffs, ranked-choice variants), so a dedicated parser is required. Defer until the basic Camera + Senato + Europee triad is wired.",
+      "first_year_documented": 1970,
+      "last_year_documented": 2025,
+      "year_count": 41,
+      "archive_count": 163,
+      "items": [
+        {
+          "election_key": "comunali_1970",
+          "year": 1970,
+          "election_date_iso": "1970-06-07",
+          "election_date_label": "07/06/1970",
+          "filename": "comunali-19700607.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19700607.zip",
+          "relative_path": "comunali/comunali-19700607.zip"
+        },
+        {
+          "election_key": "comunali_1975",
+          "year": 1975,
+          "election_date_iso": "1975-06-15",
+          "election_date_label": "15/06/1975",
+          "filename": "comunali-19750615.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19750615.zip",
+          "relative_path": "comunali/comunali-19750615.zip"
+        },
+        {
+          "election_key": "comunali_1980",
+          "year": 1980,
+          "election_date_iso": "1980-06-08",
+          "election_date_label": "08/06/1980",
+          "filename": "comunali-19800608.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19800608.zip",
+          "relative_path": "comunali/comunali-19800608.zip"
+        },
+        {
+          "election_key": "comunali_1985",
+          "year": 1985,
+          "election_date_iso": "1985-05-12",
+          "election_date_label": "12/05/1985",
+          "filename": "comunali-19850512.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19850512.zip",
+          "relative_path": "comunali/comunali-19850512.zip"
+        },
+        {
+          "election_key": "comunali_1989",
+          "year": 1989,
+          "election_date_iso": "1989-01-01",
+          "election_date_label": "01/01/1989",
+          "filename": "comunali-19890101.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19890101.zip",
+          "relative_path": "comunali/comunali-19890101.zip"
+        },
+        {
+          "election_key": "comunali_1989",
+          "year": 1989,
+          "election_date_iso": "1989-01-08",
+          "election_date_label": "08/01/1989",
+          "filename": "comunali-19890108.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19890108.zip",
+          "relative_path": "comunali/comunali-19890108.zip"
+        },
+        {
+          "election_key": "comunali_1989",
+          "year": 1989,
+          "election_date_iso": "1989-01-15",
+          "election_date_label": "15/01/1989",
+          "filename": "comunali-19890115.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19890115.zip",
+          "relative_path": "comunali/comunali-19890115.zip"
+        },
+        {
+          "election_key": "comunali_1989",
+          "year": 1989,
+          "election_date_iso": "1989-01-22",
+          "election_date_label": "22/01/1989",
+          "filename": "comunali-19890122.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19890122.zip",
+          "relative_path": "comunali/comunali-19890122.zip"
+        },
+        {
+          "election_key": "comunali_1989",
+          "year": 1989,
+          "election_date_iso": "1989-01-29",
+          "election_date_label": "29/01/1989",
+          "filename": "comunali-19890129.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19890129.zip",
+          "relative_path": "comunali/comunali-19890129.zip"
+        },
+        {
+          "election_key": "comunali_1989",
+          "year": 1989,
+          "election_date_iso": "1989-03-05",
+          "election_date_label": "05/03/1989",
+          "filename": "comunali-19890305.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19890305.zip",
+          "relative_path": "comunali/comunali-19890305.zip"
+        },
+        {
+          "election_key": "comunali_1989",
+          "year": 1989,
+          "election_date_iso": "1989-03-12",
+          "election_date_label": "12/03/1989",
+          "filename": "comunali-19890312.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19890312.zip",
+          "relative_path": "comunali/comunali-19890312.zip"
+        },
+        {
+          "election_key": "comunali_1989",
+          "year": 1989,
+          "election_date_iso": "1989-03-19",
+          "election_date_label": "19/03/1989",
+          "filename": "comunali-19890319.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19890319.zip",
+          "relative_path": "comunali/comunali-19890319.zip"
+        },
+        {
+          "election_key": "comunali_1989",
+          "year": 1989,
+          "election_date_iso": "1989-04-09",
+          "election_date_label": "09/04/1989",
+          "filename": "comunali-19890409.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19890409.zip",
+          "relative_path": "comunali/comunali-19890409.zip"
+        },
+        {
+          "election_key": "comunali_1989",
+          "year": 1989,
+          "election_date_iso": "1989-04-23",
+          "election_date_label": "23/04/1989",
+          "filename": "comunali-19890423.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19890423.zip",
+          "relative_path": "comunali/comunali-19890423.zip"
+        },
+        {
+          "election_key": "comunali_1989",
+          "year": 1989,
+          "election_date_iso": "1989-05-07",
+          "election_date_label": "07/05/1989",
+          "filename": "comunali-19890507.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19890507.zip",
+          "relative_path": "comunali/comunali-19890507.zip"
+        },
+        {
+          "election_key": "comunali_1989",
+          "year": 1989,
+          "election_date_iso": "1989-05-28",
+          "election_date_label": "28/05/1989",
+          "filename": "comunali-19890528.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19890528.zip",
+          "relative_path": "comunali/comunali-19890528.zip"
+        },
+        {
+          "election_key": "comunali_1989",
+          "year": 1989,
+          "election_date_iso": "1989-06-11",
+          "election_date_label": "11/06/1989",
+          "filename": "comunali-19890611.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19890611.zip",
+          "relative_path": "comunali/comunali-19890611.zip"
+        },
+        {
+          "election_key": "comunali_1989",
+          "year": 1989,
+          "election_date_iso": "1989-07-02",
+          "election_date_label": "02/07/1989",
+          "filename": "comunali-19890702.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19890702.zip",
+          "relative_path": "comunali/comunali-19890702.zip"
+        },
+        {
+          "election_key": "comunali_1989",
+          "year": 1989,
+          "election_date_iso": "1989-07-06",
+          "election_date_label": "06/07/1989",
+          "filename": "comunali-19890706.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19890706.zip",
+          "relative_path": "comunali/comunali-19890706.zip"
+        },
+        {
+          "election_key": "comunali_1989",
+          "year": 1989,
+          "election_date_iso": "1989-07-09",
+          "election_date_label": "09/07/1989",
+          "filename": "comunali-19890709.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19890709.zip",
+          "relative_path": "comunali/comunali-19890709.zip"
+        },
+        {
+          "election_key": "comunali_1989",
+          "year": 1989,
+          "election_date_iso": "1989-07-16",
+          "election_date_label": "16/07/1989",
+          "filename": "comunali-19890716.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19890716.zip",
+          "relative_path": "comunali/comunali-19890716.zip"
+        },
+        {
+          "election_key": "comunali_1989",
+          "year": 1989,
+          "election_date_iso": "1989-07-23",
+          "election_date_label": "23/07/1989",
+          "filename": "comunali-19890723.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19890723.zip",
+          "relative_path": "comunali/comunali-19890723.zip"
+        },
+        {
+          "election_key": "comunali_1989",
+          "year": 1989,
+          "election_date_iso": "1989-07-30",
+          "election_date_label": "30/07/1989",
+          "filename": "comunali-19890730.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19890730.zip",
+          "relative_path": "comunali/comunali-19890730.zip"
+        },
+        {
+          "election_key": "comunali_1989",
+          "year": 1989,
+          "election_date_iso": "1989-09-03",
+          "election_date_label": "03/09/1989",
+          "filename": "comunali-19890903.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19890903.zip",
+          "relative_path": "comunali/comunali-19890903.zip"
+        },
+        {
+          "election_key": "comunali_1989",
+          "year": 1989,
+          "election_date_iso": "1989-09-17",
+          "election_date_label": "17/09/1989",
+          "filename": "comunali-19890917.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19890917.zip",
+          "relative_path": "comunali/comunali-19890917.zip"
+        },
+        {
+          "election_key": "comunali_1989",
+          "year": 1989,
+          "election_date_iso": "1989-09-24",
+          "election_date_label": "24/09/1989",
+          "filename": "comunali-19890924.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19890924.zip",
+          "relative_path": "comunali/comunali-19890924.zip"
+        },
+        {
+          "election_key": "comunali_1989",
+          "year": 1989,
+          "election_date_iso": "1989-10-08",
+          "election_date_label": "08/10/1989",
+          "filename": "comunali-19891008.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19891008.zip",
+          "relative_path": "comunali/comunali-19891008.zip"
+        },
+        {
+          "election_key": "comunali_1989",
+          "year": 1989,
+          "election_date_iso": "1989-10-15",
+          "election_date_label": "15/10/1989",
+          "filename": "comunali-19891015.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19891015.zip",
+          "relative_path": "comunali/comunali-19891015.zip"
+        },
+        {
+          "election_key": "comunali_1989",
+          "year": 1989,
+          "election_date_iso": "1989-10-22",
+          "election_date_label": "22/10/1989",
+          "filename": "comunali-19891022.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19891022.zip",
+          "relative_path": "comunali/comunali-19891022.zip"
+        },
+        {
+          "election_key": "comunali_1989",
+          "year": 1989,
+          "election_date_iso": "1989-10-29",
+          "election_date_label": "29/10/1989",
+          "filename": "comunali-19891029.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19891029.zip",
+          "relative_path": "comunali/comunali-19891029.zip"
+        },
+        {
+          "election_key": "comunali_1989",
+          "year": 1989,
+          "election_date_iso": "1989-11-05",
+          "election_date_label": "05/11/1989",
+          "filename": "comunali-19891105.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19891105.zip",
+          "relative_path": "comunali/comunali-19891105.zip"
+        },
+        {
+          "election_key": "comunali_1989",
+          "year": 1989,
+          "election_date_iso": "1989-11-12",
+          "election_date_label": "12/11/1989",
+          "filename": "comunali-19891112.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19891112.zip",
+          "relative_path": "comunali/comunali-19891112.zip"
+        },
+        {
+          "election_key": "comunali_1989",
+          "year": 1989,
+          "election_date_iso": "1989-11-26",
+          "election_date_label": "26/11/1989",
+          "filename": "comunali-19891126.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19891126.zip",
+          "relative_path": "comunali/comunali-19891126.zip"
+        },
+        {
+          "election_key": "comunali_1989",
+          "year": 1989,
+          "election_date_iso": "1989-12-03",
+          "election_date_label": "03/12/1989",
+          "filename": "comunali-19891203.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19891203.zip",
+          "relative_path": "comunali/comunali-19891203.zip"
+        },
+        {
+          "election_key": "comunali_1989",
+          "year": 1989,
+          "election_date_iso": "1989-12-10",
+          "election_date_label": "10/12/1989",
+          "filename": "comunali-19891210.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19891210.zip",
+          "relative_path": "comunali/comunali-19891210.zip"
+        },
+        {
+          "election_key": "comunali_1990",
+          "year": 1990,
+          "election_date_iso": "1990-05-06",
+          "election_date_label": "06/05/1990",
+          "filename": "comunali-19900506.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19900506.zip",
+          "relative_path": "comunali/comunali-19900506.zip"
+        },
+        {
+          "election_key": "comunali_1991",
+          "year": 1991,
+          "election_date_iso": "1991-01-13",
+          "election_date_label": "13/01/1991",
+          "filename": "comunali-19910113.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19910113.zip",
+          "relative_path": "comunali/comunali-19910113.zip"
+        },
+        {
+          "election_key": "comunali_1991",
+          "year": 1991,
+          "election_date_iso": "1991-01-20",
+          "election_date_label": "20/01/1991",
+          "filename": "comunali-19910120.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19910120.zip",
+          "relative_path": "comunali/comunali-19910120.zip"
+        },
+        {
+          "election_key": "comunali_1991",
+          "year": 1991,
+          "election_date_iso": "1991-02-24",
+          "election_date_label": "24/02/1991",
+          "filename": "comunali-19910224.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19910224.zip",
+          "relative_path": "comunali/comunali-19910224.zip"
+        },
+        {
+          "election_key": "comunali_1991",
+          "year": 1991,
+          "election_date_iso": "1991-03-10",
+          "election_date_label": "10/03/1991",
+          "filename": "comunali-19910310.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19910310.zip",
+          "relative_path": "comunali/comunali-19910310.zip"
+        },
+        {
+          "election_key": "comunali_1991",
+          "year": 1991,
+          "election_date_iso": "1991-03-17",
+          "election_date_label": "17/03/1991",
+          "filename": "comunali-19910317.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19910317.zip",
+          "relative_path": "comunali/comunali-19910317.zip"
+        },
+        {
+          "election_key": "comunali_1991",
+          "year": 1991,
+          "election_date_iso": "1991-03-24",
+          "election_date_label": "24/03/1991",
+          "filename": "comunali-19910324.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19910324.zip",
+          "relative_path": "comunali/comunali-19910324.zip"
+        },
+        {
+          "election_key": "comunali_1991",
+          "year": 1991,
+          "election_date_iso": "1991-03-31",
+          "election_date_label": "31/03/1991",
+          "filename": "comunali-19910331.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19910331.zip",
+          "relative_path": "comunali/comunali-19910331.zip"
+        },
+        {
+          "election_key": "comunali_1991",
+          "year": 1991,
+          "election_date_iso": "1991-04-07",
+          "election_date_label": "07/04/1991",
+          "filename": "comunali-19910407.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19910407.zip",
+          "relative_path": "comunali/comunali-19910407.zip"
+        },
+        {
+          "election_key": "comunali_1991",
+          "year": 1991,
+          "election_date_iso": "1991-04-21",
+          "election_date_label": "21/04/1991",
+          "filename": "comunali-19910421.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19910421.zip",
+          "relative_path": "comunali/comunali-19910421.zip"
+        },
+        {
+          "election_key": "comunali_1991",
+          "year": 1991,
+          "election_date_iso": "1991-05-12",
+          "election_date_label": "12/05/1991",
+          "filename": "comunali-19910512.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19910512.zip",
+          "relative_path": "comunali/comunali-19910512.zip"
+        },
+        {
+          "election_key": "comunali_1991",
+          "year": 1991,
+          "election_date_iso": "1991-05-19",
+          "election_date_label": "19/05/1991",
+          "filename": "comunali-19910519.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19910519.zip",
+          "relative_path": "comunali/comunali-19910519.zip"
+        },
+        {
+          "election_key": "comunali_1991",
+          "year": 1991,
+          "election_date_iso": "1991-06-02",
+          "election_date_label": "02/06/1991",
+          "filename": "comunali-19910602.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19910602.zip",
+          "relative_path": "comunali/comunali-19910602.zip"
+        },
+        {
+          "election_key": "comunali_1991",
+          "year": 1991,
+          "election_date_iso": "1991-06-09",
+          "election_date_label": "09/06/1991",
+          "filename": "comunali-19910609.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19910609.zip",
+          "relative_path": "comunali/comunali-19910609.zip"
+        },
+        {
+          "election_key": "comunali_1991",
+          "year": 1991,
+          "election_date_iso": "1991-06-16",
+          "election_date_label": "16/06/1991",
+          "filename": "comunali-19910616.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19910616.zip",
+          "relative_path": "comunali/comunali-19910616.zip"
+        },
+        {
+          "election_key": "comunali_1991",
+          "year": 1991,
+          "election_date_iso": "1991-06-23",
+          "election_date_label": "23/06/1991",
+          "filename": "comunali-19910623.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19910623.zip",
+          "relative_path": "comunali/comunali-19910623.zip"
+        },
+        {
+          "election_key": "comunali_1991",
+          "year": 1991,
+          "election_date_iso": "1991-06-30",
+          "election_date_label": "30/06/1991",
+          "filename": "comunali-19910630.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19910630.zip",
+          "relative_path": "comunali/comunali-19910630.zip"
+        },
+        {
+          "election_key": "comunali_1991",
+          "year": 1991,
+          "election_date_iso": "1991-07-07",
+          "election_date_label": "07/07/1991",
+          "filename": "comunali-19910707.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19910707.zip",
+          "relative_path": "comunali/comunali-19910707.zip"
+        },
+        {
+          "election_key": "comunali_1991",
+          "year": 1991,
+          "election_date_iso": "1991-07-14",
+          "election_date_label": "14/07/1991",
+          "filename": "comunali-19910714.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19910714.zip",
+          "relative_path": "comunali/comunali-19910714.zip"
+        },
+        {
+          "election_key": "comunali_1991",
+          "year": 1991,
+          "election_date_iso": "1991-07-28",
+          "election_date_label": "28/07/1991",
+          "filename": "comunali-19910728.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19910728.zip",
+          "relative_path": "comunali/comunali-19910728.zip"
+        },
+        {
+          "election_key": "comunali_1991",
+          "year": 1991,
+          "election_date_iso": "1991-09-22",
+          "election_date_label": "22/09/1991",
+          "filename": "comunali-19910922.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19910922.zip",
+          "relative_path": "comunali/comunali-19910922.zip"
+        },
+        {
+          "election_key": "comunali_1991",
+          "year": 1991,
+          "election_date_iso": "1991-09-29",
+          "election_date_label": "29/09/1991",
+          "filename": "comunali-19910929.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19910929.zip",
+          "relative_path": "comunali/comunali-19910929.zip"
+        },
+        {
+          "election_key": "comunali_1991",
+          "year": 1991,
+          "election_date_iso": "1991-11-24",
+          "election_date_label": "24/11/1991",
+          "filename": "comunali-19911124.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19911124.zip",
+          "relative_path": "comunali/comunali-19911124.zip"
+        },
+        {
+          "election_key": "comunali_1991",
+          "year": 1991,
+          "election_date_iso": "1991-12-12",
+          "election_date_label": "12/12/1991",
+          "filename": "comunali-19911212.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19911212.zip",
+          "relative_path": "comunali/comunali-19911212.zip"
+        },
+        {
+          "election_key": "comunali_1991",
+          "year": 1991,
+          "election_date_iso": "1991-12-15",
+          "election_date_label": "15/12/1991",
+          "filename": "comunali-19911215.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19911215.zip",
+          "relative_path": "comunali/comunali-19911215.zip"
+        },
+        {
+          "election_key": "comunali_1992",
+          "year": 1992,
+          "election_date_iso": "1992-06-07",
+          "election_date_label": "07/06/1992",
+          "filename": "comunali-19920607.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19920607.zip",
+          "relative_path": "comunali/comunali-19920607.zip"
+        },
+        {
+          "election_key": "comunali_1992",
+          "year": 1992,
+          "election_date_iso": "1992-06-27",
+          "election_date_label": "27/06/1992",
+          "filename": "comunali-19920627.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19920627.zip",
+          "relative_path": "comunali/comunali-19920627.zip"
+        },
+        {
+          "election_key": "comunali_1992",
+          "year": 1992,
+          "election_date_iso": "1992-07-05",
+          "election_date_label": "05/07/1992",
+          "filename": "comunali-19920705.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19920705.zip",
+          "relative_path": "comunali/comunali-19920705.zip"
+        },
+        {
+          "election_key": "comunali_1992",
+          "year": 1992,
+          "election_date_iso": "1992-09-26",
+          "election_date_label": "26/09/1992",
+          "filename": "comunali-19920926.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19920926.zip",
+          "relative_path": "comunali/comunali-19920926.zip"
+        },
+        {
+          "election_key": "comunali_1992",
+          "year": 1992,
+          "election_date_iso": "1992-09-27",
+          "election_date_label": "27/09/1992",
+          "filename": "comunali-19920927.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19920927.zip",
+          "relative_path": "comunali/comunali-19920927.zip"
+        },
+        {
+          "election_key": "comunali_1992",
+          "year": 1992,
+          "election_date_iso": "1992-12-13",
+          "election_date_label": "13/12/1992",
+          "filename": "comunali-19921213.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19921213.zip",
+          "relative_path": "comunali/comunali-19921213.zip"
+        },
+        {
+          "election_key": "comunali_1993",
+          "year": 1993,
+          "election_date_iso": "1993-06-06",
+          "election_date_label": "06/06/1993",
+          "filename": "comunali-19930606.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19930606.zip",
+          "relative_path": "comunali/comunali-19930606.zip"
+        },
+        {
+          "election_key": "comunali_1993",
+          "year": 1993,
+          "election_date_iso": "1993-11-21",
+          "election_date_label": "21/11/1993",
+          "filename": "comunali-19931121.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19931121.zip",
+          "relative_path": "comunali/comunali-19931121.zip"
+        },
+        {
+          "election_key": "comunali_1994",
+          "year": 1994,
+          "election_date_iso": "1994-06-12",
+          "election_date_label": "12/06/1994",
+          "filename": "comunali-19940612.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19940612.zip",
+          "relative_path": "comunali/comunali-19940612.zip"
+        },
+        {
+          "election_key": "comunali_1994",
+          "year": 1994,
+          "election_date_iso": "1994-11-20",
+          "election_date_label": "20/11/1994",
+          "filename": "comunali-19941120.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19941120.zip",
+          "relative_path": "comunali/comunali-19941120.zip"
+        },
+        {
+          "election_key": "comunali_1995",
+          "year": 1995,
+          "election_date_iso": "1995-04-23",
+          "election_date_label": "23/04/1995",
+          "filename": "comunali-19950423.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19950423.zip",
+          "relative_path": "comunali/comunali-19950423.zip"
+        },
+        {
+          "election_key": "comunali_1995",
+          "year": 1995,
+          "election_date_iso": "1995-05-28",
+          "election_date_label": "28/05/1995",
+          "filename": "comunali-19950528.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19950528.zip",
+          "relative_path": "comunali/comunali-19950528.zip"
+        },
+        {
+          "election_key": "comunali_1995",
+          "year": 1995,
+          "election_date_iso": "1995-11-19",
+          "election_date_label": "19/11/1995",
+          "filename": "comunali-19951119.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19951119.zip",
+          "relative_path": "comunali/comunali-19951119.zip"
+        },
+        {
+          "election_key": "comunali_1996",
+          "year": 1996,
+          "election_date_iso": "1996-06-02",
+          "election_date_label": "02/06/1996",
+          "filename": "comunali-19960602.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19960602.zip",
+          "relative_path": "comunali/comunali-19960602.zip"
+        },
+        {
+          "election_key": "comunali_1996",
+          "year": 1996,
+          "election_date_iso": "1996-06-09",
+          "election_date_label": "09/06/1996",
+          "filename": "comunali-19960609.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19960609.zip",
+          "relative_path": "comunali/comunali-19960609.zip"
+        },
+        {
+          "election_key": "comunali_1996",
+          "year": 1996,
+          "election_date_iso": "1996-11-17",
+          "election_date_label": "17/11/1996",
+          "filename": "comunali-19961117.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19961117.zip",
+          "relative_path": "comunali/comunali-19961117.zip"
+        },
+        {
+          "election_key": "comunali_1996",
+          "year": 1996,
+          "election_date_iso": "1996-12-01",
+          "election_date_label": "01/12/1996",
+          "filename": "comunali-19961201.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19961201.zip",
+          "relative_path": "comunali/comunali-19961201.zip"
+        },
+        {
+          "election_key": "comunali_1997",
+          "year": 1997,
+          "election_date_iso": "1997-04-27",
+          "election_date_label": "27/04/1997",
+          "filename": "comunali-19970427.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19970427.zip",
+          "relative_path": "comunali/comunali-19970427.zip"
+        },
+        {
+          "election_key": "comunali_1997",
+          "year": 1997,
+          "election_date_iso": "1997-11-16",
+          "election_date_label": "16/11/1997",
+          "filename": "comunali-19971116.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19971116.zip",
+          "relative_path": "comunali/comunali-19971116.zip"
+        },
+        {
+          "election_key": "comunali_1997",
+          "year": 1997,
+          "election_date_iso": "1997-11-30",
+          "election_date_label": "30/11/1997",
+          "filename": "comunali-19971130.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19971130.zip",
+          "relative_path": "comunali/comunali-19971130.zip"
+        },
+        {
+          "election_key": "comunali_1998",
+          "year": 1998,
+          "election_date_iso": "1998-05-24",
+          "election_date_label": "24/05/1998",
+          "filename": "comunali-19980524.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19980524.zip",
+          "relative_path": "comunali/comunali-19980524.zip"
+        },
+        {
+          "election_key": "comunali_1998",
+          "year": 1998,
+          "election_date_iso": "1998-11-29",
+          "election_date_label": "29/11/1998",
+          "filename": "comunali-19981129.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19981129.zip",
+          "relative_path": "comunali/comunali-19981129.zip"
+        },
+        {
+          "election_key": "comunali_1999",
+          "year": 1999,
+          "election_date_iso": "1999-06-13",
+          "election_date_label": "13/06/1999",
+          "filename": "comunali-19990613.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-19990613.zip",
+          "relative_path": "comunali/comunali-19990613.zip"
+        },
+        {
+          "election_key": "comunali_2000",
+          "year": 2000,
+          "election_date_iso": "2000-04-16",
+          "election_date_label": "16/04/2000",
+          "filename": "comunali-20000416.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20000416.zip",
+          "relative_path": "comunali/comunali-20000416.zip"
+        },
+        {
+          "election_key": "comunali_2000",
+          "year": 2000,
+          "election_date_iso": "2000-04-30",
+          "election_date_label": "30/04/2000",
+          "filename": "comunali-20000430.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20000430.zip",
+          "relative_path": "comunali/comunali-20000430.zip"
+        },
+        {
+          "election_key": "comunali_2000",
+          "year": 2000,
+          "election_date_iso": "2000-06-04",
+          "election_date_label": "04/06/2000",
+          "filename": "comunali-20000604.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20000604.zip",
+          "relative_path": "comunali/comunali-20000604.zip"
+        },
+        {
+          "election_key": "comunali_2000",
+          "year": 2000,
+          "election_date_iso": "2000-11-12",
+          "election_date_label": "12/11/2000",
+          "filename": "comunali-20001112.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20001112.zip",
+          "relative_path": "comunali/comunali-20001112.zip"
+        },
+        {
+          "election_key": "comunali_2001",
+          "year": 2001,
+          "election_date_iso": "2001-05-13",
+          "election_date_label": "13/05/2001",
+          "filename": "comunali-20010513.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20010513.zip",
+          "relative_path": "comunali/comunali-20010513.zip"
+        },
+        {
+          "election_key": "comunali_2002",
+          "year": 2002,
+          "election_date_iso": "2002-05-26",
+          "election_date_label": "26/05/2002",
+          "filename": "comunali-20020526.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20020526.zip",
+          "relative_path": "comunali/comunali-20020526.zip"
+        },
+        {
+          "election_key": "comunali_2003",
+          "year": 2003,
+          "election_date_iso": "2003-05-25",
+          "election_date_label": "25/05/2003",
+          "filename": "comunali-20030525.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20030525.zip",
+          "relative_path": "comunali/comunali-20030525.zip"
+        },
+        {
+          "election_key": "comunali_2003",
+          "year": 2003,
+          "election_date_iso": "2003-06-08",
+          "election_date_label": "08/06/2003",
+          "filename": "comunali-20030608.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20030608.zip",
+          "relative_path": "comunali/comunali-20030608.zip"
+        },
+        {
+          "election_key": "comunali_2003",
+          "year": 2003,
+          "election_date_iso": "2003-06-22",
+          "election_date_label": "22/06/2003",
+          "filename": "comunali-20030622.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20030622.zip",
+          "relative_path": "comunali/comunali-20030622.zip"
+        },
+        {
+          "election_key": "comunali_2004",
+          "year": 2004,
+          "election_date_iso": "2004-06-12",
+          "election_date_label": "12/06/2004",
+          "filename": "comunali-20040612.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20040612.zip",
+          "relative_path": "comunali/comunali-20040612.zip"
+        },
+        {
+          "election_key": "comunali_2004",
+          "year": 2004,
+          "election_date_iso": "2004-06-26",
+          "election_date_label": "26/06/2004",
+          "filename": "comunali-20040626.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20040626.zip",
+          "relative_path": "comunali/comunali-20040626.zip"
+        },
+        {
+          "election_key": "comunali_2005",
+          "year": 2005,
+          "election_date_iso": "2005-04-03",
+          "election_date_label": "03/04/2005",
+          "filename": "comunali-20050403.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20050403.zip",
+          "relative_path": "comunali/comunali-20050403.zip"
+        },
+        {
+          "election_key": "comunali_2005",
+          "year": 2005,
+          "election_date_iso": "2005-04-17",
+          "election_date_label": "17/04/2005",
+          "filename": "comunali-20050417.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20050417.zip",
+          "relative_path": "comunali/comunali-20050417.zip"
+        },
+        {
+          "election_key": "comunali_2005",
+          "year": 2005,
+          "election_date_iso": "2005-05-08",
+          "election_date_label": "08/05/2005",
+          "filename": "comunali-20050508.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20050508.zip",
+          "relative_path": "comunali/comunali-20050508.zip"
+        },
+        {
+          "election_key": "comunali_2005",
+          "year": 2005,
+          "election_date_iso": "2005-11-27",
+          "election_date_label": "27/11/2005",
+          "filename": "comunali-20051127.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20051127.zip",
+          "relative_path": "comunali/comunali-20051127.zip"
+        },
+        {
+          "election_key": "comunali_2006",
+          "year": 2006,
+          "election_date_iso": "2006-05-28",
+          "election_date_label": "28/05/2006",
+          "filename": "comunali-20060528.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20060528.zip",
+          "relative_path": "comunali/comunali-20060528.zip"
+        },
+        {
+          "election_key": "comunali_2006",
+          "year": 2006,
+          "election_date_iso": "2006-06-04",
+          "election_date_label": "04/06/2006",
+          "filename": "comunali-20060604.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20060604.zip",
+          "relative_path": "comunali/comunali-20060604.zip"
+        },
+        {
+          "election_key": "comunali_2006",
+          "year": 2006,
+          "election_date_iso": "2006-06-11",
+          "election_date_label": "11/06/2006",
+          "filename": "comunali-20060611.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20060611.zip",
+          "relative_path": "comunali/comunali-20060611.zip"
+        },
+        {
+          "election_key": "comunali_2006",
+          "year": 2006,
+          "election_date_iso": "2006-06-18",
+          "election_date_label": "18/06/2006",
+          "filename": "comunali-20060618.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20060618.zip",
+          "relative_path": "comunali/comunali-20060618.zip"
+        },
+        {
+          "election_key": "comunali_2006",
+          "year": 2006,
+          "election_date_iso": "2006-07-09",
+          "election_date_label": "09/07/2006",
+          "filename": "comunali-20060709.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20060709.zip",
+          "relative_path": "comunali/comunali-20060709.zip"
+        },
+        {
+          "election_key": "comunali_2006",
+          "year": 2006,
+          "election_date_iso": "2006-07-16",
+          "election_date_label": "16/07/2006",
+          "filename": "comunali-20060716.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20060716.zip",
+          "relative_path": "comunali/comunali-20060716.zip"
+        },
+        {
+          "election_key": "comunali_2006",
+          "year": 2006,
+          "election_date_iso": "2006-10-01",
+          "election_date_label": "01/10/2006",
+          "filename": "comunali-20061001.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20061001.zip",
+          "relative_path": "comunali/comunali-20061001.zip"
+        },
+        {
+          "election_key": "comunali_2007",
+          "year": 2007,
+          "election_date_iso": "2007-05-27",
+          "election_date_label": "27/05/2007",
+          "filename": "comunali-20070527.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20070527.zip",
+          "relative_path": "comunali/comunali-20070527.zip"
+        },
+        {
+          "election_key": "comunali_2007",
+          "year": 2007,
+          "election_date_iso": "2007-06-10",
+          "election_date_label": "10/06/2007",
+          "filename": "comunali-20070610.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20070610.zip",
+          "relative_path": "comunali/comunali-20070610.zip"
+        },
+        {
+          "election_key": "comunali_2007",
+          "year": 2007,
+          "election_date_iso": "2007-06-17",
+          "election_date_label": "17/06/2007",
+          "filename": "comunali-20070617.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20070617.zip",
+          "relative_path": "comunali/comunali-20070617.zip"
+        },
+        {
+          "election_key": "comunali_2007",
+          "year": 2007,
+          "election_date_iso": "2007-07-15",
+          "election_date_label": "15/07/2007",
+          "filename": "comunali-20070715.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20070715.zip",
+          "relative_path": "comunali/comunali-20070715.zip"
+        },
+        {
+          "election_key": "comunali_2008",
+          "year": 2008,
+          "election_date_iso": "2008-04-13",
+          "election_date_label": "13/04/2008",
+          "filename": "comunali-20080413.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20080413.zip",
+          "relative_path": "comunali/comunali-20080413.zip"
+        },
+        {
+          "election_key": "comunali_2008",
+          "year": 2008,
+          "election_date_iso": "2008-04-27",
+          "election_date_label": "27/04/2008",
+          "filename": "comunali-20080427.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20080427.zip",
+          "relative_path": "comunali/comunali-20080427.zip"
+        },
+        {
+          "election_key": "comunali_2008",
+          "year": 2008,
+          "election_date_iso": "2008-06-08",
+          "election_date_label": "08/06/2008",
+          "filename": "comunali-20080608.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20080608.zip",
+          "relative_path": "comunali/comunali-20080608.zip"
+        },
+        {
+          "election_key": "comunali_2008",
+          "year": 2008,
+          "election_date_iso": "2008-06-15",
+          "election_date_label": "15/06/2008",
+          "filename": "comunali-20080615.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20080615.zip",
+          "relative_path": "comunali/comunali-20080615.zip"
+        },
+        {
+          "election_key": "comunali_2009",
+          "year": 2009,
+          "election_date_iso": "2009-06-07",
+          "election_date_label": "07/06/2009",
+          "filename": "comunali-20090607.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20090607.zip",
+          "relative_path": "comunali/comunali-20090607.zip"
+        },
+        {
+          "election_key": "comunali_2009",
+          "year": 2009,
+          "election_date_iso": "2009-11-29",
+          "election_date_label": "29/11/2009",
+          "filename": "comunali-20091129.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20091129.zip",
+          "relative_path": "comunali/comunali-20091129.zip"
+        },
+        {
+          "election_key": "comunali_2010",
+          "year": 2010,
+          "election_date_iso": "2010-03-28",
+          "election_date_label": "28/03/2010",
+          "filename": "comunali-20100328.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20100328.zip",
+          "relative_path": "comunali/comunali-20100328.zip"
+        },
+        {
+          "election_key": "comunali_2010",
+          "year": 2010,
+          "election_date_iso": "2010-04-11",
+          "election_date_label": "11/04/2010",
+          "filename": "comunali-20100411.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20100411.zip",
+          "relative_path": "comunali/comunali-20100411.zip"
+        },
+        {
+          "election_key": "comunali_2010",
+          "year": 2010,
+          "election_date_iso": "2010-04-18",
+          "election_date_label": "18/04/2010",
+          "filename": "comunali-20100418.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20100418.zip",
+          "relative_path": "comunali/comunali-20100418.zip"
+        },
+        {
+          "election_key": "comunali_2010",
+          "year": 2010,
+          "election_date_iso": "2010-05-30",
+          "election_date_label": "30/05/2010",
+          "filename": "comunali-20100530.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20100530.zip",
+          "relative_path": "comunali/comunali-20100530.zip"
+        },
+        {
+          "election_key": "comunali_2010",
+          "year": 2010,
+          "election_date_iso": "2010-11-28",
+          "election_date_label": "28/11/2010",
+          "filename": "comunali-20101128.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20101128.zip",
+          "relative_path": "comunali/comunali-20101128.zip"
+        },
+        {
+          "election_key": "comunali_2011",
+          "year": 2011,
+          "election_date_iso": "2011-05-15",
+          "election_date_label": "15/05/2011",
+          "filename": "comunali-20110515.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20110515.zip",
+          "relative_path": "comunali/comunali-20110515.zip"
+        },
+        {
+          "election_key": "comunali_2011",
+          "year": 2011,
+          "election_date_iso": "2011-05-22",
+          "election_date_label": "22/05/2011",
+          "filename": "comunali-20110522.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20110522.zip",
+          "relative_path": "comunali/comunali-20110522.zip"
+        },
+        {
+          "election_key": "comunali_2011",
+          "year": 2011,
+          "election_date_iso": "2011-11-27",
+          "election_date_label": "27/11/2011",
+          "filename": "comunali-20111127.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20111127.zip",
+          "relative_path": "comunali/comunali-20111127.zip"
+        },
+        {
+          "election_key": "comunali_2012",
+          "year": 2012,
+          "election_date_iso": "2012-05-06",
+          "election_date_label": "06/05/2012",
+          "filename": "comunali-20120506.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20120506.zip",
+          "relative_path": "comunali/comunali-20120506.zip"
+        },
+        {
+          "election_key": "comunali_2012",
+          "year": 2012,
+          "election_date_iso": "2012-06-10",
+          "election_date_label": "10/06/2012",
+          "filename": "comunali-20120610.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20120610.zip",
+          "relative_path": "comunali/comunali-20120610.zip"
+        },
+        {
+          "election_key": "comunali_2012",
+          "year": 2012,
+          "election_date_iso": "2012-06-17",
+          "election_date_label": "17/06/2012",
+          "filename": "comunali-20120617.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20120617.zip",
+          "relative_path": "comunali/comunali-20120617.zip"
+        },
+        {
+          "election_key": "comunali_2012",
+          "year": 2012,
+          "election_date_iso": "2012-06-24",
+          "election_date_label": "24/06/2012",
+          "filename": "comunali-20120624.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20120624.zip",
+          "relative_path": "comunali/comunali-20120624.zip"
+        },
+        {
+          "election_key": "comunali_2012",
+          "year": 2012,
+          "election_date_iso": "2012-10-28",
+          "election_date_label": "28/10/2012",
+          "filename": "comunali-20121028.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20121028.zip",
+          "relative_path": "comunali/comunali-20121028.zip"
+        },
+        {
+          "election_key": "comunali_2013",
+          "year": 2013,
+          "election_date_iso": "2013-05-26",
+          "election_date_label": "26/05/2013",
+          "filename": "comunali-20130526.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20130526.zip",
+          "relative_path": "comunali/comunali-20130526.zip"
+        },
+        {
+          "election_key": "comunali_2013",
+          "year": 2013,
+          "election_date_iso": "2013-11-17",
+          "election_date_label": "17/11/2013",
+          "filename": "comunali-20131117.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20131117.zip",
+          "relative_path": "comunali/comunali-20131117.zip"
+        },
+        {
+          "election_key": "comunali_2014",
+          "year": 2014,
+          "election_date_iso": "2014-05-25",
+          "election_date_label": "25/05/2014",
+          "filename": "comunali-20140525.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20140525.zip",
+          "relative_path": "comunali/comunali-20140525.zip"
+        },
+        {
+          "election_key": "comunali_2014",
+          "year": 2014,
+          "election_date_iso": "2014-10-26",
+          "election_date_label": "26/10/2014",
+          "filename": "comunali-20141026.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20141026.zip",
+          "relative_path": "comunali/comunali-20141026.zip"
+        },
+        {
+          "election_key": "comunali_2015",
+          "year": 2015,
+          "election_date_iso": "2015-05-31",
+          "election_date_label": "31/05/2015",
+          "filename": "comunali-20150531.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20150531.zip",
+          "relative_path": "comunali/comunali-20150531.zip"
+        },
+        {
+          "election_key": "comunali_2015",
+          "year": 2015,
+          "election_date_iso": "2015-11-15",
+          "election_date_label": "15/11/2015",
+          "filename": "comunali-20151115.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20151115.zip",
+          "relative_path": "comunali/comunali-20151115.zip"
+        },
+        {
+          "election_key": "comunali_2016",
+          "year": 2016,
+          "election_date_iso": "2016-06-05",
+          "election_date_label": "05/06/2016",
+          "filename": "comunali-20160605.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20160605.zip",
+          "relative_path": "comunali/comunali-20160605.zip"
+        },
+        {
+          "election_key": "comunali_2016",
+          "year": 2016,
+          "election_date_iso": "2016-11-13",
+          "election_date_label": "13/11/2016",
+          "filename": "comunali-20161113.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20161113.zip",
+          "relative_path": "comunali/comunali-20161113.zip"
+        },
+        {
+          "election_key": "comunali_2017",
+          "year": 2017,
+          "election_date_iso": "2017-06-11",
+          "election_date_label": "11/06/2017",
+          "filename": "comunali-20170611.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20170611.zip",
+          "relative_path": "comunali/comunali-20170611.zip"
+        },
+        {
+          "election_key": "comunali_2017",
+          "year": 2017,
+          "election_date_iso": "2017-11-05",
+          "election_date_label": "05/11/2017",
+          "filename": "comunali-20171105.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20171105.zip",
+          "relative_path": "comunali/comunali-20171105.zip"
+        },
+        {
+          "election_key": "comunali_2018",
+          "year": 2018,
+          "election_date_iso": "2018-06-10",
+          "election_date_label": "10/06/2018",
+          "filename": "comunali-20180610.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20180610.zip",
+          "relative_path": "comunali/comunali-20180610.zip"
+        },
+        {
+          "election_key": "comunali_2018",
+          "year": 2018,
+          "election_date_iso": "2018-07-29",
+          "election_date_label": "29/07/2018",
+          "filename": "comunali-20180729.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20180729.zip",
+          "relative_path": "comunali/comunali-20180729.zip"
+        },
+        {
+          "election_key": "comunali_2018",
+          "year": 2018,
+          "election_date_iso": "2018-10-21",
+          "election_date_label": "21/10/2018",
+          "filename": "comunali-20181021.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20181021.zip",
+          "relative_path": "comunali/comunali-20181021.zip"
+        },
+        {
+          "election_key": "comunali_2019",
+          "year": 2019,
+          "election_date_iso": "2019-05-26",
+          "election_date_label": "26/05/2019",
+          "filename": "comunali-20190526.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20190526.zip",
+          "relative_path": "comunali/comunali-20190526.zip"
+        },
+        {
+          "election_key": "comunali_2019",
+          "year": 2019,
+          "election_date_iso": "2019-06-16",
+          "election_date_label": "16/06/2019",
+          "filename": "comunali-20190616.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20190616.zip",
+          "relative_path": "comunali/comunali-20190616.zip"
+        },
+        {
+          "election_key": "comunali_2019",
+          "year": 2019,
+          "election_date_iso": "2019-06-23",
+          "election_date_label": "23/06/2019",
+          "filename": "comunali-20190623.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20190623.zip",
+          "relative_path": "comunali/comunali-20190623.zip"
+        },
+        {
+          "election_key": "comunali_2019",
+          "year": 2019,
+          "election_date_iso": "2019-07-07",
+          "election_date_label": "07/07/2019",
+          "filename": "comunali-20190707.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20190707.zip",
+          "relative_path": "comunali/comunali-20190707.zip"
+        },
+        {
+          "election_key": "comunali_2019",
+          "year": 2019,
+          "election_date_iso": "2019-07-14",
+          "election_date_label": "14/07/2019",
+          "filename": "comunali-20190714.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20190714.zip",
+          "relative_path": "comunali/comunali-20190714.zip"
+        },
+        {
+          "election_key": "comunali_2019",
+          "year": 2019,
+          "election_date_iso": "2019-11-10",
+          "election_date_label": "10/11/2019",
+          "filename": "comunali-20191110.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20191110.zip",
+          "relative_path": "comunali/comunali-20191110.zip"
+        },
+        {
+          "election_key": "comunali_2020",
+          "year": 2020,
+          "election_date_iso": "2020-09-20",
+          "election_date_label": "20/09/2020",
+          "filename": "comunali-20200920.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20200920.zip",
+          "relative_path": "comunali/comunali-20200920.zip"
+        },
+        {
+          "election_key": "comunali_2020",
+          "year": 2020,
+          "election_date_iso": "2020-10-25",
+          "election_date_label": "25/10/2020",
+          "filename": "comunali-20201025.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20201025.zip",
+          "relative_path": "comunali/comunali-20201025.zip"
+        },
+        {
+          "election_key": "comunali_2021",
+          "year": 2021,
+          "election_date_iso": "2021-10-03",
+          "election_date_label": "03/10/2021",
+          "filename": "comunali-20211003.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20211003.zip",
+          "relative_path": "comunali/comunali-20211003.zip"
+        },
+        {
+          "election_key": "comunali_2021",
+          "year": 2021,
+          "election_date_iso": "2021-10-10",
+          "election_date_label": "10/10/2021",
+          "filename": "comunali-20211010.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20211010.zip",
+          "relative_path": "comunali/comunali-20211010.zip"
+        },
+        {
+          "election_key": "comunali_2021",
+          "year": 2021,
+          "election_date_iso": "2021-11-07",
+          "election_date_label": "07/11/2021",
+          "filename": "comunali-20211107.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20211107.zip",
+          "relative_path": "comunali/comunali-20211107.zip"
+        },
+        {
+          "election_key": "comunali_2022",
+          "year": 2022,
+          "election_date_iso": "2022-06-12",
+          "election_date_label": "12/06/2022",
+          "filename": "comunali-20220612.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20220612.zip",
+          "relative_path": "comunali/comunali-20220612.zip"
+        },
+        {
+          "election_key": "comunali_2022",
+          "year": 2022,
+          "election_date_iso": "2022-11-27",
+          "election_date_label": "27/11/2022",
+          "filename": "comunali-20221127.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20221127.zip",
+          "relative_path": "comunali/comunali-20221127.zip"
+        },
+        {
+          "election_key": "comunali_2023",
+          "year": 2023,
+          "election_date_iso": "2023-05-14",
+          "election_date_label": "14/05/2023",
+          "filename": "comunali-20230514.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20230514.zip",
+          "relative_path": "comunali/comunali-20230514.zip"
+        },
+        {
+          "election_key": "comunali_2023",
+          "year": 2023,
+          "election_date_iso": "2023-05-28",
+          "election_date_label": "28/05/2023",
+          "filename": "comunali-20230528.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20230528.zip",
+          "relative_path": "comunali/comunali-20230528.zip"
+        },
+        {
+          "election_key": "comunali_2023",
+          "year": 2023,
+          "election_date_iso": "2023-10-22",
+          "election_date_label": "22/10/2023",
+          "filename": "comunali-20231022.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20231022.zip",
+          "relative_path": "comunali/comunali-20231022.zip"
+        },
+        {
+          "election_key": "comunali_2024",
+          "year": 2024,
+          "election_date_iso": "2024-06-09",
+          "election_date_label": "09/06/2024",
+          "filename": "comunali-20240609.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20240609.zip",
+          "relative_path": "comunali/comunali-20240609.zip"
+        },
+        {
+          "election_key": "comunali_2024",
+          "year": 2024,
+          "election_date_iso": "2024-07-28",
+          "election_date_label": "28/07/2024",
+          "filename": "comunali-20240728.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20240728.zip",
+          "relative_path": "comunali/comunali-20240728.zip"
+        },
+        {
+          "election_key": "comunali_2024",
+          "year": 2024,
+          "election_date_iso": "2024-11-17",
+          "election_date_label": "17/11/2024",
+          "filename": "comunali-20241117.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20241117.zip",
+          "relative_path": "comunali/comunali-20241117.zip"
+        },
+        {
+          "election_key": "comunali_2025",
+          "year": 2025,
+          "election_date_iso": "2025-05-25",
+          "election_date_label": "25/05/2025",
+          "filename": "comunali-20250525.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20250525.zip",
+          "relative_path": "comunali/comunali-20250525.zip"
+        },
+        {
+          "election_key": "comunali_2025",
+          "year": 2025,
+          "election_date_iso": "2025-06-08",
+          "election_date_label": "08/06/2025",
+          "filename": "comunali-20250608.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20250608.zip",
+          "relative_path": "comunali/comunali-20250608.zip"
+        },
+        {
+          "election_key": "comunali_2025",
+          "year": 2025,
+          "election_date_iso": "2025-11-23",
+          "election_date_label": "23/11/2025",
+          "filename": "comunali-20251123.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/comunali/comunali-20251123.zip",
+          "relative_path": "comunali/comunali-20251123.zip"
+        }
+      ]
+    },
+    {
+      "family": "europee",
+      "scope": "italy",
+      "granularity": "municipality",
+      "ingestion_status": "candidate",
+      "priority": "high",
+      "notes": "Five constituencies (Nord-Ovest, Nord-Est, Centro, Sud, Isole) rather than provinces; per-comune rows are still published. The party label space is the smallest of the families because EU parliament parties consolidate national lists.",
+      "first_year_documented": 1979,
+      "last_year_documented": 2024,
+      "year_count": 10,
+      "archive_count": 10,
+      "items": [
+        {
+          "election_key": "europee_1979",
+          "year": 1979,
+          "election_date_iso": "1979-06-10",
+          "election_date_label": "10/06/1979",
+          "filename": "europee-19790610.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/europee/europee-19790610.zip",
+          "relative_path": "europee/europee-19790610.zip"
+        },
+        {
+          "election_key": "europee_1984",
+          "year": 1984,
+          "election_date_iso": "1984-06-17",
+          "election_date_label": "17/06/1984",
+          "filename": "europee-19840617.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/europee/europee-19840617.zip",
+          "relative_path": "europee/europee-19840617.zip"
+        },
+        {
+          "election_key": "europee_1989",
+          "year": 1989,
+          "election_date_iso": "1989-06-18",
+          "election_date_label": "18/06/1989",
+          "filename": "europee-19890618.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/europee/europee-19890618.zip",
+          "relative_path": "europee/europee-19890618.zip"
+        },
+        {
+          "election_key": "europee_1994",
+          "year": 1994,
+          "election_date_iso": "1994-06-12",
+          "election_date_label": "12/06/1994",
+          "filename": "europee-19940612.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/europee/europee-19940612.zip",
+          "relative_path": "europee/europee-19940612.zip"
+        },
+        {
+          "election_key": "europee_1999",
+          "year": 1999,
+          "election_date_iso": "1999-06-13",
+          "election_date_label": "13/06/1999",
+          "filename": "europee-19990613.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/europee/europee-19990613.zip",
+          "relative_path": "europee/europee-19990613.zip"
+        },
+        {
+          "election_key": "europee_2004",
+          "year": 2004,
+          "election_date_iso": "2004-06-12",
+          "election_date_label": "12/06/2004",
+          "filename": "europee-20040612.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/europee/europee-20040612.zip",
+          "relative_path": "europee/europee-20040612.zip"
+        },
+        {
+          "election_key": "europee_2009",
+          "year": 2009,
+          "election_date_iso": "2009-06-07",
+          "election_date_label": "07/06/2009",
+          "filename": "europee-20090607.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/europee/europee-20090607.zip",
+          "relative_path": "europee/europee-20090607.zip"
+        },
+        {
+          "election_key": "europee_2014",
+          "year": 2014,
+          "election_date_iso": "2014-05-25",
+          "election_date_label": "25/05/2014",
+          "filename": "europee-20140525.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/europee/europee-20140525.zip",
+          "relative_path": "europee/europee-20140525.zip"
+        },
+        {
+          "election_key": "europee_2019",
+          "year": 2019,
+          "election_date_iso": "2019-05-26",
+          "election_date_label": "26/05/2019",
+          "filename": "europee-20190526.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/europee/europee-20190526.zip",
+          "relative_path": "europee/europee-20190526.zip"
+        },
+        {
+          "election_key": "europee_2024",
+          "year": 2024,
+          "election_date_iso": "2024-06-09",
+          "election_date_label": "09/06/2024",
+          "filename": "europee-20240609.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/europee/europee-20240609.zip",
+          "relative_path": "europee/europee-20240609.zip"
+        }
+      ]
+    },
+    {
+      "family": "provinciali",
+      "scope": "provincial",
+      "granularity": "municipality",
+      "ingestion_status": "candidate",
+      "priority": "low",
+      "notes": "Provinces have not been directly elected since the 2014 Delrio reform (Law 56/2014). Only the 2004–2014 cycles are available, and even those are partial because not every province voted in the same year. Lower priority unless we want pre-2014 historical context.",
+      "first_year_documented": 2004,
+      "last_year_documented": 2011,
+      "year_count": 8,
+      "archive_count": 10,
+      "items": [
+        {
+          "election_key": "provinciali_2004",
+          "year": 2004,
+          "election_date_iso": "2004-06-12",
+          "election_date_label": "12/06/2004",
+          "filename": "provinciali-20040612.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/provinciali/provinciali-20040612.zip",
+          "relative_path": "provinciali/provinciali-20040612.zip"
+        },
+        {
+          "election_key": "provinciali_2005",
+          "year": 2005,
+          "election_date_iso": "2005-04-03",
+          "election_date_label": "03/04/2005",
+          "filename": "provinciali-20050403.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/provinciali/provinciali-20050403.zip",
+          "relative_path": "provinciali/provinciali-20050403.zip"
+        },
+        {
+          "election_key": "provinciali_2005",
+          "year": 2005,
+          "election_date_iso": "2005-05-08",
+          "election_date_label": "08/05/2005",
+          "filename": "provinciali-20050508.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/provinciali/provinciali-20050508.zip",
+          "relative_path": "provinciali/provinciali-20050508.zip"
+        },
+        {
+          "election_key": "provinciali_2006",
+          "year": 2006,
+          "election_date_iso": "2006-05-28",
+          "election_date_label": "28/05/2006",
+          "filename": "provinciali-20060528.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/provinciali/provinciali-20060528.zip",
+          "relative_path": "provinciali/provinciali-20060528.zip"
+        },
+        {
+          "election_key": "provinciali_2007",
+          "year": 2007,
+          "election_date_iso": "2007-05-27",
+          "election_date_label": "27/05/2007",
+          "filename": "provinciali-20070527.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/provinciali/provinciali-20070527.zip",
+          "relative_path": "provinciali/provinciali-20070527.zip"
+        },
+        {
+          "election_key": "provinciali_2008",
+          "year": 2008,
+          "election_date_iso": "2008-04-13",
+          "election_date_label": "13/04/2008",
+          "filename": "provinciali-20080413.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/provinciali/provinciali-20080413.zip",
+          "relative_path": "provinciali/provinciali-20080413.zip"
+        },
+        {
+          "election_key": "provinciali_2009",
+          "year": 2009,
+          "election_date_iso": "2009-06-07",
+          "election_date_label": "07/06/2009",
+          "filename": "provinciali-20090607.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/provinciali/provinciali-20090607.zip",
+          "relative_path": "provinciali/provinciali-20090607.zip"
+        },
+        {
+          "election_key": "provinciali_2010",
+          "year": 2010,
+          "election_date_iso": "2010-03-28",
+          "election_date_label": "28/03/2010",
+          "filename": "provinciali-20100328.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/provinciali/provinciali-20100328.zip",
+          "relative_path": "provinciali/provinciali-20100328.zip"
+        },
+        {
+          "election_key": "provinciali_2010",
+          "year": 2010,
+          "election_date_iso": "2010-05-30",
+          "election_date_label": "30/05/2010",
+          "filename": "provinciali-20100530.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/provinciali/provinciali-20100530.zip",
+          "relative_path": "provinciali/provinciali-20100530.zip"
+        },
+        {
+          "election_key": "provinciali_2011",
+          "year": 2011,
+          "election_date_iso": "2011-05-15",
+          "election_date_label": "15/05/2011",
+          "filename": "provinciali-20110515.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/provinciali/provinciali-20110515.zip",
+          "relative_path": "provinciali/provinciali-20110515.zip"
+        }
+      ]
+    },
+    {
+      "family": "referendum",
+      "scope": "italy",
+      "granularity": "municipality",
+      "ingestion_status": "candidate",
+      "priority": "medium",
+      "notes": "Binary YES/NO outcomes (or N options for a few historical referendums). The schema is simpler than party-list elections and a thin parser is enough; it just doesn't reuse most of the party-master plumbing. Useful for territorial maps of constitutional / institutional questions (1946 Repubblica/Monarchia, 2016 riforma costituzionale, 2020 taglio parlamentari, etc.).",
+      "first_year_documented": 1946,
+      "last_year_documented": 2025,
+      "year_count": 24,
+      "archive_count": 25,
+      "items": [
+        {
+          "election_key": "referendum_1946",
+          "year": 1946,
+          "election_date_iso": "1946-06-02",
+          "election_date_label": "02/06/1946",
+          "filename": "referendum-19460602.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/referendum/referendum-19460602.zip",
+          "relative_path": "referendum/referendum-19460602.zip"
+        },
+        {
+          "election_key": "referendum_1974",
+          "year": 1974,
+          "election_date_iso": "1974-05-12",
+          "election_date_label": "12/05/1974",
+          "filename": "referendum-19740512.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/referendum/referendum-19740512.zip",
+          "relative_path": "referendum/referendum-19740512.zip"
+        },
+        {
+          "election_key": "referendum_1978",
+          "year": 1978,
+          "election_date_iso": "1978-06-11",
+          "election_date_label": "11/06/1978",
+          "filename": "referendum-19780611.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/referendum/referendum-19780611.zip",
+          "relative_path": "referendum/referendum-19780611.zip"
+        },
+        {
+          "election_key": "referendum_1981",
+          "year": 1981,
+          "election_date_iso": "1981-05-17",
+          "election_date_label": "17/05/1981",
+          "filename": "referendum-19810517.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/referendum/referendum-19810517.zip",
+          "relative_path": "referendum/referendum-19810517.zip"
+        },
+        {
+          "election_key": "referendum_1985",
+          "year": 1985,
+          "election_date_iso": "1985-06-09",
+          "election_date_label": "09/06/1985",
+          "filename": "referendum-19850609.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/referendum/referendum-19850609.zip",
+          "relative_path": "referendum/referendum-19850609.zip"
+        },
+        {
+          "election_key": "referendum_1987",
+          "year": 1987,
+          "election_date_iso": "1987-11-08",
+          "election_date_label": "08/11/1987",
+          "filename": "referendum-19871108.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/referendum/referendum-19871108.zip",
+          "relative_path": "referendum/referendum-19871108.zip"
+        },
+        {
+          "election_key": "referendum_1989",
+          "year": 1989,
+          "election_date_iso": "1989-06-18",
+          "election_date_label": "18/06/1989",
+          "filename": "referendum-19890618.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/referendum/referendum-19890618.zip",
+          "relative_path": "referendum/referendum-19890618.zip"
+        },
+        {
+          "election_key": "referendum_1990",
+          "year": 1990,
+          "election_date_iso": "1990-06-03",
+          "election_date_label": "03/06/1990",
+          "filename": "referendum-19900603.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/referendum/referendum-19900603.zip",
+          "relative_path": "referendum/referendum-19900603.zip"
+        },
+        {
+          "election_key": "referendum_1991",
+          "year": 1991,
+          "election_date_iso": "1991-06-09",
+          "election_date_label": "09/06/1991",
+          "filename": "referendum-19910609.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/referendum/referendum-19910609.zip",
+          "relative_path": "referendum/referendum-19910609.zip"
+        },
+        {
+          "election_key": "referendum_1993",
+          "year": 1993,
+          "election_date_iso": "1993-04-18",
+          "election_date_label": "18/04/1993",
+          "filename": "referendum-19930418.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/referendum/referendum-19930418.zip",
+          "relative_path": "referendum/referendum-19930418.zip"
+        },
+        {
+          "election_key": "referendum_1995",
+          "year": 1995,
+          "election_date_iso": "1995-06-11",
+          "election_date_label": "11/06/1995",
+          "filename": "referendum-19950611.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/referendum/referendum-19950611.zip",
+          "relative_path": "referendum/referendum-19950611.zip"
+        },
+        {
+          "election_key": "referendum_1997",
+          "year": 1997,
+          "election_date_iso": "1997-06-15",
+          "election_date_label": "15/06/1997",
+          "filename": "referendum-19970615.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/referendum/referendum-19970615.zip",
+          "relative_path": "referendum/referendum-19970615.zip"
+        },
+        {
+          "election_key": "referendum_1999",
+          "year": 1999,
+          "election_date_iso": "1999-04-18",
+          "election_date_label": "18/04/1999",
+          "filename": "referendum-19990418.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/referendum/referendum-19990418.zip",
+          "relative_path": "referendum/referendum-19990418.zip"
+        },
+        {
+          "election_key": "referendum_2000",
+          "year": 2000,
+          "election_date_iso": "2000-05-21",
+          "election_date_label": "21/05/2000",
+          "filename": "referendum-20000521.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/referendum/referendum-20000521.zip",
+          "relative_path": "referendum/referendum-20000521.zip"
+        },
+        {
+          "election_key": "referendum_2001",
+          "year": 2001,
+          "election_date_iso": "2001-10-07",
+          "election_date_label": "07/10/2001",
+          "filename": "referendum-20011007.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/referendum/referendum-20011007.zip",
+          "relative_path": "referendum/referendum-20011007.zip"
+        },
+        {
+          "election_key": "referendum_2003",
+          "year": 2003,
+          "election_date_iso": "2003-06-15",
+          "election_date_label": "15/06/2003",
+          "filename": "referendum-20030615.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/referendum/referendum-20030615.zip",
+          "relative_path": "referendum/referendum-20030615.zip"
+        },
+        {
+          "election_key": "referendum_2005",
+          "year": 2005,
+          "election_date_iso": "2005-06-12",
+          "election_date_label": "12/06/2005",
+          "filename": "referendum-20050612.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/referendum/referendum-20050612.zip",
+          "relative_path": "referendum/referendum-20050612.zip"
+        },
+        {
+          "election_key": "referendum_2006",
+          "year": 2006,
+          "election_date_iso": "2006-06-25",
+          "election_date_label": "25/06/2006",
+          "filename": "referendum-20060625.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/referendum/referendum-20060625.zip",
+          "relative_path": "referendum/referendum-20060625.zip"
+        },
+        {
+          "election_key": "referendum_2009",
+          "year": 2009,
+          "election_date_iso": "2009-06-21",
+          "election_date_label": "21/06/2009",
+          "filename": "referendum-20090621.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/referendum/referendum-20090621.zip",
+          "relative_path": "referendum/referendum-20090621.zip"
+        },
+        {
+          "election_key": "referendum_2011",
+          "year": 2011,
+          "election_date_iso": "2011-06-12",
+          "election_date_label": "12/06/2011",
+          "filename": "referendum-20110612.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/referendum/referendum-20110612.zip",
+          "relative_path": "referendum/referendum-20110612.zip"
+        },
+        {
+          "election_key": "referendum_2016",
+          "year": 2016,
+          "election_date_iso": "2016-04-17",
+          "election_date_label": "17/04/2016",
+          "filename": "referendum-20160417.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/referendum/referendum-20160417.zip",
+          "relative_path": "referendum/referendum-20160417.zip"
+        },
+        {
+          "election_key": "referendum_2016",
+          "year": 2016,
+          "election_date_iso": "2016-12-04",
+          "election_date_label": "04/12/2016",
+          "filename": "referendum-20161204.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/referendum/referendum-20161204.zip",
+          "relative_path": "referendum/referendum-20161204.zip"
+        },
+        {
+          "election_key": "referendum_2020",
+          "year": 2020,
+          "election_date_iso": "2020-09-20",
+          "election_date_label": "20/09/2020",
+          "filename": "referendum-20200920.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/referendum/referendum-20200920.zip",
+          "relative_path": "referendum/referendum-20200920.zip"
+        },
+        {
+          "election_key": "referendum_2022",
+          "year": 2022,
+          "election_date_iso": "2022-06-12",
+          "election_date_label": "12/06/2022",
+          "filename": "referendum-20220612.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/referendum/referendum-20220612.zip",
+          "relative_path": "referendum/referendum-20220612.zip"
+        },
+        {
+          "election_key": "referendum_2025",
+          "year": 2025,
+          "election_date_iso": "2025-06-08",
+          "election_date_label": "08/06/2025",
+          "filename": "referendum-20250608.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/referendum/referendum-20250608.zip",
+          "relative_path": "referendum/referendum-20250608.zip"
+        }
+      ]
+    },
+    {
+      "family": "regionali",
+      "scope": "regional",
+      "granularity": "municipality",
+      "ingestion_status": "candidate",
+      "priority": "medium",
+      "notes": "One archive per regional cycle, but cycles are NOT synchronized: different regions vote in different years, especially after 2000. Special-statute regions (Valle d'Aosta, Trentino-Alto Adige, Friuli, Sicilia, Sardegna) have their own laws and may not appear in the same archives. Aggregation strategy needs to live at the (region, election_date) level rather than (year).",
+      "first_year_documented": 1970,
+      "last_year_documented": 2025,
+      "year_count": 23,
+      "archive_count": 37,
+      "items": [
+        {
+          "election_key": "regionali_1970",
+          "year": 1970,
+          "election_date_iso": "1970-06-07",
+          "election_date_label": "07/06/1970",
+          "filename": "regionali-19700607.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/regionali/regionali-19700607.zip",
+          "relative_path": "regionali/regionali-19700607.zip"
+        },
+        {
+          "election_key": "regionali_1975",
+          "year": 1975,
+          "election_date_iso": "1975-06-15",
+          "election_date_label": "15/06/1975",
+          "filename": "regionali-19750615.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/regionali/regionali-19750615.zip",
+          "relative_path": "regionali/regionali-19750615.zip"
+        },
+        {
+          "election_key": "regionali_1980",
+          "year": 1980,
+          "election_date_iso": "1980-06-08",
+          "election_date_label": "08/06/1980",
+          "filename": "regionali-19800608.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/regionali/regionali-19800608.zip",
+          "relative_path": "regionali/regionali-19800608.zip"
+        },
+        {
+          "election_key": "regionali_1985",
+          "year": 1985,
+          "election_date_iso": "1985-05-12",
+          "election_date_label": "12/05/1985",
+          "filename": "regionali-19850512.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/regionali/regionali-19850512.zip",
+          "relative_path": "regionali/regionali-19850512.zip"
+        },
+        {
+          "election_key": "regionali_1990",
+          "year": 1990,
+          "election_date_iso": "1990-05-06",
+          "election_date_label": "06/05/1990",
+          "filename": "regionali-19900506.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/regionali/regionali-19900506.zip",
+          "relative_path": "regionali/regionali-19900506.zip"
+        },
+        {
+          "election_key": "regionali_1995",
+          "year": 1995,
+          "election_date_iso": "1995-04-23",
+          "election_date_label": "23/04/1995",
+          "filename": "regionali-19950423.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/regionali/regionali-19950423.zip",
+          "relative_path": "regionali/regionali-19950423.zip"
+        },
+        {
+          "election_key": "regionali_2000",
+          "year": 2000,
+          "election_date_iso": "2000-04-16",
+          "election_date_label": "16/04/2000",
+          "filename": "regionali-20000416.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/regionali/regionali-20000416.zip",
+          "relative_path": "regionali/regionali-20000416.zip"
+        },
+        {
+          "election_key": "regionali_2001",
+          "year": 2001,
+          "election_date_iso": "2001-06-24",
+          "election_date_label": "24/06/2001",
+          "filename": "regionali-20010624.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/regionali/regionali-20010624.zip",
+          "relative_path": "regionali/regionali-20010624.zip"
+        },
+        {
+          "election_key": "regionali_2001",
+          "year": 2001,
+          "election_date_iso": "2001-11-11",
+          "election_date_label": "11/11/2001",
+          "filename": "regionali-20011111.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/regionali/regionali-20011111.zip",
+          "relative_path": "regionali/regionali-20011111.zip"
+        },
+        {
+          "election_key": "regionali_2005",
+          "year": 2005,
+          "election_date_iso": "2005-04-03",
+          "election_date_label": "03/04/2005",
+          "filename": "regionali-20050403.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/regionali/regionali-20050403.zip",
+          "relative_path": "regionali/regionali-20050403.zip"
+        },
+        {
+          "election_key": "regionali_2005",
+          "year": 2005,
+          "election_date_iso": "2005-04-17",
+          "election_date_label": "17/04/2005",
+          "filename": "regionali-20050417.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/regionali/regionali-20050417.zip",
+          "relative_path": "regionali/regionali-20050417.zip"
+        },
+        {
+          "election_key": "regionali_2006",
+          "year": 2006,
+          "election_date_iso": "2006-11-05",
+          "election_date_label": "05/11/2006",
+          "filename": "regionali-20061105.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/regionali/regionali-20061105.zip",
+          "relative_path": "regionali/regionali-20061105.zip"
+        },
+        {
+          "election_key": "regionali_2008",
+          "year": 2008,
+          "election_date_iso": "2008-12-14",
+          "election_date_label": "14/12/2008",
+          "filename": "regionali-20081214.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/regionali/regionali-20081214.zip",
+          "relative_path": "regionali/regionali-20081214.zip"
+        },
+        {
+          "election_key": "regionali_2010",
+          "year": 2010,
+          "election_date_iso": "2010-03-28",
+          "election_date_label": "28/03/2010",
+          "filename": "regionali-20100328.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/regionali/regionali-20100328.zip",
+          "relative_path": "regionali/regionali-20100328.zip"
+        },
+        {
+          "election_key": "regionali_2011",
+          "year": 2011,
+          "election_date_iso": "2011-10-16",
+          "election_date_label": "16/10/2011",
+          "filename": "regionali-20111016.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/regionali/regionali-20111016.zip",
+          "relative_path": "regionali/regionali-20111016.zip"
+        },
+        {
+          "election_key": "regionali_2013",
+          "year": 2013,
+          "election_date_iso": "2013-02-24",
+          "election_date_label": "24/02/2013",
+          "filename": "regionali-20130224.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/regionali/regionali-20130224.zip",
+          "relative_path": "regionali/regionali-20130224.zip"
+        },
+        {
+          "election_key": "regionali_2013",
+          "year": 2013,
+          "election_date_iso": "2013-11-17",
+          "election_date_label": "17/11/2013",
+          "filename": "regionali-20131117.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/regionali/regionali-20131117.zip",
+          "relative_path": "regionali/regionali-20131117.zip"
+        },
+        {
+          "election_key": "regionali_2014",
+          "year": 2014,
+          "election_date_iso": "2014-05-25",
+          "election_date_label": "25/05/2014",
+          "filename": "regionali-20140525.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/regionali/regionali-20140525.zip",
+          "relative_path": "regionali/regionali-20140525.zip"
+        },
+        {
+          "election_key": "regionali_2014",
+          "year": 2014,
+          "election_date_iso": "2014-11-23",
+          "election_date_label": "23/11/2014",
+          "filename": "regionali-20141123.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/regionali/regionali-20141123.zip",
+          "relative_path": "regionali/regionali-20141123.zip"
+        },
+        {
+          "election_key": "regionali_2015",
+          "year": 2015,
+          "election_date_iso": "2015-05-31",
+          "election_date_label": "31/05/2015",
+          "filename": "regionali-20150531.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/regionali/regionali-20150531.zip",
+          "relative_path": "regionali/regionali-20150531.zip"
+        },
+        {
+          "election_key": "regionali_2018",
+          "year": 2018,
+          "election_date_iso": "2018-03-04",
+          "election_date_label": "04/03/2018",
+          "filename": "regionali-20180304.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/regionali/regionali-20180304.zip",
+          "relative_path": "regionali/regionali-20180304.zip"
+        },
+        {
+          "election_key": "regionali_2019",
+          "year": 2019,
+          "election_date_iso": "2019-02-10",
+          "election_date_label": "10/02/2019",
+          "filename": "regionali-20190210.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/regionali/regionali-20190210.zip",
+          "relative_path": "regionali/regionali-20190210.zip"
+        },
+        {
+          "election_key": "regionali_2019",
+          "year": 2019,
+          "election_date_iso": "2019-03-24",
+          "election_date_label": "24/03/2019",
+          "filename": "regionali-20190324.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/regionali/regionali-20190324.zip",
+          "relative_path": "regionali/regionali-20190324.zip"
+        },
+        {
+          "election_key": "regionali_2019",
+          "year": 2019,
+          "election_date_iso": "2019-05-26",
+          "election_date_label": "26/05/2019",
+          "filename": "regionali-20190526.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/regionali/regionali-20190526.zip",
+          "relative_path": "regionali/regionali-20190526.zip"
+        },
+        {
+          "election_key": "regionali_2019",
+          "year": 2019,
+          "election_date_iso": "2019-10-27",
+          "election_date_label": "27/10/2019",
+          "filename": "regionali-20191027.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/regionali/regionali-20191027.zip",
+          "relative_path": "regionali/regionali-20191027.zip"
+        },
+        {
+          "election_key": "regionali_2020",
+          "year": 2020,
+          "election_date_iso": "2020-01-26",
+          "election_date_label": "26/01/2020",
+          "filename": "regionali-20200126.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/regionali/regionali-20200126.zip",
+          "relative_path": "regionali/regionali-20200126.zip"
+        },
+        {
+          "election_key": "regionali_2020",
+          "year": 2020,
+          "election_date_iso": "2020-09-20",
+          "election_date_label": "20/09/2020",
+          "filename": "regionali-20200920.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/regionali/regionali-20200920.zip",
+          "relative_path": "regionali/regionali-20200920.zip"
+        },
+        {
+          "election_key": "regionali_2021",
+          "year": 2021,
+          "election_date_iso": "2021-10-03",
+          "election_date_label": "03/10/2021",
+          "filename": "regionali-20211003.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/regionali/regionali-20211003.zip",
+          "relative_path": "regionali/regionali-20211003.zip"
+        },
+        {
+          "election_key": "regionali_2023",
+          "year": 2023,
+          "election_date_iso": "2023-02-12",
+          "election_date_label": "12/02/2023",
+          "filename": "regionali-20230212.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/regionali/regionali-20230212.zip",
+          "relative_path": "regionali/regionali-20230212.zip"
+        },
+        {
+          "election_key": "regionali_2024",
+          "year": 2024,
+          "election_date_iso": "2024-03-10",
+          "election_date_label": "10/03/2024",
+          "filename": "regionali-20240310.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/regionali/regionali-20240310.zip",
+          "relative_path": "regionali/regionali-20240310.zip"
+        },
+        {
+          "election_key": "regionali_2024",
+          "year": 2024,
+          "election_date_iso": "2024-04-21",
+          "election_date_label": "21/04/2024",
+          "filename": "regionali-20240421.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/regionali/regionali-20240421.zip",
+          "relative_path": "regionali/regionali-20240421.zip"
+        },
+        {
+          "election_key": "regionali_2024",
+          "year": 2024,
+          "election_date_iso": "2024-06-09",
+          "election_date_label": "09/06/2024",
+          "filename": "regionali-20240609.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/regionali/regionali-20240609.zip",
+          "relative_path": "regionali/regionali-20240609.zip"
+        },
+        {
+          "election_key": "regionali_2024",
+          "year": 2024,
+          "election_date_iso": "2024-10-27",
+          "election_date_label": "27/10/2024",
+          "filename": "regionali-20241027.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/regionali/regionali-20241027.zip",
+          "relative_path": "regionali/regionali-20241027.zip"
+        },
+        {
+          "election_key": "regionali_2024",
+          "year": 2024,
+          "election_date_iso": "2024-11-17",
+          "election_date_label": "17/11/2024",
+          "filename": "regionali-20241117.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/regionali/regionali-20241117.zip",
+          "relative_path": "regionali/regionali-20241117.zip"
+        },
+        {
+          "election_key": "regionali_2025",
+          "year": 2025,
+          "election_date_iso": "2025-10-05",
+          "election_date_label": "05/10/2025",
+          "filename": "regionali-20251005.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/regionali/regionali-20251005.zip",
+          "relative_path": "regionali/regionali-20251005.zip"
+        },
+        {
+          "election_key": "regionali_2025",
+          "year": 2025,
+          "election_date_iso": "2025-10-12",
+          "election_date_label": "12/10/2025",
+          "filename": "regionali-20251012.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/regionali/regionali-20251012.zip",
+          "relative_path": "regionali/regionali-20251012.zip"
+        },
+        {
+          "election_key": "regionali_2025",
+          "year": 2025,
+          "election_date_iso": "2025-11-23",
+          "election_date_label": "23/11/2025",
+          "filename": "regionali-20251123.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/regionali/regionali-20251123.zip",
+          "relative_path": "regionali/regionali-20251123.zip"
+        }
+      ]
+    },
+    {
+      "family": "senato",
+      "scope": "italy",
+      "granularity": "municipality",
+      "ingestion_status": "candidate",
+      "priority": "high",
+      "notes": "Same archive layout as Camera (semicolon-separated `.txt` per municipality / list). Can almost certainly reuse rebuild_bundle_from_camera_opendata_archives.py with the election_type discriminator widened. Italian Senate uses a regional electoral basis (each region has its own party totals), so the per-comune aggregation needs region-aware logic for the swing/confronto views.",
+      "first_year_documented": 1948,
+      "last_year_documented": 2022,
+      "year_count": 19,
+      "archive_count": 19,
+      "items": [
+        {
+          "election_key": "senato_1948",
+          "year": 1948,
+          "election_date_iso": "1948-04-18",
+          "election_date_label": "18/04/1948",
+          "filename": "senato-19480418.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/senato/senato-19480418.zip",
+          "relative_path": "senato/senato-19480418.zip"
+        },
+        {
+          "election_key": "senato_1953",
+          "year": 1953,
+          "election_date_iso": "1953-06-07",
+          "election_date_label": "07/06/1953",
+          "filename": "senato-19530607.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/senato/senato-19530607.zip",
+          "relative_path": "senato/senato-19530607.zip"
+        },
+        {
+          "election_key": "senato_1958",
+          "year": 1958,
+          "election_date_iso": "1958-05-25",
+          "election_date_label": "25/05/1958",
+          "filename": "senato-19580525.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/senato/senato-19580525.zip",
+          "relative_path": "senato/senato-19580525.zip"
+        },
+        {
+          "election_key": "senato_1963",
+          "year": 1963,
+          "election_date_iso": "1963-04-28",
+          "election_date_label": "28/04/1963",
+          "filename": "senato-19630428.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/senato/senato-19630428.zip",
+          "relative_path": "senato/senato-19630428.zip"
+        },
+        {
+          "election_key": "senato_1968",
+          "year": 1968,
+          "election_date_iso": "1968-05-19",
+          "election_date_label": "19/05/1968",
+          "filename": "senato-19680519.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/senato/senato-19680519.zip",
+          "relative_path": "senato/senato-19680519.zip"
+        },
+        {
+          "election_key": "senato_1972",
+          "year": 1972,
+          "election_date_iso": "1972-05-07",
+          "election_date_label": "07/05/1972",
+          "filename": "senato-19720507.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/senato/senato-19720507.zip",
+          "relative_path": "senato/senato-19720507.zip"
+        },
+        {
+          "election_key": "senato_1976",
+          "year": 1976,
+          "election_date_iso": "1976-06-20",
+          "election_date_label": "20/06/1976",
+          "filename": "senato-19760620.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/senato/senato-19760620.zip",
+          "relative_path": "senato/senato-19760620.zip"
+        },
+        {
+          "election_key": "senato_1979",
+          "year": 1979,
+          "election_date_iso": "1979-06-03",
+          "election_date_label": "03/06/1979",
+          "filename": "senato-19790603.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/senato/senato-19790603.zip",
+          "relative_path": "senato/senato-19790603.zip"
+        },
+        {
+          "election_key": "senato_1983",
+          "year": 1983,
+          "election_date_iso": "1983-06-26",
+          "election_date_label": "26/06/1983",
+          "filename": "senato-19830626.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/senato/senato-19830626.zip",
+          "relative_path": "senato/senato-19830626.zip"
+        },
+        {
+          "election_key": "senato_1987",
+          "year": 1987,
+          "election_date_iso": "1987-06-14",
+          "election_date_label": "14/06/1987",
+          "filename": "senato-19870614.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/senato/senato-19870614.zip",
+          "relative_path": "senato/senato-19870614.zip"
+        },
+        {
+          "election_key": "senato_1992",
+          "year": 1992,
+          "election_date_iso": "1992-04-05",
+          "election_date_label": "05/04/1992",
+          "filename": "senato-19920405.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/senato/senato-19920405.zip",
+          "relative_path": "senato/senato-19920405.zip"
+        },
+        {
+          "election_key": "senato_1994",
+          "year": 1994,
+          "election_date_iso": "1994-03-27",
+          "election_date_label": "27/03/1994",
+          "filename": "senato-19940327.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/senato/senato-19940327.zip",
+          "relative_path": "senato/senato-19940327.zip"
+        },
+        {
+          "election_key": "senato_1996",
+          "year": 1996,
+          "election_date_iso": "1996-04-21",
+          "election_date_label": "21/04/1996",
+          "filename": "senato-19960421.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/senato/senato-19960421.zip",
+          "relative_path": "senato/senato-19960421.zip"
+        },
+        {
+          "election_key": "senato_2001",
+          "year": 2001,
+          "election_date_iso": "2001-05-13",
+          "election_date_label": "13/05/2001",
+          "filename": "senato-20010513.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/senato/senato-20010513.zip",
+          "relative_path": "senato/senato-20010513.zip"
+        },
+        {
+          "election_key": "senato_2006",
+          "year": 2006,
+          "election_date_iso": "2006-04-09",
+          "election_date_label": "09/04/2006",
+          "filename": "senato-20060409.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/senato/senato-20060409.zip",
+          "relative_path": "senato/senato-20060409.zip"
+        },
+        {
+          "election_key": "senato_2008",
+          "year": 2008,
+          "election_date_iso": "2008-04-13",
+          "election_date_label": "13/04/2008",
+          "filename": "senato-20080413.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/senato/senato-20080413.zip",
+          "relative_path": "senato/senato-20080413.zip"
+        },
+        {
+          "election_key": "senato_2013",
+          "year": 2013,
+          "election_date_iso": "2013-02-24",
+          "election_date_label": "24/02/2013",
+          "filename": "senato-20130224.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/senato/senato-20130224.zip",
+          "relative_path": "senato/senato-20130224.zip"
+        },
+        {
+          "election_key": "senato_2018",
+          "year": 2018,
+          "election_date_iso": "2018-03-04",
+          "election_date_label": "04/03/2018",
+          "filename": "senato-20180304.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/senato/senato-20180304.zip",
+          "relative_path": "senato/senato-20180304.zip"
+        },
+        {
+          "election_key": "senato_2022",
+          "year": 2022,
+          "election_date_iso": "2022-09-25",
+          "election_date_label": "25/09/2022",
+          "filename": "senato-20220925.zip",
+          "download_url": "https://elezionistorico.interno.gov.it/daithome/documenti/opendata/senato/senato-20220925.zip",
+          "relative_path": "senato/senato-20220925.zip"
+        }
+      ]
+    }
+  ]
+}
