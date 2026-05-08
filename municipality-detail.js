@@ -12,9 +12,35 @@ const els = {
   error: document.getElementById('detail-error'),
   anagrafica: document.getElementById('detail-anagrafica'),
   historyBody: document.getElementById('detail-history-body'),
+  kpiStrip: document.getElementById('detail-kpi-strip'),
   chartTurnout: document.getElementById('detail-chart-turnout'),
   chartMargin: document.getElementById('detail-chart-margin'),
   chartLeader: document.getElementById('detail-chart-leader'),
+  chartBlock: document.getElementById('detail-chart-block'),
+};
+
+// Categorical colors for `dominant_block` (matches the values found in
+// data/derived/municipality_summary.csv: centro · centro-destra · destra ·
+// centro-sinistra · sinistra · populista · altro · empty).
+const BLOCK_COLORS = {
+  'sinistra': '#dc2626',
+  'centro-sinistra': '#f59e0b',
+  'centro': '#0ea5e9',
+  'centro-destra': '#1e3a8a',
+  'destra': '#1e1b4b',
+  'populista': '#a855f7',
+  'altro': '#94a3b8',
+  '': '#cbd5e1',
+};
+const BLOCK_LABEL = {
+  'sinistra': 'Sinistra',
+  'centro-sinistra': 'Centrosinistra',
+  'centro': 'Centro',
+  'centro-destra': 'Centrodestra',
+  'destra': 'Destra',
+  'populista': 'Populista',
+  'altro': 'Altro',
+  '': 'n.d.',
 };
 
 function escapeHtml(value) {
@@ -107,6 +133,84 @@ function sortRowsByYear(rows) {
   });
 }
 
+// Build per-election aggregates (national + comune's province) from the
+// full summary CSV. Population-weighted: sum(voters) / sum(electors) * 100,
+// which is what ISTAT publishes — not the simple mean of the per-comune
+// percentages (that would over-weight the smallest mountain villages).
+function buildAggregatesByElection(summaryRows, comuneId) {
+  const byElection = new Map();
+  for (const row of summaryRows) {
+    const key = row.election_key;
+    if (!key) continue;
+    if (!byElection.has(key)) byElection.set(key, []);
+    byElection.get(key).push(row);
+  }
+  const aggregates = new Map();
+  for (const [key, rows] of byElection.entries()) {
+    const ownRow = rows.find(r => (r.municipality_id || '').trim() === comuneId);
+    const ownProvince = (ownRow?.province || '').trim();
+    let nationElectors = 0;
+    let nationVoters = 0;
+    let nationValid = 0;
+    let nationFirstWinShare = 0;
+    let nationFirstWinValid = 0;
+    let provElectors = 0;
+    let provVoters = 0;
+    let provFirstShareWeighted = 0;
+    let provValidForFirst = 0;
+    const blockCountsNation = {};
+    const blockCountsProv = {};
+    for (const r of rows) {
+      const electors = Number(r.electors);
+      const voters = Number(r.voters);
+      const valid = Number(r.valid_votes);
+      const firstShare = Number(r.first_party_share);
+      const block = (r.dominant_block || '').trim();
+      if (Number.isFinite(electors) && Number.isFinite(voters)) {
+        nationElectors += electors;
+        nationVoters += voters;
+      }
+      if (Number.isFinite(valid)) nationValid += valid;
+      if (Number.isFinite(firstShare) && Number.isFinite(valid)) {
+        nationFirstWinShare += firstShare * valid;
+        nationFirstWinValid += valid;
+      }
+      if (block) blockCountsNation[block] = (blockCountsNation[block] || 0) + 1;
+      const isOwnProv = ownProvince && (r.province || '').trim() === ownProvince;
+      if (isOwnProv) {
+        if (Number.isFinite(electors) && Number.isFinite(voters)) {
+          provElectors += electors;
+          provVoters += voters;
+        }
+        if (Number.isFinite(firstShare) && Number.isFinite(valid)) {
+          provFirstShareWeighted += firstShare * valid;
+          provValidForFirst += valid;
+        }
+        if (block) blockCountsProv[block] = (blockCountsProv[block] || 0) + 1;
+      }
+    }
+    const modal = counts => {
+      const entries = Object.entries(counts);
+      if (!entries.length) return null;
+      entries.sort((a, b) => b[1] - a[1]);
+      return entries[0][0];
+    };
+    aggregates.set(key, {
+      year: Number(rows[0].election_year),
+      nationTurnout: nationElectors > 0 ? (nationVoters / nationElectors) * 100 : null,
+      provinceTurnout: provElectors > 0 ? (provVoters / provElectors) * 100 : null,
+      nationFirstShareAvg: nationFirstWinValid > 0 ? nationFirstWinShare / nationFirstWinValid : null,
+      provinceFirstShareAvg: provValidForFirst > 0 ? provFirstShareWeighted / provValidForFirst : null,
+      nationModalBlock: modal(blockCountsNation),
+      provinceModalBlock: modal(blockCountsProv),
+      sampleN: rows.length,
+      provinceN: Object.values(blockCountsProv).reduce((a, b) => a + b, 0),
+      provinceName: ownProvince || null,
+    });
+  }
+  return aggregates;
+}
+
 function renderHistory(rows) {
   if (!els.historyBody) return;
   if (!rows.length) {
@@ -165,8 +269,12 @@ function chartDimensions(container) {
 }
 
 // ----- 1. Turnout over time ---------------------------------------------
+//
+// Three overlaid series: comune (primary), provincia, Italia. Province + Italia
+// come from the per-election aggregates pre-computed over the full summary CSV
+// (population-weighted, sum(voters)/sum(electors) — see buildAggregatesByElection).
 
-function renderTurnoutChart(rows) {
+function renderTurnoutChart(rows, aggregates) {
   const container = els.chartTurnout;
   if (!container) return;
   const points = sortRowsByYear(rows)
@@ -174,7 +282,15 @@ function renderTurnoutChart(rows) {
       const year = Number(row.election_year || row.year);
       const turnout = Number(row.turnout_pct);
       if (!Number.isFinite(year) || !Number.isFinite(turnout)) return null;
-      return { year, turnout, label: row.election_label || row.election_key };
+      const agg = aggregates?.get(row.election_key) || null;
+      return {
+        year,
+        turnout,
+        label: row.election_label || row.election_key,
+        provinceTurnout: agg?.provinceTurnout ?? null,
+        nationTurnout: agg?.nationTurnout ?? null,
+        provinceName: agg?.provinceName || row.province || null,
+      };
     })
     .filter(Boolean);
   if (!points.length) {
@@ -243,9 +359,35 @@ function renderTurnoutChart(rows) {
   }));
   svg.appendChild(xAxis);
 
-  // line + dots
+  // Reference series (Italia + provincia) sit BEHIND the comune line.
+  const seriesGroup = svgEl('g');
+  const buildPath = (key) => points
+    .map((p, i) => {
+      const v = p[key];
+      if (!Number.isFinite(v)) return null;
+      return `${i === 0 ? 'M' : 'L'}${xScale(p.year).toFixed(2)},${yScale(v).toFixed(2)}`;
+    })
+    .filter(Boolean)
+    .join(' ');
+  const nationPath = buildPath('nationTurnout');
+  if (nationPath) {
+    seriesGroup.appendChild(svgEl('path', {
+      class: 'series-line series-line-italy',
+      d: nationPath,
+    }));
+  }
+  const provPath = buildPath('provinceTurnout');
+  if (provPath) {
+    seriesGroup.appendChild(svgEl('path', {
+      class: 'series-line series-line-province',
+      d: provPath,
+    }));
+  }
+  // comune (primary) always last so it stays on top.
   const path = points.map((p, i) => `${i === 0 ? 'M' : 'L'}${xScale(p.year).toFixed(2)},${yScale(p.turnout).toFixed(2)}`).join(' ');
-  svg.appendChild(svgEl('path', { class: 'series-line', d: path }));
+  seriesGroup.appendChild(svgEl('path', { class: 'series-line', d: path }));
+  svg.appendChild(seriesGroup);
+
   for (const p of points) {
     const dot = svgEl('circle', {
       class: 'series-dot',
@@ -254,7 +396,13 @@ function renderTurnoutChart(rows) {
       r: 3.5,
     });
     const title = svgEl('title');
-    title.textContent = `${p.label || p.year}: ${p.turnout.toFixed(2)}%`;
+    const lines = [`${p.label || p.year}: ${p.turnout.toFixed(2)}%`];
+    if (Number.isFinite(p.provinceTurnout)) {
+      const provName = p.provinceName ? ` (${p.provinceName})` : '';
+      lines.push(`Provincia${provName}: ${p.provinceTurnout.toFixed(2)}%`);
+    }
+    if (Number.isFinite(p.nationTurnout)) lines.push(`Italia: ${p.nationTurnout.toFixed(2)}%`);
+    title.textContent = lines.join(' · ');
     dot.appendChild(title);
     svg.appendChild(dot);
   }
@@ -462,10 +610,235 @@ function renderLeaderChart(rows) {
   setChartSvg(container, svg);
 }
 
-function renderCharts(rows) {
-  renderTurnoutChart(rows);
+// ----- 4. Dominant block timeline ---------------------------------------
+//
+// Two parallel strips of categorical tiles (centro · centrosinistra · …) for
+// each election covered: the comune on top, the modal block of all comuni in
+// Italy on a thinner strip below. Lets the visitor see at a glance whether
+// the comune voted with or against the country in each cycle.
+
+function renderBlockChart(rows, aggregates) {
+  const container = els.chartBlock;
+  if (!container) return;
+  const items = sortRowsByYear(rows)
+    .map(row => {
+      const year = Number(row.election_year || row.year);
+      if (!Number.isFinite(year)) return null;
+      const block = (row.dominant_block || '').trim();
+      const agg = aggregates?.get(row.election_key) || null;
+      return {
+        year,
+        block,
+        nationBlock: agg?.nationModalBlock || '',
+        label: row.election_label || row.election_key,
+      };
+    })
+    .filter(Boolean);
+  if (!items.length) {
+    chartEmpty(container, 'Blocco dominante non disponibile per questo comune.');
+    return;
+  }
+
+  const containerWidth = Math.max(320, container.clientWidth || 480);
+  const margin = { top: 16, right: 12, bottom: 28, left: 12 };
+  const tileH = 30;
+  const stripGap = 4;
+  const tileGap = 4;
+  const naturalTileW = (containerWidth - margin.left - margin.right - tileGap * Math.max(0, items.length - 1)) / Math.max(1, items.length);
+  const tileW = Math.max(40, naturalTileW);
+  const layoutWidth = margin.left + margin.right + items.length * tileW + Math.max(0, items.length - 1) * tileGap;
+  const width = Math.max(containerWidth, layoutWidth);
+  const height = margin.top + tileH + stripGap + tileH * 0.55 + margin.bottom + 14;
+
+  const svg = svgEl('svg', {
+    viewBox: `0 0 ${width} ${height}`,
+    preserveAspectRatio: 'xMidYMid meet',
+    role: 'img',
+  });
+
+  // Row labels (on the left edge of each strip)
+  svg.appendChild(svgText('Comune', {
+    x: margin.left,
+    y: margin.top - 4,
+    'font-size': 10,
+    fill: '#64748b',
+    'font-weight': 600,
+    'letter-spacing': '0.04em',
+    'text-transform': 'uppercase',
+  }));
+  svg.appendChild(svgText('Italia (modale)', {
+    x: margin.left,
+    y: margin.top + tileH + stripGap - 2,
+    'font-size': 10,
+    fill: '#94a3b8',
+    'letter-spacing': '0.04em',
+    'text-transform': 'uppercase',
+  }));
+
+  items.forEach((d, i) => {
+    const x = margin.left + i * (tileW + tileGap);
+    // Comune strip (taller, full color)
+    const comuneRect = svgEl('rect', {
+      class: 'block-tile',
+      x,
+      y: margin.top,
+      width: tileW,
+      height: tileH,
+      rx: 5,
+      fill: BLOCK_COLORS[d.block] ?? BLOCK_COLORS[''],
+    });
+    const comuneTitle = svgEl('title');
+    const comuneBlockLabel = BLOCK_LABEL[d.block] ?? (d.block || 'n.d.');
+    const nationBlockLabel = BLOCK_LABEL[d.nationBlock] ?? d.nationBlock;
+    comuneTitle.textContent = `${d.label || d.year} — Comune: ${comuneBlockLabel}` +
+      (d.nationBlock ? `; Italia (modale): ${nationBlockLabel}` : '');
+    comuneRect.appendChild(comuneTitle);
+    svg.appendChild(comuneRect);
+    if (tileW >= 38) {
+      svg.appendChild(svgText(BLOCK_LABEL[d.block] ?? (d.block || 'n.d.'), {
+        x: x + tileW / 2,
+        y: margin.top + tileH / 2 + 4,
+        'text-anchor': 'middle',
+        class: 'block-tile-label',
+      }));
+    }
+
+    // Italia strip (shorter, lower opacity reference)
+    const refRect = svgEl('rect', {
+      class: 'block-tile-ref',
+      x,
+      y: margin.top + tileH + stripGap,
+      width: tileW,
+      height: tileH * 0.55,
+      rx: 4,
+      fill: BLOCK_COLORS[d.nationBlock] ?? BLOCK_COLORS[''],
+      'fill-opacity': d.nationBlock ? 0.55 : 0.25,
+    });
+    const refTitle = svgEl('title');
+    refTitle.textContent = d.nationBlock
+      ? `Italia (${d.label || d.year}): blocco modale ${BLOCK_LABEL[d.nationBlock] ?? d.nationBlock}`
+      : `Italia (${d.label || d.year}): n.d.`;
+    refRect.appendChild(refTitle);
+    svg.appendChild(refRect);
+
+    svg.appendChild(svgText(String(d.year), {
+      x: x + tileW / 2,
+      y: margin.top + tileH + stripGap + tileH * 0.55 + 14,
+      'text-anchor': 'middle',
+      fill: '#475569',
+      'font-size': 11,
+    }));
+  });
+
+  setChartSvg(container, svg);
+}
+
+// ----- 5. KPI strip (comune vs Italia summary) --------------------------
+//
+// Tabler-style KPI tiles at the top of the charts section. Computes
+// comune-mean vs nation-weighted-mean for turnout and first-party share,
+// counts distinct first-parties (volatility), and lists the modal block.
+
+function renderKpiStrip(rows, aggregates) {
+  const container = els.kpiStrip;
+  if (!container) return;
+  if (!rows.length) {
+    container.innerHTML = '<div class="detail-placeholder detail-placeholder-muted">Nessun dato di confronto disponibile.</div>';
+    return;
+  }
+
+  // Comune-side averages (mean over the elections we have).
+  const comuneTurnouts = rows.map(r => Number(r.turnout_pct)).filter(Number.isFinite);
+  const comuneFirstShares = rows.map(r => Number(r.first_party_share)).filter(Number.isFinite);
+  const comuneTurnoutAvg = comuneTurnouts.length
+    ? comuneTurnouts.reduce((a, b) => a + b, 0) / comuneTurnouts.length : null;
+  const comuneFirstAvg = comuneFirstShares.length
+    ? comuneFirstShares.reduce((a, b) => a + b, 0) / comuneFirstShares.length : null;
+
+  // Nation-side averages over the SAME elections (so the delta is comparable).
+  const nationTurnouts = [];
+  const nationFirstShares = [];
+  const blockCountsComune = {};
+  for (const r of rows) {
+    const agg = aggregates?.get(r.election_key);
+    if (agg && Number.isFinite(agg.nationTurnout)) nationTurnouts.push(agg.nationTurnout);
+    if (agg && Number.isFinite(agg.nationFirstShareAvg)) nationFirstShares.push(agg.nationFirstShareAvg);
+    const block = (r.dominant_block || '').trim();
+    if (block) blockCountsComune[block] = (blockCountsComune[block] || 0) + 1;
+  }
+  const nationTurnoutAvg = nationTurnouts.length
+    ? nationTurnouts.reduce((a, b) => a + b, 0) / nationTurnouts.length : null;
+  const nationFirstAvg = nationFirstShares.length
+    ? nationFirstShares.reduce((a, b) => a + b, 0) / nationFirstShares.length : null;
+
+  const distinctFirstParties = new Set(
+    rows.map(r => (r.first_party_std || '').trim()).filter(Boolean)
+  );
+  const modalBlockEntry = Object.entries(blockCountsComune).sort((a, b) => b[1] - a[1])[0];
+  const modalBlock = modalBlockEntry ? modalBlockEntry[0] : '';
+  const modalBlockShare = modalBlockEntry && rows.length
+    ? (modalBlockEntry[1] / rows.length) * 100 : null;
+
+  const fmtDelta = (a, b) => {
+    if (!Number.isFinite(a) || !Number.isFinite(b)) return null;
+    const d = a - b;
+    const sign = d > 0 ? '+' : (d < 0 ? '−' : '');
+    return `${sign}${Math.abs(d).toFixed(1)} pp`;
+  };
+  const turnoutDelta = fmtDelta(comuneTurnoutAvg, nationTurnoutAvg);
+  const firstDelta = fmtDelta(comuneFirstAvg, nationFirstAvg);
+
+  const tiles = [
+    {
+      label: 'Affluenza media',
+      value: Number.isFinite(comuneTurnoutAvg) ? `${comuneTurnoutAvg.toFixed(1)}%` : '—',
+      hint: turnoutDelta != null
+        ? `Δ Italia ${turnoutDelta} (${rows.length} elezioni)`
+        : `${rows.length} elezioni coperte`,
+      tone: comuneTurnoutAvg != null && nationTurnoutAvg != null
+        ? (comuneTurnoutAvg > nationTurnoutAvg ? 'positive' : (comuneTurnoutAvg < nationTurnoutAvg ? 'negative' : 'neutral'))
+        : 'neutral',
+    },
+    {
+      label: 'Quota media primo partito',
+      value: Number.isFinite(comuneFirstAvg) ? `${comuneFirstAvg.toFixed(1)}%` : '—',
+      hint: firstDelta != null
+        ? `Δ Italia ${firstDelta}`
+        : 'Quota media del partito vincente nelle elezioni coperte',
+      tone: 'neutral',
+    },
+    {
+      label: 'Volatilità del primo partito',
+      value: distinctFirstParties.size ? `${distinctFirstParties.size} partiti` : '—',
+      hint: distinctFirstParties.size <= 1
+        ? 'Sempre lo stesso vincitore'
+        : `${distinctFirstParties.size} partiti diversi hanno vinto nel comune`,
+      tone: 'neutral',
+    },
+    {
+      label: 'Blocco prevalente',
+      value: BLOCK_LABEL[modalBlock] ?? (modalBlock || '—'),
+      hint: modalBlockShare != null
+        ? `Vince in ${modalBlockShare.toFixed(0)}% delle elezioni coperte`
+        : 'Non disponibile',
+      tone: 'neutral',
+    },
+  ];
+
+  container.innerHTML = tiles.map(t => `
+    <div class="detail-kpi-card detail-kpi-${escapeHtml(t.tone)}">
+      <span class="detail-kpi-label">${escapeHtml(t.label)}</span>
+      <span class="detail-kpi-value">${escapeHtml(t.value)}</span>
+      <span class="detail-kpi-hint">${escapeHtml(t.hint)}</span>
+    </div>
+  `).join('');
+}
+
+function renderCharts(rows, aggregates) {
+  renderTurnoutChart(rows, aggregates);
   renderMarginChart(rows);
   renderLeaderChart(rows);
+  renderBlockChart(rows, aggregates);
 }
 
 async function main() {
@@ -497,9 +870,12 @@ async function main() {
     }
     document.title = `Electio Italia | ${displayName}`;
 
+    const aggregates = buildAggregatesByElection(summary, id);
+
     renderAnagrafica(record);
     renderHistory(rows);
-    renderCharts(rows);
+    renderKpiStrip(rows, aggregates);
+    renderCharts(rows, aggregates);
   } catch (err) {
     console.error(err);
     showError('Errore nel caricamento dei dati del comune. Riprova aggiornando la pagina.');

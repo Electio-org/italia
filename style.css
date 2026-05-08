@@ -6580,3 +6580,106 @@ body[data-site-page="municipality-detail"] .detail-chart-body svg .chart-empty {
   font-size: 12px;
   font-style: italic;
 }
+
+/* Multi-series turnout chart: comune (primary) on top of province + Italia
+ * reference lines. Dashes keep the chart readable in B/W print as well. */
+body[data-site-page="municipality-detail"] .detail-chart-body svg .series-line-province {
+  stroke: #f59e0b;
+  stroke-width: 1.6;
+  stroke-dasharray: 4 3;
+  opacity: 0.85;
+}
+body[data-site-page="municipality-detail"] .detail-chart-body svg .series-line-italy {
+  stroke: #94a3b8;
+  stroke-width: 1.4;
+  stroke-dasharray: 2 3;
+  opacity: 0.85;
+}
+
+/* Inline legend in the chart card subtitle. */
+body[data-site-page="municipality-detail"] .detail-chart-legend {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-left: 6px;
+  font-size: 12px;
+  color: #475569;
+}
+body[data-site-page="municipality-detail"] .legend-swatch {
+  display: inline-block;
+  width: 14px;
+  height: 3px;
+  margin-right: 4px;
+  border-radius: 2px;
+  vertical-align: middle;
+}
+body[data-site-page="municipality-detail"] .legend-swatch-comune { background: #2563eb; }
+body[data-site-page="municipality-detail"] .legend-swatch-province {
+  background: linear-gradient(to right, #f59e0b 0 6px, transparent 6px 9px, #f59e0b 9px 14px);
+}
+body[data-site-page="municipality-detail"] .legend-swatch-italy {
+  background: linear-gradient(to right, #94a3b8 0 4px, transparent 4px 7px, #94a3b8 7px 11px, transparent 11px 14px);
+}
+
+/* Block-dominante chart: categorical strips. */
+body[data-site-page="municipality-detail"] .detail-chart-body svg .block-tile {
+  stroke: #ffffff;
+  stroke-width: 1;
+}
+body[data-site-page="municipality-detail"] .detail-chart-body svg .block-tile-ref {
+  stroke: #e2e8f0;
+  stroke-width: 0.5;
+}
+body[data-site-page="municipality-detail"] .detail-chart-body svg .block-tile-label {
+  fill: #ffffff;
+  font-weight: 600;
+  font-size: 10px;
+  letter-spacing: 0.02em;
+}
+
+/* "Comune vs Italia" KPI strip — Tabler-style cards. */
+body[data-site-page="municipality-detail"] .detail-kpi-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+body[data-site-page="municipality-detail"] .detail-kpi-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 16px;
+  background: #ffffff;
+  border: 1px solid var(--line-soft, #e2e8f0);
+  border-left: 3px solid #cbd5e1;
+  border-radius: 12px;
+}
+body[data-site-page="municipality-detail"] .detail-kpi-positive {
+  border-left-color: #16a34a;
+}
+body[data-site-page="municipality-detail"] .detail-kpi-negative {
+  border-left-color: #dc2626;
+}
+body[data-site-page="municipality-detail"] .detail-kpi-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #64748b;
+  font-weight: 600;
+}
+body[data-site-page="municipality-detail"] .detail-kpi-value {
+  font-size: 22px;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1.15;
+}
+body[data-site-page="municipality-detail"] .detail-kpi-hint {
+  font-size: 12px;
+  color: #475569;
+  line-height: 1.4;
+}
+
+/* Make the block strip card span the full row so all elections fit. */
+body[data-site-page="municipality-detail"] .detail-chart-card-wide {
+  grid-column: 1 / -1;
+}

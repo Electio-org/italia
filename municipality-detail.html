@@ -86,19 +86,32 @@
         </div>
       </section>
 
+      <section class="doc-section" id="detail-kpi-section">
+        <div class="doc-section-head">
+          <div>
+            <div class="doc-eyebrow">Confronto</div>
+            <h2>Comune vs Italia</h2>
+          </div>
+          <p class="doc-section-copy">Sintesi delle medie storiche del comune accanto al dato nazionale calcolato sulle stesse elezioni (Δ in punti percentuali, ponderato sugli aventi diritto).</p>
+        </div>
+        <div id="detail-kpi-strip" class="detail-kpi-strip" aria-label="Indicatori sintetici comune vs Italia">
+          <div class="detail-placeholder">Caricamento indicatori…</div>
+        </div>
+      </section>
+
       <section class="doc-section" id="detail-charts-section">
         <div class="doc-section-head">
           <div>
             <div class="doc-eyebrow">Grafici</div>
             <h2>Grafici storici &amp; evoluzione</h2>
           </div>
-          <p class="doc-section-copy">Serie storica dell'affluenza e del margine del vincente, e timeline del primo partito per ciascuna elezione coperta.</p>
+          <p class="doc-section-copy">Serie storica dell'affluenza con confronto provincia/Italia, margine del vincente, timeline del primo partito e blocco dominante per ciascuna elezione coperta.</p>
         </div>
         <div class="detail-charts">
           <article class="detail-chart-card">
             <header class="detail-chart-head">
               <h3>Affluenza nel tempo</h3>
-              <p>Percentuale di votanti sugli aventi diritto, elezione per elezione.</p>
+              <p>Percentuale di votanti sugli aventi diritto, elezione per elezione. <span class="detail-chart-legend"><span class="legend-swatch legend-swatch-comune"></span>Comune <span class="legend-swatch legend-swatch-province"></span>Provincia <span class="legend-swatch legend-swatch-italy"></span>Italia</span></p>
             </header>
             <div id="detail-chart-turnout" class="detail-chart-body" aria-label="Grafico affluenza nel tempo">
               <div class="detail-placeholder">Caricamento grafico…</div>
@@ -119,6 +132,15 @@
               <p>Timeline del partito vincente nel comune, con la sua quota.</p>
             </header>
             <div id="detail-chart-leader" class="detail-chart-body" aria-label="Timeline del primo partito">
+              <div class="detail-placeholder">Caricamento grafico…</div>
+            </div>
+          </article>
+          <article class="detail-chart-card detail-chart-card-wide">
+            <header class="detail-chart-head">
+              <h3>Blocco dominante</h3>
+              <p>Strisce parallele del blocco politico vincente nel comune (riga superiore) e di quello modale a livello italiano (riga inferiore).</p>
+            </header>
+            <div id="detail-chart-block" class="detail-chart-body" aria-label="Timeline del blocco dominante">
               <div class="detail-placeholder">Caricamento grafico…</div>
             </div>
           </article>
