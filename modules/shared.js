@@ -138,6 +138,49 @@ export const BLOCK_COLORS = {
   'altro': '#475569'
 };
 
+// Runtime party taxonomy: re-applies PARTY_FALLBACKS (this file) against
+// a party_raw label. Used both to color rows in the UI and — critically —
+// to RE-INFER `bloc` / `party_family` at load time for the results-long
+// rows, overriding whatever the Python preprocessor wrote into the CSV.
+//
+// Why this override exists: `scripts/preprocess.py` ships with a much
+// shorter PARTY_FALLBACKS list (~11 entries) than this file (~80+),
+// so the CSV ends up with hundreds of historically significant parties
+// stamped `bloc=altro` (L'Ulivo, AN, UDC, RC, IdV, Pensionati, Verdi
+// pre-AVS, Rosa nel Pugno, Comunisti Italiani, …). That breaks every
+// bloc-aware aggregation downstream (the visible "Olgiate Molgora 2006
+// → altro 54%" bug was traced back here). Until the CSV is regenerated
+// from a single source of truth (see follow-up), the JS list is the
+// authoritative taxonomy at runtime.
+//
+// Contract:
+//   - Pure function of the input string. Always returns the same 4 keys.
+//   - On no match: returns the generic `altro` family/bloc but echoes
+//     the raw label as `display` so the UI never renders an empty cell.
+//   - Callers that want to know whether a match occurred should compare
+//     the returned `family` to the literal string `'altro'`, OR call
+//     `inferredPartyMetaOrNull(label)` if they want a falsy on miss.
+export function inferPartyMeta(label) {
+  const raw = String(label || '').trim();
+  const match = PARTY_FALLBACKS.find(([re]) => re.test(raw));
+  const meta = match ? match[1] : { family: 'altro', bloc: 'altro', color: '#64748b', display: raw || 'N/D' };
+  return {
+    display: meta.display || raw || 'N/D',
+    family: meta.family || 'altro',
+    bloc: meta.bloc || 'altro',
+    color: meta.color || '#64748b'
+  };
+}
+
+// Same as inferPartyMeta but returns null when no PARTY_FALLBACKS regex
+// matches. Callers that want to keep the CSV's existing value when the
+// JS list has no opinion should prefer this.
+export function inferredPartyMetaOrNull(label) {
+  const raw = String(label || '').trim();
+  const match = PARTY_FALLBACKS.find(([re]) => re.test(raw));
+  return match ? match[1] : null;
+}
+
 export const FAMILY_COLORS = {
   'cattolico-popolare': '#b45309',
   'sinistra storica': '#b91c1c',

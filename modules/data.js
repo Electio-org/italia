@@ -1,4 +1,4 @@
-import { safeNumber } from './shared.js';
+import { safeNumber, inferredPartyMetaOrNull } from './shared.js';
 
 const SUMMARY_NUMBER_FIELDS = ['election_year', 'turnout_pct', 'electors', 'voters', 'valid_votes', 'total_votes', 'first_party_share', 'second_party_share', 'first_second_margin'];
 const RESULTS_LONG_NUMBER_FIELDS = ['election_year', 'votes', 'vote_share', 'rank'];
@@ -118,8 +118,45 @@ function parseSummaryRows(rows) {
   return parseNumberFields(rows, SUMMARY_NUMBER_FIELDS);
 }
 
+// Apply the JS-side party taxonomy on top of whatever the Python
+// preprocessor wrote into the CSV.
+//
+// The Python preprocessor (scripts/preprocess.py) ships a short PARTY_FALLBACKS
+// list of ~11 regexes, so the CSV stamps `bloc=altro` / `party_family=altro`
+// on the vast majority of historically significant parties (L'Ulivo, AN, UDC,
+// RC, IdV, Pensionati, La Rosa nel Pugno, Verdi pre-AVS, Comunisti Italiani,
+// SEL, LeU, +Europa, Scelta Civica, FLI, …). That in turn breaks every
+// bloc-aware aggregation downstream and produces the visible "Olgiate Molgora
+// 2006 → altro 54%" regression Simone reported.
+//
+// We patch this at runtime: for every result row, re-run the JS regex list
+// (the authoritative taxonomy, kept in modules/shared.js) against `party_raw`
+// and, when it has an opinion, OVERWRITE the CSV's bloc/family/std. If the
+// JS list has no opinion (returns null) we keep the CSV's existing values so
+// we don't downgrade good data to `altro`.
+//
+// This is intentionally aggressive: we override even when the CSV value
+// already looks plausible, because the Python regex set is so small that any
+// match it produces is also produced (and is a strict subset of) the JS set.
+// The only difference is that JS sometimes refines a generic "altro" into
+// the correct bloc.
+function applyRuntimeTaxonomy(row) {
+  const raw = String(row?.party_raw || row?.party_std || '').trim();
+  if (!raw) return row;
+  const meta = inferredPartyMetaOrNull(raw);
+  if (!meta) return row;
+  // Spread the row first, then layer in only the fields the JS taxonomy
+  // wants to set. We do NOT touch votes / vote_share / rank / election keys.
+  return {
+    ...row,
+    party_std: meta.display || row.party_std || raw,
+    party_family: meta.family || row.party_family || 'altro',
+    bloc: meta.bloc || row.bloc || 'altro'
+  };
+}
+
 function parseResultsLongRows(rows) {
-  return parseNumberFields(rows, RESULTS_LONG_NUMBER_FIELDS);
+  return parseNumberFields(rows, RESULTS_LONG_NUMBER_FIELDS).map(applyRuntimeTaxonomy);
 }
 
 function parseCustomIndicatorRows(rows) {
