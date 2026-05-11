@@ -4551,6 +4551,18 @@ function renderTerritorialAggregation() {
     const isActive = btn.dataset.territorialScope === scope;
     btn.classList.toggle('is-active', isActive);
     btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+    if (!btn.dataset.territorialBound) {
+      // Bind once: clicking a tab flips the panel's scope and re-renders.
+      // Defensive: a fresh listener registration on every render would
+      // duplicate handlers, so we mark the node with a data flag.
+      btn.dataset.territorialBound = '1';
+      btn.addEventListener('click', () => {
+        const next = btn.dataset.territorialScope === 'province' ? 'province' : 'region';
+        if (state.territorialAggregationScope === next) return;
+        state.territorialAggregationScope = next;
+        renderTerritorialAggregation();
+      });
+    }
   });
   const electionKey = state.selectedElection;
   if (!electionKey) {
@@ -4593,13 +4605,13 @@ function renderTerritorialAggregation() {
       rowsWithResults += 1;
       validVotesSum += safeNumber(r.valid_votes) || 0;
       resultRows.forEach(rr => {
-        const label = (rr.party_raw || rr.party_std || '').trim();
-        if (!label) return;
+        const partyLabel = (rr.party_raw || rr.party_std || '').trim();
+        if (!partyLabel) return;
         const v = safeNumber(rr.votes) || 0;
-        const meta = inferPartyMeta(label);
-        const acc = partyTallies.get(label) || { votes: 0, label, color: meta.color, bloc: meta.bloc };
+        const meta = inferPartyMeta(partyLabel);
+        const acc = partyTallies.get(partyLabel) || { votes: 0, label: partyLabel, color: meta.color, bloc: meta.bloc };
         acc.votes += v;
-        partyTallies.set(label, acc);
+        partyTallies.set(partyLabel, acc);
       });
     });
 
