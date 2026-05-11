@@ -4570,7 +4570,16 @@ function renderTerritorialAggregation() {
     root.innerHTML = '';
     return;
   }
-  const summaryRows = (state.summary || []).filter(row => row.election_key === electionKey);
+  // Honour the user's current territorial mode (storico vs armonizzato).
+  // Every other aggregation in the codebase applies this filter, and
+  // skipping it here can double-count comuni that have BOTH a historical
+  // and a harmonised row for the same election — which would inflate
+  // turnout and produce inconsistent leader shares between this panel
+  // and the rest of the UI.
+  const summaryRows = (state.summary || []).filter(row =>
+    row.election_key === electionKey
+    && (!state.territorialMode || !row.territorial_mode || row.territorial_mode === state.territorialMode)
+  );
   if (!summaryRows.length) {
     summary.textContent = 'Nessun comune disponibile per questa elezione.';
     root.innerHTML = '';
