@@ -181,6 +181,37 @@ export function inferredPartyMetaOrNull(label) {
   return match ? match[1] : null;
 }
 
+// Resolve the historical pre-vote electoral coalition for a (election,
+// party_raw) pair. Reads the per-election lookup that `data.js` builds
+// from `data/derived/electoral_coalitions.json` at load time. Returns
+// the coalition record or `null` if:
+//   - the catalog is absent (file missing — graceful no-op);
+//   - the election predates 1994 (no formal pre-vote coalitions);
+//   - the party_raw label is not in the curated coalition for that year
+//     (e.g. minor / regional lists that ran alone).
+//
+// The catalog uses the canonical party_raw strings from the master CSV
+// to avoid regex-soup; matching is done lowercase to absorb the small
+// number of casing inconsistencies that survive the preprocessor.
+export function coalitionForParty(state, electionKey, partyRaw) {
+  if (!state || !electionKey || !partyRaw) return null;
+  const lookup = state.coalitionLookupByElection;
+  if (!lookup || typeof lookup.get !== 'function') return null;
+  const partyMap = lookup.get(electionKey);
+  if (!partyMap) return null;
+  return partyMap.get(String(partyRaw).trim().toLowerCase()) || null;
+}
+
+// True when the active election has at least one declared electoral
+// coalition. Used by UI surfaces that want to hide / disable the
+// "coalition" view for pre-1994 elections, where coalitions did not
+// exist as a pre-vote construct in Italy.
+export function hasCoalitionData(state, electionKey) {
+  if (!state || !electionKey) return false;
+  const partyMap = state.coalitionLookupByElection?.get?.(electionKey);
+  return !!(partyMap && partyMap.size);
+}
+
 export const FAMILY_COLORS = {
   'cattolico-popolare': '#b45309',
   'sinistra storica': '#b91c1c',

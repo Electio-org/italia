@@ -159,6 +159,42 @@ function parseResultsLongRows(rows) {
   return parseNumberFields(rows, RESULTS_LONG_NUMBER_FIELDS).map(applyRuntimeTaxonomy);
 }
 
+// Build a per-election Map<lowercased_party_raw, coalition_record> from
+// the curated coalitions JSON. We lowercase the party_raw key because the
+// upstream CSV labels mix casings ("L'Ulivo" vs "L'ulivo" in some pre-
+// processing paths) and we want a single resilient point of normalisation.
+// Coalition records preserve the full metadata (key, label, color, bloc,
+// election_key) so consumers can render without re-walking the catalog.
+function buildCoalitionLookupByElection(catalog) {
+  const out = new Map();
+  if (!catalog?.coalitions) return out;
+  Object.entries(catalog.coalitions).forEach(([electionKey, coalitions]) => {
+    if (!Array.isArray(coalitions) || !coalitions.length) return;
+    const partyToCoalition = new Map();
+    coalitions.forEach(coalition => {
+      const parties = Array.isArray(coalition?.parties) ? coalition.parties : [];
+      parties.forEach(partyRaw => {
+        const key = String(partyRaw || '').trim().toLowerCase();
+        if (!key) return;
+        // First-write-wins: a party should only belong to one coalition per
+        // election. If the JSON accidentally lists it twice we keep the
+        // first occurrence and ignore the rest (defensive — the curated
+        // file should never trip this).
+        if (partyToCoalition.has(key)) return;
+        partyToCoalition.set(key, {
+          coalition_key: coalition.key || '',
+          coalition_label: coalition.label || '',
+          coalition_color: coalition.color || '#94a3b8',
+          coalition_bloc: coalition.bloc || '',
+          election_key: electionKey
+        });
+      });
+    });
+    out.set(electionKey, partyToCoalition);
+  });
+  return out;
+}
+
 function parseCustomIndicatorRows(rows) {
   return parseNumberFields(rows, CUSTOM_INDICATOR_NUMBER_FIELDS);
 }
@@ -509,7 +545,12 @@ async function loadBundleWithManifest(state, manifest, resolver, { buildIndices,
   const deferredResultsStrategy = String(manifest.loading?.municipalityResultsLong?.strategy || '');
   const preferDeferredSummary = Boolean(files.municipalitySummaryByElectionIndex || deferredSummaryStrategy.includes('deferred'));
   const preferDeferredResults = Boolean(files.municipalityResultsLongByElectionIndex || deferredResultsStrategy.includes('deferred'));
-  const [elections, municipalities, parties, eagerSummary, summaryShardIndex, eagerResultsLong, resultsShardIndex, geometryPack] = await Promise.all([
+  // Path to the curated historical-coalitions catalog. Hard-coded because
+  // it's an opt-in product (not a derived shard) and may live outside the
+  // manifest. Falls back to null silently — coalition UI elements
+  // gracefully no-op when state.electoralCoalitions is absent.
+  const coalitionsPath = files.electoralCoalitions || 'data/derived/electoral_coalitions.json';
+  const [elections, municipalities, parties, eagerSummary, summaryShardIndex, eagerResultsLong, resultsShardIndex, geometryPack, electoralCoalitions] = await Promise.all([
     resolver.csv(files.electionsMaster),
     resolver.csv(files.municipalitiesMaster),
     resolver.csv(files.partiesMaster),
@@ -517,7 +558,8 @@ async function loadBundleWithManifest(state, manifest, resolver, { buildIndices,
     files.municipalitySummaryByElectionIndex ? resolver.json(files.municipalitySummaryByElectionIndex).catch(() => null) : Promise.resolve(null),
     !preferDeferredResults && files.municipalityResultsLong ? resolver.csv(files.municipalityResultsLong).catch(() => []) : Promise.resolve([]),
     files.municipalityResultsLongByElectionIndex ? resolver.json(files.municipalityResultsLongByElectionIndex).catch(() => null) : Promise.resolve(null),
-    files.geometryPack ? resolver.json(files.geometryPack).catch(() => null) : Promise.resolve(null)
+    files.geometryPack ? resolver.json(files.geometryPack).catch(() => null) : Promise.resolve(null),
+    resolver.json(coalitionsPath).catch(() => null)
   ]);
   const needsFallbackGeometry = !geometryPack && files.geometry;
   const needsFallbackProvinceGeometry = !geometryPack && files.provinceGeometry;
@@ -555,6 +597,12 @@ async function loadBundleWithManifest(state, manifest, resolver, { buildIndices,
   state.geometryPack = geometryPack || buildSyntheticGeometryPack(files.geometry, files.provinceGeometry);
   state.geometryFallback = mainGeometry || { type: 'FeatureCollection', features: [] };
   state.provinceGeometryFallback = provinceGeometry || { type: 'FeatureCollection', features: [] };
+  // Historical-coalitions catalog (curated JSON). Build a per-election
+  // map: party_raw → coalition record. We resolve the lookup at read
+  // time in shared.js#coalitionForParty so a missing file is a silent
+  // no-op (coalition UI surfaces gracefully degrade).
+  state.electoralCoalitions = electoralCoalitions || null;
+  state.coalitionLookupByElection = buildCoalitionLookupByElection(electoralCoalitions);
   state.geometryCache = {};
   state.dataSource = source;
   state.dataSourceLabel = source === 'local' ? `Bundle locale (${resolver.fileCount || 0} file)` : 'Bundle incorporato';
