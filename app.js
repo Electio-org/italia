@@ -2538,18 +2538,24 @@ function renderPartyResults() {
     host.innerHTML = '';
     return;
   }
-  const mode = state.selectedPartyMode || 'party_raw';
+  const selectedId = state.selectedMunicipalityId || null;
+  const selectedRows = selectedId
+    ? allRows.filter(r => String(r.municipality_id) === String(selectedId))
+    : null;
+  const isComune = !!(selectedRows && selectedRows.length);
+  // When a single comune is selected the user wants party-level detail
+  // ("voglio che mi escano i risultati dei partiti"); rolling up by
+  // bloc here just hides what actually happened in that comune
+  // (and produces the visible "altro 54%" pile-up when the Python
+  // preprocessor's taxonomy is too coarse). For the country-wide
+  // breakdown the partyMode-aware roll-up still makes sense.
+  const mode = isComune ? 'party_raw' : (state.selectedPartyMode || 'party_raw');
   const partyKey = row => {
     if (mode === 'bloc') return row.bloc || row.party_raw || '';
     if (mode === 'party_std') return row.party_std || row.party_raw || '';
     if (mode === 'party_family') return row.party_family || row.party_std || row.party_raw || '';
     return row.party_raw || row.party_std || '';
   };
-  const selectedId = state.selectedMunicipalityId || null;
-  const selectedRows = selectedId
-    ? allRows.filter(r => String(r.municipality_id) === String(selectedId))
-    : null;
-  const isComune = !!(selectedRows && selectedRows.length);
   const totals = new Map();
   if (isComune) {
     // Selected comune: vote_share is already per-comune percentage. Sum it

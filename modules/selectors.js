@@ -116,9 +116,15 @@ export function appendRowsToIndices(state, { summaryRows = [], resultRows = [], 
     state.indices.regionSummaryMap.set(regionKey, summaryStats(addToSummaryAcc(state.indices.__regionAcc, regionKey, row)));
   });
 
+  // Track which (election, municipality) pairs gained new result rows so
+  // we can recompute their dominant_block once, after the loop, instead
+  // of redoing the work every row.
+  const touchedResultPairs = resultRows.length ? new Set() : null;
+
   resultRows.forEach(row => {
     const resultKey = `${row.election_key}__${row.municipality_id}`;
     pushGrouped(state.indices.resultsMap, resultKey, row);
+    if (touchedResultPairs) touchedResultPairs.add(resultKey);
     if (!state.indices.resultsByElectionMunicipality.has(row.election_key)) {
       state.indices.resultsByElectionMunicipality.set(row.election_key, new Map());
     }
@@ -142,6 +148,58 @@ export function appendRowsToIndices(state, { summaryRows = [], resultRows = [], 
       state.indices.regionGroupMaps[mode].set(regionKey, denom > 0 ? (total / denom) * 100 : null);
     });
   });
+
+  // Re-derive `dominant_block` on summary rows from the re-inferred bloc
+  // values we now have on result rows. The CSV's dominant_block was
+  // computed by the Python preprocessor using its (much shorter) party
+  // taxonomy, so a lot of comuni ended up with `dominant_block=altro`
+  // even when the leading bloc by votes was clearly e.g. centro-destra.
+  // We fix that here so the map's `dominant_block` metric and the
+  // quickFacts "Blocco / coalizione" line are consistent with the
+  // re-inferred bloc shown in the per-party panel.
+  //
+  // The summary row is mutated in place (the index already holds the
+  // same object reference), so all downstream readers automatically see
+  // the corrected value without an extra cache-busting pass.
+  if (touchedResultPairs) {
+    touchedResultPairs.forEach(resultKey => {
+      const rows = state.indices.resultsMap.get(resultKey);
+      if (!rows || !rows.length) return;
+      const summaryRow = state.indices.summaryMap.get(resultKey);
+      if (!summaryRow) return;
+      const byBloc = new Map();
+      rows.forEach(r => {
+        const bloc = (r.bloc || '').trim();
+        if (!bloc) return;
+        const share = safeNumber(r.vote_share) || 0;
+        byBloc.set(bloc, (byBloc.get(bloc) || 0) + share);
+      });
+      if (!byBloc.size) return;
+      // Pick the bloc with the highest aggregate share. Ties are broken
+      // by the first-seen order in `rows`, which itself is the CSV
+      // insertion order (rank ascending), so the tie-break favours the
+      // bloc that contains the top-ranked party — a reasonable default.
+      let best = null;
+      let bestShare = -Infinity;
+      byBloc.forEach((share, bloc) => {
+        if (share > bestShare) { best = bloc; bestShare = share; }
+      });
+      if (best && best !== 'altro') {
+        // Only overwrite when we have a clearly non-`altro` winner.
+        // If everything's still `altro` (e.g. data really has no
+        // party that the JS taxonomy recognises) we leave the CSV
+        // value alone instead of stamping `altro` on top of `altro`.
+        summaryRow.dominant_block = best;
+      } else if (best === 'altro' && summaryRow.dominant_block && summaryRow.dominant_block !== 'altro') {
+        // Edge case: CSV had a real bloc but our re-aggregation
+        // sums to `altro` (e.g. because party_raw values are all
+        // unrecognised). Trust the CSV in that case — better to
+        // keep the existing value than degrade it.
+      } else {
+        summaryRow.dominant_block = best || summaryRow.dominant_block || '';
+      }
+    });
+  }
 
   if (touchedSummary && (state.resultsLong || []).length) recomputeVoteShareMaps(state);
 }
