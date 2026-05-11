@@ -23,26 +23,34 @@ const els = {
   chartBlocComposition: document.getElementById('detail-chart-bloc-composition'),
 };
 
-// Categorical colors for `dominant_block` (matches the values found in
-// data/derived/municipality_summary.csv: centro · centro-destra · destra ·
-// centro-sinistra · sinistra · populista · altro · empty).
+// Categorical colors for `dominant_block`. Ordine: continuum politico
+// destra → sinistra, poi populista / regionalista / altro come categorie
+// "fuori asse" — la stessa sequenza usata da modules/shared.js così
+// legend, timeline e KPI sono coerenti tra mappa principale e scheda
+// comune. I valori possibili in data/derived/municipality_summary.csv
+// sono: centro · centro-destra · destra · centro-sinistra · sinistra ·
+// populista · liberale · regionalista · altro · empty.
 const BLOCK_COLORS = {
-  'sinistra': '#dc2626',
-  'centro-sinistra': '#f59e0b',
-  'centro': '#0ea5e9',
-  'centro-destra': '#1e3a8a',
   'destra': '#1e1b4b',
+  'centro-destra': '#1e3a8a',
+  'liberale': '#8b5cf6',
+  'centro': '#0ea5e9',
+  'centro-sinistra': '#f59e0b',
+  'sinistra': '#dc2626',
   'populista': '#a855f7',
+  'regionalista': '#16a34a',
   'altro': '#94a3b8',
   '': '#cbd5e1',
 };
 const BLOCK_LABEL = {
-  'sinistra': 'Sinistra',
-  'centro-sinistra': 'Centrosinistra',
-  'centro': 'Centro',
-  'centro-destra': 'Centrodestra',
   'destra': 'Destra',
+  'centro-destra': 'Centrodestra',
+  'liberale': 'Liberale',
+  'centro': 'Centro',
+  'centro-sinistra': 'Centrosinistra',
+  'sinistra': 'Sinistra',
   'populista': 'Populista',
+  'regionalista': 'Regionalista',
   'altro': 'Altro',
   '': 'n.d.',
 };

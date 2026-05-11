@@ -8,6 +8,8 @@ import {
   mean,
   PARTY_FALLBACKS,
   BLOCK_COLORS,
+  BLOCK_ORDER,
+  compareBlocks,
   FAMILY_COLORS,
   AREA_PRESETS,
   FALLBACK_PARTY_OPTIONS,
@@ -2407,7 +2409,14 @@ function colorScaleForRows(rows) {
   const preferred = state.selectedPalette;
 
   if (state.selectedMetric === 'first_party' || state.selectedMetric === 'dominant_block') {
-    const categories = uniqueSorted(values);
+    // dominant_block: ordina i blocchi sul continuum politico (destra →
+    // centro-destra → liberale → centro → centro-sinistra → sinistra →
+    // populista → regionalista → altro) invece che alfabeticamente, così
+    // la legenda è leggibile come uno spettro. Per first_party teniamo
+    // l'ordinamento alfabetico come prima.
+    const categories = state.selectedMetric === 'dominant_block'
+      ? [...new Set(values.filter(v => v !== null && v !== undefined && v !== ''))].sort(compareBlocks)
+      : uniqueSorted(values);
     return {
       type: 'categorical',
       colorFor: v => {
@@ -2415,7 +2424,7 @@ function colorScaleForRows(rows) {
         if (state.selectedMetric === 'dominant_block') return getBlockColor(v);
         return getPartyColor(v);
       },
-      legend: categories.slice(0, 8).map(c => ({ label: c, color: state.selectedMetric === 'dominant_block' ? getBlockColor(c) : getPartyColor(c) }))
+      legend: categories.slice(0, 9).map(c => ({ label: c, color: state.selectedMetric === 'dominant_block' ? getBlockColor(c) : getPartyColor(c) }))
     };
   }
 
@@ -6044,7 +6053,10 @@ function renderTransitionMatrix() {
     .map(([transition, n]) => ({ transition, n }))
     .sort((a,b) => b.n - a.n)
     .slice(0, 8);
-  const blocks = uniqueSorted(pairs.flatMap(d => [d.a.dominant_block || '—', d.b.dominant_block || '—'])).slice(0, 8);
+  // Blocchi nella matrice di transizione: ordinati sul continuum politico
+  // così le righe/colonne leggono come uno spettro (destra → sinistra)
+  // invece che alfabetico. "—" (sconosciuto) cade in coda per compareBlocks.
+  const blocks = [...new Set(pairs.flatMap(d => [d.a.dominant_block || '—', d.b.dominant_block || '—']).filter(v => v !== null && v !== undefined && v !== ''))].sort(compareBlocks).slice(0, 9);
   const matrix = blocks.map(from => {
     const row = { from };
     blocks.forEach(to => {
