@@ -4889,11 +4889,27 @@ function bindEvents() {
       invalidateDerivedCaches();
       state.tablePage = 1;
       readControls();
+      // Any control change that affects the party axis (party metric,
+      // party selection, party-mode grouping) may require an as-yet-
+      // unhydrated party-results shard. We must keep the spinner up
+      // until ensureVisibleResults resolves, otherwise the user sees
+      // the spinner flash off and an empty / stale map while the shard
+      // is still being loaded in the background ("si blocca tutto").
+      const needsPartyHydration =
+        el === els.partySelect ||
+        el === els.partyModeSelect ||
+        el === els.metricSelect ||
+        el === els.electionSelect ||
+        el === els.compareElectionSelect;
       if (loadingTriggerSelects.has(el)) {
         const needsHeavyWarmup = !canInstantRenderCurrentMap();
-        const message = el === els.electionSelect || el === els.compareElectionSelect
-          ? 'Caricamento dati elezione…'
-          : 'Aggiornamento mappa…';
+        const partyAwareMessage = needsPartyHydration && metricNeedsPartyResults()
+          ? 'Caricamento partiti…'
+          : null;
+        const message = partyAwareMessage
+          || (el === els.electionSelect || el === els.compareElectionSelect
+            ? 'Caricamento dati elezione…'
+            : 'Aggiornamento mappa…');
         // Always flash the spinner on toolbox changes, even when the bake
         // is already cached — the user explicitly asked for visible
         // feedback ("spesso non si capisce che sta caricando"). The 2+2
@@ -4905,6 +4921,15 @@ function bindEvents() {
             await prepareMapForSmoothUse({
               aggressive: el === els.electionSelect || el === els.compareElectionSelect || el === els.provinceSelect || el === els.areaPresetSelect
             });
+          }
+          if (needsPartyHydration && shouldHydratePartyResultsNow()) {
+            // Hold the spinner until the party-results shard for the
+            // current election is actually present. Without this await
+            // the spinner dismisses while ensureVisibleResults is still
+            // pumping shards in the background and the map renders empty
+            // for a few seconds before snapping into place.
+            try { await ensureVisibleResults({ silent: true }); }
+            catch (err) { registerIssue('party-hydration-on-control-change', err); }
           }
           requestRender();
         });
