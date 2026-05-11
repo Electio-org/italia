@@ -88,6 +88,7 @@ const state = {
   selectedParty: null,
   selectedCustomIndicator: null,
   territorialMode: 'historical',
+  territorialAggregationScope: 'region',
   geometryReferenceYear: 'auto',
   selectedProvinceSet: new Set(),
   selectedMunicipalityId: null,
@@ -4522,6 +4523,194 @@ function renderProvinceInsights() {
   }));
 }
 
+// Aggregates the active election's results to the regione / provincia level
+// and renders a sorted "who won where" panel — the user's request:
+//   > Sarebbe bello aggiungere un blocco che mi fa vedere chi ha vinto
+//   > regione per regione, chi ha vinto provincia per provincia.
+//
+// The aggregation strategy is deliberately layered so the panel stays
+// useful even before results-long is hydrated for the active election:
+//
+//   1. PRIMARY  — per-party absolute votes from results-long (state
+//      .resultsLong) summed across all comuni in the group, with the
+//      group denominator = sum of valid_votes per comune. This is the
+//      most accurate path and the only one that gives a real "share %".
+//   2. FALLBACK — when no results-long row is available for the group,
+//      we fall back to summary.first_party_std weighted by `voters` to
+//      pick a most-frequent leader, and report it without a share %.
+//
+// Turnout is always the weighted average sum(voters)/sum(electors).
+// Number of comuni is `summaryRows.length` (not just rows-with-leader),
+// so the user can see coverage gaps explicitly.
+function renderTerritorialAggregation() {
+  const root = els.territorialAggregationContent;
+  const summary = els.territorialAggregationSummary;
+  if (!root || !summary) return;
+  const scope = state.territorialAggregationScope === 'province' ? 'province' : 'region';
+  els.territorialAggregationControls?.forEach(btn => {
+    const isActive = btn.dataset.territorialScope === scope;
+    btn.classList.toggle('is-active', isActive);
+    btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+  });
+  const electionKey = state.selectedElection;
+  if (!electionKey) {
+    summary.textContent = 'Seleziona un\'elezione per attivare la classifica territoriale.';
+    root.innerHTML = '';
+    return;
+  }
+  const summaryRows = (state.summary || []).filter(row => row.election_key === electionKey);
+  if (!summaryRows.length) {
+    summary.textContent = 'Nessun comune disponibile per questa elezione.';
+    root.innerHTML = '';
+    return;
+  }
+  const keyFor = row => scope === 'province'
+    ? (row.province || 'Senza provincia')
+    : (row.region || 'Senza regione');
+
+  // Group comuni by region / province first, so we don't allocate a
+  // per-party map for groups that have zero comuni in the active filter.
+  const groups = d3.group(summaryRows, keyFor);
+  const cards = [];
+  groups.forEach((rows, label) => {
+    let voters = 0;
+    let electors = 0;
+    rows.forEach(r => {
+      voters += safeNumber(r.voters) || 0;
+      electors += safeNumber(r.electors) || 0;
+    });
+
+    // Primary: tally party votes across all comuni that have rows in
+    // results-long for this election. validVotes is the per-comune
+    // valid_votes — using it as denominator keeps the share consistent
+    // with the comune-level numbers shown in the tooltip / sidebar.
+    const partyTallies = new Map();
+    let validVotesSum = 0;
+    let rowsWithResults = 0;
+    rows.forEach(r => {
+      const resultRows = getResultsRows(state, electionKey, r.municipality_id);
+      if (!resultRows.length) return;
+      rowsWithResults += 1;
+      validVotesSum += safeNumber(r.valid_votes) || 0;
+      resultRows.forEach(rr => {
+        const label = (rr.party_raw || rr.party_std || '').trim();
+        if (!label) return;
+        const v = safeNumber(rr.votes) || 0;
+        const meta = inferPartyMeta(label);
+        const acc = partyTallies.get(label) || { votes: 0, label, color: meta.color, bloc: meta.bloc };
+        acc.votes += v;
+        partyTallies.set(label, acc);
+      });
+    });
+
+    let leader = null;
+    let leaderShare = null;
+    if (partyTallies.size && validVotesSum > 0) {
+      let bestVotes = -Infinity;
+      partyTallies.forEach(rec => { if (rec.votes > bestVotes) { bestVotes = rec.votes; leader = rec; } });
+      leaderShare = leader ? (leader.votes / validVotesSum) * 100 : null;
+    }
+
+    // Fallback: pick the most-frequent first_party_std weighted by voters.
+    // This is the path 1948-1970 (before results-long shards are present)
+    // and any election the user has not yet triggered hydration for.
+    if (!leader) {
+      const fallback = new Map();
+      rows.forEach(r => {
+        const lbl = (r.first_party_std || '').trim();
+        if (!lbl) return;
+        const w = safeNumber(r.voters) || 1;
+        fallback.set(lbl, (fallback.get(lbl) || 0) + w);
+      });
+      let bestW = -Infinity;
+      let bestLbl = null;
+      fallback.forEach((w, lbl) => { if (w > bestW) { bestW = w; bestLbl = lbl; } });
+      if (bestLbl) {
+        const meta = inferPartyMeta(bestLbl);
+        leader = { label: bestLbl, color: meta.color, bloc: meta.bloc, votes: null };
+      }
+    }
+
+    const turnoutPct = electors > 0 ? (voters / electors) * 100 : null;
+    cards.push({
+      label,
+      n: rows.length,
+      rowsWithResults,
+      leader,
+      leaderShare,
+      turnoutPct
+    });
+  });
+
+  // Stable sort: leader share desc (when present), then alpha. Groups
+  // without a leader sink to the bottom so the visible top stays
+  // informative.
+  cards.sort((a, b) => {
+    const sa = a.leaderShare != null ? a.leaderShare : -Infinity;
+    const sb = b.leaderShare != null ? b.leaderShare : -Infinity;
+    if (sa !== sb) return sb - sa;
+    return String(a.label).localeCompare(String(b.label), 'it');
+  });
+
+  const scopeLabel = scope === 'province' ? 'province' : 'regioni';
+  const coverage = cards.filter(c => c.leader && c.leaderShare != null).length;
+  summary.textContent = `${electionLabelByKey(electionKey)} · ${fmtInt(cards.length)} ${scopeLabel} aggregati · ${fmtInt(coverage)} con quota partito calcolata da risultati`;
+
+  root.innerHTML = cards.map(card => {
+    const leaderLabel = card.leader ? card.leader.label : '—';
+    const leaderColor = card.leader ? card.leader.color : '#94a3b8';
+    const shareStr = card.leaderShare != null ? `${fmtPct(card.leaderShare)}%` : '—';
+    const turnoutStr = card.turnoutPct != null ? `${fmtPct(card.turnoutPct)}%` : '—';
+    const action = scope === 'province'
+      ? `<button type="button" class="ghost-btn small-btn" data-territorial-focus-province="${escapeHtml(card.label)}">Filtra mappa su questa provincia</button>`
+      : `<button type="button" class="ghost-btn small-btn" data-territorial-focus-region="${escapeHtml(card.label)}">Filtra mappa su questa regione</button>`;
+    return `<div class="territorial-aggregation-card" style="--leader-color:${leaderColor}">
+      <div class="territorial-aggregation-card-head">
+        <span class="territorial-aggregation-stripe" aria-hidden="true"></span>
+        <div class="territorial-aggregation-card-title">
+          <strong>${escapeHtml(card.label)}</strong>
+          <span class="helper-text">${fmtInt(card.n)} comuni${card.rowsWithResults < card.n ? ` · ${fmtInt(card.rowsWithResults)} con dettaglio partito` : ''}</span>
+        </div>
+      </div>
+      <div class="territorial-aggregation-card-leader">
+        <span class="territorial-aggregation-dot" style="background:${leaderColor}"></span>
+        <span class="territorial-aggregation-party"><strong>${escapeHtml(leaderLabel)}</strong></span>
+        <span class="territorial-aggregation-share">${shareStr}</span>
+      </div>
+      <div class="territorial-aggregation-card-foot">
+        <span><span class="k">Affluenza</span> <strong>${turnoutStr}</strong></span>
+        ${action}
+      </div>
+    </div>`;
+  }).join('');
+
+  // Wire the focus buttons to filter the existing map by region (we
+  // translate to the matching set of province names) or by the single
+  // province directly. Region → province set keeps the existing filter
+  // contract (selectedProvinceSet) intact.
+  [...root.querySelectorAll('[data-territorial-focus-province]')].forEach(btn => btn.addEventListener('click', () => {
+    state.selectedProvinceSet = new Set([btn.dataset.territorialFocusProvince]);
+    invalidateDerivedCaches();
+    setupControls();
+    readControls();
+    requestRender();
+  }));
+  [...root.querySelectorAll('[data-territorial-focus-region]')].forEach(btn => btn.addEventListener('click', () => {
+    const targetRegion = btn.dataset.territorialFocusRegion;
+    const provinces = new Set(
+      summaryRows
+        .filter(r => (r.region || '') === targetRegion && r.province)
+        .map(r => r.province)
+    );
+    if (!provinces.size) return;
+    state.selectedProvinceSet = provinces;
+    invalidateDerivedCaches();
+    setupControls();
+    readControls();
+    requestRender();
+  }));
+}
+
 function renderHeatmap() {
   const svg = d3.select('#heatmap-chart');
   if (svg.empty()) return;
@@ -6049,6 +6238,7 @@ function renderAll() {
     { scope: 'rankings', fn: renderRankingsPanel, target: () => els.rankingsPanelContent },
     { scope: 'multi-compare', fn: renderMultiCompareChart, target: '#multi-compare-chart' },
     { scope: 'province-insights', fn: renderProvinceInsights, target: () => els.provinceInsights },
+    { scope: 'territorial-aggregation', fn: renderTerritorialAggregation, target: () => els.territorialAggregationContent },
     { scope: 'heatmap', fn: renderHeatmap, target: '#heatmap-chart' },
     { scope: 'similarity', fn: renderSimilarityPanel, target: () => els.similarityPanelContent },
     { scope: 'province-multiples', fn: renderProvinceSmallMultiples, target: () => els.provinceSmallMultiples },
@@ -6220,6 +6410,9 @@ async function init() {
     multiCompareSummary: q('multi-compare-summary'),
     recentMunicipalityPanel: q('recent-municipality-panel'),
     provinceInsights: q('province-insights'),
+    territorialAggregationContent: q('territorial-aggregation-content'),
+    territorialAggregationSummary: q('territorial-aggregation-summary'),
+    territorialAggregationControls: Array.from(document.querySelectorAll('[data-territorial-scope]')),
     similaritySummary: q('similarity-summary'),
     similarityPanelContent: q('similarity-panel-content'),
     provinceSmallMultiples: q('province-small-multiples'),

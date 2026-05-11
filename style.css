@@ -690,6 +690,90 @@ tr.is-selected td { background: rgba(34,197,94,.08); }
 .map-path.is-compared {
   filter: saturate(1.05);
 }
+
+.territorial-aggregation-controls {
+  display: flex;
+  gap: 6px;
+}
+.territorial-aggregation-controls .is-active {
+  background: rgba(96,165,250,.18);
+  border-color: rgba(96,165,250,.55);
+  color: var(--accent-deep, #1e3a8a);
+}
+.territorial-aggregation-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 10px;
+}
+.territorial-aggregation-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid var(--line-soft);
+  background: rgba(15,23,42,.45);
+  overflow: hidden;
+}
+.territorial-aggregation-stripe {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--leader-color, #94a3b8);
+}
+.territorial-aggregation-card-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding-left: 6px;
+}
+.territorial-aggregation-card-title strong {
+  display: block;
+  font-size: 0.98rem;
+  line-height: 1.2;
+}
+.territorial-aggregation-card-leader {
+  display: grid;
+  grid-template-columns: 12px 1fr auto;
+  align-items: center;
+  gap: 8px;
+  padding-left: 6px;
+}
+.territorial-aggregation-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+}
+.territorial-aggregation-party {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.territorial-aggregation-share {
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+  font-weight: 600;
+}
+.territorial-aggregation-card-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding-left: 6px;
+  font-size: 0.85rem;
+}
+.territorial-aggregation-card-foot .k {
+  color: var(--muted);
+  margin-right: 4px;
+}
+.territorial-aggregation-card-foot button {
+  width: auto;
+  padding: 6px 9px;
+  border-radius: 10px;
+}
 .heatmap-cell {
   stroke: rgba(255,255,255,.08);
 }

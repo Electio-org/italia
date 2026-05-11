@@ -935,6 +935,23 @@
         </section>
       </section>
 
+      <section class="territorial-aggregation section-view section-view-dashboard section-view-analysis">
+        <section class="panel territorial-aggregation-panel" data-panel-key="territorial_aggregation">
+          <div class="panel-header">
+            <div>
+              <h2>Vincitore per regione / provincia</h2>
+              <p class="panel-subtitle">Aggregazione dei voti dei comuni nella elezione attiva: chi ha vinto regione per regione, provincia per provincia.</p>
+            </div>
+            <div class="territorial-aggregation-controls" role="tablist" aria-label="Livello di aggregazione">
+              <button type="button" class="ghost-btn small-btn is-active" data-territorial-scope="region" role="tab" aria-selected="true">Regioni</button>
+              <button type="button" class="ghost-btn small-btn" data-territorial-scope="province" role="tab" aria-selected="false">Province</button>
+            </div>
+          </div>
+          <div id="territorial-aggregation-summary" class="helper-text">Carica un'elezione per vedere chi ha vinto regione per regione.</div>
+          <div id="territorial-aggregation-content" class="territorial-aggregation-grid"></div>
+        </section>
+      </section>
+
       <section class="comparison-and-table section-view section-view-profile section-view-analysis">
         <section class="panel comparison-panel" data-panel-key="comparison">
           <div class="panel-header">
