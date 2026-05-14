@@ -10,7 +10,8 @@ import {
   BLOCK_COLORS,
   FAMILY_COLORS,
   AREA_PRESETS,
-  FALLBACK_PARTY_OPTIONS
+  FALLBACK_PARTY_OPTIONS,
+  inferredPartyMetaOrNull
 } from './modules/shared.js';
 import {
   trustStyle,
@@ -2529,6 +2530,61 @@ function renderQuickStats(rows) {
     </dl>`;
 }
 
+// Re-aggregate per-comune results-long rows by bloc, with runtime
+// re-inference of the bloc taxonomy (modules/shared.js). Returns a
+// sorted list of { label, share, votes } summing the comune's bloc
+// shares — typically very close to 100% with a small residual when the
+// runtime list can't classify a party either.
+function buildBlocBreakdownForComune(comuneRows) {
+  const totals = new Map();
+  for (const row of (comuneRows || [])) {
+    const raw = String(row.party_raw || row.party_std || '').trim();
+    const meta = raw ? inferredPartyMetaOrNull(raw) : null;
+    let bloc = (meta?.bloc || row.bloc || '').trim();
+    if (!bloc) bloc = 'altro';
+    const share = safeNumber(row.vote_share);
+    if (!Number.isFinite(share)) continue;
+    const cur = totals.get(bloc) || { share: 0, votes: 0 };
+    cur.share += share;
+    cur.votes += safeNumber(row.votes) || 0;
+    totals.set(bloc, cur);
+  }
+  return [...totals.entries()]
+    .map(([label, v]) => ({ label, share: v.share, votes: v.votes }))
+    .filter(d => Number.isFinite(d.share) && d.share > 0)
+    .sort((a, b) => (b.share - a.share) || (b.votes - a.votes));
+}
+
+// Render a compact, ranked list of blocs for the selected comune. Used
+// both as a stand-alone panel above the party list (when the user
+// asked for the bloc/coalition metric) and as a tooltip-friendly
+// summary inside the comune card.
+function blocBreakdownHtml(blocs, opts = {}) {
+  if (!blocs.length) return '';
+  const max = blocs[0].share || 1;
+  const total = blocs.reduce((acc, b) => acc + (b.share || 0), 0);
+  const note = total > 0 && total < 95
+    ? `<div class="party-results-footnote">Quote ri-aggregate dal mix partiti del comune (Σ ≈ ${fmtPct(total)}%; il residuo è la quota dei partiti senza blocco riconosciuto a runtime).</div>`
+    : '';
+  const heading = opts.heading || 'Blocchi nel comune';
+  const subheading = opts.subheading || '';
+  return `
+    <div class="party-results-header">
+      <div class="eyebrow">${escapeHtml(heading)}</div>
+      ${subheading ? `<div class="party-results-scope">${escapeHtml(subheading)}</div>` : ''}
+    </div>
+    <ol class="party-results-list party-results-list-block">
+      ${blocs.map(b => `
+        <li class="party-results-row" data-bloc="${escapeHtml(b.label)}">
+          <span class="party-results-swatch" style="background:${getGroupColor(b.label)}"></span>
+          <span class="party-results-label">${escapeHtml(b.label)}</span>
+          <span class="party-results-bar"><span class="party-results-bar-fill" style="width:${Math.max(2, Math.min(100, (b.share / max) * 100))}%; background:${getGroupColor(b.label)}"></span></span>
+          <span class="party-results-pct">${fmtPct(b.share)}%</span>
+        </li>`).join('')}
+    </ol>
+    ${note}`;
+}
+
 function renderPartyResults() {
   const host = els.sidebarPartyResults;
   if (!host) return;
@@ -2605,15 +2661,71 @@ function renderPartyResults() {
     return;
   }
   let scopeLabel;
+  let comuneName = '';
   if (isComune) {
     const muni = state.municipalities.find(m => String(m.municipality_id) === String(selectedId));
-    const name = muni?.name_current || muni?.municipality_name || `Comune ${selectedId}`;
-    scopeLabel = `${escapeHtml(name)} · ${escapeHtml(electionLabelFor(electionKey))}`;
+    comuneName = muni?.name_current || muni?.municipality_name || `Comune ${selectedId}`;
+    scopeLabel = `${escapeHtml(comuneName)} · ${escapeHtml(electionLabelFor(electionKey))}`;
   } else {
     scopeLabel = `Italia · ${escapeHtml(electionLabelFor(electionKey))}`;
   }
   const max = ranked[0].share || 1;
+
+  // When the user selected the "Blocchi / coalizioni" metric, also show
+  // the per-bloc rollup above the party list (requested explicitly for
+  // both the national view and the per-comune view). For a comune we
+  // re-aggregate from the row-level data we already have; for the
+  // national view we use the per-comune vote_share field (it is
+  // already a percentage so summing it across comuni and dividing by
+  // the number of comuni gives a balanced share — same approach the
+  // sidebar quick-stats already takes).
+  let blocSectionHtml = '';
+  if (state.selectedMetric === 'dominant_block') {
+    if (isComune) {
+      const blocs = buildBlocBreakdownForComune(selectedRows);
+      if (blocs.length) {
+        blocSectionHtml = blocBreakdownHtml(blocs, {
+          heading: 'Blocchi nel comune',
+          subheading: `${comuneName} · ${electionLabelFor(electionKey)}`,
+        });
+      }
+    } else {
+      // National view: aggregate bloc shares across all comuni weighted by votes.
+      const nationalTotals = new Map();
+      let grand = 0;
+      for (const row of allRows) {
+        const v = safeNumber(row.votes);
+        if (!Number.isFinite(v)) continue;
+        grand += v;
+      }
+      if (grand > 0) {
+        for (const row of allRows) {
+          const raw = String(row.party_raw || row.party_std || '').trim();
+          const meta = raw ? inferredPartyMetaOrNull(raw) : null;
+          let bloc = (meta?.bloc || row.bloc || '').trim();
+          if (!bloc) bloc = 'altro';
+          const v = safeNumber(row.votes);
+          if (!Number.isFinite(v)) continue;
+          const cur = nationalTotals.get(bloc) || { votes: 0 };
+          cur.votes += v;
+          nationalTotals.set(bloc, cur);
+        }
+        const blocs = [...nationalTotals.entries()]
+          .map(([label, v]) => ({ label, share: (v.votes / grand) * 100, votes: v.votes }))
+          .filter(d => Number.isFinite(d.share) && d.share > 0)
+          .sort((a, b) => (b.share - a.share) || (b.votes - a.votes));
+        if (blocs.length) {
+          blocSectionHtml = blocBreakdownHtml(blocs, {
+            heading: 'Blocchi a livello nazionale',
+            subheading: `Italia · ${electionLabelFor(electionKey)}`,
+          });
+        }
+      }
+    }
+  }
+
   host.innerHTML = `
+    ${blocSectionHtml}
     <div class="party-results-header">
       <div class="eyebrow">${isComune ? 'Risultati nel comune' : 'Risultati nazionali'}</div>
       <div class="party-results-scope">${scopeLabel}</div>

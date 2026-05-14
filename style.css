@@ -6765,3 +6765,111 @@ body[data-site-page="municipality-detail"] .detail-chart-card-wide {
     grid-template-columns: 1fr !important;
   }
 }
+
+/* ---------------------------------------------------------------
+   Bloc-composition timeline (one row per election, comune detail)
+
+   Shown as horizontal stacked bars: the left "year" column anchors
+   the row, the middle bar is the bloc breakdown for that election
+   (segments coloured the same way as the dashboard), and the right
+   column shows the top-3 blocs with their %.
+   --------------------------------------------------------------- */
+body[data-site-page="municipality-detail"] .detail-bloc-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 8px;
+}
+
+body[data-site-page="municipality-detail"] .detail-bloc-row {
+  display: grid;
+  grid-template-columns: 64px 1fr minmax(0, 280px);
+  align-items: center;
+  gap: 12px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  background: #f8fafc;
+}
+
+body[data-site-page="municipality-detail"] .detail-bloc-row-empty {
+  grid-template-columns: 64px 1fr;
+  background: transparent;
+  color: #94a3b8;
+  font-size: 0.85em;
+}
+
+body[data-site-page="municipality-detail"] .detail-bloc-year {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+body[data-site-page="municipality-detail"] .detail-bloc-bar {
+  display: flex;
+  height: 18px;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #e2e8f0;
+}
+
+body[data-site-page="municipality-detail"] .detail-bloc-seg {
+  display: block;
+  height: 100%;
+  min-width: 1px;
+}
+
+body[data-site-page="municipality-detail"] .detail-bloc-bar-skeleton {
+  background: linear-gradient(90deg, #e2e8f0 0%, #cbd5e1 50%, #e2e8f0 100%);
+  background-size: 200% 100%;
+  animation: detail-bloc-shimmer 1.2s linear infinite;
+}
+
+@keyframes detail-bloc-shimmer {
+  0%   { background-position: 100% 0%; }
+  100% { background-position: -100% 0%; }
+}
+
+body[data-site-page="municipality-detail"] .detail-bloc-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  justify-content: flex-end;
+  font-size: 0.78em;
+}
+
+body[data-site-page="municipality-detail"] .detail-bloc-legend-loading {
+  color: #94a3b8;
+  font-style: italic;
+}
+
+body[data-site-page="municipality-detail"] .detail-bloc-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 6px;
+  border-radius: 999px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+body[data-site-page="municipality-detail"] .detail-bloc-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  display: inline-block;
+}
+
+/* Stack the legend below the bar on narrow viewports — keeping all 3
+   columns side by side ends up either truncating the chips or pushing
+   the bar to ~80px on phones. */
+@media (max-width: 720px) {
+  body[data-site-page="municipality-detail"] .detail-bloc-row {
+    grid-template-columns: 56px 1fr;
+    grid-template-rows: auto auto;
+  }
+  body[data-site-page="municipality-detail"] .detail-bloc-legend {
+    grid-column: 1 / -1;
+    justify-content: flex-start;
+  }
+}
