@@ -15,6 +15,7 @@ const els = {
   anagrafica: document.getElementById('detail-anagrafica'),
   historyBody: document.getElementById('detail-history-body'),
   kpiStrip: document.getElementById('detail-kpi-strip'),
+  winnersBody: document.getElementById('detail-winners-body'),
   chartTurnout: document.getElementById('detail-chart-turnout'),
   chartMargin: document.getElementById('detail-chart-margin'),
   chartLeader: document.getElementById('detail-chart-leader'),
@@ -880,6 +881,114 @@ function renderKpiStrip(rows, aggregates) {
   `).join('');
 }
 
+// ----- 6. "Vincitore per elezione" timeline -----------------------------
+//
+// Compact, scannable table that gives the user a one-screen historical
+// compare across all elections covered for the comune. Each row is one
+// election (newest first) and emits:
+//   - winning party (with a "flip" badge if it changed vs the previous
+//     covered election)
+//   - winning party share (%)
+//   - winning bloc (re-inferred via the JS taxonomy — see
+//     `reinferBlockForSummaryRow`) with a "flip" badge if it differs
+//   - lead margin (1° vs 2° in percentage points)
+//   - Δ winning share in pp vs the previous covered election
+//   - Δ turnout in pp vs the previous covered election
+//
+// "Previous" is the previous covered election in the comune's history,
+// not necessarily the previous chronological one — for comuni born late
+// (e.g. comuni created post-fusion) the chain skips the missing years.
+
+function deltaCellHtml(delta) {
+  if (delta == null || !Number.isFinite(delta)) {
+    return '<span class="detail-winners-delta detail-winners-delta-na">—</span>';
+  }
+  const eps = 0.05;
+  const sign = delta > eps ? '+' : (delta < -eps ? '−' : '±');
+  const tone = delta > eps ? 'detail-winners-delta-pos'
+    : (delta < -eps ? 'detail-winners-delta-neg' : 'detail-winners-delta-flat');
+  const abs = Math.abs(delta).toFixed(1);
+  return `<span class="detail-winners-delta ${tone}">${sign}${abs} pp</span>`;
+}
+
+function renderWinnersTimeline(rows) {
+  const tbody = els.winnersBody;
+  if (!tbody) return;
+  if (!rows.length) {
+    tbody.innerHTML = '<tr><td colspan="7" class="detail-placeholder detail-placeholder-muted">Nessun risultato summary disponibile per questo comune.</td></tr>';
+    return;
+  }
+  // Iterate chronologically so we can compute "vs previous" deltas,
+  // then reverse the emitted rows so the user sees newest-first.
+  const asc = sortRowsByYear(rows);
+  const enriched = [];
+  let prevShare = null;
+  let prevTurnout = null;
+  let prevBlock = null;
+  let prevLeader = null;
+  for (const row of asc) {
+    const leader = String(row.first_party_std || row.first_party_raw || '').trim();
+    const share = Number(row.first_party_share);
+    const margin = Number(row.first_second_margin);
+    const turnout = Number(row.turnout_pct);
+    const block = reinferBlockForSummaryRow(row);
+
+    const shareDelta = prevShare != null && Number.isFinite(share) ? share - prevShare : null;
+    const turnoutDelta = prevTurnout != null && Number.isFinite(turnout) ? turnout - prevTurnout : null;
+    const leaderChange = !!(prevLeader && leader && leader !== prevLeader);
+    const blockChange = !!(prevBlock && block && block !== prevBlock);
+
+    enriched.push({
+      row,
+      leader,
+      share,
+      margin,
+      turnout,
+      block,
+      shareDelta,
+      turnoutDelta,
+      leaderChange,
+      blockChange,
+    });
+
+    if (Number.isFinite(share)) prevShare = share;
+    if (Number.isFinite(turnout)) prevTurnout = turnout;
+    if (leader) prevLeader = leader;
+    if (block) prevBlock = block;
+  }
+
+  const desc = enriched.slice().reverse();
+  tbody.innerHTML = desc.map(e => {
+    const { row, leader, share, margin, turnout, block, shareDelta, turnoutDelta, leaderChange, blockChange } = e;
+    const year = row.election_year || row.year || '';
+    const label = row.election_label || row.election_key || '';
+    const blockColor = BLOCK_COLORS[block] || BLOCK_COLORS[''];
+    const blockLabel = BLOCK_LABEL[block] ?? (block || '—');
+    return `
+      <tr>
+        <th scope="row" class="detail-winners-year">
+          <strong>${escapeHtml(String(year))}</strong>
+          <small>${escapeHtml(label)}</small>
+        </th>
+        <td class="detail-winners-leader">
+          <span class="detail-winners-leader-name">${escapeHtml(leader || '—')}</span>
+          ${leaderChange ? '<span class="detail-winners-badge detail-winners-badge-flip" title="Cambio di partito vincitore rispetto all\'elezione precedente">flip</span>' : ''}
+        </td>
+        <td class="detail-winners-share">${Number.isFinite(share) ? `${share.toFixed(2)}%` : '—'}</td>
+        <td class="detail-winners-block">
+          <span class="detail-winners-bloc-pill" style="background:${blockColor}1a; color:${blockColor}; border-color:${blockColor}33">
+            <span class="detail-winners-bloc-dot" style="background:${blockColor}"></span>
+            ${escapeHtml(blockLabel)}
+          </span>
+          ${blockChange ? '<span class="detail-winners-badge detail-winners-badge-flip" title="Cambio di blocco rispetto all\'elezione precedente">flip</span>' : ''}
+        </td>
+        <td class="detail-winners-margin">${Number.isFinite(margin) ? `${margin.toFixed(1)} pp` : '—'}</td>
+        <td class="detail-winners-delta-cell">${deltaCellHtml(shareDelta)}</td>
+        <td class="detail-winners-delta-cell">${deltaCellHtml(turnoutDelta)}</td>
+      </tr>`;
+  }).join('');
+}
+
 function renderCharts(rows, aggregates) {
   renderTurnoutChart(rows, aggregates);
   renderMarginChart(rows);
@@ -1118,6 +1227,7 @@ async function main() {
     renderAnagrafica(record);
     renderHistory(rows);
     renderKpiStrip(rows, aggregates);
+    renderWinnersTimeline(rows);
     renderCharts(rows, aggregates);
 
     // Bloc-composition chart needs the per-election results-long shards
