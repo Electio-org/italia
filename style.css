@@ -4656,6 +4656,66 @@ button:hover {
   line-height: 1.5;
 }
 
+.tooltip-headline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  background: #f5f8fb;
+  border: 1px solid #e1e8ef;
+  border-radius: 8px;
+}
+
+.tooltip-headline-dot {
+  flex: 0 0 auto;
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+}
+
+.tooltip-headline-text {
+  font-size: 0.92rem;
+  color: var(--text);
+}
+
+.tooltip-headline-text strong {
+  color: var(--accent-deep);
+  margin-right: 2px;
+}
+
+.tooltip-parties {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.tooltip-party-row {
+  display: grid;
+  grid-template-columns: 12px 1fr auto;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  color: var(--text);
+}
+
+.tooltip-party-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+}
+
+.tooltip-party-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tooltip-party-pct {
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+  font-weight: 600;
+}
+
 .compact-time-nav,
 .annotation-box,
 .story-box,

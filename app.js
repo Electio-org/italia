@@ -3622,28 +3622,76 @@ function showTooltip(event, feature, row) {
   const provinceDelta = provinceAvg != null && typeof metricValue === 'number' ? `${fmtPctSigned(metricValue - provinceAvg)} pt` : '—';
   const regionDelta = regionAvg != null && typeof metricValue === 'number' ? `${fmtPctSigned(metricValue - regionAvg)} pt` : '—';
   const comparabilityNote = row?.comparability_note ? `<div class="tooltip-note">${escapeHtml(row.comparability_note)}</div>` : '';
+
+  // Headline (the answer the user is hovering to get): the winning party and
+  // its share. Falls back to the summary row's first_party_std / share when
+  // results-long isn't hydrated yet for this election, so the tooltip is
+  // useful immediately on every hover (Simone: "passandoci sopra col mouse
+  // mi esce automaticamente i risultati ... il partito vincitore").
+  const lead = row ? leadingResultRowFor(row.election_key, row.municipality_id) : null;
+  const leadLabel = lead?.party_raw || lead?.party_std || row?.first_party_std || '';
+  const leadShare = lead?.vote_share != null
+    ? lead.vote_share
+    : (row?.first_party_share != null ? row.first_party_share : null);
+  const leadColor = leadLabel ? getPartyColor(leadLabel) : '#94a3b8';
+  const headlineParty = leadLabel
+    ? `<div class="tooltip-headline">
+         <span class="tooltip-headline-dot" style="background:${leadColor}"></span>
+         <span class="tooltip-headline-text"><strong>${escapeHtml(leadLabel)}</strong>${leadShare != null ? ` · ${fmtPct(leadShare)}%` : ''}</span>
+       </div>`
+    : '';
+
+  // Top-N parties in the comune for the active election, when results-long
+  // is already loaded for this municipality. We always show parties here
+  // (NOT the selectedPartyMode roll-up): the hover answer to "what happened
+  // in this comune?" is always more useful at the party level. Falls back to
+  // an empty string if we don't have per-party rows yet, so the tooltip
+  // stays compact and the user can still read summary KPIs.
+  const partyRows = row ? getResultsRows(state, row.election_key, row.municipality_id) : [];
+  const topParties = partyRows
+    .filter(r => r.vote_share != null)
+    .sort((a, b) => (safeNumber(b.vote_share) || 0) - (safeNumber(a.vote_share) || 0))
+    .slice(0, 5);
+  const topPartiesHtml = topParties.length
+    ? `<div class="tooltip-parties">
+         ${topParties.map(r => {
+           const lbl = r.party_raw || r.party_std || '—';
+           const share = safeNumber(r.vote_share) || 0;
+           return `<div class="tooltip-party-row">
+             <span class="tooltip-party-dot" style="background:${getPartyColor(lbl)}"></span>
+             <span class="tooltip-party-label">${escapeHtml(lbl)}</span>
+             <span class="tooltip-party-pct">${fmtPct(share)}%</span>
+           </div>`;
+         }).join('')}
+       </div>`
+    : '';
+
   const tooltipItems = [
-    { label: 'Valore', value: metricValueStr },
     { label: 'Affluenza', value: turnout },
     { label: 'Margine', value: margin },
-    currentPartyShare != null && state.selectedMetric !== 'party_share'
+    { label: 'Valore in mappa', value: metricValueStr },
+    currentPartyShare != null && state.selectedMetric !== 'party_share' && leadLabel !== state.selectedParty
       ? { label: currentSelectionLabel(), value: `${fmtPct(currentPartyShare)}%` }
-      : { label: 'Stato territoriale', value: row?.territorial_status || '—' },
-    { label: 'Vs provincia', value: provinceDelta },
-    { label: 'Vs Italia', value: regionDelta }
+      : { label: 'Vs provincia', value: provinceDelta },
+    typeof metricValue === 'number'
+      ? { label: 'Vs Italia', value: regionDelta }
+      : { label: 'Stato territoriale', value: row?.territorial_status || '—' }
   ];
+
   tooltip.innerHTML = `
     <div class="tooltip-card">
       <div class="tooltip-header">
         <strong>${escapeHtml(label)}</strong>
         <span class="tooltip-badge">${escapeHtml(province)}</span>
       </div>
-      <div class="tooltip-meta">Elezione ${escapeHtml(state.selectedElection || '—')} · ${escapeHtml(metricLabel())}</div>
+      <div class="tooltip-meta">${escapeHtml(electionLabelByKey(state.selectedElection) || state.selectedElection || '—')} · ${escapeHtml(metricLabel())}</div>
+      ${headlineParty}
+      ${topPartiesHtml}
       <div class="tooltip-grid">
         ${tooltipItems.map(item => `<div><span>${escapeHtml(item.label)}</span><strong>${escapeHtml(item.value)}</strong></div>`).join('')}
       </div>
       ${comparabilityNote}
-      <div class="tooltip-hint">Shift+click per aggiungere o rimuovere il comune dal comparatore</div>
+      <div class="tooltip-hint">Clicca per il dettaglio · Shift+click per aggiungere al comparatore</div>
     </div>
   `;
   tooltip.classList.remove('hidden');
