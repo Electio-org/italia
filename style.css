@@ -6101,6 +6101,46 @@ body[data-site-page="dashboard"] .party-results-bar-fill {
   border-radius: 4px;
   transition: width 0.18s ease-out;
 }
+body[data-site-page="dashboard"] .party-results-coalitions {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--line-soft, #e5e9f2);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+body[data-site-page="dashboard"] .party-results-coalitions-head {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+body[data-site-page="dashboard"] .party-results-coalitions-head .eyebrow {
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--muted);
+}
+body[data-site-page="dashboard"] .party-results-coalitions-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+body[data-site-page="dashboard"] .party-results-coalitions-row {
+  display: grid;
+  grid-template-columns: 14px minmax(0, 1fr) 80px 56px;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.78rem;
+  cursor: help;
+}
+body[data-site-page="dashboard"] .party-results-coalitions-note {
+  font-size: 0.72rem;
+  color: var(--muted);
+}
 body[data-site-page="dashboard"] .party-results-pct {
   font-variant-numeric: tabular-nums;
   text-align: right;

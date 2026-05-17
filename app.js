@@ -11,7 +11,9 @@ import {
   FAMILY_COLORS,
   AREA_PRESETS,
   FALLBACK_PARTY_OPTIONS,
-  inferredPartyMetaOrNull
+  inferredPartyMetaOrNull,
+  coalitionForParty,
+  hasCoalitionData
 } from './modules/shared.js';
 import {
   trustStyle,
@@ -2725,6 +2727,17 @@ function renderPartyResults() {
     }
   }
 
+  // Coalition roll-up (post-1994 only): when the active election has a
+  // curated coalition catalog we aggregate the comune's party shares by
+  // coalition so the user can see the real pre-vote alliance winner.
+  // Pre-1994 elections (where coalitions were a post-vote construct)
+  // intentionally render nothing here.
+  const coalitionsHtml = renderCoalitionResultsBlock({
+    electionKey,
+    isComune,
+    selectedRows,
+    allRows
+  });
   host.innerHTML = `
     ${blocSectionHtml}
     <div class="party-results-header">
@@ -2739,7 +2752,85 @@ function renderPartyResults() {
           <span class="party-results-bar"><span class="party-results-bar-fill" style="width:${Math.max(2, Math.min(100, (r.share / max) * 100))}%; background:${getGroupColor(r.label)}"></span></span>
           <span class="party-results-pct">${fmtPct(r.share)}%</span>
         </li>`).join('')}
-    </ol>`;
+    </ol>${coalitionsHtml}`;
+}
+
+// Build the "Coalizioni storiche" block injected after the party list
+// in the sidebar. We render this whenever:
+//   - the active election has a curated coalition catalog entry, AND
+//   - at least one displayed party belongs to a declared coalition
+// Returns '' when either condition fails so the caller can append
+// unconditionally without empty containers polluting the DOM.
+//
+// Aggregation:
+//   - Selected comune: sum vote_share by coalition_key across the
+//     comune's results-long rows.
+//   - National (no comune selected): sum absolute votes by coalition
+//     and normalise by total votes from the same rows.
+// Parties without a coalition mapping are NOT shown — only "votes that
+// went to a declared coalition" contribute to the displayed totals,
+// and a small footnote reports the uncovered share so the reader is
+// never misled into thinking shares sum to 100%.
+function renderCoalitionResultsBlock({ electionKey, isComune, selectedRows, allRows }) {
+  if (!hasCoalitionData(state, electionKey)) return '';
+  const rows = isComune ? (selectedRows || []) : (allRows || []);
+  if (!rows.length) return '';
+  const coalitionTotals = new Map();
+  let totalDenom = 0;
+  let coveredDenom = 0;
+  rows.forEach(row => {
+    const partyRaw = String(row.party_raw || '').trim();
+    if (!partyRaw) return;
+    const weight = isComune ? safeNumber(row.vote_share) : safeNumber(row.votes);
+    if (!Number.isFinite(weight) || weight <= 0) return;
+    totalDenom += weight;
+    const coalition = coalitionForParty(state, electionKey, partyRaw);
+    if (!coalition) return;
+    coveredDenom += weight;
+    const acc = coalitionTotals.get(coalition.coalition_key) || {
+      key: coalition.coalition_key,
+      label: coalition.coalition_label,
+      color: coalition.coalition_color,
+      bloc: coalition.coalition_bloc,
+      weight: 0,
+      parties: new Set()
+    };
+    acc.weight += weight;
+    acc.parties.add(partyRaw);
+    coalitionTotals.set(coalition.coalition_key, acc);
+  });
+  if (!coalitionTotals.size || totalDenom <= 0) return '';
+  // In comune mode, vote_share is already a percentage so we display
+  // weight directly; in national mode, weight is absolute votes and we
+  // need to normalise by totalDenom.
+  const denomForPct = isComune ? 1 : (totalDenom / 100);
+  const ranked = [...coalitionTotals.values()]
+    .map(c => ({ ...c, share: denomForPct > 0 ? c.weight / denomForPct : 0 }))
+    .filter(c => c.share > 0)
+    .sort((a, b) => b.share - a.share);
+  if (!ranked.length) return '';
+  const maxShare = ranked[0].share || 1;
+  const uncoveredPct = totalDenom > 0 ? ((totalDenom - coveredDenom) / (isComune ? 1 : (totalDenom / 100))) : 0;
+  const uncoveredNote = uncoveredPct >= 0.5
+    ? `<div class="party-results-coalitions-note helper-text">Liste non in coalizione: ${fmtPct(uncoveredPct)}%</div>`
+    : '';
+  return `
+    <div class="party-results-coalitions">
+      <div class="party-results-coalitions-head">
+        <div class="eyebrow">Coalizioni storiche</div>
+        <div class="helper-text">Ricostruite per ${escapeHtml(electionLabelFor(electionKey))}</div>
+      </div>
+      <ol class="party-results-coalitions-list">
+        ${ranked.map(c => `
+          <li class="party-results-coalitions-row" data-coalition="${escapeHtml(c.key)}" title="${escapeHtml([...c.parties].join(' · '))}">
+            <span class="party-results-swatch" style="background:${c.color}"></span>
+            <span class="party-results-label">${escapeHtml(c.label)}</span>
+            <span class="party-results-bar"><span class="party-results-bar-fill" style="width:${Math.max(2, Math.min(100, (c.share / maxShare) * 100))}%; background:${c.color}"></span></span>
+            <span class="party-results-pct">${fmtPct(c.share)}%</span>
+          </li>`).join('')}
+      </ol>
+      ${uncoveredNote}
+    </div>`;
 }
 
 function electionLabelFor(electionKey) {
