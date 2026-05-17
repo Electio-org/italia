@@ -218,6 +218,28 @@ function inferPartyMeta(label) {
 }
 
 function getPartyColor(label) { return inferPartyMeta(label).color; }
+
+// Resolve the color of a coalition by its `label`. The curated catalog
+// already stores per-coalition colors; we build a label-keyed lookup
+// once on first call and reuse it (state.__coalitionColorByLabel). When
+// the catalog is absent or the label is unknown we return a neutral
+// gray so callers can render without a special-case branch.
+function getCoalitionColor(label) {
+  if (!label) return '#94a3b8';
+  if (!state.__coalitionColorByLabel) {
+    const m = new Map();
+    const catalog = state.electoralCoalitions?.coalitions || {};
+    Object.values(catalog).forEach(coalitions => {
+      if (!Array.isArray(coalitions)) return;
+      coalitions.forEach(c => {
+        const lbl = c?.label;
+        if (lbl && !m.has(lbl)) m.set(lbl, c?.color || '#94a3b8');
+      });
+    });
+    state.__coalitionColorByLabel = m;
+  }
+  return state.__coalitionColorByLabel.get(label) || '#94a3b8';
+}
 function getFamilyColor(label) { return FAMILY_COLORS[label] || inferPartyMeta(label).color || FAMILY_COLORS.altro; }
 function getBlockColor(label) { return BLOCK_COLORS[label] || BLOCK_COLORS.altro; }
 function getGroupColor(label) {
@@ -243,7 +265,7 @@ function metricUsesPartySelection(metric = state.selectedMetric) {
 }
 
 function metricUsesPartyMode(metric = state.selectedMetric) {
-  return metric === 'dominant_block' || metricUsesPartySelection(metric);
+  return metric === 'dominant_block' || metric === 'dominant_coalition' || metricUsesPartySelection(metric);
 }
 
 function audienceMeta() {
@@ -256,6 +278,7 @@ const PUBLIC_METRICS = new Set([
   'party_share',
   'margin',
   'dominant_block',
+  'dominant_coalition',
   'swing_compare',
   'delta_turnout',
   'volatility',
@@ -274,6 +297,7 @@ function sanitizeSelectedMetric(metric) {
 function normalizeGroupModeForMetric(metric = state.selectedMetric) {
   if (metric === 'party_share' || metric === 'swing_compare') return 'party_raw';
   if (metric === 'dominant_block') return 'bloc';
+  if (metric === 'dominant_coalition') return 'party_raw';
   return state.selectedPartyMode || 'party_raw';
 }
 
@@ -288,6 +312,7 @@ function metricReadableExplanation() {
     case 'first_party': return 'La mappa mostra chi arriva primo in ogni comune, non il margine della vittoria.';
     case 'party_share': return `La mappa mostra la quota del partito selezionato (${state.selectedParty || 'partito'}) dove il dato è disponibile.`;
     case 'dominant_block': return 'La mappa mostra il blocco o la coalizione prevalente nel comune, quando il bundle lo dichiara in modo leggibile.';
+    case 'dominant_coalition': return 'La mappa mostra la coalizione elettorale pre-voto vincente (Camera 1994 e successive). Pre-1994 le coalizioni si formavano dopo il voto, quindi questa metrica non si applica.';
     case 'margin': return 'La mappa mostra il distacco tra primo e secondo: più è alto, più il comune è sbilanciato.';
     case 'swing_compare': return 'La mappa mostra una differenza tra due elezioni: serve un anno di confronto attivo.';
     case 'delta_turnout': return "La mappa mostra come cambia l'affluenza rispetto all'elezione di confronto.";
@@ -2363,6 +2388,7 @@ function metricLabel() {
     turnout: 'Affluenza',
     margin: 'Margine 1°-2°',
     dominant_block: 'Blocchi / coalizioni',
+    dominant_coalition: 'Coalizione vincente',
     swing_compare: 'Swing vs confronto',
     delta_turnout: 'Δ affluenza',
     volatility: 'Volatilità storica',
@@ -2408,23 +2434,26 @@ function colorScaleForRows(rows) {
 
   const preferred = state.selectedPalette;
 
-  if (state.selectedMetric === 'first_party' || state.selectedMetric === 'dominant_block') {
+  if (state.selectedMetric === 'first_party' || state.selectedMetric === 'dominant_block' || state.selectedMetric === 'dominant_coalition') {
     // dominant_block: ordina i blocchi sul continuum politico (destra →
     // centro-destra → liberale → centro → centro-sinistra → sinistra →
     // populista → regionalista → altro) invece che alfabeticamente, così
-    // la legenda è leggibile come uno spettro. Per first_party teniamo
-    // l'ordinamento alfabetico come prima.
+    // la legenda è leggibile come uno spettro. Per first_party e
+    // dominant_coalition teniamo l'ordinamento alfabetico delle
+    // categorie presenti.
     const categories = state.selectedMetric === 'dominant_block'
       ? [...new Set(values.filter(v => v !== null && v !== undefined && v !== ''))].sort(compareBlocks)
       : uniqueSorted(values);
+    const colorForCategory = v => {
+      if (!v) return '#334155';
+      if (state.selectedMetric === 'dominant_block') return getBlockColor(v);
+      if (state.selectedMetric === 'dominant_coalition') return getCoalitionColor(v);
+      return getPartyColor(v);
+    };
     return {
       type: 'categorical',
-      colorFor: v => {
-        if (!v) return '#334155';
-        if (state.selectedMetric === 'dominant_block') return getBlockColor(v);
-        return getPartyColor(v);
-      },
-      legend: categories.slice(0, 9).map(c => ({ label: c, color: state.selectedMetric === 'dominant_block' ? getBlockColor(c) : getPartyColor(c) }))
+      colorFor: colorForCategory,
+      legend: categories.slice(0, 9).map(c => ({ label: c, color: colorForCategory(c) }))
     };
   }
 
@@ -2493,7 +2522,7 @@ function renderLegend(scaleInfo) {
 
 function renderQuickStats(rows) {
   if (!els.sidebarQuickStats) return;
-  if (state.selectedMetric === 'dominant_block') {
+  if (state.selectedMetric === 'dominant_block' || state.selectedMetric === 'dominant_coalition') {
     const groups = d3.rollups(
       (rows || []).map(r => r.__metric_value || r.dominant_block).filter(Boolean),
       values => values.length,
@@ -2506,7 +2535,7 @@ function renderQuickStats(rows) {
     els.sidebarQuickStats.innerHTML = `
       <div class="quick-stats-header">${escapeHtml(metricLabel())}</div>
       <dl class="quick-stats-grid">
-        <div class="quick-stat"><dt>Più diffuso</dt><dd>${escapeHtml(groups[0]?.[0] || '—')}</dd></div>
+        <div class="quick-stat"><dt>Più diffusa</dt><dd>${escapeHtml(groups[0]?.[0] || '—')}</dd></div>
         <div class="quick-stat"><dt>2° gruppo</dt><dd>${escapeHtml(groups[1]?.[0] || '—')}</dd></div>
         <div class="quick-stat"><dt>Comuni</dt><dd>${fmtInt((rows || []).length)}</dd></div>
         <div class="quick-stat"><dt>Gruppi</dt><dd>${fmtInt(groups.length)}</dd></div>
@@ -3612,7 +3641,7 @@ function metricDisplay(value, signed = false) {
   if (value == null) return '—';
   if (typeof value === 'string') return value;
   if (state.selectedMetric === 'custom_indicator') return signed ? `${Number(value) >= 0 ? '+' : ''}${Number(value).toFixed(2)}` : Number(value).toFixed(2);
-  if (['first_party','dominant_block'].includes(state.selectedMetric)) return String(value);
+  if (['first_party','dominant_block','dominant_coalition'].includes(state.selectedMetric)) return String(value);
   return signed ? fmtPctSigned(value) : fmtPct(value);
 }
 
@@ -3627,7 +3656,7 @@ function showTooltip(event, feature, row) {
   const provinceAvg = row ? getProvinceMetricAverage(row) : null;
   const regionAvg = row ? getRegionMetricAverage(row) : null;
   const currentPartyShare = row ? aggregateShareFor(state, row.election_key, row.municipality_id, state.selectedParty) : null;
-  const metricValueStr = metricDisplay(metricValue, !['dominant_block','custom_indicator'].includes(state.selectedMetric));
+  const metricValueStr = metricDisplay(metricValue, !['dominant_block','dominant_coalition','custom_indicator'].includes(state.selectedMetric));
   const provinceDelta = provinceAvg != null && typeof metricValue === 'number' ? `${fmtPctSigned(metricValue - provinceAvg)} pt` : '—';
   const regionDelta = regionAvg != null && typeof metricValue === 'number' ? `${fmtPctSigned(metricValue - regionAvg)} pt` : '—';
   const comparabilityNote = row?.comparability_note ? `<div class="tooltip-note">${escapeHtml(row.comparability_note)}</div>` : '';
@@ -3813,7 +3842,7 @@ function renderDetail() {
   const metricRank = currentRow ? rankPosition(state.filteredRows, state.selectedMunicipalityId, r => typeof r.__metric_value === 'number' ? r.__metric_value : null) : null;
   const trust = assessRowTrust(currentRow, lineage);
   const metricValue = getMetricValue(state, currentRow);
-  const metricValueStr = metricDisplay(metricValue, !['dominant_block', 'custom_indicator'].includes(state.selectedMetric));
+  const metricValueStr = metricDisplay(metricValue, !['dominant_block', 'dominant_coalition', 'custom_indicator'].includes(state.selectedMetric));
   const provinceMetric = currentRow ? getProvinceMetricAverage(currentRow) : null;
   const regionMetric = currentRow ? getRegionMetricAverage(currentRow) : null;
   const provinceMetricDelta = provinceMetric != null && typeof metricValue === 'number' ? `${fmtPctSigned(metricValue - provinceMetric)} pt` : '—';
@@ -4335,6 +4364,7 @@ function metricValueForMode(row, mode, electionKeyOverride = null) {
     case 'turnout': return row.turnout_pct;
     case 'margin': return row.first_second_margin;
     case 'dominant_block': return row.dominant_block || inferPartyMeta(row.first_party_std).bloc;
+    case 'dominant_coalition': return row.dominant_coalition || null;
     case 'party_share': return aggregateShareFor(state, electionKey, row.municipality_id, state.selectedParty);
     case 'volatility': return computeVolatility(state, row.municipality_id);
     case 'dominance_changes': return computeDominanceChanges(state, row.municipality_id);
@@ -4359,11 +4389,12 @@ function filteredRowsForElection(electionKey, mode = comparisonMetricBase()) {
 function colorScaleForMode(rows, mode, valueField = '__compare_map_value') {
   const values = rows.map(d => d[valueField]).filter(v => v !== null && v !== undefined && v !== '');
   if (!values.length) return { colorFor: () => '#334155' };
-  if (mode === 'first_party' || mode === 'dominant_block') {
+  if (mode === 'first_party' || mode === 'dominant_block' || mode === 'dominant_coalition') {
     return {
       colorFor: v => {
         if (!v) return '#334155';
         if (mode === 'dominant_block') return getBlockColor(v);
+        if (mode === 'dominant_coalition') return getCoalitionColor(v);
         return getPartyColor(v);
       }
     };
@@ -4561,7 +4592,7 @@ function renderRankingsPanel() {
   const worstMetric = rows.filter(r => typeof r.__metric_value === 'number').slice().sort((a, b) => a.__metric_value - b.__metric_value).slice(0, 6);
   const volatile = rows.filter(r => r.__volatility != null).slice().sort((a, b) => b.__volatility - a.__volatility).slice(0, 6);
   const tight = rows.filter(r => r.first_second_margin != null).slice().sort((a, b) => a.first_second_margin - b.first_second_margin).slice(0, 6);
-  const box = (title, items, valueKey='__metric_value') => `<div class="comparison-box"><span class="ranking-kicker">${escapeHtml(metricLabel())}</span><h3>${escapeHtml(title)}</h3>${items.length ? `<div class="ranked-list">${items.map(item => `<div class="ranked-item"><button class="link-btn" type="button" data-mid="${escapeHtml(item.municipality_id)}">${escapeHtml(item.municipality_name)} <span style="color:var(--muted)">(${escapeHtml(item.province || '—')})</span></button><strong>${valueKey==='__volatility' ? fmtPct(item.__volatility)+' pt' : valueKey==='first_second_margin' ? fmtPct(item.first_second_margin)+' pt' : fmtPctSigned(item.__metric_value)+(typeof item.__metric_value==='number' && !['first_party','dominant_block'].includes(state.selectedMetric) ? ' pt' : '')}</strong></div>`).join('')}</div>` : '<div class="empty-state">Dati insufficienti.</div>'}</div>`;
+  const box = (title, items, valueKey='__metric_value') => `<div class="comparison-box"><span class="ranking-kicker">${escapeHtml(metricLabel())}</span><h3>${escapeHtml(title)}</h3>${items.length ? `<div class="ranked-list">${items.map(item => `<div class="ranked-item"><button class="link-btn" type="button" data-mid="${escapeHtml(item.municipality_id)}">${escapeHtml(item.municipality_name)} <span style="color:var(--muted)">(${escapeHtml(item.province || '—')})</span></button><strong>${valueKey==='__volatility' ? fmtPct(item.__volatility)+' pt' : valueKey==='first_second_margin' ? fmtPct(item.first_second_margin)+' pt' : fmtPctSigned(item.__metric_value)+(typeof item.__metric_value==='number' && !['first_party','dominant_block','dominant_coalition'].includes(state.selectedMetric) ? ' pt' : '')}</strong></div>`).join('')}</div>` : '<div class="empty-state">Dati insufficienti.</div>'}</div>`;
   els.rankingsPanelContent.innerHTML = [
     box('Valori più alti', bestMetric),
     box('Valori più bassi', worstMetric),
