@@ -51,18 +51,116 @@ CONTRACTS = {
     ]
 }
 
+# Canonical Italian-political-party taxonomy.
+#
+# Source of truth: this list is a faithful port of `PARTY_FALLBACKS` in
+# `modules/shared.js` and MUST stay in lockstep with it. The JS list is
+# re-applied at runtime to override whatever this preprocessor stamps
+# into `municipality_results_long.csv`; keeping the two lists in sync
+# means downstream consumers reading the CSV directly (BI tools, audits,
+# csv-based exports) see the same `bloc` / `party_family` values that
+# the web app shows.
+#
+# Order matters: more specific patterns must come BEFORE more generic
+# ones. All regexes are case-insensitive. Word boundaries `\b` are used
+# wherever a bare substring would risk matching unrelated labels.
+#
+# Coverage targets, in priority order:
+#  1. No substring leaks (audit-tested against all 469 unique party_raw
+#     labels in the existing CSV).
+#  2. Every party that hits >= 0.5% national share in any Italian Camera
+#     election 1946-2022 must have an explicit mapping.
+#  3. Major historical/recurring parties (DC, PCI, PSI, MSI, monarchici,
+#     ...) must map to a family/bloc that reflects their political
+#     tradition.
 PARTY_FALLBACKS = [
-    (re.compile(r"^dc$|democrazia cristiana", re.I), {"display": "DC", "family": "cattolico-popolare", "bloc": "centro", "color": "#2e7d32"}),
-    (re.compile(r"^pci$|partito comunista", re.I), {"display": "PCI", "family": "sinistra storica", "bloc": "sinistra", "color": "#c62828"}),
-    (re.compile(r"^psi$|socialista", re.I), {"display": "PSI", "family": "sinistra socialista", "bloc": "centro-sinistra", "color": "#ec407a"}),
-    (re.compile(r"^msi$|movimento sociale", re.I), {"display": "MSI", "family": "destra nazionale", "bloc": "destra", "color": "#0d47a1"}),
-    (re.compile(r"forza italia|^fi$", re.I), {"display": "Forza Italia", "family": "liberal-conservatore", "bloc": "centro-destra", "color": "#1976d2"}),
-    (re.compile(r"partito democratico|^pd$", re.I), {"display": "PD", "family": "centro-sinistra", "bloc": "centro-sinistra", "color": "#d32f2f"}),
-    (re.compile(r"lega|^ln$", re.I), {"display": "Lega", "family": "regionalista", "bloc": "centro-destra", "color": "#2e7d32"}),
+    # --- Hard-left / extra-parliamentary ---
+    (re.compile(r"rifondazione (comunista|miss)|^prc$|^rc$", re.I), {"display": "Rifondazione Comunista", "family": "sinistra storica", "bloc": "sinistra", "color": "#7f1d1d"}),
+    (re.compile(r"comunisti italiani|^pdci$|partito dei comunisti", re.I), {"display": "Comunisti Italiani", "family": "sinistra storica", "bloc": "sinistra", "color": "#991b1b"}),
+    (re.compile(r"partito comunista dei lavoratori|alternativa comunista|^pcl$|sinistra critica|pc\(marx-len\)", re.I), {"display": "PC Lavoratori / Sin. Critica", "family": "sinistra storica", "bloc": "sinistra", "color": "#7f1d1d"}),
+    (re.compile(r"^pdup\b|^p\.?\s?d\.?\s?u\.?\s?p\.?$|democrazia proletaria|^dem\.?\s?prol\b|nuova sin(istra)?\.?\s?unit", re.I), {"display": "PDUP / DemProl", "family": "sinistra storica", "bloc": "sinistra", "color": "#7f1d1d"}),
+    (re.compile(r"il manifesto|^manifesto$", re.I), {"display": "Il Manifesto", "family": "sinistra storica", "bloc": "sinistra", "color": "#9f1239"}),
+    (re.compile(r"sinistra ecologia liberta|^sel$", re.I), {"display": "SEL", "family": "ecologista", "bloc": "sinistra", "color": "#b91c1c"}),
+    (re.compile(r"sinistra arcobaleno|la sinistra l.?arcobaleno", re.I), {"display": "Sinistra Arcobaleno", "family": "sinistra storica", "bloc": "sinistra", "color": "#dc2626"}),
+    (re.compile(r"rivoluzione civile", re.I), {"display": "Rivoluzione Civile", "family": "sinistra storica", "bloc": "sinistra", "color": "#9f1239"}),
+    (re.compile(r"liberi e uguali|^leu$", re.I), {"display": "LeU", "family": "centro-sinistra", "bloc": "sinistra", "color": "#dc2626"}),
+    (re.compile(r"potere al popolo|^pap$|per una sinistra rivoluzionaria", re.I), {"display": "Potere al Popolo", "family": "sinistra storica", "bloc": "sinistra", "color": "#7f1d1d"}),
+    (re.compile(r"la rosa nel pugno|riformisti italiani", re.I), {"display": "Rosa nel Pugno", "family": "sinistra socialista", "bloc": "centro-sinistra", "color": "#ec4899"}),
+    (re.compile(r"fr\.?\s?democr\.?\s?popolare|fronte democratico popolare", re.I), {"display": "Fr. Democratico Popolare", "family": "sinistra storica", "bloc": "sinistra", "color": "#b91c1c"}),
+    (re.compile(r"^pci$|^p\.?\s?c\.?\s?i\.?$|partito comunista italiano|partito comunista\b", re.I), {"display": "PCI", "family": "sinistra storica", "bloc": "sinistra", "color": "#c62828"}),
+
+    # --- Centro-sinistra storica ---
+    (re.compile(r"^pds$|democratici di sinistra|democratici sinistra|^ds$|^d\.?\s?s\.?$", re.I), {"display": "PDS / DS", "family": "centro-sinistra", "bloc": "centro-sinistra", "color": "#dc2626"}),
+    (re.compile(r"l['\u2019]ulivo|^ulivo$|pop[.\-\s]+svp[.\-\s]+pri[.\-\s]+ud[.\-\s]+prodi|prodi.?presidente", re.I), {"display": "L'Ulivo", "family": "centro-sinistra", "bloc": "centro-sinistra", "color": "#ef4444"}),
+    (re.compile(r"la margherita|^margherita$|fiore margherita|democrazia e liberta", re.I), {"display": "La Margherita", "family": "cattolico-popolare", "bloc": "centro-sinistra", "color": "#f97316"}),
+    (re.compile(r"centro democratico|democrazia e solidarieta|alleanza democratica", re.I), {"display": "Centro Democratico / AD", "family": "centro-sinistra", "bloc": "centro-sinistra", "color": "#ef4444"}),
+    (re.compile(r"la rete\b|mov\.?\s?dem\b|movimento democratico", re.I), {"display": "La Rete", "family": "centro-sinistra", "bloc": "centro-sinistra", "color": "#fb7185"}),
+    (re.compile(r"italia europa insieme|^insieme\b", re.I), {"display": "Italia Europa Insieme", "family": "centro-sinistra", "bloc": "centro-sinistra", "color": "#f87171"}),
+    (re.compile(r"^i socialisti\b", re.I), {"display": "I Socialisti", "family": "sinistra socialista", "bloc": "centro-sinistra", "color": "#ec4899"}),
+    (re.compile(r"partito democratico|^pd$|^p\.?\s?d\.?$", re.I), {"display": "PD", "family": "centro-sinistra", "bloc": "centro-sinistra", "color": "#d32f2f"}),
+
+    # --- Socialisti / verdi / radicali ---
+    (re.compile(r"sinistra italiana|^verdi$|^verdi\b|avs|alleanza verdi|federazione.*verdi|verdi.*verdi|verdi-verdi|lista verde|il girasole|sdi.?verdi|verdi.?sdi", re.I), {"display": "Verdi / AVS", "family": "ecologista", "bloc": "sinistra", "color": "#2f855a"}),
+    (re.compile(r"^psu\b|partito socialista unificato|un\.?\s?social\.?\s?indip|unione socialista indipendente", re.I), {"display": "PSU / Soc. Indip.", "family": "sinistra socialista", "bloc": "centro-sinistra", "color": "#f9a8d4"}),
+    (re.compile(r"unita.?popolare", re.I), {"display": "Unit\u00e0 Popolare", "family": "sinistra socialista", "bloc": "centro-sinistra", "color": "#ec4899"}),
+    (re.compile(r"^psi$|socialista|psiup|nuovo psi|socialdemocrazia", re.I), {"display": "PSI", "family": "sinistra socialista", "bloc": "centro-sinistra", "color": "#ec407a"}),
+    (re.compile(r"^psdi$|socialdemocratic", re.I), {"display": "PSDI", "family": "socialdemocratico", "bloc": "centro-sinistra", "color": "#f472b6"}),
+    (re.compile(r"radical|pannella|bonino|^p\.?\s?rad\b", re.I), {"display": "Radicali", "family": "radicale", "bloc": "liberale", "color": "#8b5cf6"}),
+
+    # --- Centro / liberale-riformista ---
+    (re.compile(r"scelta civica|monti per l", re.I), {"display": "Scelta Civica", "family": "liberale-riformista", "bloc": "centro", "color": "#fb923c"}),
+    (re.compile(r"futuro e liberta|^fli$", re.I), {"display": "FLI", "family": "liberale-riformista", "bloc": "centro-destra", "color": "#fdba74"}),
+    (re.compile(r"fare per fermare", re.I), {"display": "Fare", "family": "liberale-riformista", "bloc": "centro", "color": "#f59e0b"}),
+    (re.compile(r"lega d.?azione|movimento per le autonomie|\bmpa\b|movimento per l.?autonomia|grande sud", re.I), {"display": "Lega d'Azione / MpA", "family": "liberal-conservatore", "bloc": "centro-destra", "color": "#3b82f6"}),
+    (re.compile(r"\bazione\b|^az$|italia viva|^iv$|renew|^calenda$", re.I), {"display": "Azione / IV", "family": "liberale-riformista", "bloc": "centro", "color": "#fb923c"}),
+    (re.compile(r"italia dei valori|di pietro|^idv$", re.I), {"display": "IdV", "family": "liberale-riformista", "bloc": "centro-sinistra", "color": "#fcd34d"}),
+    (re.compile(r"\+europa|piu europa", re.I), {"display": "+Europa", "family": "liberale-riformista", "bloc": "centro", "color": "#22d3ee"}),
+    (re.compile(r"^pri\b|repubblican|^all\.?\s?repubblicana\b", re.I), {"display": "PRI", "family": "laico-repubblicano", "bloc": "centro", "color": "#10b981"}),
+    (re.compile(r"\bpli\b|liberale italiano|liberali per l|federalisti liberali", re.I), {"display": "PLI", "family": "liberale", "bloc": "centro-destra", "color": "#0284c7"}),
+    (re.compile(r"patto segni|patto per l.?italia", re.I), {"display": "Patto Segni", "family": "liberale-riformista", "bloc": "centro", "color": "#fbbf24"}),
+    (re.compile(r"rinnovamento it|lista dini|dini lista|^ri-dini\b", re.I), {"display": "Rinnovamento (Dini)", "family": "liberale-riformista", "bloc": "centro", "color": "#fdba74"}),
+    (re.compile(r"democrazia europea|^d\.?\s?e\.?$", re.I), {"display": "Democrazia Europea", "family": "liberale-riformista", "bloc": "centro", "color": "#facc15"}),
+    (re.compile(r"^comunita\b|movimento comunita", re.I), {"display": "Comunit\u00e0", "family": "liberale", "bloc": "centro", "color": "#06b6d4"}),
+
+    # --- Liberale-conservatore storico ---
+    (re.compile(r"un\.?\s?democ\.?\s?nazionale|unione democratica nazionale|^udn\b|all\.?\s?democ\.?\s?nazionale", re.I), {"display": "UDN", "family": "liberale-conservatore", "bloc": "centro-destra", "color": "#1d4ed8"}),
+    (re.compile(r"blocco nazionale|blocco naz\.?\s?liberta", re.I), {"display": "Blocco Nazionale", "family": "liberale-conservatore", "bloc": "centro-destra", "color": "#3b82f6"}),
+
+    # --- Centro cattolico ---
+    (re.compile(r"unione di centro|^udc$|^u\.?\s?d\.?\s?c\.?$|ccd-cdu|^ccd$|^cdu$|udeur|u\.?\s?d\.?\s?eur\b|popolari uniti|unione popolare", re.I), {"display": "UDC", "family": "cattolico-popolare", "bloc": "centro", "color": "#fbbf24"}),
+    (re.compile(r"partito popolare italiano|^ppi$|^p\.?\s?p\.?\s?i\.?$|popolare italian|partito cristiano sociale", re.I), {"display": "PPI", "family": "cattolico-popolare", "bloc": "centro-sinistra", "color": "#fde68a"}),
+    (re.compile(r"il popolo della famiglia|popolo della famiglia", re.I), {"display": "Popolo della Famiglia", "family": "cattolico-popolare", "bloc": "centro-destra", "color": "#fcd34d"}),
+    (re.compile(r"^dc\b|democrazia cristiana", re.I), {"display": "DC", "family": "cattolico-popolare", "bloc": "centro", "color": "#2e7d32"}),
+
+    # --- Centro-destra liberal-conservatore ---
+    (re.compile(r"forza italia|^fi$|^f\.?\s?i\.?$", re.I), {"display": "Forza Italia", "family": "liberal-conservatore", "bloc": "centro-destra", "color": "#1976d2"}),
+    (re.compile(r"popolo della liberta|^pdl$|^p\.?\s?d\.?\s?l\.?$", re.I), {"display": "PdL", "family": "liberal-conservatore", "bloc": "centro-destra", "color": "#1d4ed8"}),
+    (re.compile(r"noi (con l|moderati)|civica popolare|toti.*brugnaro|noi di centro", re.I), {"display": "Noi Moderati", "family": "liberal-conservatore", "bloc": "centro-destra", "color": "#3b82f6"}),
+    # FIX (PR #16): was /lega|.../ which leaked into "Sviluppo-Legalit\u00e0". Now \blega\b
+    # plus explicit liga regional variants. Lega d'Azione is matched earlier so unaffected.
+    (re.compile(r"\blega\b|leganord|^ln$|\bliga\b", re.I), {"display": "Lega", "family": "regionalista", "bloc": "centro-destra", "color": "#2e7d32"}),
+
+    # --- Destra nazionale ---
+    (re.compile(r"alleanza nazionale|^an$", re.I), {"display": "AN", "family": "destra nazionale", "bloc": "destra", "color": "#1e40af"}),
     (re.compile(r"fratelli d.?italia|^fdi$", re.I), {"display": "FdI", "family": "destra nazionale", "bloc": "destra", "color": "#1e3a8a"}),
-    (re.compile(r"movimento 5 stelle|^m5s$", re.I), {"display": "M5S", "family": "populista", "bloc": "populista", "color": "#f59e0b"}),
-    (re.compile(r"verdi|alleanza verdi|sinistra italiana|avs", re.I), {"display": "AVS / Verdi", "family": "ecologista", "bloc": "sinistra", "color": "#2f855a"}),
-    (re.compile(r"azione|italia viva|calenda", re.I), {"display": "Azione / IV", "family": "liberale-riformista", "bloc": "centro", "color": "#fb923c"}),
+    (re.compile(r"casapound|forza nuova|fiamma tricolore|destra nazionale|\bmsi\b|movimento sociale|la destra|forza del popolo|italia agli italiani|mov\.?\s?soc\.?\s?tricolore|alternativa sociale|\bmussolini\b", re.I), {"display": "Destra naz.", "family": "destra nazionale", "bloc": "destra", "color": "#0d47a1"}),
+    (re.compile(r"^dn\b|^dn-cd\b|democrazia nazionale", re.I), {"display": "DN", "family": "destra nazionale", "bloc": "destra", "color": "#1e40af"}),
+    (re.compile(r"italexit|paragone\b|italia sovrana e popolare|^isp\b|^vita$|lista vita|^no euro\b", re.I), {"display": "Sovranisti", "family": "destra nazionale", "bloc": "destra", "color": "#0c4a6e"}),
+
+    # --- Monarchici ---
+    (re.compile(r"^pnm\b|partito nazionale monarchico|p\.?\s?naz\.?\s?monarchico|p\.?\s?naz\.?\s?mon\.|^pmp\b|p\.?\s?monarchico|pdium|partito democratico italiano di unit.?\s?monarchica|all\.?\s?monarc|mov\.?\s?dem\.?\s?monarc|alleanza monarchica|\bmonarchic", re.I), {"display": "Monarchici", "family": "monarchico", "bloc": "destra", "color": "#7c2d12"}),
+
+    # --- Populista ---
+    (re.compile(r"movimento 5 stelle|^m5s$|beppegrillo|impegno civico|\bgrillo\b|\bconte\b", re.I), {"display": "M5S", "family": "populista", "bloc": "populista", "color": "#f59e0b"}),
+    (re.compile(r"fronte (dell.?\s?)?uomo qualunque|fr\.?\s?uomo qualunque|qualunqui", re.I), {"display": "Uomo Qualunque", "family": "populista", "bloc": "populista", "color": "#fb923c"}),
+
+    # --- Pensionati ---
+    (re.compile(r"partito pensionat|part\.?\s?naz\.?\s?pens\b|^pens\b", re.I), {"display": "Pensionati", "family": "pensionati", "bloc": "centro", "color": "#a1a1aa"}),
+
+    # --- Regional autonomista ---
+    (re.compile(r"^svp\b|sudtiroler|sud tirol|die freiheitlichen|union fur sud|valle d.aosta|union valdotaine|^ppst\b|partito popolare sudtirolese|svp\s*[\-\s\.]*\s*patt|^patt\b", re.I), {"display": "Autonomisti", "family": "regionalista", "bloc": "centro-destra", "color": "#16a34a"}),
+    (re.compile(r"mov\.?\s?indipend\.?\s?sic|movimento indipendentista siciliano|^mis\b|sud chiama nord|cateno de luca", re.I), {"display": "Sicilianisti", "family": "regionalista", "bloc": "centro-destra", "color": "#16a34a"}),
+    (re.compile(r"^ps\.?\s?d.?\s?az\b|partito sardo d.?azione|^psdaz\b|^piemont\b", re.I), {"display": "Autonomisti regionali", "family": "regionalista", "bloc": "centro-destra", "color": "#22c55e"}),
 ]
 
 RESULT_LABEL_STOPWORDS = {
