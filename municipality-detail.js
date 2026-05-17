@@ -19,6 +19,7 @@ const els = {
   chartMargin: document.getElementById('detail-chart-margin'),
   chartLeader: document.getElementById('detail-chart-leader'),
   chartBlock: document.getElementById('detail-chart-block'),
+  chartBlocComposition: document.getElementById('detail-chart-bloc-composition'),
 };
 
 // Categorical colors for `dominant_block` (matches the values found in
@@ -886,6 +887,203 @@ function renderCharts(rows, aggregates) {
   renderBlockChart(rows, aggregates);
 }
 
+// ----- 6. Bloc composition timeline ------------------------------------
+//
+// Historical comparison of bloc shares in this comune, one row per
+// election. The detail page only loads `municipality_summary.csv`
+// (slim, ~few MB) on its own, so to compute bloc shares we have to
+// pull the per-election results-long shards. They are split per
+// election (gzipped ~1.5–2.2MB each, 20 shards), so we fetch them in
+// parallel and render each row as soon as its shard arrives — the
+// user sees the most-recent elections first while older shards
+// stream in.
+//
+// Aggregation is the same the JS dashboard does: re-infer the bloc
+// from `party_raw` via the runtime taxonomy in modules/shared.js,
+// sum `vote_share` per bloc.
+
+const BLOC_ORDER = ['destra', 'centro-destra', 'centro', 'centro-sinistra', 'sinistra', 'populista', 'altro'];
+
+async function fetchAndDecompress(path) {
+  const isGz = String(path || '').endsWith('.gz');
+  const res = await fetch(path);
+  if (!res.ok) {
+    if (isGz) {
+      // Some static hosts strip the .gz; fall back to the
+      // uncompressed sibling. Slower (10×) but at least works.
+      return fetchAndDecompress(String(path).replace(/\.gz$/, ''));
+    }
+    throw new Error(`Fetch ${path} → ${res.status}`);
+  }
+  if (!isGz) return res.text();
+  if (typeof DecompressionStream !== 'function') {
+    // Safari < 16.4 / very old browsers — fall back to uncompressed.
+    return fetchAndDecompress(String(path).replace(/\.gz$/, ''));
+  }
+  const blob = await res.blob();
+  const stream = blob.stream().pipeThrough(new DecompressionStream('gzip'));
+  return new Response(stream).text();
+}
+
+function parseCsvStream(text) {
+  if (typeof window.Papa === 'undefined') return [];
+  const result = window.Papa.parse(text, {
+    header: true,
+    skipEmptyLines: true,
+    dynamicTyping: false,
+  });
+  return result.data || [];
+}
+
+// Computes bloc shares for `comuneId` inside a parsed results-long
+// shard. Returns { blocs: [{bloc, share, votes}], totalShare,
+// totalVotes } or null if the comune isn't in the shard.
+function blocSharesForShard(rows, comuneId) {
+  const totals = new Map();
+  let totalVotes = 0;
+  let totalShare = 0;
+  let found = false;
+  for (const row of rows) {
+    if ((row.municipality_id || '').trim() !== comuneId) continue;
+    found = true;
+    const raw = String(row.party_raw || row.party_std || '').trim();
+    const meta = raw ? inferredPartyMetaOrNull(raw) : null;
+    let bloc = (meta?.bloc || row.bloc || '').trim();
+    if (!bloc) bloc = 'altro';
+    const share = Number(row.vote_share);
+    const votes = Number(row.votes);
+    if (!Number.isFinite(share)) continue;
+    const cur = totals.get(bloc) || { share: 0, votes: 0 };
+    cur.share += share;
+    if (Number.isFinite(votes)) cur.votes += votes;
+    totals.set(bloc, cur);
+    totalShare += share;
+    if (Number.isFinite(votes)) totalVotes += votes;
+  }
+  if (!found) return null;
+  const blocs = [...totals.entries()]
+    .map(([bloc, v]) => ({ bloc, share: v.share, votes: v.votes }))
+    .filter(d => Number.isFinite(d.share) && d.share > 0);
+  // Sort using the political continuum order (destra → sinistra → populista → altro)
+  // so stacked bars are visually consistent across years.
+  blocs.sort((a, b) => {
+    const ai = BLOC_ORDER.indexOf(a.bloc);
+    const bi = BLOC_ORDER.indexOf(b.bloc);
+    return (ai < 0 ? 99 : ai) - (bi < 0 ? 99 : bi);
+  });
+  return { blocs, totalShare, totalVotes };
+}
+
+function blocCompositionRowHtml(electionKey, electionLabel, year, data) {
+  if (!data || !data.blocs.length) {
+    return `
+      <li class="detail-bloc-row detail-bloc-row-empty" data-election="${escapeHtml(electionKey)}">
+        <span class="detail-bloc-year">${escapeHtml(String(year || electionLabel || electionKey))}</span>
+        <span class="detail-bloc-empty">Nessun risultato disponibile per il comune in questa elezione.</span>
+      </li>`;
+  }
+  const total = data.totalShare || 100;
+  const segments = data.blocs.map(b => {
+    const width = Math.max(0, Math.min(100, (b.share / total) * 100));
+    const color = BLOCK_COLORS[b.bloc] || '#94a3b8';
+    const title = `${BLOCK_LABEL[b.bloc] || b.bloc}: ${b.share.toFixed(1)}%`;
+    return `<span class="detail-bloc-seg" style="flex: ${width.toFixed(3)} 1 0; background: ${color}" title="${escapeHtml(title)}" aria-label="${escapeHtml(title)}"></span>`;
+  }).join('');
+  // Compact legend on the right: top-3 blocs with %.
+  const top = data.blocs.slice().sort((a, b) => b.share - a.share).slice(0, 3);
+  const legend = top.map(b => `
+    <span class="detail-bloc-chip" style="background:${BLOCK_COLORS[b.bloc] || '#94a3b8'}1a; color:${BLOCK_COLORS[b.bloc] || '#94a3b8'}">
+      <span class="detail-bloc-dot" style="background:${BLOCK_COLORS[b.bloc] || '#94a3b8'}"></span>
+      ${escapeHtml(BLOCK_LABEL[b.bloc] || b.bloc)} ${b.share.toFixed(1)}%
+    </span>`).join('');
+  return `
+    <li class="detail-bloc-row" data-election="${escapeHtml(electionKey)}">
+      <span class="detail-bloc-year">${escapeHtml(String(year || electionLabel || electionKey))}</span>
+      <span class="detail-bloc-bar">${segments}</span>
+      <span class="detail-bloc-legend">${legend}</span>
+    </li>`;
+}
+
+function loadingRowHtml(electionKey, electionLabel, year) {
+  return `
+    <li class="detail-bloc-row detail-bloc-row-loading" data-election="${escapeHtml(electionKey)}">
+      <span class="detail-bloc-year">${escapeHtml(String(year || electionLabel || electionKey))}</span>
+      <span class="detail-bloc-bar detail-bloc-bar-skeleton" aria-hidden="true"></span>
+      <span class="detail-bloc-legend detail-bloc-legend-loading">caricamento…</span>
+    </li>`;
+}
+
+async function renderBlocComposition(comuneId, summaryRows) {
+  const container = els.chartBlocComposition;
+  if (!container) return;
+  // Use the elections that the summary already lists for this comune as
+  // the row order — we already know coverage. Sort newest-first so the
+  // most-relevant elections render first as their shard arrives.
+  const sorted = sortRowsByYear(summaryRows).slice().reverse();
+  if (!sorted.length) {
+    chartEmpty(container, 'Nessuna elezione disponibile per il comune.');
+    return;
+  }
+  // 1. Fetch the manifest to discover shard paths.
+  let manifest;
+  try {
+    const res = await fetch(`${DERIVED}/manifest.json`);
+    if (!res.ok) throw new Error(`manifest → ${res.status}`);
+    const root = await res.json();
+    const shardRes = await fetch(root.files?.municipalityResultsLongByElectionIndex || `${DERIVED}/municipality_results_long_by_election.json`);
+    if (!shardRes.ok) throw new Error(`shard index → ${shardRes.status}`);
+    manifest = await shardRes.json();
+  } catch (err) {
+    console.error('Errore caricamento manifest blocchi', err);
+    chartEmpty(container, 'Impossibile caricare l\'indice degli shard risultati per i blocchi.');
+    return;
+  }
+  const shards = manifest.shards || {};
+  // 2. Build placeholder rows in election order.
+  const ordered = sorted.map(r => ({
+    electionKey: (r.election_key || '').trim(),
+    electionLabel: r.election_label || r.election_key,
+    year: Number(r.election_year || r.year),
+  }));
+  container.innerHTML = `<ol class="detail-bloc-list">${ordered.map(o => loadingRowHtml(o.electionKey, o.electionLabel, o.year)).join('')}</ol>`;
+
+  // 3. Kick off all shard fetches in parallel.
+  const rendered = new Map();
+  await Promise.all(ordered.map(async (entry) => {
+    const path = shards[entry.electionKey];
+    if (!path) {
+      const li = container.querySelector(`li[data-election="${cssEscape(entry.electionKey)}"]`);
+      if (li) li.outerHTML = blocCompositionRowHtml(entry.electionKey, entry.electionLabel, entry.year, null);
+      return;
+    }
+    try {
+      const text = await fetchAndDecompress(path);
+      const rows = parseCsvStream(text);
+      const result = blocSharesForShard(rows, comuneId);
+      rendered.set(entry.electionKey, result);
+      const li = container.querySelector(`li[data-election="${cssEscape(entry.electionKey)}"]`);
+      if (li) li.outerHTML = blocCompositionRowHtml(entry.electionKey, entry.electionLabel, entry.year, result);
+    } catch (err) {
+      console.error('Errore caricamento shard blocco', entry.electionKey, err);
+      const li = container.querySelector(`li[data-election="${cssEscape(entry.electionKey)}"]`);
+      if (li) {
+        li.outerHTML = `<li class="detail-bloc-row detail-bloc-row-empty" data-election="${escapeHtml(entry.electionKey)}">
+          <span class="detail-bloc-year">${escapeHtml(String(entry.year || entry.electionKey))}</span>
+          <span class="detail-bloc-empty">Errore di caricamento dello shard ${escapeHtml(entry.electionKey)}.</span>
+        </li>`;
+      }
+    }
+  }));
+}
+
+// CSS.escape polyfill — CSS.escape is supported in all modern browsers
+// but not in very old Safari versions. The shard keys we use are
+// well-formed identifiers so a basic escape is enough here.
+function cssEscape(value) {
+  if (typeof CSS !== 'undefined' && typeof CSS.escape === 'function') return CSS.escape(value);
+  return String(value).replace(/[^a-zA-Z0-9_-]/g, '\\$&');
+}
+
 async function main() {
   const { id } = getParams();
   if (!id) {
@@ -921,6 +1119,29 @@ async function main() {
     renderHistory(rows);
     renderKpiStrip(rows, aggregates);
     renderCharts(rows, aggregates);
+
+    // Bloc-composition chart needs the per-election results-long shards
+    // (~30 MB gzipped total). Defer until the section scrolls into view
+    // so the rest of the detail page stays snappy. Only triggers once.
+    if (els.chartBlocComposition && typeof IntersectionObserver === 'function') {
+      const io = new IntersectionObserver((entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            io.disconnect();
+            renderBlocComposition(id, rows).catch(err => {
+              console.error('renderBlocComposition failed', err);
+            });
+            return;
+          }
+        }
+      }, { rootMargin: '300px 0px' });
+      io.observe(els.chartBlocComposition);
+    } else if (els.chartBlocComposition) {
+      // Fallback for browsers without IntersectionObserver: just load eagerly.
+      renderBlocComposition(id, rows).catch(err => {
+        console.error('renderBlocComposition failed', err);
+      });
+    }
   } catch (err) {
     console.error(err);
     showError('Errore nel caricamento dei dati del comune. Riprova aggiornando la pagina.');
