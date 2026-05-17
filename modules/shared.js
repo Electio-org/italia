@@ -126,13 +126,20 @@ export const PARTY_FALLBACKS = [
   [/^ps\.?\s?d.?\s?az\b|partito sardo d.?azione|^psdaz\b|^piemont\b/i, { family: 'regionalista', bloc: 'centro-destra', color: '#22c55e', display: 'Autonomisti regionali' }],
 ];
 
+// Ordine canonico dei blocchi politici: continuum destra → sinistra,
+// poi populista / regionalista / altro come categorie "fuori asse".
+// Questa è la sequenza che il legend, le tabelle e i timeline devono
+// rispettare; l'ordine di inserimento delle chiavi qui è la fonte di
+// verità (Object.keys preserva l'insertion order). BLOCK_ORDER è
+// derivato per i siti che non possono dipendere dall'iteration order
+// dell'oggetto (es. score comparators).
 export const BLOCK_COLORS = {
-  'sinistra': '#c62828',
-  'centro-sinistra': '#ef5350',
-  'centro': '#64748b',
-  'liberale': '#8b5cf6',
-  'centro-destra': '#1d4ed8',
   'destra': '#0f172a',
+  'centro-destra': '#1d4ed8',
+  'liberale': '#8b5cf6',
+  'centro': '#64748b',
+  'centro-sinistra': '#ef5350',
+  'sinistra': '#c62828',
   'populista': '#f59e0b',
   'regionalista': '#2e7d32',
   'altro': '#475569'
@@ -148,8 +155,7 @@ export const BLOCK_COLORS = {
 // so the CSV ends up with hundreds of historically significant parties
 // stamped `bloc=altro` (L'Ulivo, AN, UDC, RC, IdV, Pensionati, Verdi
 // pre-AVS, Rosa nel Pugno, Comunisti Italiani, …). That breaks every
-// bloc-aware aggregation downstream (the visible "Olgiate Molgora 2006
-// → altro 54%" bug was traced back here). Until the CSV is regenerated
+// bloc-aware aggregation downstream. Until the CSV is regenerated
 // from a single source of truth (see follow-up), the JS list is the
 // authoritative taxonomy at runtime.
 //
@@ -211,6 +217,20 @@ export function hasCoalitionData(state, electionKey) {
   const partyMap = state.coalitionLookupByElection?.get?.(electionKey);
   return !!(partyMap && partyMap.size);
 }
+
+export const BLOCK_ORDER = Object.keys(BLOCK_COLORS);
+
+const BLOCK_RANK = new Map(BLOCK_ORDER.map((b, i) => [b, i]));
+
+// Ordinatore stabile per chiavi di blocco. Sconosciuti finiscono in
+// coda (rank = BLOCK_ORDER.length), poi `altro` per ultimo.
+export function compareBlocks(a, b) {
+  const ra = BLOCK_RANK.has(a) ? BLOCK_RANK.get(a) : BLOCK_ORDER.length;
+  const rb = BLOCK_RANK.has(b) ? BLOCK_RANK.get(b) : BLOCK_ORDER.length;
+  if (ra !== rb) return ra - rb;
+  return String(a || '').localeCompare(String(b || ''), 'it');
+}
+
 
 export const FAMILY_COLORS = {
   'cattolico-popolare': '#b45309',
