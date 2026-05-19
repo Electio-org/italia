@@ -2441,9 +2441,22 @@ function colorScaleForRows(rows) {
     // la legenda è leggibile come uno spettro. Per first_party e
     // dominant_coalition teniamo l'ordinamento alfabetico delle
     // categorie presenti.
-    const categories = state.selectedMetric === 'dominant_block'
-      ? [...new Set(values.filter(v => v !== null && v !== undefined && v !== ''))].sort(compareBlocks)
-      : uniqueSorted(values);
+    // dominant_coalition: le coalizioni sono specifiche per elezione
+    // (Liberi e Uguali esiste in 2018 ma non in 2022, Terzo Polo solo
+    // in 2022, ecc.). Quindi la legenda deve filtrare alla sola
+    // elezione corrente, NON usare la versione "domain rows" che
+    // unisce tutti gli anni (utile per scale numeriche continue).
+    let categories;
+    if (state.selectedMetric === 'dominant_block') {
+      categories = [...new Set(values.filter(v => v !== null && v !== undefined && v !== ''))].sort(compareBlocks);
+    } else if (state.selectedMetric === 'dominant_coalition') {
+      const currentValues = (rows || [])
+        .map(r => r.__metric_value)
+        .filter(v => v !== null && v !== undefined && v !== '');
+      categories = uniqueSorted(currentValues);
+    } else {
+      categories = uniqueSorted(values);
+    }
     const colorForCategory = v => {
       if (!v) return '#334155';
       if (state.selectedMetric === 'dominant_block') return getBlockColor(v);
@@ -2523,13 +2536,24 @@ function renderLegend(scaleInfo) {
 function renderQuickStats(rows) {
   if (!els.sidebarQuickStats) return;
   if (state.selectedMetric === 'dominant_block' || state.selectedMetric === 'dominant_coalition') {
+    // Per dominant_coalition non possiamo fallback a dominant_block: le
+    // coalizioni esistono solo dal 1994 in poi, e se per l'elezione
+    // corrente non c'è un catalogo, l'utente deve vedere lo stato vuoto
+    // ("Nessun comune con coalizione leggibile") invece di vedere
+    // l'header "Coalizione vincente" con sotto un nome di blocco
+    // (es. "centro") che è fuorviante.
+    const sourceValues = state.selectedMetric === 'dominant_coalition'
+      ? (rows || []).map(r => r.__metric_value).filter(Boolean)
+      : (rows || []).map(r => r.__metric_value || r.dominant_block).filter(Boolean);
     const groups = d3.rollups(
-      (rows || []).map(r => r.__metric_value || r.dominant_block).filter(Boolean),
+      sourceValues,
       values => values.length,
       value => value
     ).sort((a, b) => (b[1] - a[1]) || a[0].localeCompare(b[0], 'it'));
     if (!groups.length) {
-      els.sidebarQuickStats.innerHTML = `<div class="quick-stats-empty">Nessun comune con blocco o coalizione leggibile per la metrica corrente.</div>`;
+      els.sidebarQuickStats.innerHTML = `<div class="quick-stats-empty">${state.selectedMetric === 'dominant_coalition'
+        ? 'Nessuna coalizione catalogata per questa elezione (le coalizioni pre-voto sono disponibili dalla Camera 1994 in poi).'
+        : 'Nessun comune con blocco o coalizione leggibile per la metrica corrente.'}</div>`;
       return;
     }
     els.sidebarQuickStats.innerHTML = `
