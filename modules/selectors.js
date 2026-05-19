@@ -198,6 +198,45 @@ export function appendRowsToIndices(state, { summaryRows = [], resultRows = [], 
       } else {
         summaryRow.dominant_block = best || summaryRow.dominant_block || '';
       }
+
+      // Derive `dominant_coalition` (label + color) by aggregating
+      // vote_share by coalition_key using the curated catalog. We do
+      // this in the same loop because we already have the per-pair
+      // result rows in hand. Only fills the field when:
+      //   - the active election has a coalition catalog entry
+      //   - at least one party in the comune mapped to a coalition
+      // Otherwise we leave both fields unset so the map metric falls
+      // back to "no data" for that comune (e.g. pre-1994 elections).
+      const coalitionLookup = state.coalitionLookupByElection?.get?.(summaryRow.election_key);
+      if (coalitionLookup && coalitionLookup.size) {
+        const byCoalition = new Map();
+        rows.forEach(r => {
+          const partyRaw = String(r.party_raw || '').trim();
+          if (!partyRaw) return;
+          const coalition = coalitionLookup.get(partyRaw.toLowerCase());
+          if (!coalition) return;
+          const share = safeNumber(r.vote_share) || 0;
+          const acc = byCoalition.get(coalition.coalition_key) || {
+            label: coalition.coalition_label,
+            color: coalition.coalition_color,
+            share: 0
+          };
+          acc.share += share;
+          byCoalition.set(coalition.coalition_key, acc);
+        });
+        let bestCoalition = null;
+        let bestCoalitionShare = -Infinity;
+        byCoalition.forEach(acc => {
+          if (acc.share > bestCoalitionShare) {
+            bestCoalition = acc;
+            bestCoalitionShare = acc.share;
+          }
+        });
+        if (bestCoalition) {
+          summaryRow.dominant_coalition = bestCoalition.label;
+          summaryRow.dominant_coalition_color = bestCoalition.color;
+        }
+      }
     });
   }
 
@@ -306,6 +345,7 @@ export function getMetricValue(state, row) {
     case 'turnout': return safeNumber(row.turnout_pct);
     case 'margin': return safeNumber(row.first_second_margin);
     case 'dominant_block': return row.dominant_block || null;
+    case 'dominant_coalition': return row.dominant_coalition || null;
     case 'swing_compare': {
       const current = aggregateShareFor(state, row.election_key, row.municipality_id);
       const compare = state.compareElection ? aggregateShareFor(state, state.compareElection, row.municipality_id) : null;
