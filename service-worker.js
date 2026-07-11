@@ -14,7 +14,7 @@
  * `cache.addAll()` that would reject the whole install on any 404.
  */
 
-const SW_VERSION = 'electio-v56-2026-05-19-territorial-aggregation-rework';
+const SW_VERSION = 'electio-v57-2026-07-11-live-performance';
 const SHELL_CACHE = `shell::${SW_VERSION}`;
 const DATA_CACHE = `data::${SW_VERSION}`;
 const NAV_FALLBACK = './index.html';
@@ -112,8 +112,7 @@ self.addEventListener('fetch', (event) => {
   }
   if (url.origin !== self.location.origin) return;
 
-  // Navigation requests: stale-while-revalidate, with same-origin HTML fallback
-  // so a second visit is served instantly from cache and survives offline.
+  // Navigation requests prefer the deployed shell, with a cached offline fallback.
   if (request.mode === 'navigate') {
     event.respondWith(navigationHandler(request));
     return;
@@ -124,27 +123,24 @@ self.addEventListener('fetch', (event) => {
     return;
   }
   if (isShell(url)) {
-    event.respondWith(staleWhileRevalidate(SHELL_CACHE, request));
+    event.respondWith(networkFirst(SHELL_CACHE, request));
     return;
   }
 });
 
 async function navigationHandler(request) {
   const cache = await caches.open(SHELL_CACHE);
-  const hit = await cache.match(request, { ignoreSearch: true });
-  const networkPromise = fetch(request)
-    .then((response) => {
-      if (response && response.ok) cache.put(request, response.clone());
-      return response;
-    })
-    .catch(() => null);
-  if (hit) {
-    // Refresh in background; serve cache now for instant paint.
-    networkPromise.catch(() => {});
-    return hit;
+  try {
+    const network = await fetch(request, { cache: 'no-cache' });
+    if (network && network.ok) {
+      await cache.put(request, network.clone());
+      return network;
+    }
+  } catch (_err) {
+    // Offline: fall through to the last known-good navigation shell.
   }
-  const network = await networkPromise;
-  if (network) return network;
+  const hit = await cache.match(request, { ignoreSearch: true });
+  if (hit) return hit;
   const fallback = await cache.match(NAV_FALLBACK);
   return fallback || new Response('', { status: 504 });
 }
@@ -158,14 +154,16 @@ async function cacheFirst(cacheName, request) {
   return response;
 }
 
-async function staleWhileRevalidate(cacheName, request) {
+async function networkFirst(cacheName, request) {
   const cache = await caches.open(cacheName);
-  const hit = await cache.match(request);
-  const networkPromise = fetch(request)
-    .then((response) => {
-      if (response && response.ok) cache.put(request, response.clone());
+  try {
+    const response = await fetch(request, { cache: 'no-cache' });
+    if (response && response.ok) {
+      await cache.put(request, response.clone());
       return response;
-    })
-    .catch(() => null);
-  return hit || (await networkPromise) || new Response('', { status: 504 });
+    }
+  } catch (_err) {
+    // Offline: use the cached asset below.
+  }
+  return (await cache.match(request)) || new Response('', { status: 504 });
 }

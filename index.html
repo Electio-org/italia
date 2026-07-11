@@ -104,23 +104,10 @@
           <label>
             Mostra in mappa
             <select id="metric-select">
-              <option value="first_party">Partito vincitore</option>
               <option value="party_share">Quota del partito</option>
               <option value="turnout">Affluenza</option>
               <option value="dominant_block">Blocchi / coalizioni</option>
-              <option value="dominant_coalition">Coalizione vincente</option>
               <option value="margin">Margine del vincente</option>
-            </select>
-          </label>
-        </div>
-
-        <div class="two-col two-col-main single-control-row">
-          <label>
-            Livello mappa
-            <select id="map-aggregation-level-select">
-              <option value="comune">Comune</option>
-              <option value="province">Provincia (aggregato)</option>
-              <option value="region">Regione (aggregato)</option>
             </select>
           </label>
         </div>
@@ -185,6 +172,15 @@
         <details class="advanced-sidebar-details">
           <summary>Strumenti avanzati</summary>
           <div class="advanced-sidebar-grid">
+            <label>
+              Livello mappa
+              <select id="map-aggregation-level-select">
+                <option value="comune">Comune</option>
+                <option value="province">Provincia (aggregato)</option>
+                <option value="region">Regione (aggregato)</option>
+              </select>
+            </label>
+
             <label>
               Base geometrica
               <select id="geometry-reference-select"></select>

@@ -1,0 +1,12 @@
+{
+  "name": "electio-italia",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test:selectors": "node scripts/smoke_selectors.mjs",
+    "test:browser": "node scripts/smoke_dashboard.mjs"
+  },
+  "devDependencies": {
+    "playwright": "1.59.1"
+  }
+}

@@ -21,6 +21,15 @@
   // fetching `service-worker.js`, so a new `SW_VERSION` goes live on the next
   // reload instead of sitting behind Chrome's 24h SW-script freshness window.
   if ('serviceWorker' in navigator) {
+    var hadServiceWorkerController = !!navigator.serviceWorker.controller;
+    var reloadingForServiceWorker = false;
+    if (hadServiceWorkerController) {
+      navigator.serviceWorker.addEventListener('controllerchange', function () {
+        if (reloadingForServiceWorker) return;
+        reloadingForServiceWorker = true;
+        window.location.reload();
+      });
+    }
     window.addEventListener('load', function () {
       navigator.serviceWorker
         .register('service-worker.js', { updateViaCache: 'none' })
