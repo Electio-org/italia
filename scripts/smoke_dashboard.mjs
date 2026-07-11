@@ -56,6 +56,13 @@ try {
   await page.keyboard.press('Escape');
   await page.waitForFunction(() => document.querySelector('#selection-dock')?.classList.contains('hidden'));
 
+  await page.fill('#municipality-search', 'Roma');
+  await page.dispatchEvent('#municipality-search', 'change');
+  await page.waitForFunction(() => !document.querySelector('#selection-dock')?.classList.contains('hidden'));
+  assert.equal((await page.locator('#selection-dock-title').innerText()).trim(), 'Roma (Roma)');
+  await page.click('#selection-dock-clear-btn');
+  await page.waitForFunction(() => document.querySelector('#selection-dock')?.classList.contains('hidden'));
+
   const canvas = await page.locator('#map-canvas').evaluate(node => {
     const data = node.getContext('2d').getImageData(0, 0, node.width, node.height).data;
     let painted = 0;

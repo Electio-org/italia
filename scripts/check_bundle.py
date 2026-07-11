@@ -63,6 +63,7 @@ def main() -> int:
         'usage-notes.html',
         'update-log.html',
         'style.css',
+        'visual-refresh.css',
         'app.js',
         'site-pages.js',
         'modules/app-shell.js',

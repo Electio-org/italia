@@ -20,6 +20,7 @@
        dashboard. We ship them via the print-media swap so first paint is driven by style.css only. -->
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="tabler-theme.css" />
+  <link rel="stylesheet" href="visual-refresh.css" />
   <link rel="stylesheet" href="vendor/tabler/core/tabler.min.css" media="print" onload="this.media='all'" />
   <noscript><link rel="stylesheet" href="vendor/tabler/core/tabler.min.css" /></noscript>
 
@@ -57,6 +58,18 @@
     <div class="page-wrapper">
       <div class="page-body">
         <div class="app-shell">
+    <section class="explorer-heading" aria-labelledby="explorer-heading-title">
+      <div class="explorer-heading-copy">
+        <div class="explorer-kicker">Atlante elettorale d'Italia</div>
+        <h1 id="explorer-heading-title">Esplora il voto, comune per comune.</h1>
+        <p>Scegli un'elezione e una lettura della mappa. Cerca un comune solo quando vuoi entrare nel dettaglio.</p>
+      </div>
+      <div class="explorer-heading-meta" aria-label="Copertura corrente">
+        <span>Camera + Costituente</span>
+        <span>1946-2022</span>
+        <span>Livello comunale</span>
+      </div>
+    </section>
     <aside class="sidebar">
       <div class="brand">
           <div class="eyebrow">Italia · dal dopoguerra</div>
@@ -265,9 +278,6 @@
       </section>
 
       <section class="panel map-companion" aria-label="Contesto mappa">
-        <div id="sidebar-legend" class="sidebar-legend" aria-live="polite"></div>
-        <div id="sidebar-quick-stats" class="sidebar-quick-stats" aria-live="polite"></div>
-        <div id="sidebar-party-results" class="sidebar-party-results" aria-live="polite"></div>
         <div id="selection-dock" class="selection-dock hidden" aria-live="polite">
           <div class="selection-dock-main">
             <div class="selection-dock-copy">
@@ -282,6 +292,9 @@
             </div>
           </div>
         </div>
+        <div id="sidebar-legend" class="sidebar-legend" aria-live="polite"></div>
+        <div id="sidebar-quick-stats" class="sidebar-quick-stats" aria-live="polite"></div>
+        <div id="sidebar-party-results" class="sidebar-party-results" aria-live="polite"></div>
         <fieldset class="sidebar-layers" aria-label="Livelli mappa">
           <legend>Confini</legend>
           <label class="sidebar-layer-toggle">
@@ -809,8 +822,8 @@
             </div>
             <div class="map-header-actions">
               <div class="map-toolbar-buttons">
-                <button type="button" id="map-fullscreen-btn" class="ghost-btn small-btn">Schermo intero</button>
-                <button type="button" id="map-reset-btn" class="ghost-btn small-btn">Reset mappa</button>
+                <button type="button" id="map-fullscreen-btn" class="ghost-btn small-btn" aria-label="Apri la mappa a schermo intero">Intero</button>
+                <button type="button" id="map-reset-btn" class="ghost-btn small-btn" aria-label="Reimposta posizione e zoom della mappa">Reimposta</button>
               </div>
               <div id="legend"></div>
             </div>
@@ -823,6 +836,10 @@
             </div>
             <div id="map-empty-state" class="empty-state hidden"></div>
             <div id="tooltip" class="tooltip hidden"></div>
+          </div>
+          <div class="map-use-hint" aria-label="Istruzioni mappa">
+            <span>Passa su un comune per leggerne il nome. Clicca per fissare il riepilogo.</span>
+            <span>Scorri per zoomare &middot; trascina per spostarti</span>
           </div>
           <div id="map-detail-cta" class="map-detail-cta hidden" aria-hidden="true">
             <span class="map-detail-cta-label">Comune selezionato</span>

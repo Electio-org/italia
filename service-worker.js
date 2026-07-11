@@ -14,7 +14,7 @@
  * `cache.addAll()` that would reject the whole install on any 404.
  */
 
-const SW_VERSION = 'electio-v57-2026-07-11-live-performance';
+const SW_VERSION = 'electio-v58-2026-07-11-visual-refresh';
 const SHELL_CACHE = `shell::${SW_VERSION}`;
 const DATA_CACHE = `data::${SW_VERSION}`;
 const NAV_FALLBACK = './index.html';
@@ -31,6 +31,7 @@ const SHELL_PATHS = [
   './products.html',
   './style.css',
   './tabler-theme.css',
+  './visual-refresh.css',
   './icons.svg',
   './app.js',
   './site-pages.js',

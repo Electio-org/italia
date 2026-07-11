@@ -2660,9 +2660,9 @@ function renderPartyResults() {
     </div>
     <ol class="party-results-list">
       ${ranked.map(r => `
-        <li class="party-results-row" data-party="${escapeHtml(r.label)}">
+        <li class="party-results-row" data-party="${escapeHtml(r.label)}" title="${escapeHtml(r.label)}">
           <span class="party-results-swatch" style="background:${getGroupColor(r.label)}"></span>
-          <span class="party-results-label">${escapeHtml(r.label)}</span>
+          <span class="party-results-label">${escapeHtml(inferPartyMeta(r.label).display || r.label)}</span>
           <span class="party-results-bar"><span class="party-results-bar-fill" style="width:${Math.max(2, Math.min(100, (r.share / max) * 100))}%; background:${getGroupColor(r.label)}"></span></span>
           <span class="party-results-pct">${fmtPct(r.share)}%</span>
         </li>`).join('')}
@@ -5312,14 +5312,23 @@ async function copyPermalink() {
 }
 
 function handleMunicipalitySearch() {
-  const query = (els.municipalitySearch.value || '').trim().toLowerCase();
+  const query = normalizeTextToken(els.municipalitySearch.value || '');
   if (!query) return;
-  const foundMunicipality = state.municipalities.find(d => {
-    const hay = [d.name_current, d.name_historical, ...String(d.alias_names || '').split('|')].filter(Boolean).join(' ').toLowerCase();
-    return hay.includes(query);
-  });
-  const foundAlias = state.aliases.find(d => `${d.alias || ''} ${d.alias_type || ''}`.toLowerCase().includes(query));
-  const foundSummary = state.summary.find(d => String(d.municipality_name || '').toLowerCase().includes(query));
+  const municipalityNames = municipality => [
+    municipality.name_current,
+    municipality.name_historical,
+    ...String(municipality.alias_names || '').split('|')
+  ].map(normalizeTextToken).filter(Boolean);
+  const findMunicipality = predicate => state.municipalities.find(municipality => municipalityNames(municipality).some(predicate));
+  const foundMunicipality = findMunicipality(name => name === query)
+    || findMunicipality(name => name.startsWith(query))
+    || findMunicipality(name => name.includes(query));
+  const foundAlias = state.aliases.find(d => normalizeTextToken(d.alias || '') === query)
+    || state.aliases.find(d => normalizeTextToken(d.alias || '').startsWith(query))
+    || state.aliases.find(d => normalizeTextToken(d.alias || '').includes(query));
+  const foundSummary = state.summary.find(d => normalizeTextToken(d.municipality_name || '') === query)
+    || state.summary.find(d => normalizeTextToken(d.municipality_name || '').startsWith(query))
+    || state.summary.find(d => normalizeTextToken(d.municipality_name || '').includes(query));
   const selectedId = foundMunicipality?.municipality_id || foundAlias?.municipality_id || foundSummary?.municipality_id;
   if (selectedId) {
     selectMunicipality(selectedId, { updateSearch: false });
@@ -6358,7 +6367,8 @@ function renderSelectionDock() {
   const leaderResultsReady = state.resultsLongFullLoaded || state.loadedResultElectionKeys?.has(state.selectedElection);
   const leaderPending = leaderShardKnown && !leaderResultsReady;
   const leaderLabel = currentRow && !leaderPending ? leadingPartyLabelFor(currentRow) : null;
-  const leaderValue = leaderPending ? 'In preparazione...' : (leaderLabel || 'n/d');
+  const leaderDisplay = leaderLabel ? (inferPartyMeta(leaderLabel).display || leaderLabel) : null;
+  const leaderValue = leaderPending ? 'In preparazione...' : (leaderDisplay || 'n/d');
   const topBlock = currentRow?.dominant_block || null;
   const leaderShare = Number.isFinite(currentRow?.first_party_share) ? `${fmtPct(currentRow.first_party_share)}%` : 'n/d';
   const stats = [
