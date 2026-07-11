@@ -6103,6 +6103,21 @@ body[data-site-page="dashboard"] .sidebar-party-results {
   padding-top: 12px;
   border-top: 1px solid var(--line-soft, #e5e9f2);
 }
+body[data-site-page="dashboard"] .party-results-loading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 0.76rem;
+}
+body[data-site-page="dashboard"] .party-results-loading .map-loading-spinner {
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  border-width: 2px;
+  border-color: rgba(37, 99, 235, 0.2);
+  border-top-color: #2563eb;
+}
 body[data-site-page="dashboard"] .party-results-header {
   display: flex;
   flex-direction: column;
@@ -6625,6 +6640,51 @@ body[data-site-page="dashboard"] .selection-dock-actions button {
 @media (max-width: 959.98px) {
   body[data-site-page="dashboard"] .selection-dock-stats {
     grid-template-columns: 1fr;
+  }
+}
+
+/* Mobile follows the same map-first hierarchy as desktop: controls, map,
+   then the supporting legend and national context. */
+@media (max-width: 959.98px) {
+  body[data-site-page="dashboard"] .app-shell {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+  }
+
+  body[data-site-page="dashboard"] .sidebar {
+    display: contents !important;
+  }
+
+  body[data-site-page="dashboard"] .sidebar > .brand,
+  body[data-site-page="dashboard"] .sidebar > :not(.brand):not(.control-panel):not(.map-companion) {
+    display: none !important;
+  }
+
+  body[data-site-page="dashboard"] .sidebar .control-panel {
+    order: 1;
+    margin: 0 !important;
+  }
+
+  body[data-site-page="dashboard"] .sidebar .control-panel > .panel-header {
+    display: none !important;
+  }
+
+  body[data-site-page="dashboard"] .main-content {
+    order: 2;
+    width: 100%;
+    min-width: 0;
+    padding-top: 0 !important;
+  }
+
+  body[data-site-page="dashboard"] .sidebar .map-companion {
+    order: 3;
+    margin: 0 !important;
+  }
+
+  body[data-site-page="dashboard"] .map-panel > .panel-header .panel-subtitle,
+  body[data-site-page="dashboard"] .map-panel > .panel-header #legend {
+    display: none !important;
   }
 }
 

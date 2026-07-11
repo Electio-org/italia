@@ -7,6 +7,10 @@ function emptyIndexState(state) {
   state.indices = {
     summaryByMunicipality: new Map(),
     resultsByElectionMunicipality: new Map(),
+    resultsByElectionRows: new Map(),
+    totalResultVotesByElection: new Map(),
+    partyTotalsByElectionMode: Object.fromEntries(GROUP_MODES.map(mode => [mode, new Map()])),
+    partyShareByElectionMunicipalityGroup: Object.fromEntries(GROUP_MODES.map(mode => [mode, new Map()])),
     summaryMap: new Map(),
     summaryCountByElection: new Map(),
     resultCountByElection: new Map(),
@@ -123,7 +127,10 @@ export function appendRowsToIndices(state, { summaryRows = [], resultRows = [], 
 
   resultRows.forEach(row => {
     const resultKey = `${row.election_key}__${row.municipality_id}`;
+    const rowVotes = safeNumber(row.votes) || 0;
     pushGrouped(state.indices.resultsMap, resultKey, row);
+    pushGrouped(state.indices.resultsByElectionRows, row.election_key, row);
+    incrementCount(state.indices.totalResultVotesByElection, row.election_key, rowVotes);
     if (touchedResultPairs) touchedResultPairs.add(resultKey);
     if (!state.indices.resultsByElectionMunicipality.has(row.election_key)) {
       state.indices.resultsByElectionMunicipality.set(row.election_key, new Map());
@@ -132,8 +139,18 @@ export function appendRowsToIndices(state, { summaryRows = [], resultRows = [], 
     incrementCount(state.indices.resultCountByElection, row.election_key);
     GROUP_MODES.forEach(mode => {
       const field = mode === 'bloc' ? 'bloc' : mode;
-      const group = row[field] || 'N/D';
-      const votes = safeNumber(row.votes) || 0;
+      const group = String(row[field] || '').trim();
+      if (!group) return;
+      const votes = rowVotes;
+      const electionTotals = state.indices.partyTotalsByElectionMode[mode].get(row.election_key) || new Map();
+      const currentElectionTotal = electionTotals.get(group) || { votes: 0 };
+      currentElectionTotal.votes += votes;
+      electionTotals.set(group, currentElectionTotal);
+      state.indices.partyTotalsByElectionMode[mode].set(row.election_key, electionTotals);
+      const shareKey = `${resultKey}__${group}`;
+      const share = safeNumber(row.vote_share) || 0;
+      const shareMap = state.indices.partyShareByElectionMunicipalityGroup[mode];
+      shareMap.set(shareKey, (shareMap.get(shareKey) || 0) + share);
       if (row.province) {
         const provinceKey = `${row.election_key}__${row.province}__${group}`;
         const total = (state.indices.__provinceVotes[mode].get(provinceKey) || 0) + votes;
@@ -255,12 +272,41 @@ export function getResultsRows(state, electionKey, municipalityId) {
   return (state.indices.resultsMap?.get(`${electionKey}__${municipalityId}`) || []).slice().sort((a, b) => (safeNumber(a.rank) || 999) - (safeNumber(b.rank) || 999));
 }
 
+export function getResultsForElection(state, electionKey) {
+  return state.indices.resultsByElectionRows?.get(electionKey) || [];
+}
+
+export function getPartyOptionsForElection(state, electionKey, mode = 'party_raw') {
+  const normalizedMode = GROUP_MODES.includes(mode) ? mode : 'party_raw';
+  const totals = state.indices.partyTotalsByElectionMode?.[normalizedMode]?.get(electionKey);
+  if (!totals?.size) return [];
+  return [...totals.entries()]
+    .sort((a, b) => (b[1].votes - a[1].votes) || a[0].localeCompare(b[0], 'it'))
+    .map(([value]) => value);
+}
+
+export function getNationalPartyResultsForElection(state, electionKey, mode = 'party_raw') {
+  const normalizedMode = GROUP_MODES.includes(mode) ? mode : 'party_raw';
+  const totals = state.indices.partyTotalsByElectionMode?.[normalizedMode]?.get(electionKey);
+  const totalVotes = state.indices.totalResultVotesByElection?.get(electionKey) || 0;
+  if (!totals?.size || totalVotes <= 0) return [];
+  return [...totals.entries()]
+    .map(([label, entry]) => ({
+      label,
+      votes: entry.votes,
+      share: (entry.votes / totalVotes) * 100
+    }))
+    .filter(row => row.votes > 0)
+    .sort((a, b) => (b.votes - a.votes) || a.label.localeCompare(b.label, 'it'));
+}
+
 export function aggregateShareFor(state, electionKey, municipalityId, selectedParty = state.selectedParty) {
-  const rows = getResultsRows(state, electionKey, municipalityId);
-  if (!rows.length || !selectedParty) return null;
-  const field = state.selectedPartyMode === 'bloc' ? 'bloc' : (state.selectedPartyMode || 'party_raw');
-  const matches = rows.filter(r => String(r[field] || '') === String(selectedParty));
-  return matches.length ? d3.sum(matches, r => safeNumber(r.vote_share) || 0) : null;
+  if (!selectedParty) return null;
+  const mode = GROUP_MODES.includes(state.selectedPartyMode) ? state.selectedPartyMode : 'party_raw';
+  const shareMap = state.indices.partyShareByElectionMunicipalityGroup?.[mode];
+  const shareKey = `${electionKey}__${municipalityId}__${selectedParty}`;
+  if (shareMap?.has(shareKey)) return shareMap.get(shareKey);
+  return null;
 }
 
 export function computeConcentration(state, municipalityId, electionKey = state.selectedElection) {

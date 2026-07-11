@@ -13,7 +13,6 @@ import {
   FAMILY_COLORS,
   AREA_PRESETS,
   FALLBACK_PARTY_OPTIONS,
-  inferredPartyMetaOrNull,
   coalitionForParty,
   hasCoalitionData
 } from './modules/shared.js';
@@ -40,6 +39,9 @@ import {
   buildIndices,
   getSummaryRow,
   getResultsRows,
+  getResultsForElection,
+  getPartyOptionsForElection,
+  getNationalPartyResultsForElection,
   aggregateShareFor,
   computeConcentration,
   computeDominanceChanges,
@@ -155,6 +157,7 @@ const state = {
   archiveBundleGapSummary: null,
   archiveGapByElection: new Map(),
   mapCanvasCache: null,
+  mapCanvasGeometryCaches: new Map(),
   // Per-election aggregation cache keyed by election + level + territorial
   // mode + summary/results sizes. Holds the group records produced by
   // buildMapAggregationCache (used by the canvas renderer and by the
@@ -285,12 +288,10 @@ function audienceMeta() {
 }
 
 const PUBLIC_METRICS = new Set([
-  'first_party',
   'turnout',
   'party_share',
   'margin',
   'dominant_block',
-  'dominant_coalition',
   'swing_compare',
   'delta_turnout',
   'volatility',
@@ -303,7 +304,12 @@ const PUBLIC_METRICS = new Set([
 ]);
 
 function sanitizeSelectedMetric(metric) {
-  return PUBLIC_METRICS.has(metric) ? metric : 'turnout';
+  const normalized = metric === 'first_party'
+    ? 'margin'
+    : metric === 'dominant_coalition'
+      ? 'dominant_block'
+      : metric;
+  return PUBLIC_METRICS.has(normalized) ? normalized : 'turnout';
 }
 
 function normalizeGroupModeForMetric(metric = state.selectedMetric) {
@@ -368,7 +374,7 @@ function visibleElectionKeysForSummary() {
   if (shouldHydrateCompareSummaryNow()) keys.add(state.compareElection);
   const needsHistory = ['volatility', 'dominance_changes', 'stability_index', 'concentration'].includes(state.selectedMetric)
     || ['trajectory', 'similarity', 'archetypes', 'group_compare'].includes(state.analysisMode)
-    || state.uiLevel === 'research';
+    || state.audienceMode === 'research';
   if (needsHistory) {
     state.elections.forEach(election => {
       const coverage = electionCoverageFor(state, election.election_key);
@@ -380,12 +386,12 @@ function visibleElectionKeysForSummary() {
 
 function visibleElectionKeysForResults() {
   const keys = new Set([state.selectedElection].filter(Boolean));
-  if (state.compareElection && (metricNeedsCompare() || state.analysisMode === 'compare' || state.selectedMunicipalityId)) {
+  if (state.compareElection && (metricNeedsCompare() || state.analysisMode === 'compare')) {
     keys.add(state.compareElection);
   }
   const needsHistory = ['volatility', 'dominance_changes', 'stability_index', 'concentration'].includes(state.selectedMetric)
     || state.analysisMode === 'trajectory'
-    || state.uiLevel === 'research';
+    || state.audienceMode === 'research';
   if (needsHistory) {
     state.elections.forEach(election => {
       const coverage = electionCoverageFor(state, election.election_key);
@@ -453,37 +459,6 @@ function ensureVisibleResults({ silent = true } = {}) {
     refreshPartySelector();
     throw err;
   });
-}
-
-function scheduleBackgroundResultsHydration() {
-  if (state.resultsHydrationStarted || state.resultsLongLoadStrategy !== 'by_election') return;
-  state.resultsHydrationStarted = true;
-  const idle = window.requestIdleCallback
-    ? callback => window.requestIdleCallback(callback, { timeout: 600 })
-    : callback => window.setTimeout(() => callback({ didTimeout: false, timeRemaining: () => 0 }), 350);
-
-  const pump = () => {
-    const remaining = state.elections
-      .map(election => election.election_key)
-      .filter(key => {
-        const coverage = electionCoverageFor(state, key);
-        return coverage.results && !state.loadedResultElectionKeys?.has(key);
-      });
-    if (!remaining.length) {
-      state.resultsHydrationComplete = true;
-      renderStatusPanel();
-      return;
-    }
-    idle(async () => {
-      const report = await ensureResultsForElections(state, remaining.slice(0, 1), {
-        buildIndices: updateIndices,
-        registerIssue
-      });
-      applyResultsHydrationOutcome(report, { silent: true });
-      pump();
-    });
-  };
-  window.setTimeout(pump, 1200);
 }
 
 function scheduleBackgroundSummaryHydration() {
@@ -595,14 +570,13 @@ function electionLabelByKey(key) {
 }
 
 function metricNeedsPartyResults() {
-  if (['party_share', 'swing_compare'].includes(state.selectedMetric)) return true;
+  if (['party_share', 'swing_compare', 'dominant_block'].includes(state.selectedMetric)) return true;
   if (state.selectedMetric === 'concentration') return true;
   return Boolean(state.selectedParty)
     && ['over_performance_province', 'over_performance_region'].includes(state.selectedMetric);
 }
 
 function shouldHydratePartyResultsNow() {
-  if (state.selectedMunicipalityId) return true;
   if (metricNeedsPartyResults()) return true;
   if (state.analysisMode === 'trajectory') return true;
   if (state.analysisMode === 'compare' && state.compareElection && state.selectedParty) return true;
@@ -787,7 +761,6 @@ function selectMunicipality(id, options = {}) {
   state.selectedMunicipalityId = id;
   rememberMunicipality(id);
   if (options.updateSearch !== false && els.municipalitySearch) els.municipalitySearch.value = municipalityLabelById(id);
-  if (!state.deferredMetadataLoaded) ensureDeferredMetadata({ silent: true });
   updateMunicipalityNoteUI();
   syncURLState();
 }
@@ -807,13 +780,6 @@ function partyModeLabel(mode = state.selectedPartyMode) {
   if (mode === 'party_family') return 'Famiglia';
   if (mode === 'bloc') return 'Blocco';
   return 'Partito';
-}
-
-function resultsFieldForMode(mode = state.selectedPartyMode) {
-  if (mode === 'bloc') return 'bloc';
-  if (mode === 'party_family') return 'party_family';
-  if (mode === 'party_std') return 'party_std';
-  return 'party_raw';
 }
 
 function resultDisplayLabel(row) {
@@ -869,27 +835,7 @@ function restoreLocalState() {
 }
 
 function partyOptionsForCurrentContext(mode = normalizeGroupModeForMetric()) {
-  const rows = (state.resultsLong || []).filter(row => row.election_key === state.selectedElection);
-  if (!rows.length) return [];
-  const totals = new Map();
-  const field = resultsFieldForMode(mode);
-  rows.forEach(row => {
-    const key = String(
-      field === 'party_raw'
-        ? (row.party_raw || row.party_std || '')
-        : field === 'party_std'
-          ? (row.party_std || row.party_raw || '')
-          : row[field] || ''
-    ).trim();
-    if (!key) return;
-    const current = totals.get(key) || { votes: 0, share: 0 };
-    current.votes += safeNumber(row.votes) || 0;
-    current.share += safeNumber(row.vote_share) || 0;
-    totals.set(key, current);
-  });
-  return [...totals.entries()]
-    .sort((a, b) => (b[1].votes - a[1].votes) || (b[1].share - a[1].share) || a[0].localeCompare(b[0], 'it'))
-    .map(([value]) => value);
+  return getPartyOptionsForElection(state, state.selectedElection, mode);
 }
 
 function refreshPartySelector() {
@@ -1778,7 +1724,7 @@ async function stepElection(delta) {
   setupControls();
   await runRenderWithLoadingDismissAsync(async () => {
     readControls();
-    await prepareMapForSmoothUse({ aggressive: true });
+    await prepareMapForSmoothUse({ aggressive: true, includePartyResults: true });
     requestRender();
   });
 }
@@ -1791,7 +1737,7 @@ async function swapSelectedElections() {
   setMapLoading(true, 'Caricamento dati elezione…');
   await runRenderWithLoadingDismissAsync(async () => {
     readControls();
-    await prepareMapForSmoothUse({ aggressive: true });
+    await prepareMapForSmoothUse({ aggressive: true, includePartyResults: true });
     requestRender();
   });
 }
@@ -2060,7 +2006,6 @@ function requestMapInteractionRender() {
       drawCanvasMap(state.mapCanvasTransform || d3.zoomIdentity);
     }
     renderSelectionDock();
-    renderPartyResults();
   });
 }
 
@@ -2621,26 +2566,6 @@ function renderQuickStats(rows) {
 // sorted list of { label, share, votes } summing the comune's bloc
 // shares — typically very close to 100% with a small residual when the
 // runtime list can't classify a party either.
-function buildBlocBreakdownForComune(comuneRows) {
-  const totals = new Map();
-  for (const row of (comuneRows || [])) {
-    const raw = String(row.party_raw || row.party_std || '').trim();
-    const meta = raw ? inferredPartyMetaOrNull(raw) : null;
-    let bloc = (meta?.bloc || row.bloc || '').trim();
-    if (!bloc) bloc = 'altro';
-    const share = safeNumber(row.vote_share);
-    if (!Number.isFinite(share)) continue;
-    const cur = totals.get(bloc) || { share: 0, votes: 0 };
-    cur.share += share;
-    cur.votes += safeNumber(row.votes) || 0;
-    totals.set(bloc, cur);
-  }
-  return [...totals.entries()]
-    .map(([label, v]) => ({ label, share: v.share, votes: v.votes }))
-    .filter(d => Number.isFinite(d.share) && d.share > 0)
-    .sort((a, b) => (b.share - a.share) || (b.votes - a.votes));
-}
-
 // Render a compact, ranked list of blocs for the selected comune. Used
 // both as a stand-alone panel above the party list (when the user
 // asked for the bloc/coalition metric) and as a tooltip-friendly
@@ -2675,86 +2600,29 @@ function renderPartyResults() {
   const host = els.sidebarPartyResults;
   if (!host) return;
   const electionKey = state.selectedElection;
-  const allRows = (state.resultsLong || []).filter(row => row.election_key === electionKey);
+  const allRows = getResultsForElection(state, electionKey);
   if (!allRows.length) {
-    host.innerHTML = '';
+    const pending = !!state.resultsLongShardPaths?.[electionKey]
+      && !state.loadedResultElectionKeys?.has(electionKey);
+    host.innerHTML = pending ? `
+      <div class="party-results-loading" role="status">
+        <span class="map-loading-spinner" aria-hidden="true"></span>
+        <span>Preparo i risultati nazionali...</span>
+      </div>` : '';
     return;
   }
-  const selectedId = state.selectedMunicipalityId || null;
-  const selectedRows = selectedId
-    ? allRows.filter(r => String(r.municipality_id) === String(selectedId))
-    : null;
-  const isComune = !!(selectedRows && selectedRows.length);
-  // When a single comune is selected the user wants party-level detail
-  // ("voglio che mi escano i risultati dei partiti"); rolling up by
-  // bloc here just hides what actually happened in that comune
-  // (and produces the visible "altro 54%" pile-up when the Python
-  // preprocessor's taxonomy is too coarse). For the country-wide
-  // breakdown the partyMode-aware roll-up still makes sense.
-  const mode = isComune ? 'party_raw' : (state.selectedPartyMode || 'party_raw');
-  const partyKey = row => {
-    if (mode === 'bloc') return row.bloc || row.party_raw || '';
-    if (mode === 'party_std') return row.party_std || row.party_raw || '';
-    if (mode === 'party_family') return row.party_family || row.party_std || row.party_raw || '';
-    return row.party_raw || row.party_std || '';
-  };
-  const totals = new Map();
-  if (isComune) {
-    // Selected comune: vote_share is already per-comune percentage. Sum it
-    // by party (handles list aggregation when same party appears on multiple
-    // lists).
-    selectedRows.forEach(row => {
-      const key = String(partyKey(row)).trim();
-      if (!key) return;
-      const share = safeNumber(row.vote_share);
-      if (!Number.isFinite(share)) return;
-      const cur = totals.get(key) || { share: 0, votes: 0 };
-      cur.share += share;
-      cur.votes += safeNumber(row.votes) || 0;
-      totals.set(key, cur);
-    });
-  } else {
-    // National view: vote_share is per-comune so we must weight by votes to
-    // get the country-wide share. votes_total per comune is the sum of all
-    // valid party votes for that comune.
-    let grandVotes = 0;
-    allRows.forEach(row => {
-      const v = safeNumber(row.votes);
-      if (Number.isFinite(v)) grandVotes += v;
-    });
-    if (grandVotes <= 0) {
-      host.innerHTML = '';
-      return;
-    }
-    allRows.forEach(row => {
-      const key = String(partyKey(row)).trim();
-      if (!key) return;
-      const v = safeNumber(row.votes);
-      if (!Number.isFinite(v)) return;
-      const cur = totals.get(key) || { share: 0, votes: 0 };
-      cur.votes += v;
-      totals.set(key, cur);
-    });
-    totals.forEach(entry => { entry.share = grandVotes > 0 ? (entry.votes / grandVotes) * 100 : 0; });
-  }
-  const ranked = [...totals.entries()]
-    .map(([label, v]) => ({ label, share: v.share, votes: v.votes }))
-    .filter(d => Number.isFinite(d.share) && d.share > 0)
-    .sort((a, b) => (b.share - a.share) || (b.votes - a.votes))
-    .slice(0, 8);
+  // Keep the dashboard companion nationally scoped. Municipality-level
+  // detail belongs in the dedicated profile; recomputing 100k+ result rows
+  // on every map click made selection feel sticky and changed the sidebar's
+  // meaning underneath the user.
+  // The national totals are accumulated once while the shard is indexed.
+  // Reading them here avoids rescanning 100k+ rows on every UI render.
+  const ranked = getNationalPartyResultsForElection(state, electionKey, 'party_raw').slice(0, 5);
   if (!ranked.length) {
     host.innerHTML = '';
     return;
   }
-  let scopeLabel;
-  let comuneName = '';
-  if (isComune) {
-    const muni = state.municipalities.find(m => String(m.municipality_id) === String(selectedId));
-    comuneName = muni?.name_current || muni?.municipality_name || `Comune ${selectedId}`;
-    scopeLabel = `${escapeHtml(comuneName)} · ${escapeHtml(electionLabelFor(electionKey))}`;
-  } else {
-    scopeLabel = `Italia · ${escapeHtml(electionLabelFor(electionKey))}`;
-  }
+  const scopeLabel = `Italia &middot; ${escapeHtml(electionLabelFor(electionKey))}`;
   const max = ranked[0].share || 1;
 
   // When the user selected the "Blocchi / coalizioni" metric, also show
@@ -2767,46 +2635,12 @@ function renderPartyResults() {
   // sidebar quick-stats already takes).
   let blocSectionHtml = '';
   if (state.selectedMetric === 'dominant_block') {
-    if (isComune) {
-      const blocs = buildBlocBreakdownForComune(selectedRows);
-      if (blocs.length) {
-        blocSectionHtml = blocBreakdownHtml(blocs, {
-          heading: 'Blocchi nel comune',
-          subheading: `${comuneName} · ${electionLabelFor(electionKey)}`,
-        });
-      }
-    } else {
-      // National view: aggregate bloc shares across all comuni weighted by votes.
-      const nationalTotals = new Map();
-      let grand = 0;
-      for (const row of allRows) {
-        const v = safeNumber(row.votes);
-        if (!Number.isFinite(v)) continue;
-        grand += v;
-      }
-      if (grand > 0) {
-        for (const row of allRows) {
-          const raw = String(row.party_raw || row.party_std || '').trim();
-          const meta = raw ? inferredPartyMetaOrNull(raw) : null;
-          let bloc = (meta?.bloc || row.bloc || '').trim();
-          if (!bloc) bloc = 'altro';
-          const v = safeNumber(row.votes);
-          if (!Number.isFinite(v)) continue;
-          const cur = nationalTotals.get(bloc) || { votes: 0 };
-          cur.votes += v;
-          nationalTotals.set(bloc, cur);
-        }
-        const blocs = [...nationalTotals.entries()]
-          .map(([label, v]) => ({ label, share: (v.votes / grand) * 100, votes: v.votes }))
-          .filter(d => Number.isFinite(d.share) && d.share > 0)
-          .sort((a, b) => (b.share - a.share) || (b.votes - a.votes));
-        if (blocs.length) {
-          blocSectionHtml = blocBreakdownHtml(blocs, {
-            heading: 'Blocchi a livello nazionale',
-            subheading: `Italia · ${electionLabelFor(electionKey)}`,
-          });
-        }
-      }
+    const blocs = getNationalPartyResultsForElection(state, electionKey, 'bloc');
+    if (blocs.length) {
+      blocSectionHtml = blocBreakdownHtml(blocs, {
+        heading: 'Blocchi a livello nazionale',
+        subheading: `Italia - ${electionLabelFor(electionKey)}`
+      });
     }
   }
 
@@ -2815,16 +2649,13 @@ function renderPartyResults() {
   // coalition so the user can see the real pre-vote alliance winner.
   // Pre-1994 elections (where coalitions were a post-vote construct)
   // intentionally render nothing here.
-  const coalitionsHtml = renderCoalitionResultsBlock({
-    electionKey,
-    isComune,
-    selectedRows,
-    allRows
-  });
+  const coalitionsHtml = state.selectedMetric === 'dominant_block'
+    ? renderCoalitionResultsBlock({ electionKey, isComune: false, selectedRows: null, allRows })
+    : '';
   host.innerHTML = `
     ${blocSectionHtml}
     <div class="party-results-header">
-      <div class="eyebrow">${isComune ? 'Risultati nel comune' : 'Risultati nazionali'}</div>
+      <div class="eyebrow">Risultati nazionali</div>
       <div class="party-results-scope">${scopeLabel}</div>
     </div>
     <ol class="party-results-list">
@@ -3274,12 +3105,25 @@ function renderMap() {
   state.lastMapRenderKey = renderKey;
 }
 
+const canvasGeometryObjectIds = new WeakMap();
+let nextCanvasGeometryObjectId = 1;
+
+function canvasGeometryObjectId(geometry) {
+  if (!geometry || (typeof geometry !== 'object' && typeof geometry !== 'function')) return 'none';
+  if (!canvasGeometryObjectIds.has(geometry)) {
+    canvasGeometryObjectIds.set(geometry, nextCanvasGeometryObjectId++);
+  }
+  return canvasGeometryObjectIds.get(geometry);
+}
+
 function canvasGeometryCacheKey(projection) {
   const years = state.geometryPack?.availableYears?.join(',') || '';
   const geometryYear = state.geometryReferenceYear || 'auto';
   const featureCount = state.geometry?.features?.length || 0;
   const provinceCount = state.provinceGeometry?.features?.length || 0;
-  return `${geometryYear}|${years}|${featureCount}|${provinceCount}|${projection?.constructor?.name || 'projection'}`;
+  const geometryId = canvasGeometryObjectId(state.geometry);
+  const provinceGeometryId = canvasGeometryObjectId(state.provinceGeometry);
+  return `${geometryYear}|${years}|${geometryId}|${provinceGeometryId}|${featureCount}|${provinceCount}|${projection?.constructor?.name || 'projection'}`;
 }
 
 function mapRenderSignatureForRows(rows) {
@@ -3307,6 +3151,14 @@ function mapRenderSignatureForRows(rows) {
 function buildCanvasMapCache(projection) {
   const key = canvasGeometryCacheKey(projection);
   if (state.mapCanvasCache?.key === key) return state.mapCanvasCache;
+  const geometryCaches = state.mapCanvasGeometryCaches || (state.mapCanvasGeometryCaches = new Map());
+  if (geometryCaches.has(key)) {
+    const cached = geometryCaches.get(key);
+    geometryCaches.delete(key);
+    geometryCaches.set(key, cached);
+    state.mapCanvasCache = cached;
+    return cached;
+  }
   const path = d3.geoPath(projection);
   const toItem = feature => {
     const d = path(feature);
@@ -3402,6 +3254,14 @@ function buildCanvasMapCache(projection) {
     itemsByMunicipalityId: new Map(items.map(item => [String(item.feature?.properties?.municipality_id || ''), item]).filter(([key]) => key)),
     bakedStore: new Map()
   };
+  geometryCaches.set(key, state.mapCanvasCache);
+  const lowMemoryDevice = Number.isFinite(navigator.deviceMemory) && navigator.deviceMemory <= 4;
+  const compactViewport = window.matchMedia?.('(max-width: 760px)')?.matches;
+  const geometryCacheLimit = lowMemoryDevice || compactViewport ? 1 : 3;
+  while (geometryCaches.size > geometryCacheLimit) {
+    const oldest = geometryCaches.keys().next().value;
+    geometryCaches.delete(oldest);
+  }
   return state.mapCanvasCache;
 }
 
@@ -3555,27 +3415,38 @@ function warmCurrentMapSignature(projection) {
   buildBakedChoropleth(render);
 }
 
-async function prepareMapForSmoothUse({ aggressive = false } = {}) {
+async function prepareMapForSmoothUse({ aggressive = false, includePartyResults = metricNeedsPartyResults() } = {}) {
+  await syncActiveGeometry(state, registerIssue);
   const electionKeys = [state.selectedElection];
   if (state.compareElection && metricNeedsCompare()) electionKeys.push(state.compareElection);
   await ensureSummaryForElections(state, electionKeys.filter(Boolean), { buildIndices: updateIndices, registerIssue });
-  await ensureResultsForElections(state, [state.selectedElection, ...(state.compareElection && metricNeedsCompare() ? [state.compareElection] : [])].filter(Boolean), { buildIndices: updateIndices, registerIssue });
+  if (includePartyResults) {
+    await ensureResultsForElections(
+      state,
+      [state.selectedElection, ...(state.compareElection && metricNeedsCompare() ? [state.compareElection] : [])].filter(Boolean),
+      { buildIndices: updateIndices, registerIssue }
+    );
+  }
   refreshPartySelector();
   syncMetricScopedControls();
   if (!state.geometry?.features?.length) return;
   const projection = makeGeoProjection(state.geometry, CANVAS_LOGICAL_WIDTH, CANVAS_LOGICAL_HEIGHT);
   buildCanvasMapCache(projection);
+  if (canInstantRenderCurrentMap()) return;
   warmCurrentMapSignature(projection);
   const warmConfigs = [
     { selectedMetric: 'turnout', selectedParty: null, selectedPartyMode: 'party_raw' },
     { selectedMetric: 'margin', selectedParty: null, selectedPartyMode: 'party_raw' },
     { selectedMetric: 'dominant_block', selectedParty: null, selectedPartyMode: 'bloc' }
   ];
-  const partyOptions = partyOptionsForCurrentContext('party_raw');
-  const warmPartyCount = aggressive ? 8 : 3;
-  partyOptions.slice(0, warmPartyCount).forEach(party => {
-    warmConfigs.push({ selectedMetric: 'party_share', selectedParty: party, selectedPartyMode: 'party_raw' });
-  });
+  const activeResultsLoaded = state.resultsLongFullLoaded || state.loadedResultElectionKeys?.has(state.selectedElection);
+  if (activeResultsLoaded) {
+    const partyOptions = partyOptionsForCurrentContext('party_raw');
+    const warmPartyCount = aggressive ? 8 : 3;
+    partyOptions.slice(0, warmPartyCount).forEach(party => {
+      warmConfigs.push({ selectedMetric: 'party_share', selectedParty: party, selectedPartyMode: 'party_raw' });
+    });
+  }
   const seen = new Set();
   warmConfigs.forEach(config => {
     const key = `${config.selectedMetric}|${config.selectedParty || ''}|${config.selectedPartyMode || ''}`;
@@ -5487,6 +5358,7 @@ function bindEvents() {
     el.addEventListener('change', async () => {
       if (el === els.metricSelect) {
         const nextMetric = sanitizeSelectedMetric(els.metricSelect.value || state.selectedMetric);
+        state.selectedMetric = nextMetric;
         state.selectedPartyMode = normalizeGroupModeForMetric(nextMetric);
         if (els.partyModeSelect) els.partyModeSelect.value = state.selectedPartyMode;
         refreshPartySelector();
@@ -5545,7 +5417,8 @@ function bindEvents() {
         await runRenderWithLoadingDismissAsync(async () => {
           if (needsHeavyWarmup) {
             await prepareMapForSmoothUse({
-              aggressive: el === els.electionSelect || el === els.compareElectionSelect || el === els.provinceSelect || el === els.areaPresetSelect
+              aggressive: el === els.electionSelect || el === els.compareElectionSelect || el === els.provinceSelect || el === els.areaPresetSelect,
+              includePartyResults: el === els.electionSelect || el === els.compareElectionSelect || metricNeedsPartyResults()
             });
           }
           if (needsPartyHydration && shouldHydratePartyResultsNow()) {
@@ -5605,7 +5478,7 @@ function bindEvents() {
     state.tablePage = 1;
     await runRenderWithLoadingDismissAsync(async () => {
       readControls();
-      await prepareMapForSmoothUse({ aggressive: true });
+      await prepareMapForSmoothUse({ aggressive: true, includePartyResults: true });
       requestRender();
     });
   });
@@ -5763,14 +5636,17 @@ function bindEvents() {
       closeCommandPalette();
       return;
     }
+    if (event.key === 'Escape' && (state.selectedMunicipalityId || state.compareMunicipalityIds.length)) {
+      event.preventDefault();
+      clearMunicipalitySelection();
+      requestMapInteractionRender();
+      if (inInput && typeof event.target?.blur === 'function') event.target.blur();
+      return;
+    }
     if (inInput) return;
     if (event.key === '[') stepElection(-1);
     if (event.key === ']') stepElection(1);
     if (event.key === 'f' || event.key === 'F') { toggleFocusMode(); requestRender(); }
-    if (event.key === 'Escape') {
-      clearMunicipalitySelection();
-      requestMapInteractionRender();
-    }
     if ((event.key === 's' || event.key === 'S') && (event.altKey || event.shiftKey)) {
       event.preventDefault();
       saveCurrentViewSnapshot();
@@ -6478,25 +6354,34 @@ function renderSelectionDock() {
   }
   const currentRow = getSummaryRow(state, state.selectedElection, mid) || null;
   const activeShare = currentRow && state.selectedParty ? aggregateShareFor(state, currentRow.election_key, mid, state.selectedParty) : null;
-  const metricValue = currentRow ? getMetricValue(state, currentRow) : null;
-  const leaderLabel = currentRow ? leadingPartyLabelFor(currentRow) : null;
+  const leaderShardKnown = !!state.resultsLongShardPaths?.[state.selectedElection];
+  const leaderResultsReady = state.resultsLongFullLoaded || state.loadedResultElectionKeys?.has(state.selectedElection);
+  const leaderPending = leaderShardKnown && !leaderResultsReady;
+  const leaderLabel = currentRow && !leaderPending ? leadingPartyLabelFor(currentRow) : null;
+  const leaderValue = leaderPending ? 'In preparazione...' : (leaderLabel || 'n/d');
   const topBlock = currentRow?.dominant_block || null;
+  const leaderShare = Number.isFinite(currentRow?.first_party_share) ? `${fmtPct(currentRow.first_party_share)}%` : 'n/d';
   const stats = [
-    ['Elezione', currentRow ? electionLabelByKey(currentRow.election_key || state.selectedElection) : electionLabelByKey(state.selectedElection)],
-    ['Valore in mappa', currentRow ? formatMetricValue(metricValue) : 'n/d'],
-    ['Partito in testa', leaderLabel || 'n/d'],
+    ['In testa', leaderValue],
+    ['Quota del primo', leaderShare],
     ['Affluenza', Number.isFinite(currentRow?.turnout_pct) ? `${fmtPct(currentRow.turnout_pct)}%` : 'n/d'],
-    ['Margine', Number.isFinite(currentRow?.first_second_margin) ? `${fmtPct(currentRow.first_second_margin)} pt` : 'n/d'],
-    ['Blocco', topBlock || 'n/d']
+    ['Margine', Number.isFinite(currentRow?.first_second_margin) ? `${fmtPct(currentRow.first_second_margin)} pt` : 'n/d']
   ];
   if (state.selectedMetric === 'party_share' && state.selectedParty) {
-    stats[1] = [state.selectedParty, activeShare != null ? `${fmtPct(activeShare)}%` : 'n/d'];
+    stats[0] = [state.selectedParty, activeShare != null ? `${fmtPct(activeShare)}%` : 'n/d'];
+    stats[1] = ['In testa', `${leaderValue} · ${leaderShare}`];
   }
   if (state.selectedMetric === 'dominant_block') {
-    stats[1] = ['Blocco in mappa', topBlock || 'n/d'];
+    stats[0] = ['Blocco prevalente', topBlock || 'n/d'];
+    stats[1] = ['In testa', `${leaderValue} · ${leaderShare}`];
   }
   els.selectionDockTitle.textContent = municipalityLabelById(mid);
-  els.selectionDockMeta.textContent = currentRow?.province ? `Provincia di ${currentRow.province}` : "Quadro rapido sull'elezione attiva";
+  const electionLabel = currentRow
+    ? electionLabelByKey(currentRow.election_key || state.selectedElection)
+    : electionLabelByKey(state.selectedElection);
+  els.selectionDockMeta.textContent = currentRow?.province
+    ? `Provincia di ${currentRow.province} · ${electionLabel}`
+    : electionLabel;
   if (els.selectionDockStats) {
     els.selectionDockStats.innerHTML = stats.map(([label, value]) => `
       <div class="selection-dock-stat">
@@ -6812,7 +6697,7 @@ async function init() {
     initCollapsiblePanels();
     updateBodyAppearance();
     toggleFocusMode(state.focusMode);
-    await prepareMapForSmoothUse({ aggressive: true });
+    await prepareMapForSmoothUse({ aggressive: true, includePartyResults: true });
     requestRender();
     await waitForAnimationFrames(2);
     setLoading(false);
