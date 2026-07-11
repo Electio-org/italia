@@ -1,11 +1,16 @@
 import assert from 'node:assert/strict';
-import {
+
+globalThis.d3 = {
+  mean: values => values.length ? values.reduce((sum, value) => sum + value, 0) / values.length : undefined
+};
+
+const {
   appendRowsToIndices,
   aggregateShareFor,
   getNationalPartyResultsForElection,
   getPartyOptionsForElection,
   getResultsForElection
-} from '../modules/selectors.js';
+} = await import('../modules/selectors.js');
 
 const state = {
   indices: {},
@@ -24,6 +29,12 @@ const rows = [
   { election_key: 'e2', municipality_id: 'm1', party_raw: 'C', party_std: 'C', party_family: 'gamma', bloc: 'centro', votes: 100, vote_share: 100 }
 ];
 
+state.summary = [
+  { election_key: 'e1', municipality_id: 'm1', first_party_std: 'stale-a', first_party_share: 1 },
+  { election_key: 'e1', municipality_id: 'm2', first_party_std: 'stale-b', first_party_share: 1 },
+  { election_key: 'e2', municipality_id: 'm1', first_party_std: 'stale-c', first_party_share: 1 }
+];
+
 state.resultsLong = rows.slice(0, 2);
 appendRowsToIndices(state, { rebuild: true });
 state.resultsLong.push(...rows.slice(2));
@@ -39,6 +50,10 @@ assert.deepEqual(
   getNationalPartyResultsForElection(state, 'e1').map(row => [row.label, row.share]),
   [['B', 65], ['A', 35]]
 );
+assert.equal(state.indices.summaryMap.get('e1__m1').first_party_runtime, 'B');
+assert.equal(state.indices.summaryMap.get('e1__m1').first_party_runtime_share, 70);
+assert.equal(state.indices.summaryMap.get('e1__m2').first_party_runtime, 'B');
+assert.equal(state.indices.summaryMap.get('e2__m1').first_party_runtime, 'C');
 
 state.selectedPartyMode = 'bloc';
 assert.equal(aggregateShareFor(state, 'e1', 'm1', 'destra'), 70);

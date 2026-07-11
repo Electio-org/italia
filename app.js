@@ -13,8 +13,7 @@ import {
   FAMILY_COLORS,
   AREA_PRESETS,
   FALLBACK_PARTY_OPTIONS,
-  coalitionForParty,
-  hasCoalitionData
+  coalitionForParty
 } from './modules/shared.js';
 import {
   trustStyle,
@@ -39,7 +38,6 @@ import {
   buildIndices,
   getSummaryRow,
   getResultsRows,
-  getResultsForElection,
   getPartyOptionsForElection,
   getNationalPartyResultsForElection,
   aggregateShareFor,
@@ -288,6 +286,7 @@ function audienceMeta() {
 }
 
 const PUBLIC_METRICS = new Set([
+  'first_party',
   'turnout',
   'party_share',
   'margin',
@@ -304,16 +303,14 @@ const PUBLIC_METRICS = new Set([
 ]);
 
 function sanitizeSelectedMetric(metric) {
-  const normalized = metric === 'first_party'
-    ? 'margin'
-    : metric === 'dominant_coalition'
+  const normalized = metric === 'dominant_coalition'
       ? 'dominant_block'
       : metric;
   return PUBLIC_METRICS.has(normalized) ? normalized : 'turnout';
 }
 
 function normalizeGroupModeForMetric(metric = state.selectedMetric) {
-  if (metric === 'party_share' || metric === 'swing_compare') return 'party_raw';
+  if (metric === 'first_party' || metric === 'party_share' || metric === 'swing_compare') return 'party_raw';
   if (metric === 'dominant_block') return 'bloc';
   if (metric === 'dominant_coalition') return 'party_raw';
   return state.selectedPartyMode || 'party_raw';
@@ -329,7 +326,7 @@ function metricReadableExplanation() {
     case 'turnout': return "La mappa mostra quanta partecipazione elettorale c'è stata, non quale partito ha vinto.";
     case 'first_party': return 'La mappa mostra chi arriva primo in ogni comune, non il margine della vittoria.';
     case 'party_share': return `La mappa mostra la quota del partito selezionato (${state.selectedParty || 'partito'}) dove il dato è disponibile.`;
-    case 'dominant_block': return 'La mappa mostra il blocco o la coalizione prevalente nel comune, quando il bundle lo dichiara in modo leggibile.';
+    case 'dominant_block': return "La mappa riunisce i partiti in grandi aree politiche e mostra quella prevalente in ogni comune.";
     case 'dominant_coalition': return 'La mappa mostra la coalizione elettorale pre-voto vincente (Camera 1994 e successive). Pre-1994 le coalizioni si formavano dopo il voto, quindi questa metrica non si applica.';
     case 'margin': return 'La mappa mostra il distacco tra primo e secondo: più è alto, più il comune è sbilanciato.';
     case 'swing_compare': return 'La mappa mostra una differenza tra due elezioni: serve un anno di confronto attivo.';
@@ -570,7 +567,7 @@ function electionLabelByKey(key) {
 }
 
 function metricNeedsPartyResults() {
-  if (['party_share', 'swing_compare', 'dominant_block'].includes(state.selectedMetric)) return true;
+  if (['first_party', 'party_share', 'swing_compare', 'dominant_block'].includes(state.selectedMetric)) return true;
   if (state.selectedMetric === 'concentration') return true;
   return Boolean(state.selectedParty)
     && ['over_performance_province', 'over_performance_region'].includes(state.selectedMetric);
@@ -793,7 +790,7 @@ function leadingResultRowFor(electionKey, municipalityId) {
 
 function leadingPartyLabelFor(row) {
   const lead = row ? leadingResultRowFor(row.election_key, row.municipality_id) : null;
-  return lead?.party_raw || lead?.party_std || row?.first_party_std || '—';
+  return lead?.party_raw || lead?.party_std || row?.first_party_runtime || row?.first_party_std || '—';
 }
 
 function toggleBookmarkMunicipality(id) {
@@ -2349,11 +2346,11 @@ function renderActiveFilterChips() {
 
 function metricLabel() {
   const labels = {
-    first_party: 'Leadership locale',
+    first_party: 'Partito vincente',
     party_share: 'Quota partito',
     turnout: 'Affluenza',
     margin: 'Margine 1°-2°',
-    dominant_block: 'Blocchi / coalizioni',
+    dominant_block: 'Area politica prevalente',
     dominant_coalition: 'Coalizione vincente',
     swing_compare: 'Swing vs confronto',
     delta_turnout: 'Δ affluenza',
@@ -2404,17 +2401,43 @@ function colorScaleForRows(rows) {
     // dominant_block: ordina i blocchi sul continuum politico (destra →
     // centro-destra → liberale → centro → centro-sinistra → sinistra →
     // populista → regionalista → altro) invece che alfabeticamente, così
-    // la legenda è leggibile come uno spettro. Per first_party e
-    // dominant_coalition teniamo l'ordinamento alfabetico delle
-    // categorie presenti.
+    // la legenda è leggibile come uno spettro. Per first_party mostriamo
+    // solo i cinque soggetti maggiori più una categoria residuale.
     // dominant_coalition: le coalizioni sono specifiche per elezione
     // (Liberi e Uguali esiste in 2018 ma non in 2022, Terzo Polo solo
     // in 2022, ecc.). Quindi la legenda deve filtrare alla sola
     // elezione corrente, NON usare la versione "domain rows" che
     // unisce tutti gli anni (utile per scale numeriche continue).
     let categories;
+    let firstPartyTopSet = null;
+    let firstPartyColorMap = null;
     if (state.selectedMetric === 'dominant_block') {
       categories = [...new Set(values.filter(v => v !== null && v !== undefined && v !== ''))].sort(compareBlocks);
+    } else if (state.selectedMetric === 'first_party') {
+      const currentValues = (rows || [])
+        .map(r => r.__metric_value)
+        .filter(v => v !== null && v !== undefined && v !== '');
+      const present = new Set(currentValues);
+      const ranked = getPartyOptionsForElection(state, state.selectedElection, 'party_raw')
+        .filter(party => present.has(party));
+      const fallback = d3.rollups(currentValues, entries => entries.length, value => value)
+        .sort((a, b) => (b[1] - a[1]) || String(a[0]).localeCompare(String(b[0]), 'it'))
+        .map(([party]) => party);
+      const top = (ranked.length ? ranked : fallback).slice(0, 5);
+      firstPartyTopSet = new Set(top);
+      firstPartyColorMap = new Map();
+      const usedColors = new Set();
+      const collisionColors = ['#0f766e', '#7c3aed', '#c2410c', '#0891b2', '#a16207'];
+      top.forEach(party => {
+        const preferredColor = getPartyColor(party);
+        const color = usedColors.has(preferredColor.toLowerCase())
+          ? collisionColors.find(candidate => !usedColors.has(candidate.toLowerCase())) || preferredColor
+          : preferredColor;
+        firstPartyColorMap.set(party, color);
+        usedColors.add(color.toLowerCase());
+      });
+      categories = top.slice();
+      if (currentValues.some(party => !firstPartyTopSet.has(party))) categories.push('__other_parties__');
     } else if (state.selectedMetric === 'dominant_coalition') {
       const currentValues = (rows || [])
         .map(r => r.__metric_value)
@@ -2427,12 +2450,21 @@ function colorScaleForRows(rows) {
       if (!v) return '#334155';
       if (state.selectedMetric === 'dominant_block') return getBlockColor(v);
       if (state.selectedMetric === 'dominant_coalition') return getCoalitionColor(v);
+      if (state.selectedMetric === 'first_party' && (v === '__other_parties__' || !firstPartyTopSet?.has(v))) return '#89958f';
+      if (state.selectedMetric === 'first_party') return firstPartyColorMap?.get(v) || getPartyColor(v);
       return getPartyColor(v);
     };
     return {
       type: 'categorical',
       colorFor: colorForCategory,
-      legend: categories.slice(0, 9).map(c => ({ label: c, color: colorForCategory(c) }))
+      legend: categories.slice(0, 9).map(c => ({
+        label: c === '__other_parties__'
+          ? 'Altri partiti'
+          : state.selectedMetric === 'first_party'
+            ? inferPartyMeta(c).display
+            : c,
+        color: colorForCategory(c)
+      }))
     };
   }
 
@@ -2499,109 +2531,16 @@ function renderLegend(scaleInfo) {
   if (els.sidebarLegend) els.sidebarLegend.innerHTML = legendHtml;
 }
 
-function renderQuickStats(rows) {
-  if (!els.sidebarQuickStats) return;
-  if (state.selectedMetric === 'dominant_block' || state.selectedMetric === 'dominant_coalition') {
-    // Per dominant_coalition non possiamo fallback a dominant_block: le
-    // coalizioni esistono solo dal 1994 in poi, e se per l'elezione
-    // corrente non c'è un catalogo, l'utente deve vedere lo stato vuoto
-    // ("Nessun comune con coalizione leggibile") invece di vedere
-    // l'header "Coalizione vincente" con sotto un nome di blocco
-    // (es. "centro") che è fuorviante.
-    const sourceValues = state.selectedMetric === 'dominant_coalition'
-      ? (rows || []).map(r => r.__metric_value).filter(Boolean)
-      : (rows || []).map(r => r.__metric_value || r.dominant_block).filter(Boolean);
-    const groups = d3.rollups(
-      sourceValues,
-      values => values.length,
-      value => value
-    ).sort((a, b) => (b[1] - a[1]) || a[0].localeCompare(b[0], 'it'));
-    if (!groups.length) {
-      els.sidebarQuickStats.innerHTML = `<div class="quick-stats-empty">${state.selectedMetric === 'dominant_coalition'
-        ? 'Nessuna coalizione catalogata per questa elezione (le coalizioni pre-voto sono disponibili dalla Camera 1994 in poi).'
-        : 'Nessun comune con blocco o coalizione leggibile per la metrica corrente.'}</div>`;
-      return;
-    }
-    els.sidebarQuickStats.innerHTML = `
-      <div class="quick-stats-header">${escapeHtml(metricLabel())}</div>
-      <dl class="quick-stats-grid">
-        <div class="quick-stat"><dt>Più diffusa</dt><dd>${escapeHtml(groups[0]?.[0] || '—')}</dd></div>
-        <div class="quick-stat"><dt>2° gruppo</dt><dd>${escapeHtml(groups[1]?.[0] || '—')}</dd></div>
-        <div class="quick-stat"><dt>Comuni</dt><dd>${fmtInt((rows || []).length)}</dd></div>
-        <div class="quick-stat"><dt>Gruppi</dt><dd>${fmtInt(groups.length)}</dd></div>
-      </dl>`;
-    return;
-  }
-  const values = (rows || []).map(r => r.__metric_value).filter(v => Number.isFinite(v));
-  if (!values.length) {
-    els.sidebarQuickStats.innerHTML = `<div class="quick-stats-empty">Nessun comune con valore numerico per la metrica corrente.</div>`;
-    return;
-  }
-  const avg = d3.mean(values);
-  const lo = d3.min(values);
-  const hi = d3.max(values);
-  const metricKey = state.selectedMetric;
-  const fmt = v => {
-    if (v == null || !Number.isFinite(v)) return '—';
-    if (['swing_compare', 'delta_turnout', 'over_performance_province', 'over_performance_region'].includes(metricKey)) {
-      return `${fmtPctSigned(v)} pt`;
-    }
-    if (['turnout', 'party_share', 'margin', 'volatility', 'concentration', 'stability_index'].includes(metricKey)) {
-      return `${fmtPct(v)}%`;
-    }
-    return fmtInt(v);
-  };
-  els.sidebarQuickStats.innerHTML = `
-    <div class="quick-stats-header">${escapeHtml(metricLabel())}</div>
-    <dl class="quick-stats-grid">
-      <div class="quick-stat"><dt>Media</dt><dd>${fmt(avg)}</dd></div>
-      <div class="quick-stat"><dt>Minimo</dt><dd>${fmt(lo)}</dd></div>
-      <div class="quick-stat"><dt>Massimo</dt><dd>${fmt(hi)}</dd></div>
-      <div class="quick-stat"><dt>Comuni</dt><dd>${fmtInt(values.length)}</dd></div>
-    </dl>`;
-}
-
-// Re-aggregate per-comune results-long rows by bloc, with runtime
-// re-inference of the bloc taxonomy (modules/shared.js). Returns a
-// sorted list of { label, share, votes } summing the comune's bloc
-// shares — typically very close to 100% with a small residual when the
-// runtime list can't classify a party either.
-// Render a compact, ranked list of blocs for the selected comune. Used
-// both as a stand-alone panel above the party list (when the user
-// asked for the bloc/coalition metric) and as a tooltip-friendly
-// summary inside the comune card.
-function blocBreakdownHtml(blocs, opts = {}) {
-  if (!blocs.length) return '';
-  const max = blocs[0].share || 1;
-  const total = blocs.reduce((acc, b) => acc + (b.share || 0), 0);
-  const note = total > 0 && total < 95
-    ? `<div class="party-results-footnote">Quote ri-aggregate dal mix partiti del comune (Σ ≈ ${fmtPct(total)}%; il residuo è la quota dei partiti senza blocco riconosciuto a runtime).</div>`
-    : '';
-  const heading = opts.heading || 'Blocchi nel comune';
-  const subheading = opts.subheading || '';
-  return `
-    <div class="party-results-header">
-      <div class="eyebrow">${escapeHtml(heading)}</div>
-      ${subheading ? `<div class="party-results-scope">${escapeHtml(subheading)}</div>` : ''}
-    </div>
-    <ol class="party-results-list party-results-list-block">
-      ${blocs.map(b => `
-        <li class="party-results-row" data-bloc="${escapeHtml(b.label)}">
-          <span class="party-results-swatch" style="background:${getGroupColor(b.label)}"></span>
-          <span class="party-results-label">${escapeHtml(b.label)}</span>
-          <span class="party-results-bar"><span class="party-results-bar-fill" style="width:${Math.max(2, Math.min(100, (b.share / max) * 100))}%; background:${getGroupColor(b.label)}"></span></span>
-          <span class="party-results-pct">${fmtPct(b.share)}%</span>
-        </li>`).join('')}
-    </ol>
-    ${note}`;
-}
-
 function renderPartyResults() {
   const host = els.sidebarPartyResults;
   if (!host) return;
+  if (!['first_party', 'party_share', 'dominant_block'].includes(state.selectedMetric)) {
+    host.innerHTML = '';
+    return;
+  }
   const electionKey = state.selectedElection;
-  const allRows = getResultsForElection(state, electionKey);
-  if (!allRows.length) {
+  const hasResults = (state.indices.resultCountByElection?.get(electionKey) || 0) > 0;
+  if (!hasResults) {
     const pending = !!state.resultsLongShardPaths?.[electionKey]
       && !state.loadedResultElectionKeys?.has(electionKey);
     host.innerHTML = pending ? `
@@ -2611,140 +2550,43 @@ function renderPartyResults() {
       </div>` : '';
     return;
   }
-  // Keep the dashboard companion nationally scoped. Municipality-level
-  // detail belongs in the dedicated profile; recomputing 100k+ result rows
-  // on every map click made selection feel sticky and changed the sidebar's
-  // meaning underneath the user.
-  // The national totals are accumulated once while the shard is indexed.
-  // Reading them here avoids rescanning 100k+ rows on every UI render.
-  const ranked = getNationalPartyResultsForElection(state, electionKey, 'party_raw').slice(0, 5);
+  const isBlockView = state.selectedMetric === 'dominant_block';
+  const mode = isBlockView ? 'bloc' : 'party_raw';
+  let ranked = getNationalPartyResultsForElection(state, electionKey, mode);
+  if (state.selectedMetric === 'party_share') {
+    ranked = ranked.filter(row => row.label === state.selectedParty).slice(0, 1);
+  } else {
+    ranked = ranked.slice(0, 3);
+  }
   if (!ranked.length) {
     host.innerHTML = '';
     return;
   }
   const scopeLabel = `Italia &middot; ${escapeHtml(electionLabelFor(electionKey))}`;
   const max = ranked[0].share || 1;
-
-  // When the user selected the "Blocchi / coalizioni" metric, also show
-  // the per-bloc rollup above the party list (requested explicitly for
-  // both the national view and the per-comune view). For a comune we
-  // re-aggregate from the row-level data we already have; for the
-  // national view we use the per-comune vote_share field (it is
-  // already a percentage so summing it across comuni and dividing by
-  // the number of comuni gives a balanced share — same approach the
-  // sidebar quick-stats already takes).
-  let blocSectionHtml = '';
-  if (state.selectedMetric === 'dominant_block') {
-    const blocs = getNationalPartyResultsForElection(state, electionKey, 'bloc');
-    if (blocs.length) {
-      blocSectionHtml = blocBreakdownHtml(blocs, {
-        heading: 'Blocchi a livello nazionale',
-        subheading: `Italia - ${electionLabelFor(electionKey)}`
-      });
-    }
-  }
-
-  // Coalition roll-up (post-1994 only): when the active election has a
-  // curated coalition catalog we aggregate the comune's party shares by
-  // coalition so the user can see the real pre-vote alliance winner.
-  // Pre-1994 elections (where coalitions were a post-vote construct)
-  // intentionally render nothing here.
-  const coalitionsHtml = state.selectedMetric === 'dominant_block'
-    ? renderCoalitionResultsBlock({ electionKey, isComune: false, selectedRows: null, allRows })
-    : '';
+  const heading = isBlockView
+    ? 'Aree politiche'
+    : state.selectedMetric === 'party_share'
+      ? 'Quota nazionale'
+      : 'Esito nazionale';
+  const displayLabel = label => isBlockView
+    ? String(label || '').replace(/(^|[-\s])\p{L}/gu, match => match.toUpperCase())
+    : (inferPartyMeta(label).display || label);
+  const colorFor = label => isBlockView ? getBlockColor(label) : getPartyColor(label);
   host.innerHTML = `
-    ${blocSectionHtml}
     <div class="party-results-header">
-      <div class="eyebrow">Risultati nazionali</div>
+      <div class="eyebrow">${heading}</div>
       <div class="party-results-scope">${scopeLabel}</div>
     </div>
     <ol class="party-results-list">
       ${ranked.map(r => `
         <li class="party-results-row" data-party="${escapeHtml(r.label)}" title="${escapeHtml(r.label)}">
-          <span class="party-results-swatch" style="background:${getGroupColor(r.label)}"></span>
-          <span class="party-results-label">${escapeHtml(inferPartyMeta(r.label).display || r.label)}</span>
-          <span class="party-results-bar"><span class="party-results-bar-fill" style="width:${Math.max(2, Math.min(100, (r.share / max) * 100))}%; background:${getGroupColor(r.label)}"></span></span>
+          <span class="party-results-swatch" style="background:${colorFor(r.label)}"></span>
+          <span class="party-results-label">${escapeHtml(displayLabel(r.label))}</span>
+          <span class="party-results-bar"><span class="party-results-bar-fill" style="width:${Math.max(2, Math.min(100, (r.share / max) * 100))}%; background:${colorFor(r.label)}"></span></span>
           <span class="party-results-pct">${fmtPct(r.share)}%</span>
         </li>`).join('')}
-    </ol>${coalitionsHtml}`;
-}
-
-// Build the "Coalizioni storiche" block injected after the party list
-// in the sidebar. We render this whenever:
-//   - the active election has a curated coalition catalog entry, AND
-//   - at least one displayed party belongs to a declared coalition
-// Returns '' when either condition fails so the caller can append
-// unconditionally without empty containers polluting the DOM.
-//
-// Aggregation:
-//   - Selected comune: sum vote_share by coalition_key across the
-//     comune's results-long rows.
-//   - National (no comune selected): sum absolute votes by coalition
-//     and normalise by total votes from the same rows.
-// Parties without a coalition mapping are NOT shown — only "votes that
-// went to a declared coalition" contribute to the displayed totals,
-// and a small footnote reports the uncovered share so the reader is
-// never misled into thinking shares sum to 100%.
-function renderCoalitionResultsBlock({ electionKey, isComune, selectedRows, allRows }) {
-  if (!hasCoalitionData(state, electionKey)) return '';
-  const rows = isComune ? (selectedRows || []) : (allRows || []);
-  if (!rows.length) return '';
-  const coalitionTotals = new Map();
-  let totalDenom = 0;
-  let coveredDenom = 0;
-  rows.forEach(row => {
-    const partyRaw = String(row.party_raw || '').trim();
-    if (!partyRaw) return;
-    const weight = isComune ? safeNumber(row.vote_share) : safeNumber(row.votes);
-    if (!Number.isFinite(weight) || weight <= 0) return;
-    totalDenom += weight;
-    const coalition = coalitionForParty(state, electionKey, partyRaw);
-    if (!coalition) return;
-    coveredDenom += weight;
-    const acc = coalitionTotals.get(coalition.coalition_key) || {
-      key: coalition.coalition_key,
-      label: coalition.coalition_label,
-      color: coalition.coalition_color,
-      bloc: coalition.coalition_bloc,
-      weight: 0,
-      parties: new Set()
-    };
-    acc.weight += weight;
-    acc.parties.add(partyRaw);
-    coalitionTotals.set(coalition.coalition_key, acc);
-  });
-  if (!coalitionTotals.size || totalDenom <= 0) return '';
-  // In comune mode, vote_share is already a percentage so we display
-  // weight directly; in national mode, weight is absolute votes and we
-  // need to normalise by totalDenom.
-  const denomForPct = isComune ? 1 : (totalDenom / 100);
-  const ranked = [...coalitionTotals.values()]
-    .map(c => ({ ...c, share: denomForPct > 0 ? c.weight / denomForPct : 0 }))
-    .filter(c => c.share > 0)
-    .sort((a, b) => b.share - a.share);
-  if (!ranked.length) return '';
-  const maxShare = ranked[0].share || 1;
-  const uncoveredPct = totalDenom > 0 ? ((totalDenom - coveredDenom) / (isComune ? 1 : (totalDenom / 100))) : 0;
-  const uncoveredNote = uncoveredPct >= 0.5
-    ? `<div class="party-results-coalitions-note helper-text">Liste non in coalizione: ${fmtPct(uncoveredPct)}%</div>`
-    : '';
-  return `
-    <div class="party-results-coalitions">
-      <div class="party-results-coalitions-head">
-        <div class="eyebrow">Coalizioni storiche</div>
-        <div class="helper-text">Ricostruite per ${escapeHtml(electionLabelFor(electionKey))}</div>
-      </div>
-      <ol class="party-results-coalitions-list">
-        ${ranked.map(c => `
-          <li class="party-results-coalitions-row" data-coalition="${escapeHtml(c.key)}" title="${escapeHtml([...c.parties].join(' · '))}">
-            <span class="party-results-swatch" style="background:${c.color}"></span>
-            <span class="party-results-label">${escapeHtml(c.label)}</span>
-            <span class="party-results-bar"><span class="party-results-bar-fill" style="width:${Math.max(2, Math.min(100, (c.share / maxShare) * 100))}%; background:${c.color}"></span></span>
-            <span class="party-results-pct">${fmtPct(c.share)}%</span>
-          </li>`).join('')}
-      </ol>
-      ${uncoveredNote}
-    </div>`;
+    </ol>`;
 }
 
 function electionLabelFor(electionKey) {
@@ -3072,7 +2914,6 @@ function renderMap() {
   if (!state.geometry || !Array.isArray(state.geometry.features) || !state.geometry.features.length) {
     showMapMessage('Geografia non disponibile. Inserisci un <code>GeoJSON</code> o <code>TopoJSON</code> reale e aggiorna il percorso nel <code>manifest.json</code>.');
     renderLegend(null);
-    renderQuickStats([]);
     renderPartyResults();
     state.lastMapRenderKey = renderKey;
     return;
@@ -3082,7 +2923,6 @@ function renderMap() {
   const rowByJoinKey = new Map(rows.map(r => [rowJoinKey(r), r]));
   const scaleInfo = colorScaleForRows(rows);
   renderLegend(scaleInfo);
-  renderQuickStats(rows);
   renderPartyResults();
 
   const projection = makeGeoProjection(state.geometry, 960, 680);
@@ -3437,6 +3277,7 @@ async function prepareMapForSmoothUse({ aggressive = false, includePartyResults 
   const warmConfigs = [
     { selectedMetric: 'turnout', selectedParty: null, selectedPartyMode: 'party_raw' },
     { selectedMetric: 'margin', selectedParty: null, selectedPartyMode: 'party_raw' },
+    { selectedMetric: 'first_party', selectedParty: null, selectedPartyMode: 'party_raw' },
     { selectedMetric: 'dominant_block', selectedParty: null, selectedPartyMode: 'bloc' }
   ];
   const activeResultsLoaded = state.resultsLongFullLoaded || state.loadedResultElectionKeys?.has(state.selectedElection);
@@ -3866,7 +3707,7 @@ function showTooltip(event, feature, row) {
     const topParties = partyRows
       .filter(r => r.vote_share != null)
       .sort((a, b) => (safeNumber(b.vote_share) || 0) - (safeNumber(a.vote_share) || 0))
-      .slice(0, 5);
+      .slice(0, 3);
     if (topParties.length) {
       topPartiesHtml = `<div class="tooltip-parties">
          ${topParties.map(r => {
@@ -4549,7 +4390,7 @@ function metricValueForMode(row, mode, electionKeyOverride = null) {
   switch (mode) {
     case 'turnout': return row.turnout_pct;
     case 'margin': return row.first_second_margin;
-    case 'dominant_block': return row.dominant_block || inferPartyMeta(row.first_party_std).bloc;
+    case 'dominant_block': return row.dominant_block || inferPartyMeta(row.first_party_runtime || row.first_party_std).bloc;
     case 'dominant_coalition': return row.dominant_coalition || null;
     case 'party_share': return aggregateShareFor(state, electionKey, row.municipality_id, state.selectedParty);
     case 'volatility': return computeVolatility(state, row.municipality_id);
@@ -4557,7 +4398,7 @@ function metricValueForMode(row, mode, electionKeyOverride = null) {
     case 'concentration': return computeConcentration(state, row.municipality_id, electionKey);
     case 'first_party':
     default:
-      return row.first_party_std || null;
+      return row.first_party_runtime || row.first_party_std || null;
   }
 }
 
@@ -6520,7 +6361,6 @@ async function init() {
     updateLogPanel: q('update-log-panel'),
     legend: q('legend'),
     sidebarLegend: q('sidebar-legend'),
-    sidebarQuickStats: q('sidebar-quick-stats'),
     sidebarPartyResults: q('sidebar-party-results'),
     sidebarDownloadPngBtn: q('sidebar-download-png-btn'),
     layerToggleRegioni: q('layer-toggle-regioni'),

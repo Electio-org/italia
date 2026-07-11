@@ -121,8 +121,7 @@ export function appendRowsToIndices(state, { summaryRows = [], resultRows = [], 
   });
 
   // Track which (election, municipality) pairs gained new result rows so
-  // we can recompute their dominant_block once, after the loop, instead
-  // of redoing the work every row.
+  // we can rederive their winner and dominant block once, after the loop.
   const touchedResultPairs = resultRows.length ? new Set() : null;
 
   resultRows.forEach(row => {
@@ -184,13 +183,38 @@ export function appendRowsToIndices(state, { summaryRows = [], resultRows = [], 
       if (!rows || !rows.length) return;
       const summaryRow = state.indices.summaryMap.get(resultKey);
       if (!summaryRow) return;
+      const byParty = new Map();
       const byBloc = new Map();
       rows.forEach(r => {
+        const party = String(r.party_raw || r.party_std || '').trim();
+        if (party) {
+          const current = byParty.get(party) || { votes: 0, share: 0 };
+          current.votes += safeNumber(r.votes) || 0;
+          current.share += safeNumber(r.vote_share) || 0;
+          byParty.set(party, current);
+        }
         const bloc = (r.bloc || '').trim();
         if (!bloc) return;
         const share = safeNumber(r.vote_share) || 0;
         byBloc.set(bloc, (byBloc.get(bloc) || 0) + share);
       });
+
+      // Preserve the historical standardized fields for longitudinal
+      // analysis, while exposing the actual raw-list winner to the public
+      // map. This prevents stale standardized labels leaking across years.
+      let winningParty = null;
+      let winningPartyStats = null;
+      byParty.forEach((stats, party) => {
+        if (!winningPartyStats
+          || stats.votes > winningPartyStats.votes
+          || (stats.votes === winningPartyStats.votes && stats.share > winningPartyStats.share)) {
+          winningParty = party;
+          winningPartyStats = stats;
+        }
+      });
+      summaryRow.first_party_runtime = winningParty || summaryRow.first_party_runtime || summaryRow.first_party_std || '';
+      summaryRow.first_party_runtime_share = winningPartyStats?.share ?? summaryRow.first_party_share ?? null;
+
       if (!byBloc.size) return;
       // Pick the bloc with the highest aggregate share. Ties are broken
       // by the first-seen order in `rows`, which itself is the CSV
@@ -386,7 +410,7 @@ export function shareTrendLabel(series) {
 export function getMetricValue(state, row) {
   if (!row) return null;
   switch (state.selectedMetric) {
-    case 'first_party': return row.first_party_std || null;
+    case 'first_party': return row.first_party_runtime || row.first_party_std || null;
     case 'party_share': return aggregateShareFor(state, row.election_key, row.municipality_id);
     case 'turnout': return safeNumber(row.turnout_pct);
     case 'margin': return safeNumber(row.first_second_margin);

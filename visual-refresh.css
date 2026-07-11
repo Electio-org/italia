@@ -370,6 +370,31 @@ body[data-site-page="dashboard"] .party-results-pct {
   font-size: 0.72rem;
 }
 
+body[data-site-page="dashboard"] .sidebar-map-options {
+  padding-top: 13px;
+  border-top: 1px solid var(--electio-line);
+}
+
+body[data-site-page="dashboard"] .sidebar-map-options > summary {
+  color: #53635c;
+  font-size: 0.69rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+body[data-site-page="dashboard"] .sidebar-map-options .sidebar-layers {
+  margin-top: 11px !important;
+  padding-top: 0 !important;
+  border-top: 0 !important;
+}
+
+body[data-site-page="dashboard"] .party-results-row:first-child .party-results-label,
+body[data-site-page="dashboard"] .party-results-row:first-child .party-results-pct {
+  color: var(--electio-ink) !important;
+  font-weight: 700;
+}
+
 body[data-site-page="dashboard"] .selection-dock {
   padding: 12px !important;
   border: 0 !important;

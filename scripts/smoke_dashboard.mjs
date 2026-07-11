@@ -23,10 +23,16 @@ page.setDefaultTimeout(45_000);
 try {
   await page.goto(baseUrl, { waitUntil: 'domcontentloaded' });
   await page.waitForFunction(() => document.querySelector('#loading-overlay')?.classList.contains('hidden'));
-  await page.waitForFunction(() => document.querySelectorAll('#sidebar-party-results .party-results-row').length >= 5);
+  await page.selectOption('#metric-select', 'first_party');
+  await page.waitForFunction(() => (
+    document.querySelector('#map-loading')?.classList.contains('hidden')
+    && document.querySelectorAll('#sidebar-party-results .party-results-row').length === 3
+  ));
 
   const metrics = await page.locator('#metric-select option').evaluateAll(options => options.map(option => option.value));
-  assert.deepEqual(metrics, ['party_share', 'turnout', 'dominant_block', 'margin']);
+  assert.deepEqual(metrics, ['first_party', 'party_share', 'turnout', 'dominant_block', 'margin']);
+  assert.equal(await page.locator('#sidebar-quick-stats').count(), 0);
+  assert.ok(await page.locator('#sidebar-legend .legend-item').count() <= 7, 'winner legend must stay compact');
 
   const election1992 = await page.locator('#election-select option').evaluateAll(options => (
     options.find(option => option.textContent.includes('1992'))?.value
@@ -36,8 +42,14 @@ try {
   await page.waitForFunction(value => (
     document.querySelector('#election-select')?.value === value
     && (document.querySelector('#sidebar-party-results .party-results-scope')?.textContent || '').includes('1992')
+    && document.querySelectorAll('#sidebar-party-results .party-results-row').length === 3
     && document.querySelector('#map-loading')?.classList.contains('hidden')
   ), election1992);
+
+  const winnerLegendColors = await page.locator('#sidebar-legend .legend-item').evaluateAll(items => (
+    items.slice(0, 5).map(item => item.querySelector('.legend-swatch')?.style.background || '')
+  ));
+  assert.equal(new Set(winnerLegendColors).size, winnerLegendColors.length, 'top winner colors must be distinct');
 
   const parties1992 = await page.locator('#party-select option').evaluateAll(options => (
     options.filter(option => option.value).slice(0, 10).map(option => option.value)
