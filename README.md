@@ -56,7 +56,7 @@ Then open `http://127.0.0.1:8765/`.
 The repository root is the Pages site. A `.nojekyll` file disables Jekyll.
 
 1. **GitHub → Settings → Pages**: source = `main` branch, folder = `/ (root)`.
-2. **Default URL**: `https://<owner>.github.io/<repo>/`. For this repository that is `https://simoneghezzicolombo.github.io/electio/`.
+2. **Default URL**: `https://<owner>.github.io/<repo>/`. For this repository that is `https://electio-org.github.io/italia/`.
 3. **Custom domain (optional)**: create a `CNAME` file at the repo root containing the domain (e.g. `electio.eu`), then configure DNS at your registrar:
    - `A` records on the apex → `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`
    - `CNAME` on the `www` subdomain → `<owner>.github.io`
@@ -70,9 +70,14 @@ Useful local checks:
 ```powershell
 node --check app.js
 node --check site-pages.js
-python -m py_compile scripts\preprocess.py scripts\check_bundle.py clients\python\lce_loader.py
+python -m py_compile scripts\preprocess.py scripts\check_bundle.py scripts\build_municipality_profiles.py clients\python\lce_loader.py
+python scripts\build_municipality_profiles.py --root .
+python scripts\refresh_release_manifest.py --root .
 python -m unittest clients.python.tests.test_loader
 python scripts\check_bundle.py --root .
+npm run test:selectors
+npm run test:browser
+npm run test:public
 ```
 
 The bundle is meant to behave like a small release artifact, not just frontend fixtures. For that reason the repo ships machine-readable metadata such as:

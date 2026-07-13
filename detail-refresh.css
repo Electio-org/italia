@@ -1,0 +1,565 @@
+/* Editorial municipality profile, aligned with the public map. */
+
+body[data-site-page="municipality-detail"] {
+  --detail-ink: #18231f;
+  --detail-muted: #617069;
+  --detail-line: #d8e0dc;
+  --detail-line-strong: #becbc5;
+  --detail-green: #17654f;
+  --detail-green-dark: #104839;
+  --detail-soft: #edf5f1;
+  margin: 0;
+  background: #f3f6f4 !important;
+  color: var(--detail-ink);
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+body[data-site-page="municipality-detail"] *,
+body[data-site-page="municipality-detail"] *::before,
+body[data-site-page="municipality-detail"] *::after {
+  letter-spacing: 0 !important;
+}
+
+body[data-site-page="municipality-detail"] .page,
+body[data-site-page="municipality-detail"] .page-wrapper,
+body[data-site-page="municipality-detail"] .page-body {
+  background: transparent !important;
+}
+
+body[data-site-page="municipality-detail"] .site-header {
+  position: sticky;
+  top: 0;
+  z-index: 80;
+  min-height: 62px;
+  padding: 0 !important;
+  border-top: 4px solid var(--detail-green) !important;
+  border-bottom: 1px solid var(--detail-line) !important;
+  background: rgba(255, 255, 255, 0.97) !important;
+  box-shadow: none !important;
+  backdrop-filter: blur(10px);
+}
+
+body[data-site-page="municipality-detail"] .site-header-inner {
+  width: calc(100% - 48px) !important;
+  max-width: 1320px !important;
+  min-height: 58px;
+  margin: 0 auto !important;
+  padding: 0 !important;
+}
+
+body[data-site-page="municipality-detail"] .site-brand {
+  gap: 10px !important;
+  color: var(--detail-ink) !important;
+}
+
+body[data-site-page="municipality-detail"] .site-brand-monogram {
+  width: 34px !important;
+  height: 34px !important;
+  border-radius: 6px !important;
+  background: var(--detail-green) !important;
+  color: #fff !important;
+  box-shadow: none !important;
+  font-size: 0.75rem !important;
+}
+
+body[data-site-page="municipality-detail"] .site-brand-mark {
+  color: var(--detail-ink) !important;
+  font-family: Georgia, Cambria, "Times New Roman", serif;
+  font-size: 1.04rem !important;
+  font-weight: 700;
+}
+
+body[data-site-page="municipality-detail"] .site-brand-subtitle,
+body[data-site-page="municipality-detail"] .site-nav-icon {
+  display: none !important;
+}
+
+body[data-site-page="municipality-detail"] .site-nav {
+  gap: 22px;
+}
+
+body[data-site-page="municipality-detail"] .site-nav .nav-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 58px;
+  padding: 0 2px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: #4b5b54 !important;
+  box-shadow: none !important;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+body[data-site-page="municipality-detail"] .site-nav .nav-link:hover,
+body[data-site-page="municipality-detail"] .site-nav .nav-link:focus-visible {
+  color: var(--detail-green) !important;
+}
+
+body[data-site-page="municipality-detail"] .site-doc-main {
+  display: flex !important;
+  flex-direction: column;
+  width: calc(100% - 48px) !important;
+  max-width: 1320px !important;
+  margin: 0 auto !important;
+  padding: 30px 0 48px !important;
+}
+
+body[data-site-page="municipality-detail"] .site-doc-hero {
+  margin: 0 !important;
+  padding: 0 0 27px !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--detail-line) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+body[data-site-page="municipality-detail"] .detail-breadcrumb-link {
+  display: inline-flex;
+  margin-bottom: 20px;
+  color: var(--detail-green) !important;
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-decoration: none !important;
+}
+
+body[data-site-page="municipality-detail"] .detail-breadcrumb-link:hover {
+  text-decoration: underline !important;
+}
+
+body[data-site-page="municipality-detail"] .detail-hero-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(310px, 400px);
+  gap: 42px;
+  align-items: start;
+}
+
+body[data-site-page="municipality-detail"] .doc-eyebrow {
+  margin: 0 0 6px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  color: var(--detail-green) !important;
+  font-size: 0.72rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase;
+}
+
+body[data-site-page="municipality-detail"] .site-doc-hero h1 {
+  margin: 0 !important;
+  color: var(--detail-ink) !important;
+  font-family: Georgia, Cambria, "Times New Roman", serif;
+  font-size: 3rem !important;
+  font-weight: 700;
+  line-height: 1.02;
+}
+
+body[data-site-page="municipality-detail"] .site-doc-standfirst {
+  max-width: 720px;
+  margin: 10px 0 0 !important;
+  color: var(--detail-muted) !important;
+  font-size: 0.98rem !important;
+  line-height: 1.5;
+}
+
+body[data-site-page="municipality-detail"] .detail-current-election {
+  padding: 16px;
+  border: 1px solid var(--detail-line-strong);
+  border-top: 3px solid var(--detail-green);
+  border-radius: 6px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(24, 35, 31, 0.08);
+}
+
+body[data-site-page="municipality-detail"] .detail-current-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--detail-muted);
+  font-size: 0.7rem;
+}
+
+body[data-site-page="municipality-detail"] .detail-current-head span {
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+body[data-site-page="municipality-detail"] .detail-current-head strong {
+  overflow: hidden;
+  color: var(--detail-ink);
+  font-family: Georgia, Cambria, "Times New Roman", serif;
+  font-size: 0.9rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+body[data-site-page="municipality-detail"] .detail-current-winner {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr) auto;
+  gap: 9px;
+  align-items: center;
+  margin-top: 13px;
+  padding: 13px 0;
+  border-top: 1px solid var(--detail-line);
+  border-bottom: 1px solid var(--detail-line);
+}
+
+body[data-site-page="municipality-detail"] .detail-current-winner .detail-current-party-dot {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 5px;
+  color: #fff !important;
+  font-size: 0.72rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+body[data-site-page="municipality-detail"] .detail-current-winner div {
+  display: grid;
+  gap: 1px;
+}
+
+body[data-site-page="municipality-detail"] .detail-current-winner span,
+body[data-site-page="municipality-detail"] .detail-current-stats dt {
+  color: var(--detail-muted);
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+body[data-site-page="municipality-detail"] .detail-current-winner strong {
+  overflow: hidden;
+  color: var(--detail-ink);
+  font-size: 0.92rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+body[data-site-page="municipality-detail"] .detail-current-winner b {
+  color: var(--detail-ink);
+  font-size: 1.05rem;
+}
+
+body[data-site-page="municipality-detail"] .detail-current-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin: 13px 0 0;
+}
+
+body[data-site-page="municipality-detail"] .detail-current-stats div {
+  min-width: 0;
+}
+
+body[data-site-page="municipality-detail"] .detail-current-stats dt,
+body[data-site-page="municipality-detail"] .detail-current-stats dd {
+  margin: 0;
+}
+
+body[data-site-page="municipality-detail"] .detail-current-stats dd {
+  overflow: hidden;
+  margin-top: 2px;
+  color: var(--detail-ink);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+body[data-site-page="municipality-detail"] .detail-current-map-link {
+  display: inline-flex;
+  margin-top: 13px;
+  color: var(--detail-green) !important;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+body[data-site-page="municipality-detail"] .detail-subnav {
+  position: sticky;
+  top: 62px;
+  z-index: 30;
+  display: flex;
+  gap: 22px;
+  margin: 0;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--detail-line);
+  background: rgba(243, 246, 244, 0.95);
+  backdrop-filter: blur(8px);
+}
+
+body[data-site-page="municipality-detail"] .detail-subnav a {
+  color: #506058;
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+body[data-site-page="municipality-detail"] .detail-subnav a:hover,
+body[data-site-page="municipality-detail"] .detail-subnav a:focus-visible {
+  color: var(--detail-green);
+}
+
+body[data-site-page="municipality-detail"] .doc-section {
+  margin: 0 !important;
+  padding: 34px 0 !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--detail-line) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+body[data-site-page="municipality-detail"] .doc-section-head {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 430px);
+  gap: 30px;
+  align-items: end !important;
+  margin: 0 0 20px !important;
+}
+
+body[data-site-page="municipality-detail"] .doc-section-head h2 {
+  margin: 0 !important;
+  color: var(--detail-ink) !important;
+  font-family: Georgia, Cambria, "Times New Roman", serif;
+  font-size: 1.55rem !important;
+  line-height: 1.15;
+}
+
+body[data-site-page="municipality-detail"] .doc-section-copy,
+body[data-site-page="municipality-detail"] .detail-chart-head p {
+  margin: 0 !important;
+  color: var(--detail-muted) !important;
+  font-size: 0.79rem !important;
+  line-height: 1.5;
+}
+
+body[data-site-page="municipality-detail"] .detail-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 0 20px !important;
+  border-top: 1px solid var(--detail-line);
+}
+
+body[data-site-page="municipality-detail"] .detail-kv {
+  gap: 3px !important;
+  padding: 13px 0 !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--detail-line) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+}
+
+body[data-site-page="municipality-detail"] .detail-kv-label {
+  color: var(--detail-muted) !important;
+  font-size: 0.64rem !important;
+  font-weight: 600;
+}
+
+body[data-site-page="municipality-detail"] .detail-kv-value {
+  color: var(--detail-ink) !important;
+  font-size: 0.9rem !important;
+}
+
+body[data-site-page="municipality-detail"] .detail-charts {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 16px !important;
+  margin-top: 0 !important;
+}
+
+body[data-site-page="municipality-detail"] .detail-chart-card {
+  gap: 13px !important;
+  padding: 17px !important;
+  border: 1px solid var(--detail-line) !important;
+  border-radius: 6px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+}
+
+body[data-site-page="municipality-detail"] .detail-chart-head h3 {
+  margin: 0 0 4px !important;
+  color: var(--detail-ink) !important;
+  font-family: Georgia, Cambria, "Times New Roman", serif;
+  font-size: 1.03rem !important;
+}
+
+body[data-site-page="municipality-detail"] .detail-chart-body {
+  min-height: 190px !important;
+}
+
+body[data-site-page="municipality-detail"] .detail-chart-body svg .series-line {
+  stroke: var(--detail-green) !important;
+}
+
+body[data-site-page="municipality-detail"] .detail-chart-body svg .series-dot {
+  fill: var(--detail-green) !important;
+}
+
+body[data-site-page="municipality-detail"] .detail-chart-body svg .series-bar {
+  fill: #9d3f56 !important;
+}
+
+body[data-site-page="municipality-detail"] .legend-swatch-comune {
+  background: var(--detail-green) !important;
+}
+
+body[data-site-page="municipality-detail"] .detail-kpi-strip {
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 12px !important;
+}
+
+body[data-site-page="municipality-detail"] .detail-kpi-card {
+  gap: 4px !important;
+  padding: 14px !important;
+  border: 1px solid var(--detail-line) !important;
+  border-top: 3px solid var(--detail-line-strong) !important;
+  border-left: 1px solid var(--detail-line) !important;
+  border-radius: 6px !important;
+  background: #fff !important;
+}
+
+body[data-site-page="municipality-detail"] .detail-kpi-positive {
+  border-top-color: var(--detail-green) !important;
+}
+
+body[data-site-page="municipality-detail"] .detail-kpi-negative {
+  border-top-color: #9d3f56 !important;
+}
+
+body[data-site-page="municipality-detail"] .detail-kpi-value {
+  color: var(--detail-ink) !important;
+  font-family: Georgia, Cambria, "Times New Roman", serif;
+  font-size: 1.35rem !important;
+}
+
+body[data-site-page="municipality-detail"] .doc-table-wrap {
+  border: 1px solid var(--detail-line) !important;
+  border-radius: 6px !important;
+  background: #fff;
+  box-shadow: none !important;
+}
+
+body[data-site-page="municipality-detail"] .doc-table thead th,
+body[data-site-page="municipality-detail"] .detail-winners-table thead th {
+  background: #f5f8f6 !important;
+  color: #53635c !important;
+  font-size: 0.66rem !important;
+}
+
+body[data-site-page="municipality-detail"] .doc-table tbody td,
+body[data-site-page="municipality-detail"] .detail-winners-table tbody td,
+body[data-site-page="municipality-detail"] .detail-winners-table tbody th {
+  border-color: var(--detail-line) !important;
+  color: #2d3c35 !important;
+  font-size: 0.78rem !important;
+}
+
+body[data-site-page="municipality-detail"] .detail-winners-table tbody tr:hover,
+body[data-site-page="municipality-detail"] .doc-table tbody tr:hover {
+  background: var(--detail-soft) !important;
+}
+
+body[data-site-page="municipality-detail"] .detail-winners-year strong {
+  color: var(--detail-ink) !important;
+}
+
+body[data-site-page="municipality-detail"] .detail-winners-bloc-pill,
+body[data-site-page="municipality-detail"] .detail-winners-badge,
+body[data-site-page="municipality-detail"] .detail-winners-delta,
+body[data-site-page="municipality-detail"] .detail-bloc-chip {
+  border-radius: 4px !important;
+}
+
+body[data-site-page="municipality-detail"] .detail-winners-legend {
+  color: var(--detail-muted) !important;
+  font-size: 0.72rem !important;
+}
+
+body[data-site-page="municipality-detail"] .site-footer {
+  border-top: 1px solid var(--detail-line) !important;
+  background: #fff !important;
+}
+
+body[data-site-page="municipality-detail"] .site-footer-inner {
+  display: none !important;
+}
+
+body[data-site-page="municipality-detail"] .site-footer-copy {
+  width: calc(100% - 48px);
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 17px 0 !important;
+  border: 0 !important;
+  color: var(--detail-muted) !important;
+  font-size: 0.75rem;
+}
+
+@media (max-width: 900px) {
+  body[data-site-page="municipality-detail"] .site-header-inner,
+  body[data-site-page="municipality-detail"] .site-doc-main,
+  body[data-site-page="municipality-detail"] .site-footer-copy {
+    width: calc(100% - 28px) !important;
+  }
+
+  body[data-site-page="municipality-detail"] .detail-hero-layout,
+  body[data-site-page="municipality-detail"] .doc-section-head {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 16px !important;
+  }
+
+  body[data-site-page="municipality-detail"] .detail-current-election {
+    max-width: 560px;
+  }
+
+  body[data-site-page="municipality-detail"] .detail-grid,
+  body[data-site-page="municipality-detail"] .detail-kpi-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  body[data-site-page="municipality-detail"] .detail-charts {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+}
+
+@media (max-width: 600px) {
+  body[data-site-page="municipality-detail"] .site-doc-main {
+    padding-top: 20px !important;
+  }
+
+  body[data-site-page="municipality-detail"] .site-doc-hero h1 {
+    font-size: 2.25rem !important;
+  }
+
+  body[data-site-page="municipality-detail"] .detail-subnav {
+    gap: 18px;
+    overflow-x: auto;
+    padding: 10px 0;
+    white-space: nowrap;
+  }
+
+  body[data-site-page="municipality-detail"] .doc-section {
+    padding: 28px 0 !important;
+  }
+
+  body[data-site-page="municipality-detail"] .detail-grid,
+  body[data-site-page="municipality-detail"] .detail-kpi-strip {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  body[data-site-page="municipality-detail"] .detail-current-stats {
+    gap: 6px;
+  }
+
+  body[data-site-page="municipality-detail"] .detail-current-stats dd {
+    font-size: 0.72rem;
+  }
+
+  body[data-site-page="municipality-detail"] .detail-chart-card {
+    padding: 13px !important;
+  }
+}

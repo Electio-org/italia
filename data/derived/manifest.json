@@ -19,7 +19,8 @@
       "Products are also published through a product catalog plus per-product manifests, not only through the bundle-wide manifest.",
       "Every declared product also exposes a product-level inventory so users can see what is inside before loading the data.",
       "The public app now reads a web-optimized geometry pack, while the full-resolution boundaries remain published as a separate product.",
-      "Critical browser libraries are now vendored locally and the public documentation pages load only the metadata they actually need."
+      "Critical browser libraries are now vendored locally and the public documentation pages load only the metadata they actually need.",
+      "Municipality detail pages use province-sized compressed profile chunks instead of loading the national summary table."
     ]
   },
   "files": {
@@ -55,7 +56,8 @@
     "webGeometryReport": "data/derived/web_geometry_report.json",
     "webCompressionReport": "data/derived/web_compression_report.json",
     "productCatalog": "data/products/product_catalog.json",
-    "municipalitySummaryByElectionIndex": "data/derived/municipality_summary_by_election.json"
+    "municipalitySummaryByElectionIndex": "data/derived/municipality_summary_by_election.json",
+    "municipalityProfileIndex": "data/derived/municipality_profiles/index.json"
   },
   "contracts": {
     "geometryJoinPriority": [

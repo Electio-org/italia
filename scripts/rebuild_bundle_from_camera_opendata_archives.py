@@ -6,6 +6,8 @@ import csv
 import io
 import json
 import re
+import subprocess
+import sys
 import time
 import unicodedata
 import zipfile
@@ -16,6 +18,7 @@ from difflib import SequenceMatcher
 import pandas as pd
 
 import preprocess
+from territory_matching import resolve_contextual_prefix
 
 
 CURRENT_VERSION = "0.15.0"
@@ -498,29 +501,14 @@ def resolve_reference(
             return master_by_name[candidate_key], "historical_geometry_name"
 
     if province_key:
-        candidates = []
-        for candidate_key in candidate_lookup_keys(municipality_name):
-            for (candidate_name, candidate_prov), record in master_by_name_prov.items():
-                if candidate_prov != province_key:
-                    continue
-                if candidate_name.startswith(candidate_key) or candidate_key.startswith(candidate_name):
-                    candidates.append(record)
-                    if len(candidates) > 3:
-                        break
-        unique_ids = {(row["municipality_id"], row["geometry_id"]) for row in candidates}
-        if len(unique_ids) == 1 and candidates:
-            return candidates[0], "historical_geometry_prefix_province"
+        match = resolve_contextual_prefix(candidate_lookup_keys(municipality_name), province_key, master_by_name_prov)
+        if match:
+            return match, "historical_geometry_prefix_province"
 
-    candidates = []
-    for candidate_key in candidate_lookup_keys(municipality_name):
-        for key, record in master_by_name.items():
-            if key.startswith(candidate_key) or candidate_key.startswith(key):
-                candidates.append(record)
-                if len(candidates) > 3:
-                    break
-    unique_ids = {(row["municipality_id"], row["geometry_id"]) for row in candidates}
-    if len(unique_ids) == 1 and candidates:
-        return candidates[0], "historical_geometry_prefix"
+    if region_key:
+        match = resolve_contextual_prefix(candidate_lookup_keys(municipality_name), region_key, master_by_name_region)
+        if match:
+            return match, "historical_geometry_prefix_region"
 
     if region_key:
         fuzzy = []
@@ -1087,6 +1075,11 @@ def main() -> None:
     write_json(derived / "usage_notes.json", usage_notes)
 
     build_gap_report(output_root, source_audit_rows, summary_rows, party_rows, dataset_registry)
+    subprocess.run(
+        [sys.executable, str(output_root / "scripts" / "build_municipality_profiles.py"), "--root", str(output_root)],
+        cwd=output_root,
+        check=True,
+    )
 
     print(
         json.dumps(

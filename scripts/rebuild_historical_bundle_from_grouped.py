@@ -531,6 +531,7 @@ def main() -> None:
 
     merge_historical_into_bundle(root, source_root, repaired_summary)
     run_subprocess([sys.executable, str(root / "scripts" / "build_result_shards.py"), "--root", str(root)], cwd=root)
+    run_subprocess([sys.executable, str(root / "scripts" / "build_municipality_profiles.py"), "--root", str(root)], cwd=root)
     compare_and_import_gap_report(root, pipeline_root)
 
     print(json.dumps({

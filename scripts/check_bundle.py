@@ -64,6 +64,7 @@ def main() -> int:
         'update-log.html',
         'style.css',
         'visual-refresh.css',
+        'detail-refresh.css',
         'app.js',
         'site-pages.js',
         'modules/app-shell.js',
@@ -73,6 +74,8 @@ def main() -> int:
         'scripts/preprocess.py',
         'scripts/build_web_geometry_pack.py',
         'scripts/build_web_compressed_assets.py',
+        'scripts/build_municipality_profiles.py',
+        'scripts/refresh_release_manifest.py',
         'scripts/import_archive_gap_report.py',
         'scripts/rebuild_bundle_from_camera_opendata_archives.py',
         'scripts/rebuild_modern_bundle_from_archive.py',
@@ -83,7 +86,7 @@ def main() -> int:
         if not (root / rel).exists():
             issues.append(f'missing:{rel}')
 
-    for rel_script in ['scripts/preprocess.py', 'scripts/build_web_geometry_pack.py', 'scripts/import_archive_gap_report.py', 'scripts/rebuild_bundle_from_camera_opendata_archives.py', 'scripts/rebuild_modern_bundle_from_archive.py', 'scripts/rebuild_historical_bundle_from_grouped.py', 'clients/python/lce_loader.py']:
+    for rel_script in ['scripts/preprocess.py', 'scripts/build_web_geometry_pack.py', 'scripts/build_municipality_profiles.py', 'scripts/refresh_release_manifest.py', 'scripts/territory_matching.py', 'scripts/import_archive_gap_report.py', 'scripts/rebuild_bundle_from_camera_opendata_archives.py', 'scripts/rebuild_modern_bundle_from_archive.py', 'scripts/rebuild_historical_bundle_from_grouped.py', 'clients/python/lce_loader.py']:
         try:
             tmp_pyc = root / f'_tmp_{Path(rel_script).stem}_check.pyc'
             py_compile.compile(str(root / rel_script), cfile=str(tmp_pyc), doraise=True)
@@ -191,10 +194,14 @@ def main() -> int:
     if quality.get('derived_validations', {}).get('has_errors'):
         warnings.append('derived_validations:has_errors')
 
-    if not geometry.get('features'):
+    geometry_features = geometry.get('features') or []
+    if not geometry_features and isinstance(geometry.get('objects'), dict):
+        first_geometry_object = next(iter(geometry['objects'].values()), {})
+        geometry_features = first_geometry_object.get('geometries') or []
+    if not geometry_features:
         issues.append('geometry:placeholder_or_missing')
 
-    required_manifest_keys = ['geometryPack', 'geometryPackFull', 'geometryFull', 'provinceGeometryFull', 'dataProducts', 'productCatalog', 'datasetContracts', 'provenance', 'releaseManifest', 'researchRecipes', 'siteGuides', 'municipalitySummaryByElectionIndex', 'municipalityResultsLongByElectionIndex', 'archiveBundleGapReport', 'webGeometryReport', 'webCompressionReport']
+    required_manifest_keys = ['geometryPack', 'geometryPackFull', 'geometryFull', 'provinceGeometryFull', 'dataProducts', 'productCatalog', 'datasetContracts', 'provenance', 'releaseManifest', 'researchRecipes', 'siteGuides', 'municipalitySummaryByElectionIndex', 'municipalityResultsLongByElectionIndex', 'municipalityProfileIndex', 'archiveBundleGapReport', 'webGeometryReport', 'webCompressionReport']
     for key in required_manifest_keys:
         rel = files.get(key)
         if not rel:
@@ -247,6 +254,17 @@ def main() -> int:
             missing_shards = [key for key, rel in shards.items() if not (root / rel).exists()]
             if missing_shards:
                 issues.append(f'result_shards:missing_files:{",".join(missing_shards[:10])}')
+
+    if files.get('municipalityProfileIndex') and (root / files['municipalityProfileIndex']).exists():
+        profile_index = json.loads((root / files['municipalityProfileIndex']).read_text(encoding='utf-8'))
+        profile_chunks = profile_index.get('chunks') or {}
+        if not profile_chunks or not (profile_index.get('municipality_chunks') or {}):
+            issues.append('municipality_profiles:empty_index')
+        missing_profile_chunks = [key for key, rel in profile_chunks.items() if not (root / rel).exists()]
+        if missing_profile_chunks:
+            issues.append(f'municipality_profiles:missing_chunks:{",".join(missing_profile_chunks[:10])}')
+        if int(profile_index.get('row_count') or 0) != len(summary):
+            issues.append('municipality_profiles:summary_row_count_mismatch')
 
     if files.get('releaseManifest') and (root / files['releaseManifest']).exists():
         release_manifest = json.loads((root / files['releaseManifest']).read_text(encoding='utf-8'))
@@ -371,7 +389,7 @@ def main() -> int:
         'root': str(root),
         'summary_rows': len(summary),
         'result_rows': len(results),
-        'geometry_features': len(geometry.get('features') or []),
+        'geometry_features': len(geometry_features),
         'technical_readiness': quality.get('derived_validations', {}).get('technical_readiness_score', quality.get('derived_validations', {}).get('readiness_score')),
         'substantive_readiness': quality.get('derived_validations', {}).get('substantive_coverage_score'),
         'issues': issues,

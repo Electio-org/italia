@@ -255,6 +255,48 @@ function getCoalitionColor(label) {
 }
 function getFamilyColor(label) { return FAMILY_COLORS[label] || inferPartyMeta(label).color || FAMILY_COLORS.altro; }
 function getBlockColor(label) { return BLOCK_COLORS[label] || BLOCK_COLORS.altro; }
+const HISTORICAL_PARTY_ACRONYMS = {
+  dc: 'DC', pci: 'PCI', psi: 'PSI', psdi: 'PSDI', pri: 'PRI', pli: 'PLI',
+  pds: 'PDS', ds: 'DS', an: 'AN', msi: 'MSI', pd: 'PD', fi: 'FI',
+  fdi: 'FdI', m5s: 'M5S', udc: 'UDC', idv: 'IdV', sel: 'SEL'
+};
+
+function partyDisplayLabel(label, electionKey = state.selectedElection) {
+  const raw = String(label || '').trim();
+  if (!raw) return 'n/d';
+  const year = Number(String(electionKey || '').match(/(?:19|20)\d{2}/)?.[0] || 0);
+  const token = normalizeTextToken(raw);
+  if (year && year < 2022) {
+    if (['avs', 'avs verdi', 'verdi avs'].includes(token)) return 'Verdi';
+    return HISTORICAL_PARTY_ACRONYMS[token] || raw;
+  }
+  return inferPartyMeta(raw).display || raw;
+}
+
+function partyMarkLabel(label, electionKey = state.selectedElection) {
+  const display = partyDisplayLabel(label, electionKey);
+  const compact = display.replace(/[^A-Za-z0-9]/g, '');
+  if (compact.length <= 4) return compact || '-';
+  const words = display
+    .split(/\s+|\//)
+    .map(word => word.replace(/[^A-Za-z0-9]/g, ''))
+    .filter(word => word && !['DI', 'DEI', 'DEL', 'DELLA', 'CON', 'PER'].includes(word.toUpperCase()));
+  return words.slice(0, 3).map(word => word[0]).join('').toUpperCase() || compact.slice(0, 3).toUpperCase();
+}
+function blockDisplayLabel(label) {
+  const labels = {
+    destra: 'Destra',
+    'centro-destra': 'Centrodestra',
+    liberale: 'Liberali',
+    centro: 'Centro',
+    'centro-sinistra': 'Centrosinistra',
+    sinistra: 'Sinistra',
+    populista: 'Populisti',
+    regionalista: 'Regionalisti',
+    altro: 'Altri / non classificati'
+  };
+  return labels[label] || label || 'n/d';
+}
 function getGroupColor(label) {
   if (state.selectedPartyMode === 'party_family') return getFamilyColor(label);
   if (state.selectedPartyMode === 'bloc') return getBlockColor(label);
@@ -400,7 +442,7 @@ function visibleElectionKeysForResults() {
 
 function applySummaryHydrationOutcome(report, { silent = true } = {}) {
   if (!report || (!report.loadedRows && !(report.loadedKeys || []).length)) return;
-  invalidateDerivedCaches();
+  invalidateDerivedCaches({ mapColors: true });
   renderStatusPanel();
   requestRender();
   if (!silent) {
@@ -425,7 +467,7 @@ function applyResultsHydrationOutcome(report, { silent = true } = {}) {
   if (!report || (!report.loadedRows && !(report.loadedKeys || []).length)) return;
   refreshPartySelector();
   syncMetricScopedControls();
-  invalidateDerivedCaches();
+  invalidateDerivedCaches({ mapColors: true });
   renderStatusPanel();
   requestRender();
   if (!silent) {
@@ -610,8 +652,8 @@ function ensureDeferredMetadata({ silent = true } = {}) {
 
 function currentSelectionLabel() {
   if (state.selectedMetric === 'custom_indicator') return customIndicatorMeta(state.selectedCustomIndicator).label || 'indicatore custom';
-  if (state.selectedMetric === 'dominant_block') return 'blocco / coalizione';
-  if (state.selectedParty) return state.selectedParty;
+  if (state.selectedMetric === 'dominant_block') return 'area politica';
+  if (state.selectedParty) return partyDisplayLabel(state.selectedParty);
   return metricLabel().toLowerCase();
 }
 
@@ -621,11 +663,12 @@ function formatMetricValue(value) {
   switch (state.selectedMetric) {
     case 'turnout':
     case 'party_share':
-    case 'margin':
     case 'volatility':
     case 'concentration':
     case 'stability_index':
       return `${fmtPct(value)}%`;
+    case 'margin':
+      return `${fmtPct(value)} pt`;
     case 'swing_compare':
     case 'delta_turnout':
     case 'over_performance_province':
@@ -644,10 +687,10 @@ function metricSentenceForRow(row) {
   const selection = currentSelectionLabel();
   switch (state.selectedMetric) {
     case 'turnout': return `affluenza ${formatMetricValue(metricValue)}`;
-    case 'first_party': return `leadership locale ${row.first_party_std || 'n/d'}`;
+    case 'first_party': return `partito vincente ${partyDisplayLabel(row.first_party_runtime || row.first_party_std)}`;
     case 'party_share': return `${selection} ${formatMetricValue(metricValue)}`;
     case 'margin': return `margine 1°-2° ${formatMetricValue(metricValue)}`;
-    case 'dominant_block': return `blocco / coalizione ${row.dominant_block || 'n/d'}`;
+    case 'dominant_block': return `area politica ${blockDisplayLabel(row.dominant_block)}`;
     case 'swing_compare': return `swing ${selection} ${formatMetricValue(metricValue)}`;
     case 'delta_turnout': return `Δ affluenza ${formatMetricValue(metricValue)}`;
     case 'volatility': return `volatilità ${formatMetricValue(metricValue)}`;
@@ -882,7 +925,14 @@ function refreshPartySelector() {
     els.partySelect.value = '';
     return;
   }
-  els.partySelect.innerHTML = values.map(v => `<option value="${escapeHtml(v)}">${escapeHtml(v)}</option>`).join('');
+  const optionHtml = value => `<option value="${escapeHtml(value)}">${escapeHtml(partyDisplayLabel(value))}</option>`;
+  const featured = values.slice(0, 10);
+  const others = values.slice(10);
+  els.partySelect.innerHTML = `
+    <optgroup label="Principali nell'elezione">
+      ${featured.map(optionHtml).join('')}
+    </optgroup>
+    ${others.length ? `<optgroup label="Altri partiti presenti (${others.length})">${others.map(optionHtml).join('')}</optgroup>` : ''}`;
   if (currentDropdownValue && values.includes(currentDropdownValue)) {
     state.selectedParty = currentDropdownValue;
   } else if (!values.includes(state.selectedParty)) {
@@ -911,6 +961,7 @@ function syncMetricScopedControls() {
   setControlVisibility(els.compareElectionSelect, metricNeedsCompare());
   setControlVisibility(els.partyModeSelect, false);
   setControlVisibility(els.partySelect, partyScoped);
+  if (els.metricHelp) els.metricHelp.textContent = metricReadableExplanation();
   syncPrimaryControlRows();
 }
 
@@ -2017,7 +2068,7 @@ async function runRenderWithLoadingDismissAsync(doWork) {
   setMapLoading(false);
 }
 
-function invalidateDerivedCaches() {
+function invalidateDerivedCaches({ mapColors = false } = {}) {
   state.metricCaches = {};
   state.selectorCaches = {};
   state.similarityCache = {};
@@ -2025,6 +2076,13 @@ function invalidateDerivedCaches() {
   // (results-long hydration, territorial mode, summary/results sizes).
   // Drop the cache here so renderMap rebuilds on the next pass.
   state.mapAggregationCache = null;
+  if (mapColors) {
+    const canvasCaches = new Set([
+      state.mapCanvasCache,
+      ...(state.mapCanvasGeometryCaches?.values?.() || [])
+    ].filter(Boolean));
+    canvasCaches.forEach(cache => cache.bakedStore?.clear?.());
+  }
 }
 
 function registerIssue(scope, error) {
@@ -2365,6 +2423,15 @@ function metricLabel() {
   return labels[state.selectedMetric] || state.selectedMetric;
 }
 
+function updateMapContextBadge() {
+  if (!els.mapContextTitle || !els.mapContextSubtitle) return;
+  els.mapContextTitle.textContent = electionLabelByKey(state.selectedElection);
+  const party = state.selectedMetric === 'party_share' && state.selectedParty
+    ? partyDisplayLabel(state.selectedParty)
+    : null;
+  els.mapContextSubtitle.textContent = party ? `${metricLabel()}: ${party}` : metricLabel();
+}
+
 function showMapMessage(message) {
   document.body.classList.add('geometry-missing', 'data-first-mode');
   els.mapEmptyState.innerHTML = `${message}<div class="helper-text" style="margin-top:8px">Modalità fallback: tabella, ranking e traiettorie restano il centro dell'esplorazione finché non carichi le geometrie comunali reali.</div>`;
@@ -2390,10 +2457,28 @@ function interpolateToColor(targetColor) {
   return t => d3.interpolateRgb(start, end)(t);
 }
 
+function quantileFromSorted(values, position) {
+  if (!values.length) return null;
+  if (values.length === 1) return values[0];
+  const index = Math.max(0, Math.min(values.length - 1, (values.length - 1) * position));
+  const lower = Math.floor(index);
+  const upper = Math.ceil(index);
+  const weight = index - lower;
+  return values[lower] + ((values[upper] - values[lower]) * weight);
+}
+
+function thresholdColorScale(thresholds, colors) {
+  return value => {
+    let index = 0;
+    while (index < thresholds.length && value >= thresholds[index]) index += 1;
+    return colors[Math.min(index, colors.length - 1)];
+  };
+}
+
 function colorScaleForRows(rows) {
   const domainRows = getScaleDomainRows(rows);
   const values = domainRows.map(d => d.__metric_value).filter(v => v !== null && v !== undefined && v !== '');
-  if (!values.length) return { type: 'empty', colorFor: () => '#334155', legend: [] };
+  if (!values.length) return { type: 'empty', colorFor: () => '#d4d9d7', legend: [] };
 
   const preferred = state.selectedPalette;
 
@@ -2447,7 +2532,7 @@ function colorScaleForRows(rows) {
       categories = uniqueSorted(values);
     }
     const colorForCategory = v => {
-      if (!v) return '#334155';
+      if (!v) return '#d4d9d7';
       if (state.selectedMetric === 'dominant_block') return getBlockColor(v);
       if (state.selectedMetric === 'dominant_coalition') return getCoalitionColor(v);
       if (state.selectedMetric === 'first_party' && (v === '__other_parties__' || !firstPartyTopSet?.has(v))) return '#89958f';
@@ -2461,36 +2546,71 @@ function colorScaleForRows(rows) {
         label: c === '__other_parties__'
           ? 'Altri partiti'
           : state.selectedMetric === 'first_party'
-            ? inferPartyMeta(c).display
-            : c,
+            ? partyDisplayLabel(c)
+            : state.selectedMetric === 'dominant_block'
+              ? blockDisplayLabel(c)
+              : c,
         color: colorForCategory(c)
       }))
     };
   }
 
   const numeric = values.map(Number).filter(Number.isFinite);
-  if (!numeric.length) return { type: 'empty', colorFor: () => '#334155', legend: [] };
+  if (!numeric.length) return { type: 'empty', colorFor: () => '#d4d9d7', legend: [] };
 
-  const metricIsDiverging = ['margin', 'swing_compare', 'delta_turnout', 'over_performance_province', 'over_performance_region'].includes(state.selectedMetric) || preferred === 'diverging';
+  const metricIsDiverging = ['swing_compare', 'delta_turnout', 'over_performance_province', 'over_performance_region'].includes(state.selectedMetric);
   if (metricIsDiverging) {
-    const maxAbs = d3.max(numeric.map(v => Math.abs(v))) || 1;
-    const scale = d3.scaleSequential(d3.interpolateRdBu).domain([maxAbs, -maxAbs]);
+    const absoluteValues = numeric.map(value => Math.abs(value)).sort((a, b) => a - b);
+    const maxAbs = quantileFromSorted(absoluteValues, 0.95) || d3.max(absoluteValues) || 1;
+    const thresholds = [-maxAbs * 0.6, -maxAbs * 0.2, maxAbs * 0.2, maxAbs * 0.6];
+    const colors = ['#9f2f38', '#d98b91', '#edf0ee', '#79aaa0', '#17654f'];
+    const scale = thresholdColorScale(thresholds, colors);
+    const format = value => `${fmtPctSigned(value)} pt`;
     return {
-      type: 'sequential',
-      colorFor: v => Number.isFinite(v) ? scale(v) : '#334155',
-      legend: [{ label: `${fmtPctSigned(-maxAbs)} → 0 → ${fmtPctSigned(maxAbs)}`, gradient: 'linear-gradient(90deg,#b91c1c,#f8fafc,#1d4ed8)' }]
+      type: 'diverging',
+      colorFor: v => Number.isFinite(v) ? scale(v) : '#d4d9d7',
+      legend: [
+        { label: `< ${format(thresholds[0])}`, color: colors[0] },
+        { label: `${format(thresholds[0])} - ${format(thresholds[1])}`, color: colors[1] },
+        { label: `${format(thresholds[1])} - ${format(thresholds[2])}`, color: colors[2] },
+        { label: `${format(thresholds[2])} - ${format(thresholds[3])}`, color: colors[3] },
+        { label: `> ${format(thresholds[3])}`, color: colors[4] }
+      ]
     };
   }
 
-  const min = d3.min(numeric);
-  const max = d3.max(numeric);
-  const target = state.selectedMetric === 'party_share' ? getGroupColor(state.selectedParty) : state.selectedMetric === 'turnout' ? '#0ea5e9' : state.selectedMetric === 'volatility' ? '#f97316' : state.selectedMetric === 'concentration' ? '#8b5cf6' : state.selectedMetric === 'stability_index' ? '#22c55e' : state.selectedMetric === 'custom_indicator' ? '#14b8a6' : '#2563eb';
+  const sorted = numeric.slice().sort((a, b) => a - b);
+  const min = sorted[0];
+  const max = sorted.at(-1);
+  const quantileCandidates = [0.2, 0.4, 0.6, 0.8]
+    .map(position => quantileFromSorted(sorted, position))
+    .filter(value => Number.isFinite(value) && value > min && value < max);
+  const thresholds = [...new Set(quantileCandidates)];
+  const target = state.selectedMetric === 'party_share'
+    ? getGroupColor(state.selectedParty)
+    : state.selectedMetric === 'turnout'
+      ? '#167d75'
+      : state.selectedMetric === 'margin'
+        ? '#9d3f56'
+        : '#17654f';
   const interpolator = preferred === 'accessible' ? d3.interpolateCividis : interpolateToColor(target);
-  const scale = d3.scaleSequential(interpolator).domain([min, max || min + 1]);
+  const sampleStops = thresholds.length
+    ? Array.from({ length: thresholds.length + 1 }, (_, index) => 0.12 + (0.82 * index / thresholds.length))
+    : [0.62];
+  const colors = sampleStops.map(interpolator);
+  const scale = thresholdColorScale(thresholds, colors);
+  const suffix = state.selectedMetric === 'margin' ? ' pt' : '%';
+  const format = value => `${fmtPct(value)}${suffix}`;
+  const legend = colors.map((color, index) => {
+    if (!thresholds.length) return { label: format(min), color };
+    if (index === 0) return { label: `Fino a ${format(thresholds[0])}`, color };
+    if (index === colors.length - 1) return { label: `Oltre ${format(thresholds.at(-1))}`, color };
+    return { label: `${format(thresholds[index - 1])} - ${format(thresholds[index])}`, color };
+  });
   return {
-    type: 'sequential',
-    colorFor: v => Number.isFinite(v) ? scale(v) : '#334155',
-    legend: [{ label: `${fmtPct(min)} – ${fmtPct(max)}`, gradient: `linear-gradient(90deg, ${scale(min)}, ${scale((min + max) / 2 || min)}, ${scale(max || min + 1)})` }]
+    type: 'threshold',
+    colorFor: v => Number.isFinite(v) ? scale(v) : '#d4d9d7',
+    legend
   };
 }
 
@@ -2506,10 +2626,12 @@ function renderLegend(scaleInfo) {
     return;
   }
   const explainer = scaleInfo.type === 'categorical'
-    ? 'Colore coerente per categoria'
-    : scaleInfo.type === 'sequential'
-      ? (['margin', 'swing_compare', 'delta_turnout', 'over_performance_province', 'over_performance_region'].includes(state.selectedMetric) ? 'Scala divergente centrata sul contrasto' : 'Scala continua dalla quota più bassa alla più alta')
-      : 'Metrica non numerica';
+    ? 'Un colore per ogni categoria'
+    : scaleInfo.type === 'diverging'
+      ? 'Scarto negativo, equilibrio e scarto positivo'
+      : scaleInfo.type === 'threshold'
+        ? 'Cinque fasce, dai valori più bassi ai più alti'
+        : 'Metrica non numerica';
   const rows = scaleInfo.legend.map(item => {
     if (item.gradient) {
       return `<span class="legend-item legend-item-block"><span class="legend-gradient" style="background:${item.gradient}"></span><span>${escapeHtml(item.label)}</span></span>`;
@@ -2570,8 +2692,8 @@ function renderPartyResults() {
       ? 'Quota nazionale'
       : 'Esito nazionale';
   const displayLabel = label => isBlockView
-    ? String(label || '').replace(/(^|[-\s])\p{L}/gu, match => match.toUpperCase())
-    : (inferPartyMeta(label).display || label);
+    ? blockDisplayLabel(label)
+    : partyDisplayLabel(label);
   const colorFor = label => isBlockView ? getBlockColor(label) : getPartyColor(label);
   host.innerHTML = `
     <div class="party-results-header">
@@ -2898,6 +3020,8 @@ function renderMap() {
   const renderKey = currentMapRenderKey();
   if (state.lastMapRenderKey === renderKey) return;
 
+  updateMapContextBadge();
+
   const rows = filteredRowsWithMetric(state, { matchesCompleteness, matchesTerritorialStatus });
   state.filteredRows = rows;
   // Non-comune levels recolor every comune by its group's aggregated
@@ -3149,7 +3273,7 @@ function setupCanvasMapHandlers() {
 
 const CANVAS_LOGICAL_WIDTH = 960;
 const CANVAS_LOGICAL_HEIGHT = 680;
-const CANVAS_SELECTION_FADE_ALPHA = 0.42;
+const CANVAS_SELECTION_FADE_ALPHA = 0.7;
 
 function canvasBackingRatio() {
   return Math.max(1, Math.min(3, window.devicePixelRatio || 1));
@@ -3617,6 +3741,8 @@ function getRegionMetricAverage(row) {
 
 function metricDisplay(value, signed = false) {
   if (value == null) return '—';
+  if (state.selectedMetric === 'first_party') return partyDisplayLabel(value);
+  if (state.selectedMetric === 'dominant_block') return blockDisplayLabel(value);
   if (typeof value === 'string') return value;
   if (state.selectedMetric === 'custom_indicator') return signed ? `${Number(value) >= 0 ? '+' : ''}${Number(value).toFixed(2)}` : Number(value).toFixed(2);
   if (['first_party','dominant_block','dominant_coalition'].includes(state.selectedMetric)) return String(value);
@@ -6204,27 +6330,20 @@ function renderSelectionDock() {
   }
   const currentRow = getSummaryRow(state, state.selectedElection, mid) || null;
   const activeShare = currentRow && state.selectedParty ? aggregateShareFor(state, currentRow.election_key, mid, state.selectedParty) : null;
-  const leaderShardKnown = !!state.resultsLongShardPaths?.[state.selectedElection];
-  const leaderResultsReady = state.resultsLongFullLoaded || state.loadedResultElectionKeys?.has(state.selectedElection);
-  const leaderPending = leaderShardKnown && !leaderResultsReady;
-  const leaderLabel = currentRow && !leaderPending ? leadingPartyLabelFor(currentRow) : null;
-  const leaderDisplay = leaderLabel ? (inferPartyMeta(leaderLabel).display || leaderLabel) : null;
-  const leaderValue = leaderPending ? 'In preparazione...' : (leaderDisplay || 'n/d');
-  const topBlock = currentRow?.dominant_block || null;
-  const leaderShare = Number.isFinite(currentRow?.first_party_share) ? `${fmtPct(currentRow.first_party_share)}%` : 'n/d';
+  const leaderLabel = currentRow ? leadingPartyLabelFor(currentRow) : null;
+  const leaderDisplay = leaderLabel ? partyDisplayLabel(leaderLabel) : null;
+  const leaderValue = leaderDisplay || 'n/d';
+  const inferredBlock = leaderLabel ? inferPartyMeta(leaderLabel).bloc : null;
+  const topBlock = inferredBlock && inferredBlock !== 'altro' ? inferredBlock : (currentRow?.dominant_block || null);
+  const leaderShareValue = currentRow?.first_party_runtime_share ?? currentRow?.first_party_share;
+  const leaderShare = Number.isFinite(leaderShareValue) ? `${fmtPct(leaderShareValue)}%` : 'n/d';
   const stats = [
-    ['In testa', leaderValue],
-    ['Quota del primo', leaderShare],
     ['Affluenza', Number.isFinite(currentRow?.turnout_pct) ? `${fmtPct(currentRow.turnout_pct)}%` : 'n/d'],
-    ['Margine', Number.isFinite(currentRow?.first_second_margin) ? `${fmtPct(currentRow.first_second_margin)} pt` : 'n/d']
+    ['Margine', Number.isFinite(currentRow?.first_second_margin) ? `${fmtPct(currentRow.first_second_margin)} pt` : 'n/d'],
+    ['Area', blockDisplayLabel(topBlock)]
   ];
   if (state.selectedMetric === 'party_share' && state.selectedParty) {
-    stats[0] = [state.selectedParty, activeShare != null ? `${fmtPct(activeShare)}%` : 'n/d'];
-    stats[1] = ['In testa', `${leaderValue} · ${leaderShare}`];
-  }
-  if (state.selectedMetric === 'dominant_block') {
-    stats[0] = ['Blocco prevalente', topBlock || 'n/d'];
-    stats[1] = ['In testa', `${leaderValue} · ${leaderShare}`];
+    stats[2] = [`Quota ${partyDisplayLabel(state.selectedParty)}`, activeShare != null ? `${fmtPct(activeShare)}%` : 'n/d'];
   }
   els.selectionDockTitle.textContent = municipalityLabelById(mid);
   const electionLabel = currentRow
@@ -6233,6 +6352,12 @@ function renderSelectionDock() {
   els.selectionDockMeta.textContent = currentRow?.province
     ? `Provincia di ${currentRow.province} · ${electionLabel}`
     : electionLabel;
+  if (els.selectionDockPartyMark) {
+    els.selectionDockPartyMark.textContent = partyMarkLabel(leaderLabel);
+    els.selectionDockPartyMark.style.background = leaderLabel ? getPartyColor(leaderLabel) : '#64748b';
+  }
+  if (els.selectionDockLeaderName) els.selectionDockLeaderName.textContent = leaderValue;
+  if (els.selectionDockLeaderShare) els.selectionDockLeaderShare.textContent = leaderShare;
   if (els.selectionDockStats) {
     els.selectionDockStats.innerHTML = stats.map(([label, value]) => `
       <div class="selection-dock-stat">
@@ -6332,6 +6457,7 @@ async function init() {
     completenessSelect: q('completeness-select'),
     territorialStatusSelect: q('territorial-status-select'),
     metricSelect: q('metric-select'),
+    metricHelp: q('metric-help'),
     mapAggregationLevelSelect: q('map-aggregation-level-select'),
     partyModeSelect: q('party-mode-select'),
     partySelect: q('party-select'),
@@ -6367,6 +6493,8 @@ async function init() {
     layerToggleProvince: q('layer-toggle-province'),
     layerToggleComuni: q('layer-toggle-comuni'),
     mapCanvas: q('map-canvas'),
+    mapContextTitle: q('map-context-title'),
+    mapContextSubtitle: q('map-context-subtitle'),
     mapLoading: q('map-loading'),
     mapDetailCta: q('map-detail-cta'),
     mapDetailCtaName: q('map-detail-cta-name'),
@@ -6517,6 +6645,9 @@ async function init() {
     selectionDock: q('selection-dock'),
     selectionDockTitle: q('selection-dock-title'),
     selectionDockMeta: q('selection-dock-meta'),
+    selectionDockPartyMark: q('selection-dock-party-mark'),
+    selectionDockLeaderName: q('selection-dock-leader-name'),
+    selectionDockLeaderShare: q('selection-dock-leader-share'),
     selectionDockStats: q('selection-dock-stats'),
     selectionDockOpenBtn: q('selection-dock-open-btn'),
     selectionDockCompareBtn: q('selection-dock-compare-btn'),

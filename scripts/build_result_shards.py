@@ -19,6 +19,7 @@ PRODUCT_SYSTEM_NOTE = "Products are also published through a product catalog plu
 PRODUCT_INVENTORY_NOTE = "Every declared product also exposes a product-level inventory so users can see what is inside before loading the data."
 WEB_GEOMETRY_NOTE = "The public app now reads a web-optimized geometry pack, while the full-resolution boundaries remain published as a separate product."
 LOCAL_ASSET_NOTE = "Critical browser libraries are now vendored locally and the public documentation pages load only the metadata they actually need."
+PROFILE_NOTE = "Municipality detail pages use province-sized compressed profile chunks instead of loading the national summary table."
 CURRENT_VERSION = "0.21.0"
 
 
@@ -136,6 +137,8 @@ def main() -> None:
         notes.append(WEB_GEOMETRY_NOTE)
     if LOCAL_ASSET_NOTE not in notes:
         notes.append(LOCAL_ASSET_NOTE)
+    if PROFILE_NOTE not in notes:
+        notes.append(PROFILE_NOTE)
     project["notes"] = notes
 
     files = manifest.setdefault("files", {})
@@ -162,6 +165,8 @@ def main() -> None:
     files["productCatalog"] = "data/products/product_catalog.json"
     files["municipalitySummaryByElectionIndex"] = "data/derived/municipality_summary_by_election.json"
     files["municipalityResultsLongByElectionIndex"] = "data/derived/municipality_results_long_by_election.json"
+    if (derived / "municipality_profiles" / "index.json").exists():
+        files["municipalityProfileIndex"] = "data/derived/municipality_profiles/index.json"
     manifest["loading"] = {
         "municipalitySummary": {
             "strategy": "deferred_by_election",

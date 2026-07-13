@@ -545,6 +545,11 @@ def write_manifest(output_root: Path) -> None:
     }
     target = output_root / "data" / "derived"
     target.mkdir(parents=True, exist_ok=True)
+    if (target / "municipality_profiles" / "index.json").exists():
+        manifest["files"]["municipalityProfileIndex"] = "data/derived/municipality_profiles/index.json"
+        manifest["project"]["notes"].append(
+            "Municipality detail pages use province-sized compressed profile chunks instead of loading the national summary table."
+        )
     write_json_file(target / "manifest.json", manifest)
 
 

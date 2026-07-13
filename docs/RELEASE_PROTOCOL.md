@@ -11,10 +11,13 @@ Ogni release del bundle dovrebbe avere quattro strati leggibili da codice:
 
 ```bash
 node --check app.js
-python -m py_compile scripts/preprocess.py scripts/check_bundle.py clients/python/lce_loader.py
+python -m py_compile scripts/preprocess.py scripts/check_bundle.py scripts/build_municipality_profiles.py clients/python/lce_loader.py
+python scripts/build_municipality_profiles.py --root .
+python scripts/refresh_release_manifest.py --root .
 python -m unittest clients.python.tests.test_loader
 python scripts/check_bundle.py --root .
 python clients/python/lce_loader.py --root . --verify
+npm run test:public
 ```
 
 ## Criterio

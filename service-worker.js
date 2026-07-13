@@ -14,7 +14,7 @@
  * `cache.addAll()` that would reject the whole install on any 404.
  */
 
-const SW_VERSION = 'electio-v59-2026-07-11-public-map-cleanup';
+const SW_VERSION = 'electio-v60-2026-07-13-public-explorer';
 const SHELL_CACHE = `shell::${SW_VERSION}`;
 const DATA_CACHE = `data::${SW_VERSION}`;
 const NAV_FALLBACK = './index.html';
@@ -24,6 +24,7 @@ const SHELL_PATHS = [
   './index.html',
   './municipality-detail.html',
   './municipality-detail.js',
+  './detail-refresh.css',
   './data-download.html',
   './usage-notes.html',
   './update-log.html',

@@ -125,6 +125,7 @@
             </select>
           </label>
         </div>
+        <p id="metric-help" class="metric-help" aria-live="polite"></p>
 
         <div class="two-col two-col-main single-control-row">
           <label class="hidden" aria-hidden="true">
@@ -271,7 +272,7 @@
                 <button type="button" class="preset-btn" data-preset-metric="party_share">Quota partito</button>
                 <button type="button" class="preset-btn" data-preset-metric="turnout" data-preset-palette="sequential">Affluenza</button>
                 <button type="button" class="preset-btn" data-preset-metric="dominant_block">Blocchi</button>
-                <button type="button" class="preset-btn" data-preset-metric="margin" data-preset-palette="diverging">Margine</button>
+                <button type="button" class="preset-btn" data-preset-metric="margin" data-preset-palette="sequential">Margine</button>
               </div>
             </div>
           </div>
@@ -279,20 +280,6 @@
       </section>
 
       <section class="panel map-companion" aria-label="Contesto mappa">
-        <div id="selection-dock" class="selection-dock hidden" aria-live="polite">
-          <div class="selection-dock-main">
-            <div class="selection-dock-copy">
-              <div class="eyebrow">Comune selezionato</div>
-              <strong id="selection-dock-title">Nessun comune selezionato</strong>
-              <div id="selection-dock-meta" class="helper-text">Clicca un comune nella mappa per vedere il riepilogo essenziale.</div>
-            </div>
-            <div id="selection-dock-stats" class="selection-dock-stats"></div>
-            <div class="selection-dock-actions">
-              <button type="button" id="selection-dock-open-btn">Vai al dettaglio</button>
-              <button type="button" id="selection-dock-clear-btn" class="ghost-btn">Deseleziona</button>
-            </div>
-          </div>
-        </div>
         <div id="sidebar-legend" class="sidebar-legend" aria-live="polite"></div>
         <div id="sidebar-party-results" class="sidebar-party-results" aria-live="polite"></div>
         <details class="sidebar-map-options">
@@ -833,12 +820,38 @@
           </div>
           <div id="map-wrapper">
             <canvas id="map-canvas" width="960" height="680" role="img" aria-label="Mappa comunale interattiva dell'Italia"></canvas>
+            <div class="map-context-badge" aria-live="polite">
+              <strong id="map-context-title">Italia</strong>
+              <span id="map-context-subtitle">Mappa comunale</span>
+            </div>
             <div id="map-loading" class="map-loading hidden" aria-hidden="true">
               <div class="map-loading-spinner" aria-hidden="true"></div>
               <div class="map-loading-label">Caricamento dati elezione…</div>
             </div>
             <div id="map-empty-state" class="empty-state hidden"></div>
             <div id="tooltip" class="tooltip hidden"></div>
+            <aside id="selection-dock" class="selection-dock map-selection-card hidden" aria-live="polite" aria-label="Comune selezionato">
+              <div class="selection-dock-head">
+                <div class="selection-dock-copy">
+                  <div class="eyebrow">Comune selezionato</div>
+                  <strong id="selection-dock-title">Nessun comune selezionato</strong>
+                  <div id="selection-dock-meta" class="helper-text">Clicca un comune nella mappa per vedere il riepilogo essenziale.</div>
+                </div>
+                <button type="button" id="selection-dock-clear-btn" class="selection-dock-close" aria-label="Deseleziona il comune e chiudi">&times;</button>
+              </div>
+              <div class="selection-dock-leader">
+                <span id="selection-dock-party-mark" class="selection-dock-party-mark" aria-hidden="true">-</span>
+                <div class="selection-dock-leader-copy">
+                  <span>Partito vincente</span>
+                  <strong id="selection-dock-leader-name">n.d.</strong>
+                </div>
+                <b id="selection-dock-leader-share">n.d.</b>
+              </div>
+              <div id="selection-dock-stats" class="selection-dock-stats"></div>
+              <div class="selection-dock-actions">
+                <button type="button" id="selection-dock-open-btn">Apri la scheda completa</button>
+              </div>
+            </aside>
           </div>
           <div class="map-use-hint" aria-label="Istruzioni mappa">
             <span>Passa su un comune per leggerne il nome. Clicca per fissare il riepilogo.</span>

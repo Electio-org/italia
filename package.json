@@ -4,7 +4,8 @@
   "type": "module",
   "scripts": {
     "test:selectors": "node scripts/smoke_selectors.mjs",
-    "test:browser": "node scripts/smoke_dashboard.mjs"
+    "test:browser": "node scripts/smoke_dashboard.mjs",
+    "test:public": "node scripts/smoke_public_explorer.mjs"
   },
   "devDependencies": {
     "playwright": "1.59.1"

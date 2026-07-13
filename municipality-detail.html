@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="tabler-theme.css" />
   <link rel="stylesheet" href="vendor/tabler/core/tabler.min.css" media="print" onload="this.media='all'" />
   <noscript><link rel="stylesheet" href="vendor/tabler/core/tabler.min.css" /></noscript>
+  <link rel="stylesheet" href="detail-refresh.css" />
   <script defer src="vendor/papaparse/papaparse.min.js"></script>
 </head>
 <body data-site-page="municipality-detail">
@@ -41,11 +42,27 @@
 
     <main id="main-content" class="site-doc-main page-body">
       <section class="site-doc-hero">
-        <div class="doc-eyebrow"><a href="index.html" class="detail-breadcrumb-link">← Torna alla dashboard</a></div>
-        <h1 id="detail-name">Dettaglio comune</h1>
-        <p class="site-doc-standfirst" id="detail-standfirst">Anagrafica, confronto con provincia/regione/Italia, evoluzione storica e grafici per il comune selezionato.</p>
+        <a href="index.html" class="detail-breadcrumb-link">← Torna alla mappa</a>
+        <div class="detail-hero-layout">
+          <div class="detail-hero-copy">
+            <div class="doc-eyebrow">Profilo comunale</div>
+            <h1 id="detail-name">Dettaglio comune</h1>
+            <p class="site-doc-standfirst" id="detail-standfirst">Il voto nel comune, dall'elezione selezionata alla sua evoluzione storica.</p>
+          </div>
+          <aside id="detail-current-election" class="detail-current-election" aria-live="polite">
+            <div class="detail-placeholder">Caricamento elezione selezionata…</div>
+          </aside>
+        </div>
         <div id="detail-error" class="detail-error hidden"></div>
       </section>
+
+      <nav class="detail-subnav" aria-label="Sezioni del profilo comunale">
+        <a href="#detail-charts-section">Evoluzione</a>
+        <a href="#detail-winners-section">Vincitori</a>
+        <a href="#detail-kpi-section">Confronto</a>
+        <a href="#detail-anagrafica-section">Anagrafica</a>
+        <a href="#detail-history-section">Dati</a>
+      </nav>
 
       <section class="doc-section" id="detail-anagrafica-section">
         <div class="doc-section-head">
@@ -53,7 +70,7 @@
             <div class="doc-eyebrow">Anagrafica</div>
             <h2>Identità del comune</h2>
           </div>
-          <p class="doc-section-copy">Provincia, regione, codice ISTAT, geometria di riferimento.</p>
+          <p class="doc-section-copy">Codici e collocazione territoriale del comune.</p>
         </div>
         <div id="detail-anagrafica" class="detail-grid">
           <div class="detail-placeholder">Caricamento anagrafica…</div>
@@ -66,7 +83,7 @@
             <div class="doc-eyebrow">Storico</div>
             <h2>Evoluzione nelle elezioni</h2>
           </div>
-          <p class="doc-section-copy">Risultati summary del comune per ciascuna elezione con copertura disponibile (affluenza, voti validi, schede bianche).</p>
+          <p class="doc-section-copy">Affluenza, voti validi ed elettori per ogni elezione disponibile.</p>
         </div>
         <div class="doc-table-wrap">
           <table class="doc-table" id="detail-history-table">
@@ -92,7 +109,7 @@
             <div class="doc-eyebrow">Confronto</div>
             <h2>Comune vs Italia</h2>
           </div>
-          <p class="doc-section-copy">Sintesi delle medie storiche del comune accanto al dato nazionale calcolato sulle stesse elezioni (Δ in punti percentuali, ponderato sugli aventi diritto).</p>
+          <p class="doc-section-copy">Medie storiche del comune confrontate con l'Italia nelle stesse elezioni.</p>
         </div>
         <div id="detail-kpi-strip" class="detail-kpi-strip" aria-label="Indicatori sintetici comune vs Italia">
           <div class="detail-placeholder">Caricamento indicatori…</div>
@@ -105,7 +122,7 @@
             <div class="doc-eyebrow">Confronto storico</div>
             <h2>Vincitore per elezione</h2>
           </div>
-          <p class="doc-section-copy">Una riga per ogni elezione coperta, dalla più recente. Per ogni anno: partito vincente, sua quota, blocco politico ri-inferito a runtime, Δ (in punti percentuali) rispetto all'elezione precedente; le icone segnalano cambio del vincitore o del blocco.</p>
+          <p class="doc-section-copy">Partito vincente, quota, area politica e cambi rispetto all'elezione precedente.</p>
         </div>
         <div class="doc-table-wrap detail-winners-wrap">
           <table class="doc-table detail-winners-table" id="detail-winners-table">
@@ -114,7 +131,7 @@
                 <th scope="col">Anno</th>
                 <th scope="col">Vincitore</th>
                 <th scope="col">Quota</th>
-                <th scope="col">Blocco</th>
+                <th scope="col">Area</th>
                 <th scope="col">Margine</th>
                 <th scope="col">Δ quota</th>
                 <th scope="col">Δ affluenza</th>
@@ -126,8 +143,7 @@
           </table>
         </div>
         <p class="detail-winners-legend">
-          <span class="detail-winners-badge detail-winners-badge-flip">flip</span> = cambio del vincitore / del blocco rispetto all'elezione precedente · 
-          <span class="detail-winners-delta detail-winners-delta-pos">+pp</span> / <span class="detail-winners-delta detail-winners-delta-neg">−pp</span> = differenza positiva o negativa rispetto al valore della stessa metrica nell'elezione precedente coperta dal comune.
+          <span class="detail-winners-badge detail-winners-badge-flip">cambio</span> indica un vincitore o un'area diversi dall'elezione precedente. Le variazioni sono espresse in punti percentuali.
         </p>
       </section>
 
@@ -137,7 +153,7 @@
             <div class="doc-eyebrow">Grafici</div>
             <h2>Grafici storici &amp; evoluzione</h2>
           </div>
-          <p class="doc-section-copy">Serie storica dell'affluenza con confronto provincia/Italia, margine del vincente, timeline del primo partito e blocco dominante per ciascuna elezione coperta.</p>
+          <p class="doc-section-copy">Affluenza, margine, vincitori e aree politiche nel tempo.</p>
         </div>
         <div class="detail-charts">
           <article class="detail-chart-card">
@@ -169,20 +185,20 @@
           </article>
           <article class="detail-chart-card detail-chart-card-wide">
             <header class="detail-chart-head">
-              <h3>Blocco dominante</h3>
-              <p>Strisce parallele del blocco politico vincente nel comune (riga superiore) e di quello modale a livello italiano (riga inferiore).</p>
+              <h3>Area prevalente</h3>
+              <p>Area politica prevalente nel comune e in Italia, elezione per elezione.</p>
             </header>
-            <div id="detail-chart-block" class="detail-chart-body" aria-label="Timeline del blocco dominante">
+            <div id="detail-chart-block" class="detail-chart-body" aria-label="Timeline dell'area politica prevalente">
               <div class="detail-placeholder">Caricamento grafico…</div>
             </div>
           </article>
           <article class="detail-chart-card detail-chart-card-wide">
             <header class="detail-chart-head">
-              <h3>Composizione per blocchi (storico)</h3>
-              <p>Quote percentuali aggregate per blocco politico nel comune, elezione per elezione. Le quote sono ri-aggregate dai risultati partito a runtime con la tassonomia JS (stesso criterio della dashboard). Il caricamento è progressivo: ogni elezione appare quando il suo shard è scaricato.</p>
+              <h3>Aree politiche nel tempo</h3>
+              <p>Come si distribuisce il voto tra le grandi aree politiche in ogni elezione.</p>
             </header>
-            <div id="detail-chart-bloc-composition" class="detail-chart-body" aria-label="Composizione per blocchi nelle elezioni del comune">
-              <div class="detail-placeholder">Caricamento composizione blocchi…</div>
+            <div id="detail-chart-bloc-composition" class="detail-chart-body" aria-label="Composizione per aree politiche nelle elezioni del comune">
+              <div class="detail-placeholder">Caricamento aree politiche…</div>
             </div>
           </article>
         </div>
