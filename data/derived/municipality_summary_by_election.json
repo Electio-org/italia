@@ -1,6 +1,10 @@
 {
   "generated_by": "build_result_shards.py",
-  "dataset": "municipality_summary.csv",
+  "dataset": "municipality_summary_harmonized_to_2021_geometry",
+  "source_dataset": "data/derived/municipality_summary.csv",
+  "territorial_mode": "harmonized",
+  "target_geometry_date": "2021-12-31",
+  "crosswalk": "data/derived/municipality_election_crosswalk.csv.gz",
   "strategy": "by_election",
   "shards": {
     "assemblea_costituente_1946": "data/derived/summary_by_election/assemblea_costituente_1946.csv.gz",
@@ -25,26 +29,26 @@
     "camera_2022": "data/derived/summary_by_election/camera_2022.csv.gz"
   },
   "row_counts": {
-    "assemblea_costituente_1946": 7148,
-    "camera_1948": 7618,
-    "camera_1953": 7812,
-    "camera_1958": 7943,
-    "camera_1963": 7997,
-    "camera_1968": 8015,
-    "camera_1972": 8018,
-    "camera_1976": 8028,
-    "camera_1979": 8042,
-    "camera_1983": 8050,
-    "camera_1987": 8055,
-    "camera_1992": 8063,
-    "camera_1994": 7990,
-    "camera_1996": 7988,
-    "camera_2001": 7986,
-    "camera_2006": 7989,
-    "camera_2008": 7991,
-    "camera_2013": 7982,
-    "camera_2018": 7940,
-    "camera_2022": 7830
+    "assemblea_costituente_1946": 6963,
+    "camera_1948": 7437,
+    "camera_1953": 7622,
+    "camera_1958": 7755,
+    "camera_1963": 7809,
+    "camera_1968": 7826,
+    "camera_1972": 7839,
+    "camera_1976": 7849,
+    "camera_1979": 7866,
+    "camera_1983": 7874,
+    "camera_1987": 7880,
+    "camera_1992": 7887,
+    "camera_1994": 7804,
+    "camera_1996": 7804,
+    "camera_2001": 7804,
+    "camera_2006": 7820,
+    "camera_2008": 7817,
+    "camera_2013": 7819,
+    "camera_2018": 7898,
+    "camera_2022": 7829
   },
   "shards_uncompressed": {
     "assemblea_costituente_1946": "data/derived/summary_by_election/assemblea_costituente_1946.csv",
@@ -70,8 +74,8 @@
   },
   "compression": {
     "format": "gzip",
-    "original_bytes": 51065765,
-    "compressed_bytes": 10745274,
-    "reduction_pct": 78.96
+    "original_bytes": 51317457,
+    "compressed_bytes": 10305552,
+    "reduction_pct": 79.92
   }
 }

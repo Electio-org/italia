@@ -1076,7 +1076,22 @@ def main() -> None:
 
     build_gap_report(output_root, source_audit_rows, summary_rows, party_rows, dataset_registry)
     subprocess.run(
+        [sys.executable, str(output_root / "scripts" / "build_territorial_history.py"), "--root", str(output_root)],
+        cwd=output_root,
+        check=True,
+    )
+    subprocess.run(
+        [sys.executable, str(output_root / "scripts" / "build_result_shards.py"), "--root", str(output_root)],
+        cwd=output_root,
+        check=True,
+    )
+    subprocess.run(
         [sys.executable, str(output_root / "scripts" / "build_municipality_profiles.py"), "--root", str(output_root)],
+        cwd=output_root,
+        check=True,
+    )
+    subprocess.run(
+        [sys.executable, str(output_root / "scripts" / "build_web_compressed_assets.py")],
         cwd=output_root,
         check=True,
     )

@@ -530,9 +530,11 @@ def main() -> None:
         repaired_summary.append(repair_year_source(year, raw_entities_path, source_root, args.max_workers))
 
     merge_historical_into_bundle(root, source_root, repaired_summary)
+    compare_and_import_gap_report(root, pipeline_root)
+    run_subprocess([sys.executable, str(root / "scripts" / "build_territorial_history.py"), "--root", str(root)], cwd=root)
     run_subprocess([sys.executable, str(root / "scripts" / "build_result_shards.py"), "--root", str(root)], cwd=root)
     run_subprocess([sys.executable, str(root / "scripts" / "build_municipality_profiles.py"), "--root", str(root)], cwd=root)
-    compare_and_import_gap_report(root, pipeline_root)
+    run_subprocess([sys.executable, str(root / "scripts" / "build_web_compressed_assets.py")], cwd=root)
 
     print(json.dumps({
         "root": str(root),

@@ -91,10 +91,10 @@ async function fetchText(path) {
 }
 
 const PAGE_JSON_TARGETS = {
-  'data-download': ['releaseManifest', 'dataProducts', 'productCatalog', 'datasetRegistry', 'usageNotes', 'researchRecipes', 'dataQualityReport', 'archiveBundleGapReport', 'webGeometryReport'],
+  'data-download': ['releaseManifest', 'dataProducts', 'productCatalog', 'datasetRegistry', 'usageNotes', 'researchRecipes', 'dataQualityReport', 'archiveBundleGapReport', 'webGeometryReport', 'territorialHistoryReport', 'territorialSources'],
   products: ['releaseManifest', 'dataProducts', 'productCatalog'],
   'programmatic-access': ['releaseManifest', 'dataProducts', 'productCatalog', 'researchRecipes', 'siteGuides'],
-  'usage-notes': ['usageNotes', 'siteGuides', 'codebook', 'datasetContracts', 'provenance', 'datasetRegistry', 'dataQualityReport', 'archiveBundleGapReport'],
+  'usage-notes': ['usageNotes', 'siteGuides', 'codebook', 'datasetContracts', 'provenance', 'datasetRegistry', 'dataQualityReport', 'archiveBundleGapReport', 'territorialHistoryReport', 'territorialSources'],
   'update-log': ['updateLog', 'releaseManifest', 'dataQualityReport', 'datasetRegistry'],
 };
 
@@ -117,6 +117,8 @@ async function loadBundle(page = 'dashboard') {
     dataQualityReport: 'dataQualityReport',
     archiveBundleGapReport: 'archiveBundleGapReport',
     webGeometryReport: 'webGeometryReport',
+    territorialHistoryReport: 'territorialHistoryReport',
+    territorialSources: 'territorialSources',
   };
   const wanted = new Set(PAGE_JSON_TARGETS[page] || Object.keys(jsonTargets));
 
@@ -198,6 +200,8 @@ function renderDownloadPage(bundle) {
   const archiveGap = bundle.archiveBundleGapReport?.rows || [];
   const archiveGapSummary = bundle.archiveBundleGapReport?.summary || {};
   const webGeometryTotals = bundle.webGeometryReport?.totals || {};
+  const territorialHistory = bundle.territorialHistoryReport || {};
+  const territorialElections = territorialHistory.elections || [];
   const archiveGapByKey = new Map(archiveGap.map((row) => [row.consultation_key || row.election_key, row]));
   const usableElectionRows = registryDatasets.filter((row) => row.election_key);
   const geometryRows = registryDatasets.filter((row) => row.dataset_family === 'geometry_boundary');
@@ -328,6 +332,34 @@ function renderDownloadPage(bundle) {
             ${(recipe.steps || []).map((step) => `<li>${escapeHtml(step)}</li>`).join('')}
           </ul>
         </article>
+      `)
+      .join('');
+  }
+
+  const territorialSummary = q('territorial-history-summary');
+  if (territorialSummary) {
+    const sourceMunicipalities = territorialElections.reduce((sum, row) => sum + Number(row.source_municipalities || 0), 0);
+    const resolvedMunicipalities = territorialElections.reduce((sum, row) => sum + Number(row.resolved_municipalities || 0), 0);
+    const coverage = sourceMunicipalities ? (resolvedMunicipalities / sourceMunicipalities * 100).toFixed(2) : 'n.d.';
+    territorialSummary.innerHTML = [
+      ['Geometria di lettura', territorialHistory.target_geometry_date || '2021-12-31', 'Data di riferimento della mappa comunale'],
+      ['Comuni target', formatNumber(territorialHistory.target_municipalities || 0), 'Entità cartografiche nella base 2021'],
+      ['Riconciliazione complessiva', `${coverage}%`, 'Righe comunali collegate senza stime arbitrarie'],
+    ].map(([label, value, meta]) => statCard(label, value, meta)).join('');
+  }
+
+  const territorialCoverageBody = q('territorial-coverage-table-body');
+  if (territorialCoverageBody) {
+    territorialCoverageBody.innerHTML = territorialElections
+      .map((row) => `
+        <tr>
+          <td><code>${escapeHtml(row.election_key || '')}</code></td>
+          <td>${formatNumber(row.source_municipalities || 0)}</td>
+          <td>${formatNumber(row.resolved_municipalities || 0)}</td>
+          <td><span class="doc-pill tone-${Number(row.coverage_pct || 0) >= 99.9 ? 'good' : 'warn'}">${escapeHtml(String(row.coverage_pct ?? 'n.d.'))}%</span></td>
+          <td>${formatNumber(row.ambiguous_splits || 0)}</td>
+          <td>${formatNumber(row.unresolved || 0)}</td>
+        </tr>
       `)
       .join('');
   }
@@ -694,6 +726,8 @@ function renderUsageNotesPage(bundle) {
   const codebookDatasets = bundle.codebook?.datasets || [];
   const contracts = bundle.datasetContracts?.contracts || [];
   const provenance = bundle.provenance?.entries || [];
+  const territorialSources = bundle.territorialSources?.sources || [];
+  const territorialPolicy = bundle.territorialHistoryReport?.policy || {};
 
   const stats = [
     ['Note', notes.length, 'Guardrail e limiti dichiarati'],
@@ -719,6 +753,31 @@ function renderUsageNotesPage(bundle) {
         </article>
       `)
       .join('');
+  }
+
+  const territorialMethodGrid = q('territorial-method-grid');
+  if (territorialMethodGrid) {
+    const sourceCards = territorialSources.map((source) => `
+      <article class="doc-card">
+        <div class="doc-card-head">
+          <span class="doc-pill">fonte</span>
+          <strong>${escapeHtml(source.name || '')}</strong>
+        </div>
+        <p>${escapeHtml(source.role || '')}</p>
+        <a class="doc-download-link" href="${escapeHtml(source.url || '#')}" target="_blank" rel="noreferrer">Apri la fonte</a>
+      </article>
+    `);
+    const policyCard = `
+      <article class="doc-card tone-warn">
+        <div class="doc-card-head">
+          <span class="doc-pill">regola</span>
+          <strong>Nessun voto inventato</strong>
+        </div>
+        <p>${escapeHtml(territorialPolicy.ambiguous_splits || 'Le scissioni ambigue restano non allocate.')}</p>
+        <p>${escapeHtml(territorialPolicy.partial_transfers || '')}</p>
+      </article>
+    `;
+    territorialMethodGrid.innerHTML = [...sourceCards, policyCard].join('');
   }
 
   const explainerGrid = q('explainer-grid');

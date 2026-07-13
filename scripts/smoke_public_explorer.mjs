@@ -24,6 +24,8 @@ async function waitForMap(electionValue, metricValue) {
   await page.waitForFunction(({ electionValue, metricValue }) => (
     document.querySelector('#election-select')?.value === electionValue
     && document.querySelector('#metric-select')?.value === metricValue
+    && new URLSearchParams(location.hash.slice(1)).get('selectedElection') === electionValue
+    && new URLSearchParams(location.hash.slice(1)).get('selectedMetric') === metricValue
     && document.querySelector('#map-loading')?.classList.contains('hidden')
     && document.querySelector('#loading-overlay')?.classList.contains('hidden')
   ), { electionValue, metricValue });
@@ -100,12 +102,20 @@ try {
     await page.fill('#municipality-search', 'Roma');
     await page.dispatchEvent('#municipality-search', 'change');
     await page.waitForFunction(() => !document.querySelector('#selection-dock')?.classList.contains('hidden'));
+    await page.waitForFunction(() => (
+      document.querySelector('#selection-dock-metric-label')?.textContent.trim().toLowerCase() === 'quota del partito'
+      && document.querySelectorAll('#selection-dock-party-results .selection-result-row').length >= 5
+    ));
     assert.equal((await page.locator('#selection-dock-title').innerText()).trim(), 'Roma (Roma)');
     const selectedCard = await page.locator('#selection-dock').innerText();
     assert.match(selectedCard, /Affluenza/i);
     assert.match(selectedCard, /Voto nel comune/i);
     assert.match(selectedCard, /voti validi/i);
-    assert.equal((await page.locator('#selection-dock-metric-label').innerText()).trim().toLowerCase(), 'quota del partito');
+    assert.equal(
+      (await page.locator('#selection-dock-metric-label').innerText()).trim().toLowerCase(),
+      'quota del partito',
+      `${election.label}: municipality headline must follow the active party-share metric`
+    );
     assert.equal((await page.locator('#selection-dock-leader-name').innerText()).trim(), partyLabel);
     assert.ok(await page.locator('#selection-dock-party-results .selection-result-row').count() >= 5, `${election.label}: selected municipality must expose its party result`);
     assert.equal(await page.locator('#selection-dock-party-results .selection-result-row.is-active').count(), 1, `${election.label}: selected party must be highlighted in the municipality result`);
@@ -134,6 +144,31 @@ try {
 
     audit.push({ election: election.label, national: nationalRows, selectedParty: partyLabel });
   }
+
+  const election2013 = await page.locator('#election-select option').evaluateAll(options => (
+    options
+      .map(option => ({ value: option.value, label: option.textContent.trim() }))
+      .find(option => option.label.includes('2013'))
+  ));
+  assert.ok(election2013, 'Camera 2013 must be available for the historical municipality smoke');
+  await page.selectOption('#metric-select', 'turnout');
+  await page.selectOption('#election-select', election2013.value);
+  await waitForMap(election2013.value, 'turnout');
+  await page.fill('#municipality-search', 'Brembilla');
+  await page.dispatchEvent('#municipality-search', 'change');
+  await page.waitForFunction(() => !document.querySelector('#selection-dock')?.classList.contains('hidden'));
+  await page.waitForFunction(() => document.querySelectorAll('#selection-dock-party-results .selection-result-row').length >= 5);
+  assert.equal(
+    (await page.locator('#selection-dock-title').innerText()).trim(),
+    'Val Brembilla (Bergamo)',
+    'a historical municipality name must resolve implicitly to the current mapped municipality'
+  );
+  assert.match(await page.locator('#selection-dock').innerText(), /Affluenza/i);
+  assert.ok(
+    await page.locator('#selection-dock-party-results .selection-result-row').count() >= 5,
+    'the harmonized municipality must retain the complete 2013 election result'
+  );
+  await page.click('#selection-dock-clear-btn');
 
   await page.goto(`${baseUrl}municipality-detail.html?id=058091&election=camera_1992&metric=party_share&party=Dc`, { waitUntil: 'domcontentloaded' });
   await page.waitForFunction(() => document.querySelector('#detail-current-election .detail-current-winner'));

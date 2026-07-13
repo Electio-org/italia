@@ -1,41 +1,71 @@
 {
-  "generated_by": "preprocess.py",
+  "generated_by": "build_territorial_history.py + preprocess.py",
   "notes": [
     {
-      "key": "historical_mode",
-      "title": "Modalità storica",
+      "key": "territorial_projection",
+      "title": "Comuni storici, mappa attuale",
       "severity": "info",
-      "text": "Nel bundle corrente la modalità storica è la base osservata. La modalità armonizzata va esposta solo se il bundle contiene righe harmonized vere."
+      "text": "La dashboard riconcilia automaticamente il comune valido nel giorno dell'elezione con la geometria comunale al 31 dicembre 2021. Non occorre scegliere una modalità territoriale: la complessità resta nel layer dati."
+    },
+    {
+      "key": "mergers",
+      "title": "Fusioni e incorporazioni",
+      "severity": "info",
+      "text": "Quando un comune 2021 deriva interamente da due o più predecessori, elettori, votanti e voti vengono sommati e le quote sono ricalcolate. Per esempio le serie di Brembilla e Gerosa confluiscono in Val Brembilla."
+    },
+    {
+      "key": "splits",
+      "title": "Scissioni e trasferimenti parziali",
+      "severity": "warning",
+      "text": "Se un territorio storico è stato diviso tra più comuni e non esiste una chiave ufficiale per distribuire i voti, Electio lascia il valore non disponibile. Non vengono create stime territoriali arbitrarie."
+    },
+    {
+      "key": "source_geography",
+      "title": "Dati originali e vista pubblica",
+      "severity": "info",
+      "text": "I CSV monolitici derivati da Eligendo conservano denominazioni e geografia della fonte. Gli shard caricati dalla dashboard sono invece armonizzati sulla geografia 2021; il crosswalk permette di verificare ogni passaggio."
+    },
+    {
+      "key": "territorial_sources",
+      "title": "Fonti territoriali",
+      "severity": "info",
+      "text": "ISTAT SITUAS è la fonte primaria per snapshot datati, soppressioni, fusioni, cambi di codice e provincia. L'archivio storico ANPR distribuito da OnData integra il 1946, gli intervalli di validità e le denominazioni storiche."
     },
     {
       "key": "geometry_basis",
       "title": "Base geometrica",
       "severity": "info",
-      "text": "Geometrie comunali disponibili per gli anni: 2021. Se scegli una base geometrica esplicita, stai cambiando la rappresentazione cartografica, non il dato elettorale sottostante."
+      "text": "La vista pubblica usa i 7.904 comuni della geometria ISTAT 2021. La ricerca riconosce anche i nomi storici, ma seleziona sempre l'entità cartografica stabile corrispondente."
     },
     {
       "key": "coverage",
-      "title": "Copertura sostanziale",
+      "title": "Copertura verificabile",
       "severity": "info",
-      "text": "La readiness tecnica può essere alta anche con copertura sostanziale bassa. Bundle attuale: technical=90, substantive=100."
+      "text": "territorial_history_report.json pubblica per ogni elezione il numero di comuni risolti, le scissioni ambigue e le righe irrisolte. Le eccezioni non vengono nascoste né forzate sulla mappa."
     },
     {
       "key": "shares",
       "title": "Quote di partito",
       "severity": "info",
-      "text": "Le quote sono ricalcolate dai voti quando il denominatore è plausibile. Se i risultati di partito sono incompleti, le quote vanno lette come parziali e non come distribuzione esaustiva."
+      "text": "Dopo l'aggregazione territoriale le quote, i rank, il primo partito e il margine sono ricalcolati dai voti e dai voti validi, non mediati tra i comuni predecessori."
     },
     {
-      "key": "province_region",
-      "title": "Contesto provinciale e regionale",
+      "key": "summary_reconstruction",
+      "title": "Riepiloghi mancanti nella fonte",
       "severity": "info",
-      "text": "I confronti con provincia e Italia sono calcolati come aggregati pesati sui conteggi disponibili, non come media semplice dei comuni."
+      "text": "Se un comune compare nei risultati completi per partito ma manca nel file summary, Electio ricostruisce soltanto voti validi, quote, graduatoria e margine. Elettori, votanti e affluenza restano non disponibili finché non esiste una fonte verificabile."
+    },
+    {
+      "key": "source_label_repairs",
+      "title": "Etichette territoriali incoerenti",
+      "severity": "info",
+      "text": "Quando una denominazione comunale sorgente è incoerente ma codice ISTAT e regione identificano senza ambiguità il territorio, il crosswalk conserva il metodo di correzione e pubblica il risultato sul comune corretto. Le etichette riconosciute come corrotte non diventano alias di ricerca."
     },
     {
       "key": "official_opendata_source",
-      "title": "Fonte primaria ufficiale",
+      "title": "Fonte elettorale primaria",
       "severity": "info",
-      "text": "I risultati comunali del bundle corrente derivano prioritariamente dagli zip open data ufficiali di Eligendo per la Camera e, per il 1946, per l'Assemblea Costituente. La navigazione HTML resta un supporto di QA e recupero, non la sorgente primaria."
+      "text": "I risultati comunali derivano dagli archivi open data ufficiali di Eligendo per Camera e Assemblea Costituente. La riconciliazione territoriale modifica la chiave geografica di lettura, non i voti osservati."
     }
   ]
 }

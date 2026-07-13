@@ -184,6 +184,37 @@
       "validation_rules": [
         "rispettare lo schema dichiarato nel contratto bundle"
       ]
+    },
+    {
+      "dataset": "municipality_election_crosswalk.csv.gz",
+      "required_columns": [
+        "election_key",
+        "election_date",
+        "source_municipality_id",
+        "source_name",
+        "source_province",
+        "source_region",
+        "historical_istat_code",
+        "target_geometry_id",
+        "target_name",
+        "target_province",
+        "target_region",
+        "resolution_method",
+        "confidence",
+        "status",
+        "lineage_path"
+      ],
+      "key_columns": [
+        "election_key",
+        "source_municipality_id"
+      ],
+      "validation_rules": [
+        "ogni chiave sorgente deve avere al massimo un target risolto",
+        "un codice ISTAT coerente con la regione puo correggere una denominazione sorgente corrotta, con metodo esplicito",
+        "target_geometry_id deve appartenere alla geometria ISTAT 2021",
+        "le scissioni ambigue non devono ricevere un target artificiale",
+        "lineage_path deve rispettare la cronologia successiva alla data dell'elezione"
+      ]
     }
   ]
 }

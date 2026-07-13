@@ -2,6 +2,22 @@
   "generated_by": "preprocess.py",
   "entries": [
     {
+      "version": "0.22.0",
+      "date": "2026-07-14",
+      "title": "Historical municipality lineage and implicit 2021 territorial projection",
+      "changes": [
+        "Replaced placeholder municipality lineage with dated ISTAT SITUAS succession events and historical ANPR validity intervals.",
+        "Added a reproducible election-by-election crosswalk from the municipality valid on election day to the 2021 map geometry.",
+        "Changed public summary and result shards to aggregate complete predecessors implicitly on the 2021 municipality geography.",
+        "Kept the original Eligendo-derived monolithic CSVs unchanged as source-geography data for audit and reuse.",
+        "Added current-municipality search aliases for historical names, including predecessor municipalities absorbed by mergers.",
+        "Published a coverage report that leaves ambiguous splits and partial territorial transfers unallocated instead of inventing votes.",
+        "Added compact, versioned SITUAS and ANPR source registries plus source and method metadata.",
+        "Recovered municipalities present only in party-result rows and kept unavailable turnout fields explicitly null.",
+        "Added auditable repair of corrupted municipality labels when dated ISTAT code and source region agree unambiguously."
+      ]
+    },
+    {
       "version": "0.21.0",
       "date": "2026-04-07",
       "title": "National Camera bundle, web/full geometry split, and lighter public metadata loading",

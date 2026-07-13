@@ -51,6 +51,25 @@ python scripts/serve.py --port 8765 --host 127.0.0.1
 
 Then open `http://127.0.0.1:8765/`.
 
+## Historical municipality reconciliation
+
+The public map always reads election data on the ISTAT municipality geometry dated 2021-12-31. The conversion is implicit in the published election shards:
+
+1. `build_territorial_history.py` identifies the municipality valid on election day from ISTAT SITUAS snapshots, follows dated suppression/code-change events, and writes the audit crosswalk.
+2. `build_result_shards.py` aggregates complete predecessors, recomputes turnout, party shares, ranks and margins, and leaves ambiguous splits unallocated.
+3. The original monolithic Eligendo-derived CSVs remain unchanged in their source geography.
+
+Rebuild in this order:
+
+```powershell
+python scripts\build_territorial_history.py --root .
+python scripts\build_result_shards.py --root .
+python scripts\build_municipality_profiles.py --root .
+python scripts\build_web_compressed_assets.py
+```
+
+Use `--refresh-sources` on the first command only when intentionally refreshing the compact SITUAS and ANPR source snapshots. The published coverage and unresolved cases are in `data/derived/territorial_history_report.json`.
+
 ## Deploy (GitHub Pages)
 
 The repository root is the Pages site. A `.nojekyll` file disables Jekyll.
@@ -70,7 +89,8 @@ Useful local checks:
 ```powershell
 node --check app.js
 node --check site-pages.js
-python -m py_compile scripts\preprocess.py scripts\check_bundle.py scripts\build_municipality_profiles.py clients\python\lce_loader.py
+python -m py_compile scripts\preprocess.py scripts\check_bundle.py scripts\build_territorial_history.py scripts\territorial_history.py scripts\build_municipality_profiles.py clients\python\lce_loader.py
+python scripts\smoke_reference_resolution.py
 python scripts\build_municipality_profiles.py --root .
 python scripts\refresh_release_manifest.py --root .
 python -m unittest clients.python.tests.test_loader

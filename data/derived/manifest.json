@@ -1,7 +1,7 @@
 {
   "project": {
     "title": "Electio Italia",
-    "version": "0.21.0",
+    "version": "0.22.0",
     "ready_for_real_data": true,
     "notes": [
       "Vote shares are recomputed from votes whenever a plausible denominator is available.",
@@ -20,7 +20,8 @@
       "Every declared product also exposes a product-level inventory so users can see what is inside before loading the data.",
       "The public app now reads a web-optimized geometry pack, while the full-resolution boundaries remain published as a separate product.",
       "Critical browser libraries are now vendored locally and the public documentation pages load only the metadata they actually need.",
-      "Municipality detail pages use province-sized compressed profile chunks instead of loading the national summary table."
+      "Municipality detail pages use province-sized compressed profile chunks instead of loading the national summary table.",
+      "Public election shards are projected implicitly to the 2021 municipality geometry through a date-aware ISTAT SITUAS lineage; ambiguous splits are never allocated."
     ]
   },
   "files": {
@@ -57,7 +58,13 @@
     "webCompressionReport": "data/derived/web_compression_report.json",
     "productCatalog": "data/products/product_catalog.json",
     "municipalitySummaryByElectionIndex": "data/derived/municipality_summary_by_election.json",
-    "municipalityProfileIndex": "data/derived/municipality_profiles/index.json"
+    "municipalityProfileIndex": "data/derived/municipality_profiles/index.json",
+    "territorialCrosswalk": "data/derived/municipality_election_crosswalk.csv.gz",
+    "territorialHistoryReport": "data/derived/territorial_history_report.json",
+    "territorialSources": "data/reference/territorial_sources.json",
+    "municipalityRegistryByElection": "data/reference/municipality_registry_by_election.csv.gz",
+    "municipalityRegistryHistorical": "data/reference/municipality_registry_historical_anpr.csv.gz",
+    "territorialEvents": "data/reference/situas_municipality_events_1861_2021.csv.gz"
   },
   "contracts": {
     "geometryJoinPriority": [

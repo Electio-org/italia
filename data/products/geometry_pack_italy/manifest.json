@@ -1,7 +1,7 @@
 {
   "generated_by": "build_result_shards.py",
-  "release_version": "0.21.0",
-  "release_date": "2026-04-07",
+  "release_version": "0.22.0",
+  "release_date": "2026-07-14",
   "product": {
     "product_key": "geometry_pack_italy",
     "title": "Pacchetto geometrie Italia - web",
@@ -29,20 +29,20 @@
       "dataset_key": "geometryPack",
       "path": "data/derived/geometry_pack_web.json",
       "kind": "json",
-      "size_bytes": 234,
+      "size_bytes": 982,
       "row_count": null,
       "feature_count": null,
-      "sha256": "c603acd3f583fbe3f889e840ea2ed2f41558bda49078c18781c1713ea0ca9203"
+      "sha256": "7b185e7939d738a8421f525d23b6426b4e97630f377e73e661593c61e0e12924"
     },
     {
       "role": "companion",
       "dataset_key": "provinceGeometry",
-      "path": "data/derived/geometries_web/provinces_2021.geojson",
-      "kind": "geojson",
-      "size_bytes": 122576,
+      "path": "data/derived/geometries_web/provinces_2021.topojson",
+      "kind": "topojson",
+      "size_bytes": 3461428,
       "row_count": null,
       "feature_count": 107,
-      "sha256": "dc4eb4f349c269d275e08202d7608c2b688af9b831e12ae48d8abfd312ebbf6c"
+      "sha256": "2d308630de82156e785b34d7762928cb5c4fb47e0184dd153cf5856c28ca7d93"
     }
   ],
   "inventory": {
@@ -51,8 +51,8 @@
     "entries": [
       {
         "geometry_year": 2021,
-        "municipalities_path": "data/derived/geometries_web/municipalities_2021.geojson",
-        "provinces_path": "data/derived/geometries_web/provinces_2021.geojson"
+        "municipalities_path": "data/derived/geometries_web/municipalities_2021.topojson.gz",
+        "provinces_path": "data/derived/geometries_web/provinces_2021.topojson.gz"
       }
     ]
   },

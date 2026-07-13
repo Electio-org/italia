@@ -1,23 +1,27 @@
 {
   "generated_by": "build_result_shards.py",
-  "release_version": "0.21.0",
-  "release_date": "2026-04-07",
+  "release_version": "0.22.0",
+  "release_date": "2026-07-14",
   "products": [
     {
       "product_key": "camera_muni_historical",
-      "title": "Camera e Costituente Italia - comuni storici",
+      "title": "Camera e Costituente - fonte storica e vista comunale 2021",
       "kind": "election_panel",
-      "territorial_mode": "historical",
+      "territorial_mode": "source_monolith_and_harmonized_public_shards",
       "granularity": "municipality-election",
-      "delivery_strategy": "summary_and_results_monolith_plus_election_shards",
+      "delivery_strategy": "raw_source_geography_monolith_plus_2021_harmonized_election_shards",
       "manifest_path": "data/products/camera_muni_historical/manifest.json",
-      "dataset_count": 2,
+      "dataset_count": 4,
       "primary_dataset_key": "municipalitySummary",
       "companion_dataset_key": "municipalityResultsLong",
-      "extra_dataset_keys": [],
+      "extra_dataset_keys": [
+        "territorialCrosswalk",
+        "territorialHistoryReport"
+      ],
       "guardrails": [
-        "Usare coverage e completeness_flag prima di interpretare trend forti.",
-        "Le quote di partito possono restare parziali nei bundle incompleti."
+        "I CSV monolitici conservano la geografia osservata nella fonte Eligendo.",
+        "La dashboard e gli shard per elezione usano la proiezione implicita sulla geometria 2021.",
+        "Scissioni ambigue e trasferimenti parziali restano no-data senza una chiave ufficiale."
       ],
       "join_keys": [
         "municipality_id",
@@ -126,6 +130,45 @@
         "codebook",
         "usageNotes",
         "updateLog"
+      ]
+    },
+    {
+      "product_key": "territorial_history_2021",
+      "title": "Storia territoriale dei comuni e crosswalk elettorale 2021",
+      "kind": "temporal_crosswalk",
+      "territorial_mode": "date_aware_harmonized",
+      "granularity": "municipality-election",
+      "delivery_strategy": "compact_gzip_crosswalk_plus_machine_readable_report",
+      "manifest_path": "data/products/territorial_history_2021/manifest.json",
+      "dataset_count": 5,
+      "primary_dataset_key": "territorialCrosswalk",
+      "companion_dataset_key": "territorialHistoryReport",
+      "extra_dataset_keys": [
+        "territorialLineage",
+        "municipalityAliases",
+        "territorialSources"
+      ],
+      "guardrails": [
+        "Solo successioni complete e deterministiche vengono proiettate automaticamente.",
+        "Le scissioni senza pesi ufficiali non vengono distribuite tra i comuni discendenti."
+      ],
+      "join_keys": [
+        "election_key",
+        "source_municipality_id",
+        "target_geometry_id"
+      ],
+      "intended_use": [
+        "ricerca dei comuni storici tramite alias e successioni amministrative",
+        "proiezione riproducibile delle elezioni sulla geometria comunale 2021",
+        "audit delle eccezioni non allocabili senza inventare voti"
+      ],
+      "inventory_kind": "declared_datasets",
+      "inventory_count": 5,
+      "inventory_preview": [
+        "territorialCrosswalk",
+        "territorialHistoryReport",
+        "territorialLineage",
+        "municipalityAliases"
       ]
     }
   ]
