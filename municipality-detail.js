@@ -13,6 +13,8 @@ const els = {
   standfirst: document.getElementById('detail-standfirst'),
   error: document.getElementById('detail-error'),
   currentElection: document.getElementById('detail-current-election'),
+  electionResults: document.getElementById('detail-election-results'),
+  electionResultTotal: document.getElementById('detail-election-result-total'),
   anagrafica: document.getElementById('detail-anagrafica'),
   historyBody: document.getElementById('detail-history-body'),
   kpiStrip: document.getElementById('detail-kpi-strip'),
@@ -84,6 +86,8 @@ function getParams() {
   return {
     id: (params.get('id') || '').trim(),
     election: (params.get('election') || '').trim(),
+    metric: (params.get('metric') || 'first_party').trim(),
+    party: (params.get('party') || '').trim(),
   };
 }
 
@@ -139,47 +143,122 @@ function publicPartyMark(party, electionKey = '') {
   return words.slice(0, 3).map(word => word[0]).join('').toUpperCase() || compact.slice(0, 3).toUpperCase();
 }
 
-function renderCurrentElection(row, municipalityId, exactWinner = null) {
+function normalizedPartyKey(value) {
+  return String(value || '').trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+}
+
+function renderCurrentElection(row, municipalityId, exactResult = null, viewContext = {}) {
   if (!els.currentElection) return;
   if (!row) {
     els.currentElection.innerHTML = '<div class="detail-placeholder detail-placeholder-muted">Nessun risultato disponibile per l\'elezione richiesta.</div>';
     return;
   }
-  const party = exactWinner?.party || row.first_party_raw || row.first_party_std || '';
-  const meta = inferPartyMeta(party);
-  const partyLabel = publicPartyLabel(party, row.election_key);
-  const share = exactWinner?.share ?? Number(row.first_party_share);
-  const block = exactWinner?.bloc || reinferBlockForSummaryRow(row);
+  const winner = exactResult?.winner || null;
+  const party = winner?.party || row.first_party_raw || row.first_party_std || '';
+  const share = winner?.share ?? Number(row.first_party_share);
+  const block = winner?.bloc || reinferBlockForSummaryRow(row);
+  const selectedParty = String(viewContext.party || '').trim();
+  const selectedPartyResult = selectedParty
+    ? exactResult?.parties?.find(result => normalizedPartyKey(result.party) === normalizedPartyKey(selectedParty)) || null
+    : null;
+  const metric = ['party_share', 'turnout', 'margin', 'dominant_block', 'first_party'].includes(viewContext.metric)
+    ? viewContext.metric
+    : 'first_party';
+  let headline = {
+    caption: 'Partito vincente',
+    label: publicPartyLabel(party, row.election_key),
+    value: Number.isFinite(Number(share)) ? fmtPct(share) : '—',
+    mark: publicPartyMark(party, row.election_key),
+    color: inferPartyMeta(party).color || '#64748b'
+  };
+  if (metric === 'party_share' && selectedParty) {
+    headline = {
+      caption: 'Quota del partito',
+      label: publicPartyLabel(selectedParty, row.election_key),
+      value: selectedPartyResult ? fmtPct(selectedPartyResult.share) : 'Caricamento…',
+      mark: publicPartyMark(selectedParty, row.election_key),
+      color: inferPartyMeta(selectedParty).color || '#64748b'
+    };
+  } else if (metric === 'turnout') {
+    headline = {
+      caption: 'Affluenza',
+      label: Number.isFinite(Number(row.voters)) ? `${fmtInt(row.voters)} votanti` : 'Partecipazione al voto',
+      value: fmtPct(row.turnout_pct),
+      mark: 'AFF',
+      color: '#167d75'
+    };
+  } else if (metric === 'margin') {
+    headline = {
+      ...headline,
+      caption: 'Margine del vincente',
+      value: Number.isFinite(Number(row.first_second_margin)) ? `${Number(row.first_second_margin).toFixed(1)} pt` : '—'
+    };
+  } else if (metric === 'dominant_block') {
+    const blockLabel = BLOCK_LABEL[block] || block || 'n.d.';
+    headline = {
+      caption: 'Area politica prevalente',
+      label: blockLabel,
+      value: '—',
+      mark: blockLabel.split(/\s+|-/).filter(Boolean).slice(0, 3).map(word => word[0]).join('').toUpperCase(),
+      color: BLOCK_COLORS[block] || BLOCK_COLORS.altro
+    };
+  }
   const mapHash = new URLSearchParams({
     selectedElection: row.election_key || '',
-    selectedMetric: 'first_party',
+    selectedMetric: metric,
     selectedPartyMode: 'party_raw',
     selectedMunicipalityId: municipalityId || '',
     uiLevel: 'basic',
     audienceMode: 'public'
   });
+  if (metric === 'party_share' && selectedParty) mapHash.set('selectedParty', selectedParty);
+  const selectedRank = selectedPartyResult
+    ? (exactResult.parties.findIndex(result => normalizedPartyKey(result.party) === normalizedPartyKey(selectedParty)) + 1)
+    : null;
+  let statRows = [
+    ['Affluenza', fmtPct(row.turnout_pct)],
+    ['Margine', Number.isFinite(Number(row.first_second_margin)) ? `${Number(row.first_second_margin).toFixed(1)} pt` : '—'],
+    ['Area', BLOCK_LABEL[block] || block || 'n.d.']
+  ];
+  if (metric === 'party_share') {
+    statRows = [
+      ['Affluenza', fmtPct(row.turnout_pct)],
+      ['Posizione', selectedRank ? `#${selectedRank} su ${exactResult.parties.length}` : '—'],
+      ['Voti validi', fmtInt(exactResult?.totalVotes || row.valid_votes)]
+    ];
+  } else if (metric === 'turnout') {
+    statRows = [
+      ['Votanti', fmtInt(row.voters)],
+      ['Voti validi', fmtInt(exactResult?.totalVotes || row.valid_votes)],
+      ['Area', BLOCK_LABEL[block] || block || 'n.d.']
+    ];
+  } else if (metric === 'margin') {
+    statRows = [
+      ['Affluenza', fmtPct(row.turnout_pct)],
+      ['Quota vincente', Number.isFinite(Number(share)) ? fmtPct(share) : '—'],
+      ['Voti validi', fmtInt(exactResult?.totalVotes || row.valid_votes)]
+    ];
+  }
   els.currentElection.innerHTML = `
     <div class="detail-current-head">
       <span>Elezione selezionata</span>
       <strong>${escapeHtml(electionDisplayLabel(row))}</strong>
     </div>
     <div class="detail-current-winner">
-      <span class="detail-current-party-dot" style="background:${escapeHtml(meta.color || '#64748b')}" aria-hidden="true">${escapeHtml(publicPartyMark(party, row.election_key))}</span>
+      <span class="detail-current-party-dot" style="background:${escapeHtml(headline.color)}" aria-hidden="true">${escapeHtml(headline.mark)}</span>
       <div>
-        <span>Partito vincente</span>
-        <strong>${escapeHtml(partyLabel)}</strong>
+        <span>${escapeHtml(headline.caption)}</span>
+        <strong>${escapeHtml(headline.label)}</strong>
       </div>
-      <b>${Number.isFinite(Number(share)) ? fmtPct(share) : '—'}</b>
+      <b>${escapeHtml(headline.value)}</b>
     </div>
     <dl class="detail-current-stats">
-      <div><dt>Affluenza</dt><dd>${fmtPct(row.turnout_pct)}</dd></div>
-      <div><dt>Margine</dt><dd>${Number.isFinite(Number(row.first_second_margin)) ? `${Number(row.first_second_margin).toFixed(1)} pt` : '—'}</dd></div>
-      <div><dt>Area</dt><dd>${escapeHtml(BLOCK_LABEL[block] || block || 'n.d.')}</dd></div>
+      ${statRows.map(([label, value]) => `<div><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(value)}</dd></div>`).join('')}
     </dl>
     <a class="detail-current-map-link" href="index.html#${mapHash.toString()}">Riapri sulla mappa</a>`;
 }
 
-async function loadExactWinner(municipalityId, electionKey) {
+async function loadExactElectionResult(municipalityId, electionKey) {
   if (!municipalityId || !electionKey) return null;
   const manifestResponse = await fetch(`${DERIVED}/manifest.json`);
   if (!manifestResponse.ok) return null;
@@ -196,15 +275,47 @@ async function loadExactWinner(municipalityId, electionKey) {
     if (String(result.municipality_id || '').trim() !== municipalityId) return;
     const party = String(result.party_raw || result.party_std || '').trim();
     if (!party) return;
-    const current = totals.get(party) || { party, votes: 0, share: 0 };
+    const current = totals.get(party) || { party, votes: 0, declaredShare: 0 };
     current.votes += Number(result.votes) || 0;
-    current.share += Number(result.vote_share) || 0;
+    current.declaredShare += Number(result.vote_share) || 0;
     totals.set(party, current);
   });
-  const winner = [...totals.values()].sort((a, b) => (b.votes - a.votes) || (b.share - a.share))[0] || null;
-  if (!winner) return null;
-  winner.bloc = inferredPartyMetaOrNull(winner.party)?.bloc || '';
-  return winner;
+  const totalVotes = [...totals.values()].reduce((sum, result) => sum + result.votes, 0);
+  const parties = [...totals.values()]
+    .map(result => ({
+      party: result.party,
+      votes: result.votes,
+      share: totalVotes > 0 ? (result.votes / totalVotes) * 100 : result.declaredShare,
+      bloc: inferredPartyMetaOrNull(result.party)?.bloc || ''
+    }))
+    .filter(result => result.votes > 0 || result.share > 0)
+    .sort((a, b) => (b.votes - a.votes) || (b.share - a.share));
+  const winner = parties[0] || null;
+  return winner ? { winner, parties, totalVotes } : null;
+}
+
+function renderElectionResults(result, electionKey, selectedParty = '') {
+  if (!els.electionResults || !els.electionResultTotal) return;
+  if (!result?.parties?.length) {
+    els.electionResultTotal.textContent = 'Risultato non disponibile';
+    els.electionResults.innerHTML = '<div class="detail-placeholder detail-placeholder-muted">Nessun dato di lista disponibile per questa elezione.</div>';
+    return;
+  }
+  els.electionResultTotal.textContent = `${fmtInt(result.totalVotes)} voti validi · ${result.parties.length} partiti`;
+  els.electionResults.innerHTML = result.parties.map(item => {
+    const meta = inferPartyMeta(item.party);
+    const active = selectedParty && normalizedPartyKey(item.party) === normalizedPartyKey(selectedParty);
+    const width = Math.max(0, Math.min(100, Number(item.share) || 0));
+    return `
+      <div class="detail-election-result-row${active ? ' is-active' : ''}">
+        <span class="detail-election-result-dot" style="background:${escapeHtml(meta.color || '#64748b')}" aria-hidden="true"></span>
+        <div class="detail-election-result-main">
+          <span class="detail-election-result-name">${escapeHtml(publicPartyLabel(item.party, electionKey))}</span>
+          <span class="detail-election-result-track"><span class="detail-election-result-fill" style="width:${width}%;background:${escapeHtml(meta.color || '#64748b')}"></span></span>
+        </div>
+        <span class="detail-election-result-value">${fmtInt(item.votes)} · ${fmtPct(item.share)}</span>
+      </div>`;
+  }).join('');
 }
 
 function showError(message) {
@@ -1395,7 +1506,7 @@ function cssEscape(value) {
 
 async function main() {
   arrangeDetailSections();
-  const { id, election } = getParams();
+  const { id, election, metric, party } = getParams();
   if (!id) {
     showError('Parametro "id" mancante. Apri il dettaglio da un comune selezionato sulla dashboard.');
     if (els.name) els.name.textContent = 'Dettaglio comune';
@@ -1424,7 +1535,7 @@ async function main() {
     const sortedRows = sortRowsByYear(rows);
     const activeRow = rows.find(row => row.election_key === election) || sortedRows.at(-1) || null;
 
-    renderCurrentElection(activeRow, id);
+    renderCurrentElection(activeRow, id, null, { metric, party });
     renderAnagrafica(record);
     renderHistory(rows);
     renderKpiStrip(rows, aggregates);
@@ -1432,11 +1543,21 @@ async function main() {
     renderCharts(rows, aggregates);
 
     if (activeRow?.election_key) {
-      loadExactWinner(id, activeRow.election_key)
-        .then(winner => {
-          if (winner) renderCurrentElection(activeRow, id, winner);
+      loadExactElectionResult(id, activeRow.election_key)
+        .then(result => {
+          if (result) {
+            renderCurrentElection(activeRow, id, result, { metric, party });
+            renderElectionResults(result, activeRow.election_key, party);
+          } else {
+            renderElectionResults(null, activeRow.election_key, party);
+          }
         })
-        .catch(error => console.warn('Vincitore esatto non disponibile', error));
+        .catch(error => {
+          console.warn('Risultato completo non disponibile', error);
+          renderElectionResults(null, activeRow.election_key, party);
+        });
+    } else {
+      renderElectionResults(null, '', party);
     }
 
     // Bloc-composition chart needs the per-election results-long shards

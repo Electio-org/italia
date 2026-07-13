@@ -825,8 +825,13 @@
               <span id="map-context-subtitle">Mappa comunale</span>
             </div>
             <div id="map-loading" class="map-loading hidden" aria-hidden="true">
-              <div class="map-loading-spinner" aria-hidden="true"></div>
-              <div class="map-loading-label">Caricamento dati elezione…</div>
+              <div class="map-loading-card">
+                <div class="map-loading-spinner" aria-hidden="true"></div>
+                <div>
+                  <strong>Preparo la nuova vista</strong>
+                  <div class="map-loading-label">Caricamento dati elezione…</div>
+                </div>
+              </div>
             </div>
             <div id="map-empty-state" class="empty-state hidden"></div>
             <div id="tooltip" class="tooltip hidden"></div>
@@ -842,12 +847,19 @@
               <div class="selection-dock-leader">
                 <span id="selection-dock-party-mark" class="selection-dock-party-mark" aria-hidden="true">-</span>
                 <div class="selection-dock-leader-copy">
-                  <span>Partito vincente</span>
+                  <span id="selection-dock-metric-label">Valore in mappa</span>
                   <strong id="selection-dock-leader-name">n.d.</strong>
                 </div>
                 <b id="selection-dock-leader-share">n.d.</b>
               </div>
               <div id="selection-dock-stats" class="selection-dock-stats"></div>
+              <section id="selection-dock-vote-summary" class="selection-dock-vote-summary" aria-label="Risultato elettorale del comune">
+                <div class="selection-dock-results-head">
+                  <strong>Voto nel comune</strong>
+                  <span id="selection-dock-valid-votes">n.d.</span>
+                </div>
+                <div id="selection-dock-party-results" class="selection-dock-party-results"></div>
+              </section>
               <div class="selection-dock-actions">
                 <button type="button" id="selection-dock-open-btn">Apri la scheda completa</button>
               </div>
@@ -1261,7 +1273,7 @@
 <script src="vendor/tabler/core/tabler.min.js"></script>
 <script src="tabler-enhance.js"></script>
 <script type="module" src="app.js"></script>
-  <div id="loading-overlay" class="loading-overlay" aria-busy="true" aria-live="polite"><div class="loading-card"><div class="loading-orb"></div><div><strong>Sto preparando la mappa</strong><div class="helper-text">Caricamento dati, geometrie e cache mappa…</div></div></div></div>
+  <div id="loading-overlay" class="loading-overlay" aria-busy="true" aria-live="polite"><div class="loading-card"><div class="loading-orb" aria-hidden="true"></div><div><strong>Sto preparando la mappa</strong><div class="helper-text">Caricamento dati, geometrie e risposta del puntatore…</div></div></div></div>
   <div id="toast-stack" class="toast-stack" aria-live="polite"></div>
   <div id="command-palette" class="command-palette hidden">
     <div class="command-palette-backdrop" data-close-command="true"></div>

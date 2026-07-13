@@ -38,6 +38,8 @@ async function selectMetric(metricValue) {
 try {
   await page.goto(baseUrl, { waitUntil: 'domcontentloaded' });
   await page.waitForFunction(() => document.querySelector('#loading-overlay')?.classList.contains('hidden'));
+  assert.equal(await page.locator('#loading-overlay').evaluate(node => getComputedStyle(node).position), 'fixed', 'boot loader must stay centered on the viewport');
+  assert.equal(await page.locator('#map-canvas').getAttribute('data-hit-surface'), 'ready', 'map must prepare the O(1) hit surface before becoming interactive');
 
   const bootResultShards = await page.evaluate(() => performance.getEntriesByType('resource')
     .filter(entry => entry.name.includes('/results_by_election/')).length);
@@ -92,6 +94,8 @@ try {
     assert.ok(partyLabel.length > 0 && partyLabel.length < 42, `${election.label}: selected party label must be readable`);
     assert.equal(await page.locator('#sidebar-legend .legend-gradient').count(), 0, `${election.label}: party share must use discrete classes`);
     assert.equal(await page.locator('#sidebar-legend .legend-item').count(), 6, `${election.label}: party share must expose five classes plus no data`);
+    const fillBuckets = Number(await page.locator('#map-canvas').getAttribute('data-fill-buckets'));
+    assert.ok(fillBuckets > 5 && fillBuckets <= 20, `${election.label}: five bands must retain performant internal shades (${fillBuckets} buckets)`);
 
     await page.fill('#municipality-search', 'Roma');
     await page.dispatchEvent('#municipality-search', 'change');
@@ -99,13 +103,24 @@ try {
     assert.equal((await page.locator('#selection-dock-title').innerText()).trim(), 'Roma (Roma)');
     const selectedCard = await page.locator('#selection-dock').innerText();
     assert.match(selectedCard, /Affluenza/i);
-    assert.match(selectedCard, /Margine/i);
+    assert.match(selectedCard, /Voto nel comune/i);
+    assert.match(selectedCard, /voti validi/i);
+    assert.equal((await page.locator('#selection-dock-metric-label').innerText()).trim().toLowerCase(), 'quota del partito');
+    assert.equal((await page.locator('#selection-dock-leader-name').innerText()).trim(), partyLabel);
+    assert.ok(await page.locator('#selection-dock-party-results .selection-result-row').count() >= 5, `${election.label}: selected municipality must expose its party result`);
+    assert.equal(await page.locator('#selection-dock-party-results .selection-result-row.is-active').count(), 1, `${election.label}: selected party must be highlighted in the municipality result`);
     await page.click('#selection-dock-clear-btn');
     await page.waitForFunction(() => document.querySelector('#selection-dock')?.classList.contains('hidden'));
 
     await selectMetric('turnout');
     assert.equal(await page.locator('#sidebar-legend .legend-gradient').count(), 0, `${election.label}: turnout must use discrete classes`);
     assert.equal(await page.locator('#sidebar-legend .legend-item').count(), 6, `${election.label}: turnout must expose five classes plus no data`);
+    await page.fill('#municipality-search', 'Roma');
+    await page.dispatchEvent('#municipality-search', 'change');
+    await page.waitForFunction(() => !document.querySelector('#selection-dock')?.classList.contains('hidden'));
+    assert.equal((await page.locator('#selection-dock-metric-label').innerText()).trim().toLowerCase(), 'affluenza');
+    assert.match(await page.locator('#selection-dock').innerText(), /Voto nel comune/i);
+    await page.click('#selection-dock-clear-btn');
 
     await selectMetric('margin');
     const marginLegend = await page.locator('#sidebar-legend .legend-item').allTextContents();
@@ -120,8 +135,9 @@ try {
     audit.push({ election: election.label, national: nationalRows, selectedParty: partyLabel });
   }
 
-  await page.goto(`${baseUrl}municipality-detail.html?id=058091&election=camera_1992`, { waitUntil: 'domcontentloaded' });
+  await page.goto(`${baseUrl}municipality-detail.html?id=058091&election=camera_1992&metric=party_share&party=Dc`, { waitUntil: 'domcontentloaded' });
   await page.waitForFunction(() => document.querySelector('#detail-current-election .detail-current-winner'));
+  await page.waitForFunction(() => document.querySelectorAll('#detail-election-results .detail-election-result-row').length >= 5);
   const profileResources = await page.evaluate(() => performance.getEntriesByType('resource').map(entry => entry.name));
   assert.ok(profileResources.some(name => name.includes('/municipality_profiles/index.json')));
   assert.ok(profileResources.some(name => name.includes('/municipality_profiles/chunks/058.json.gz')));
@@ -129,9 +145,13 @@ try {
   const currentElectionCard = await page.locator('#detail-current-election').innerText();
   assert.match(currentElectionCard, /Camera 1992/);
   assert.match(currentElectionCard, /\bDC\b/i);
+  assert.match(currentElectionCard, /Quota del partito/i);
   assert.match(currentElectionCard, /Affluenza/i);
-  assert.match(currentElectionCard, /Margine/i);
+  assert.match(currentElectionCard, /Posizione/i);
   assert.doesNotMatch(currentElectionCard, /camera_1992|summary|runtime/i);
+  assert.ok(await page.locator('#detail-election-results .detail-election-result-row').count() >= 10, 'municipality detail must show the complete party result');
+  assert.equal(await page.locator('#detail-election-results .detail-election-result-row.is-active').count(), 1, 'party context from the map must stay highlighted in the detail page');
+  assert.match(await page.locator('#detail-election-result-total').innerText(), /voti validi/i);
   assert.equal((await page.locator('#detail-name').innerText()).trim(), 'Roma');
   assert.doesNotMatch(await page.locator('#detail-standfirst').innerText(), /Romallo|Trento/i);
 

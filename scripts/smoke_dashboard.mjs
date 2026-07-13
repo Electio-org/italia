@@ -74,6 +74,50 @@ try {
   assert.equal((await page.locator('#selection-dock-title').innerText()).trim(), 'Roma (Roma)');
   await page.click('#selection-dock-clear-btn');
   await page.waitForFunction(() => document.querySelector('#selection-dock')?.classList.contains('hidden'));
+  await page.click('#map-reset-btn');
+
+  const hoverProfile = await page.evaluate(async () => {
+    const canvas = document.querySelector('#map-canvas');
+    const rect = canvas.getBoundingClientRect();
+    const prototype = CanvasRenderingContext2D.prototype;
+    const original = prototype.isPointInPath;
+    const originalGetImageData = prototype.getImageData;
+    let pathChecks = 0;
+    let pixelReadbacks = 0;
+    prototype.isPointInPath = function instrumentedIsPointInPath(...args) {
+      pathChecks += 1;
+      return original.apply(this, args);
+    };
+    prototype.getImageData = function instrumentedGetImageData(...args) {
+      pixelReadbacks += 1;
+      return originalGetImageData.apply(this, args);
+    };
+    try {
+      for (let index = 0; index < 72; index += 1) {
+        const column = index % 12;
+        const row = Math.floor(index / 12);
+        canvas.dispatchEvent(new MouseEvent('mousemove', {
+          bubbles: true,
+          clientX: rect.left + ((column + 0.5) / 12) * rect.width,
+          clientY: rect.top + ((row + 0.5) / 6) * rect.height
+        }));
+        await new Promise(resolve => requestAnimationFrame(resolve));
+      }
+      await new Promise(resolve => setTimeout(resolve, 120));
+    } finally {
+      prototype.isPointInPath = original;
+      prototype.getImageData = originalGetImageData;
+    }
+    return {
+      pathChecks,
+      pixelReadbacks,
+      hitSurface: canvas.dataset.hitSurface,
+      checksPerMove: pathChecks / 72
+    };
+  });
+  assert.equal(hoverProfile.hitSurface, 'ready', 'hover must use the prebuilt hit surface');
+  assert.ok(hoverProfile.pathChecks < 1000, `hover must not scan all municipalities (${hoverProfile.pathChecks} path checks)`);
+  assert.equal(hoverProfile.pixelReadbacks, 0, 'hover must not force synchronous canvas pixel readbacks');
 
   const canvas = await page.locator('#map-canvas').evaluate(node => {
     const data = node.getContext('2d').getImageData(0, 0, node.width, node.height).data;
@@ -105,7 +149,7 @@ try {
   assert.ok(mobileLayout.mapY < 650, 'mobile map must stay near the first screen');
 
   assert.deepEqual(runtimeErrors, []);
-  console.log(`dashboard smoke: ok (${canvas.width}x${canvas.height}, ${canvas.painted} painted samples)`);
+  console.log(`dashboard smoke: ok (${canvas.width}x${canvas.height}, ${canvas.painted} painted samples, ${hoverProfile.checksPerMove.toFixed(1)} path checks/move)`);
 } finally {
   await browser.close();
 }

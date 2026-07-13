@@ -163,6 +163,8 @@ const state = {
   mapAggregationCache: null,
   mapCanvasRender: null,
   mapCanvasTransform: null,
+  mapCanvasClientRect: null,
+  mapCanvasPendingPointer: null,
   mapCanvasMoveFrame: null,
   mapCanvasZoomFrame: null,
   mapInteractionRenderQueued: false,
@@ -829,6 +831,62 @@ function resultDisplayLabel(row) {
 function leadingResultRowFor(electionKey, municipalityId) {
   const rows = getResultsRows(state, electionKey, municipalityId);
   return rows.find(r => safeNumber(r.rank) === 1) || rows[0] || null;
+}
+
+function municipalityPartyBreakdown(electionKey, municipalityId, summaryRow = null) {
+  const totals = new Map();
+  getResultsRows(state, electionKey, municipalityId).forEach(result => {
+    const label = resultDisplayLabel(result);
+    if (!label || label === '—') return;
+    const current = totals.get(label) || { label, votes: 0, declaredShare: 0, hasShare: false };
+    const votes = safeNumber(result.votes);
+    const share = safeNumber(result.vote_share);
+    if (votes != null) current.votes += votes;
+    if (share != null) {
+      current.declaredShare += share;
+      current.hasShare = true;
+    }
+    totals.set(label, current);
+  });
+  const summedVotes = [...totals.values()].reduce((sum, row) => sum + (safeNumber(row.votes) || 0), 0);
+  const validVotes = safeNumber(summaryRow?.valid_votes) || summedVotes || null;
+  const rows = [...totals.values()]
+    .map(row => ({
+      label: row.label,
+      votes: row.votes,
+      share: validVotes && row.votes > 0
+        ? (row.votes / validVotes) * 100
+        : (row.hasShare ? row.declaredShare : null)
+    }))
+    .filter(row => row.votes > 0 || row.share > 0)
+    .sort((a, b) => ((b.votes || 0) - (a.votes || 0)) || ((b.share || 0) - (a.share || 0)) || a.label.localeCompare(b.label, 'it'));
+  return { rows, validVotes };
+}
+
+function municipalityBlockBreakdown(electionKey, municipalityId, summaryRow = null) {
+  const totals = new Map();
+  getResultsRows(state, electionKey, municipalityId).forEach(result => {
+    const party = resultDisplayLabel(result);
+    const block = String(result.bloc || inferPartyMeta(party).bloc || '').trim();
+    if (!block) return;
+    const current = totals.get(block) || { block, votes: 0, declaredShare: 0 };
+    current.votes += safeNumber(result.votes) || 0;
+    current.declaredShare += safeNumber(result.vote_share) || 0;
+    totals.set(block, current);
+  });
+  const validVotes = safeNumber(summaryRow?.valid_votes)
+    || [...totals.values()].reduce((sum, row) => sum + row.votes, 0)
+    || null;
+  return [...totals.values()]
+    .map(row => ({
+      ...row,
+      share: validVotes && row.votes > 0 ? (row.votes / validVotes) * 100 : row.declaredShare
+    }))
+    .sort((a, b) => (b.votes - a.votes) || (b.share - a.share));
+}
+
+function samePublicParty(left, right) {
+  return normalizeTextToken(left) === normalizeTextToken(right);
 }
 
 function leadingPartyLabelFor(row) {
@@ -1987,6 +2045,9 @@ function setLoading(isLoading, message = '') {
   const overlay = q('loading-overlay');
   if (!overlay) return;
   overlay.classList.toggle('hidden', !isLoading);
+  overlay.setAttribute('aria-hidden', isLoading ? 'false' : 'true');
+  overlay.setAttribute('aria-busy', isLoading ? 'true' : 'false');
+  document.body.classList.toggle('is-boot-loading', isLoading);
   const helper = overlay.querySelector('.helper-text');
   if (helper && message) helper.textContent = message;
 }
@@ -2475,6 +2536,31 @@ function thresholdColorScale(thresholds, colors) {
   };
 }
 
+function microBandColorScale(thresholds, domain, colors, stepsPerBand = 3) {
+  const [domainMin, domainMax] = domain;
+  const steps = Math.max(1, Math.round(stepsPerBand));
+  const variants = colors.map(color => {
+    if (steps === 1) return [color];
+    const lighter = d3.interpolateRgb('#ffffff', color)(0.88);
+    const darker = d3.interpolateRgb(color, '#10251d')(0.12);
+    return Array.from({ length: steps }, (_unused, index) => (
+      d3.interpolateRgb(lighter, darker)(index / (steps - 1))
+    ));
+  });
+  return value => {
+    const numericValue = Number(value);
+    if (!Number.isFinite(numericValue)) return null;
+    let band = 0;
+    while (band < thresholds.length && numericValue >= thresholds[band]) band += 1;
+    band = Math.min(band, variants.length - 1);
+    const lower = band === 0 ? domainMin : thresholds[band - 1];
+    const upper = band === thresholds.length ? domainMax : thresholds[band];
+    const local = upper > lower ? Math.max(0, Math.min(1, (numericValue - lower) / (upper - lower))) : 0.5;
+    const microIndex = Math.min(steps - 1, Math.floor(local * steps));
+    return variants[band][microIndex];
+  };
+}
+
 function colorScaleForRows(rows) {
   const domainRows = getScaleDomainRows(rows);
   const values = domainRows.map(d => d.__metric_value).filter(v => v !== null && v !== undefined && v !== '');
@@ -2564,7 +2650,10 @@ function colorScaleForRows(rows) {
     const maxAbs = quantileFromSorted(absoluteValues, 0.95) || d3.max(absoluteValues) || 1;
     const thresholds = [-maxAbs * 0.6, -maxAbs * 0.2, maxAbs * 0.2, maxAbs * 0.6];
     const colors = ['#9f2f38', '#d98b91', '#edf0ee', '#79aaa0', '#17654f'];
-    const scale = thresholdColorScale(thresholds, colors);
+    // Five readable macro-bands remain in the legend, while each band gets
+    // three restrained internal shades. Fifteen color buckets preserve local
+    // differences without turning the canvas bake back into 8,000 fills.
+    const scale = microBandColorScale(thresholds, [-maxAbs, maxAbs], colors, 3);
     const format = value => `${fmtPctSigned(value)} pt`;
     return {
       type: 'diverging',
@@ -2598,7 +2687,7 @@ function colorScaleForRows(rows) {
     ? Array.from({ length: thresholds.length + 1 }, (_, index) => 0.12 + (0.82 * index / thresholds.length))
     : [0.62];
   const colors = sampleStops.map(interpolator);
-  const scale = thresholdColorScale(thresholds, colors);
+  const scale = microBandColorScale(thresholds, [min, max], colors, 3);
   const suffix = state.selectedMetric === 'margin' ? ' pt' : '%';
   const format = value => `${fmtPct(value)}${suffix}`;
   const legend = colors.map((color, index) => {
@@ -3112,6 +3201,30 @@ function mapRenderSignatureForRows(rows) {
   ].join('|');
 }
 
+function buildCanvasHitSurface(items) {
+  const canvas = document.createElement('canvas');
+  canvas.width = CANVAS_LOGICAL_WIDTH;
+  canvas.height = CANVAS_LOGICAL_HEIGHT;
+  const ctx = canvas.getContext('2d', { alpha: false, willReadFrequently: true });
+  if (!ctx) return null;
+  ctx.fillStyle = '#000000';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.imageSmoothingEnabled = false;
+  items.forEach((item, index) => {
+    const id = index + 1;
+    const red = id & 255;
+    const green = (id >> 8) & 255;
+    const blue = (id >> 16) & 255;
+    ctx.fillStyle = `rgb(${red},${green},${blue})`;
+    ctx.fill(item.path);
+  });
+  // Read the raster once while the loading card is visible. Per-pointer
+  // getImageData calls can force a synchronous canvas readback and are much
+  // more expensive than indexing this small in-memory buffer.
+  const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+  return { canvas, ctx, pixels, width: canvas.width };
+}
+
 function buildCanvasMapCache(projection) {
   const key = canvasGeometryCacheKey(projection);
   if (state.mapCanvasCache?.key === key) return state.mapCanvasCache;
@@ -3214,10 +3327,12 @@ function buildCanvasMapCache(projection) {
     meshes,
     hitGrid,
     hitGridCellSize,
+    hitSurface: buildCanvasHitSurface(items),
     itemsByKey: new Map(items.map(item => [item.key, item])),
     itemsByMunicipalityId: new Map(items.map(item => [String(item.feature?.properties?.municipality_id || ''), item]).filter(([key]) => key)),
     bakedStore: new Map()
   };
+  if (els.mapCanvas) els.mapCanvas.dataset.hitSurface = state.mapCanvasCache.hitSurface ? 'ready' : 'fallback';
   geometryCaches.set(key, state.mapCanvasCache);
   const lowMemoryDevice = Number.isFinite(navigator.deviceMemory) && navigator.deviceMemory <= 4;
   const compactViewport = window.matchMedia?.('(max-width: 760px)')?.matches;
@@ -3229,21 +3344,86 @@ function buildCanvasMapCache(projection) {
   return state.mapCanvasCache;
 }
 
+const MAP_HOVER_INTENT_MS = 90;
+const MAP_HOVER_EXPAND_MS = 260;
+let mapHoverIntentTimer = null;
+let mapHoverExpandTimer = null;
+let mapHoverCandidate = null;
+let mapHoverActiveKey = null;
+
+function clearMapHoverTimers() {
+  if (mapHoverIntentTimer) window.clearTimeout(mapHoverIntentTimer);
+  if (mapHoverExpandTimer) window.clearTimeout(mapHoverExpandTimer);
+  mapHoverIntentTimer = null;
+  mapHoverExpandTimer = null;
+}
+
+function resetMapHover({ hide = true } = {}) {
+  clearMapHoverTimers();
+  mapHoverCandidate = null;
+  mapHoverActiveKey = null;
+  if (hide) hideTooltipElement();
+}
+
+function queueMapHover(pointer, hit) {
+  if (!hit?.item) {
+    resetMapHover();
+    return;
+  }
+  const key = hit.item.key || geometryJoinKey(hit.item.feature);
+  if (!key) {
+    resetMapHover();
+    return;
+  }
+  if (mapHoverActiveKey === key) {
+    positionTooltip(pointer);
+    return;
+  }
+  if (mapHoverCandidate?.key === key) {
+    mapHoverCandidate.pointer = pointer;
+    mapHoverCandidate.hit = hit;
+    return;
+  }
+  clearMapHoverTimers();
+  mapHoverActiveKey = null;
+  mapHoverCandidate = { key, pointer, hit };
+  hideTooltipElement();
+  mapHoverIntentTimer = window.setTimeout(() => {
+    mapHoverIntentTimer = null;
+    const candidate = mapHoverCandidate;
+    if (!candidate || candidate.key !== key) return;
+    mapHoverActiveKey = key;
+    showCompactTooltip(candidate.pointer, candidate.hit.item.feature, candidate.hit.row);
+    mapHoverExpandTimer = window.setTimeout(() => {
+      mapHoverExpandTimer = null;
+      const current = mapHoverCandidate;
+      if (!current || current.key !== key || mapHoverActiveKey !== key) return;
+      showTooltip(current.pointer, current.hit.item.feature, current.hit.row);
+    }, MAP_HOVER_EXPAND_MS);
+  }, MAP_HOVER_INTENT_MS);
+}
+
 function setupCanvasMapHandlers() {
   const canvas = els.mapCanvas;
   if (!canvas || canvas.__italiaMapHandlers) return;
   canvas.__italiaMapHandlers = true;
+  canvas.addEventListener('mouseenter', () => {
+    state.mapCanvasClientRect = canvas.getBoundingClientRect();
+  }, { passive: true });
   canvas.addEventListener('mousemove', event => {
+    const pointer = { clientX: event.clientX, clientY: event.clientY };
+    state.mapCanvasPendingPointer = pointer;
     if (state.mapCanvasMoveFrame) return;
     state.mapCanvasMoveFrame = window.requestAnimationFrame(() => {
       state.mapCanvasMoveFrame = null;
-      const hit = hitTestCanvasMap(event);
-      if (hit) showTooltip(event, hit.item.feature, hit.row);
-      else hideTooltip();
+      const latestPointer = state.mapCanvasPendingPointer || pointer;
+      const hit = hitTestCanvasMap(latestPointer);
+      queueMapHover(latestPointer, hit);
     });
-  });
-  canvas.addEventListener('mouseleave', hideTooltip);
+  }, { passive: true });
+  canvas.addEventListener('mouseleave', () => resetMapHover());
   canvas.addEventListener('click', event => {
+    resetMapHover();
     const hit = hitTestCanvasMap(event);
     const row = hit?.row;
     if (!row?.municipality_id) {
@@ -3321,7 +3501,10 @@ function buildBakedChoropleth(render) {
   const key = `${render.renderSignature}`;
   const store = render.cache.bakedStore || (render.cache.bakedStore = new Map());
   if (store.has(key)) return store.get(key);
-  const dpr = canvasBackingRatio();
+  // Fills sit below vector boundary meshes, so a 2x bake is visually
+  // indistinguishable on overview while avoiding 20+ MB canvases on 3x
+  // displays. Deep zoom switches back to vector fills.
+  const dpr = Math.min(2, canvasBackingRatio());
   const off = document.createElement('canvas');
   off.width = Math.round(CANVAS_LOGICAL_WIDTH * dpr);
   off.height = Math.round(CANVAS_LOGICAL_HEIGHT * dpr);
@@ -3345,12 +3528,15 @@ function buildBakedChoropleth(render) {
     if (!bucket) { bucket = new Path2D(); buckets.set(color, bucket); }
     bucket.addPath(item.path);
   });
+  if (els.mapCanvas) els.mapCanvas.dataset.fillBuckets = String(buckets.size);
   buckets.forEach((path, color) => {
     bctx.fillStyle = color;
     bctx.fill(path);
   });
   store.set(key, off);
-  while (store.size > 18) {
+  const lowMemoryDevice = Number.isFinite(navigator.deviceMemory) && navigator.deviceMemory <= 4;
+  const storeLimit = lowMemoryDevice ? 6 : 10;
+  while (store.size > storeLimit) {
     const oldest = store.keys().next().value;
     store.delete(oldest);
   }
@@ -3407,7 +3593,7 @@ async function prepareMapForSmoothUse({ aggressive = false, includePartyResults 
   const activeResultsLoaded = state.resultsLongFullLoaded || state.loadedResultElectionKeys?.has(state.selectedElection);
   if (activeResultsLoaded) {
     const partyOptions = partyOptionsForCurrentContext('party_raw');
-    const warmPartyCount = aggressive ? 8 : 3;
+    const warmPartyCount = aggressive ? 4 : 2;
     partyOptions.slice(0, warmPartyCount).forEach(party => {
       warmConfigs.push({ selectedMetric: 'party_share', selectedParty: party, selectedPartyMode: 'party_raw' });
     });
@@ -3647,7 +3833,8 @@ function drawCanvasMapSoon(transform = state.mapCanvasTransform || d3.zoomIdenti
 function canvasEventPoint(event) {
   const canvas = els.mapCanvas;
   if (!canvas) return null;
-  const rect = canvas.getBoundingClientRect();
+  const rect = state.mapCanvasClientRect || canvas.getBoundingClientRect();
+  state.mapCanvasClientRect = rect;
   const x = (event.clientX - rect.left) * (CANVAS_LOGICAL_WIDTH / Math.max(1, rect.width));
   const y = (event.clientY - rect.top) * (CANVAS_LOGICAL_HEIGHT / Math.max(1, rect.height));
   const transform = state.mapCanvasTransform || d3.zoomIdentity;
@@ -3662,11 +3849,23 @@ function hitTestCanvasMap(event) {
   const ctx = canvas.getContext('2d');
   const point = canvasEventPoint(event);
   if (!ctx || !point) return null;
+  const hitSurface = render.cache.hitSurface;
+  if (hitSurface && point.x >= 0 && point.y >= 0 && point.x < CANVAS_LOGICAL_WIDTH && point.y < CANVAS_LOGICAL_HEIGHT) {
+    const offset = ((Math.floor(point.y) * hitSurface.width) + Math.floor(point.x)) * 4;
+    const decoded = hitSurface.pixels[offset]
+      + (hitSurface.pixels[offset + 1] << 8)
+      + (hitSurface.pixels[offset + 2] << 16);
+    const item = decoded > 0 ? render.cache.items[decoded - 1] : null;
+    if (item && hitSurface.ctx.isPointInPath(item.path, point.x, point.y)) {
+      return { item, row: render.rowByJoinKey.get(item.key) || null };
+    }
+  }
   const pad = 1.5 / Math.max(1, state.mapCanvasTransform?.k || 1);
   const cellSize = render.cache.hitGridCellSize || 32;
   const cellKey = `${Math.max(0, Math.floor(point.x / cellSize))}:${Math.max(0, Math.floor(point.y / cellSize))}`;
   const candidateIndexes = render.cache.hitGrid?.get(cellKey);
-  const candidates = candidateIndexes?.length ? candidateIndexes : render.cache.items.map((_item, index) => index);
+  if (render.cache.hitGrid && !candidateIndexes?.length) return null;
+  const candidates = candidateIndexes || render.cache.items.map((_item, index) => index);
   for (let i = candidates.length - 1; i >= 0; i -= 1) {
     const item = render.cache.items[candidates[i]];
     if (!item) continue;
@@ -3749,8 +3948,88 @@ function metricDisplay(value, signed = false) {
   return signed ? fmtPctSigned(value) : fmtPct(value);
 }
 
+const tooltipLayoutCache = { wrapperRect: null, width: 0, height: 0 };
+let tooltipContentKey = null;
+
+function tooltipKeyFor(mode, feature, row) {
+  return [
+    mode,
+    geometryJoinKey(feature),
+    row?.municipality_id || '',
+    state.selectedElection || '',
+    state.selectedMetric || '',
+    state.selectedPartyMode || '',
+    state.selectedParty || '',
+    state.mapAggregationLevel || 'comune'
+  ].join('|');
+}
+
+function positionTooltip(event, { measure = false } = {}) {
+  const tooltip = els.tooltip;
+  const wrapper = q('map-wrapper');
+  if (!tooltip || !wrapper || tooltip.classList.contains('hidden')) return;
+  const wrapperRect = tooltipLayoutCache.wrapperRect || wrapper.getBoundingClientRect();
+  tooltipLayoutCache.wrapperRect = wrapperRect;
+  if (measure || !tooltipLayoutCache.width || !tooltipLayoutCache.height) {
+    const rect = tooltip.getBoundingClientRect();
+    tooltipLayoutCache.width = rect.width;
+    tooltipLayoutCache.height = rect.height;
+  }
+  const inset = 14;
+  const idealLeft = event.clientX - wrapperRect.left + 16;
+  const idealTop = event.clientY - wrapperRect.top + 16;
+  const left = Math.max(inset, Math.min(idealLeft, wrapperRect.width - tooltipLayoutCache.width - inset));
+  const top = Math.max(inset, Math.min(idealTop, wrapperRect.height - tooltipLayoutCache.height - inset));
+  tooltip.style.left = '0';
+  tooltip.style.top = '0';
+  tooltip.style.transform = `translate3d(${Math.round(left)}px, ${Math.round(top)}px, 0)`;
+}
+
+function setTooltipContent(html, event, key) {
+  const tooltip = els.tooltip;
+  if (!tooltip) return;
+  tooltip.innerHTML = html;
+  tooltipContentKey = key;
+  tooltipLayoutCache.width = 0;
+  tooltipLayoutCache.height = 0;
+  tooltip.classList.remove('hidden');
+  positionTooltip(event, { measure: true });
+}
+
+function hideTooltipElement() {
+  if (!els.tooltip) return;
+  els.tooltip.classList.add('hidden');
+  tooltipContentKey = null;
+  tooltipLayoutCache.width = 0;
+  tooltipLayoutCache.height = 0;
+}
+
+function showCompactTooltip(event, feature, row) {
+  const p = feature?.properties || {};
+  const label = row?.municipality_name || p.name_current || p.name || 'Comune';
+  const province = row?.province || p.province || '—';
+  const key = tooltipKeyFor('compact', feature, row);
+  if (tooltipContentKey === key && !els.tooltip?.classList.contains('hidden')) {
+    positionTooltip(event);
+    return;
+  }
+  setTooltipContent(`
+    <div class="tooltip-card tooltip-card-compact">
+      <div class="tooltip-header">
+        <strong>${escapeHtml(label)}</strong>
+        <span class="tooltip-badge">${escapeHtml(province)}</span>
+      </div>
+    </div>
+  `, event, key);
+}
+
 function showTooltip(event, feature, row) {
   const tooltip = els.tooltip;
+  const contentKey = tooltipKeyFor('full', feature, row);
+  if (tooltipContentKey === contentKey && !tooltip?.classList.contains('hidden')) {
+    positionTooltip(event);
+    return;
+  }
   const p = feature.properties || {};
   const label = row?.municipality_name || p.name_current || p.name || 'Comune';
   const province = row?.province || p.province || '—';
@@ -3805,10 +4084,18 @@ function showTooltip(event, feature, row) {
       : (row?.first_party_share != null ? row.first_party_share : null);
     leadColor = leadLabel ? getPartyColor(leadLabel) : '#94a3b8';
   }
+  if (state.selectedMetric === 'party_share' && state.selectedParty) {
+    leadLabel = state.selectedParty;
+    leadShare = group ? metricValue : currentPartyShare;
+    leadColor = getGroupColor(state.selectedParty);
+  }
+  const leadDisplayLabel = state.selectedMetric === 'party_share'
+    ? partyDisplayLabel(leadLabel)
+    : leadLabel;
   const headlineParty = leadLabel
     ? `<div class="tooltip-headline">
          <span class="tooltip-headline-dot" style="background:${leadColor}"></span>
-         <span class="tooltip-headline-text"><strong>${escapeHtml(leadLabel)}</strong>${leadShare != null ? ` · ${fmtPct(leadShare)}%` : ''}</span>
+         <span class="tooltip-headline-text"><strong>${escapeHtml(leadDisplayLabel)}</strong>${leadShare != null ? ` · ${fmtPct(leadShare)}%` : ''}</span>
        </div>`
     : '';
 
@@ -3868,7 +4155,7 @@ function showTooltip(event, feature, row) {
           : { label: 'Stato territoriale', value: row?.territorial_status || '—' }
       ];
 
-  tooltip.innerHTML = `
+  setTooltipContent(`
     <div class="tooltip-card${group ? ' tooltip-card-aggregated' : ''}">
       <div class="tooltip-header">
         <strong>${escapeHtml(label)}</strong>
@@ -3884,23 +4171,11 @@ function showTooltip(event, feature, row) {
       ${comparabilityNote}
       <div class="tooltip-hint">Clicca per il dettaglio · Shift+click per aggiungere al comparatore</div>
     </div>
-  `;
-  tooltip.classList.remove('hidden');
-  const wrapperRect = q('map-wrapper').getBoundingClientRect();
-  tooltip.style.left = `${event.clientX - wrapperRect.left + 14}px`;
-  tooltip.style.top = `${event.clientY - wrapperRect.top + 14}px`;
-  const tooltipRect = tooltip.getBoundingClientRect();
-  const marginInset = 16;
-  const idealLeft = event.clientX - wrapperRect.left + 16;
-  const idealTop = event.clientY - wrapperRect.top + 16;
-  const left = Math.max(marginInset, Math.min(idealLeft, wrapperRect.width - tooltipRect.width - marginInset));
-  const top = Math.max(marginInset, Math.min(idealTop, wrapperRect.height - tooltipRect.height - marginInset));
-  tooltip.style.left = `${left}px`;
-  tooltip.style.top = `${top}px`;
+  `, event, contentKey);
 }
 
 function hideTooltip() {
-  els.tooltip.classList.add('hidden');
+  resetMapHover();
 }
 
 function selectedMunicipalityRecord() {
@@ -3928,6 +4203,8 @@ function updateMapDetailCta() {
     const params = new URLSearchParams();
     params.set('id', state.selectedMunicipalityId);
     if (state.selectedElection) params.set('election', state.selectedElection);
+    if (state.selectedMetric) params.set('metric', state.selectedMetric);
+    if (state.selectedMetric === 'party_share' && state.selectedParty) params.set('party', state.selectedParty);
     els.mapDetailCtaLink.href = `municipality-detail.html?${params.toString()}`;
   }
   els.mapDetailCta.classList.remove('hidden');
@@ -3941,6 +4218,7 @@ function updateMapDetailCta() {
 let mapLoadingOwed = 0;
 function setMapLoading(isLoading, message = '') {
   if (!els.mapLoading) return;
+  const wrapper = q('map-wrapper');
   if (isLoading) {
     mapLoadingOwed += 1;
     if (message) {
@@ -3949,11 +4227,16 @@ function setMapLoading(isLoading, message = '') {
     }
     els.mapLoading.classList.remove('hidden');
     els.mapLoading.setAttribute('aria-hidden', 'false');
+    wrapper?.setAttribute('aria-busy', 'true');
+    wrapper?.classList.add('is-map-loading');
+    resetMapHover();
   } else {
     if (mapLoadingOwed > 0) mapLoadingOwed -= 1;
     if (mapLoadingOwed > 0) return;
     els.mapLoading.classList.add('hidden');
     els.mapLoading.setAttribute('aria-hidden', 'true');
+    wrapper?.setAttribute('aria-busy', 'false');
+    wrapper?.classList.remove('is-map-loading');
   }
 }
 
@@ -5326,6 +5609,12 @@ function resetFilters() {
 }
 
 function bindEvents() {
+  const invalidateMapRects = () => {
+    state.mapCanvasClientRect = null;
+    tooltipLayoutCache.wrapperRect = null;
+  };
+  window.addEventListener('resize', invalidateMapRects, { passive: true });
+  window.addEventListener('scroll', invalidateMapRects, { passive: true, capture: true });
   document.addEventListener('dashboard-view-change', event => {
     if (event.detail?.view === 'method') ensureDeferredMetadata({ silent: false });
   });
@@ -5503,8 +5792,10 @@ function bindEvents() {
     if (!state.selectedMunicipalityId) return;
     const params = new URLSearchParams({
       id: state.selectedMunicipalityId,
-      election: state.selectedElection || ''
+      election: state.selectedElection || '',
+      metric: state.selectedMetric || 'first_party'
     });
+    if (state.selectedMetric === 'party_share' && state.selectedParty) params.set('party', state.selectedParty);
     window.location.href = `municipality-detail.html?${params.toString()}`;
   });
   els.selectionDockCompareBtn?.addEventListener('click', () => q('comparison-panel-content')?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
@@ -6319,6 +6610,80 @@ results <- read.csv('${escapeHtml(resultsPath)}')</pre>
   }
 }
 
+function selectionResultRowHtml(row, { active = false } = {}) {
+  const share = Number.isFinite(row?.share) ? row.share : null;
+  const votes = Number.isFinite(row?.votes) ? row.votes : null;
+  const value = [votes != null ? fmtInt(votes) : null, share != null ? `${fmtPct(share)}%` : null]
+    .filter(Boolean)
+    .join(' · ') || 'n.d.';
+  const color = getPartyColor(row?.label);
+  const width = share == null ? 0 : Math.max(0, Math.min(100, share));
+  return `
+    <div class="selection-result-row${active ? ' is-active' : ''}">
+      <span class="selection-result-dot" style="background:${color}" aria-hidden="true"></span>
+      <div class="selection-result-main">
+        <span class="selection-result-label">${escapeHtml(partyDisplayLabel(row?.label))}</span>
+        <span class="selection-result-track"><span class="selection-result-fill" style="width:${width}%;background:${color}"></span></span>
+      </div>
+      <span class="selection-result-value">${escapeHtml(value)}</span>
+    </div>`;
+}
+
+function selectionMetricHeadline(currentRow, partyBreakdown) {
+  const mid = currentRow?.municipality_id;
+  const leaderLabel = currentRow ? leadingPartyLabelFor(currentRow) : null;
+  const leaderShareValue = currentRow?.first_party_runtime_share ?? currentRow?.first_party_share;
+  const base = {
+    metricLabel: 'Partito vincente',
+    label: leaderLabel ? partyDisplayLabel(leaderLabel) : 'n.d.',
+    value: Number.isFinite(leaderShareValue) ? `${fmtPct(leaderShareValue)}%` : 'n.d.',
+    mark: partyMarkLabel(leaderLabel),
+    color: leaderLabel ? getPartyColor(leaderLabel) : '#64748b'
+  };
+  if (!currentRow) return base;
+  if (state.selectedMetric === 'party_share' && state.selectedParty) {
+    const selected = partyBreakdown.rows.find(row => samePublicParty(row.label, state.selectedParty));
+    const share = selected?.share ?? aggregateShareFor(state, currentRow.election_key, mid, state.selectedParty);
+    return {
+      metricLabel: 'Quota del partito',
+      label: partyDisplayLabel(state.selectedParty),
+      value: share != null ? `${fmtPct(share)}%` : 'n.d.',
+      mark: partyMarkLabel(state.selectedParty),
+      color: getGroupColor(state.selectedParty)
+    };
+  }
+  if (state.selectedMetric === 'turnout') {
+    return {
+      metricLabel: 'Affluenza',
+      label: Number.isFinite(currentRow.voters) ? `${fmtInt(currentRow.voters)} votanti` : 'Partecipazione al voto',
+      value: Number.isFinite(currentRow.turnout_pct) ? `${fmtPct(currentRow.turnout_pct)}%` : 'n.d.',
+      mark: 'AFF',
+      color: '#167d75'
+    };
+  }
+  if (state.selectedMetric === 'margin') {
+    return {
+      ...base,
+      metricLabel: 'Margine del vincente',
+      value: Number.isFinite(currentRow.first_second_margin) ? `${fmtPct(currentRow.first_second_margin)} pt` : 'n.d.'
+    };
+  }
+  if (state.selectedMetric === 'dominant_block') {
+    const blocks = municipalityBlockBreakdown(currentRow.election_key, mid, currentRow);
+    const blockKey = currentRow.dominant_block || blocks[0]?.block || 'altro';
+    const block = blocks.find(row => row.block === blockKey) || blocks[0] || null;
+    const display = blockDisplayLabel(blockKey);
+    return {
+      metricLabel: 'Area politica prevalente',
+      label: display,
+      value: Number.isFinite(block?.share) ? `${fmtPct(block.share)}%` : 'n.d.',
+      mark: partyMarkLabel(display),
+      color: getBlockColor(blockKey)
+    };
+  }
+  return base;
+}
+
 function renderSelectionDock() {
   if (!els.selectionDock || !els.selectionDockTitle || !els.selectionDockMeta) return;
   const mid = state.selectedMunicipalityId;
@@ -6326,24 +6691,32 @@ function renderSelectionDock() {
   els.selectionDock.classList.toggle('hidden', !visible);
   if (!visible) {
     if (els.selectionDockStats) els.selectionDockStats.innerHTML = '';
+    if (els.selectionDockPartyResults) els.selectionDockPartyResults.innerHTML = '';
     return;
   }
   const currentRow = getSummaryRow(state, state.selectedElection, mid) || null;
-  const activeShare = currentRow && state.selectedParty ? aggregateShareFor(state, currentRow.election_key, mid, state.selectedParty) : null;
   const leaderLabel = currentRow ? leadingPartyLabelFor(currentRow) : null;
-  const leaderDisplay = leaderLabel ? partyDisplayLabel(leaderLabel) : null;
-  const leaderValue = leaderDisplay || 'n/d';
   const inferredBlock = leaderLabel ? inferPartyMeta(leaderLabel).bloc : null;
   const topBlock = inferredBlock && inferredBlock !== 'altro' ? inferredBlock : (currentRow?.dominant_block || null);
-  const leaderShareValue = currentRow?.first_party_runtime_share ?? currentRow?.first_party_share;
-  const leaderShare = Number.isFinite(leaderShareValue) ? `${fmtPct(leaderShareValue)}%` : 'n/d';
+  const breakdown = currentRow
+    ? municipalityPartyBreakdown(currentRow.election_key, mid, currentRow)
+    : { rows: [], validVotes: null };
+  const headline = selectionMetricHeadline(currentRow, breakdown);
+  const selectedPartyIndex = state.selectedParty
+    ? breakdown.rows.findIndex(row => samePublicParty(row.label, state.selectedParty))
+    : -1;
   const stats = [
-    ['Affluenza', Number.isFinite(currentRow?.turnout_pct) ? `${fmtPct(currentRow.turnout_pct)}%` : 'n/d'],
-    ['Margine', Number.isFinite(currentRow?.first_second_margin) ? `${fmtPct(currentRow.first_second_margin)} pt` : 'n/d'],
+    ['Voti validi', Number.isFinite(breakdown.validVotes) ? fmtInt(breakdown.validVotes) : 'n.d.'],
+    ['Affluenza', Number.isFinite(currentRow?.turnout_pct) ? `${fmtPct(currentRow.turnout_pct)}%` : 'n.d.'],
     ['Area', blockDisplayLabel(topBlock)]
   ];
   if (state.selectedMetric === 'party_share' && state.selectedParty) {
-    stats[2] = [`Quota ${partyDisplayLabel(state.selectedParty)}`, activeShare != null ? `${fmtPct(activeShare)}%` : 'n/d'];
+    stats[2] = ['Posizione', selectedPartyIndex >= 0 ? `#${selectedPartyIndex + 1} su ${breakdown.rows.length}` : 'n.d.'];
+  } else if (state.selectedMetric === 'turnout') {
+    stats[1] = ['Votanti', Number.isFinite(currentRow?.voters) ? fmtInt(currentRow.voters) : 'n.d.'];
+  } else if (state.selectedMetric === 'margin') {
+    const leaderShare = currentRow?.first_party_runtime_share ?? currentRow?.first_party_share;
+    stats[2] = ['Quota vincente', Number.isFinite(leaderShare) ? `${fmtPct(leaderShare)}%` : 'n.d.'];
   }
   els.selectionDockTitle.textContent = municipalityLabelById(mid);
   const electionLabel = currentRow
@@ -6352,18 +6725,46 @@ function renderSelectionDock() {
   els.selectionDockMeta.textContent = currentRow?.province
     ? `Provincia di ${currentRow.province} · ${electionLabel}`
     : electionLabel;
+  if (els.selectionDockMetricLabel) els.selectionDockMetricLabel.textContent = headline.metricLabel;
   if (els.selectionDockPartyMark) {
-    els.selectionDockPartyMark.textContent = partyMarkLabel(leaderLabel);
-    els.selectionDockPartyMark.style.background = leaderLabel ? getPartyColor(leaderLabel) : '#64748b';
+    els.selectionDockPartyMark.textContent = headline.mark;
+    els.selectionDockPartyMark.style.background = headline.color;
   }
-  if (els.selectionDockLeaderName) els.selectionDockLeaderName.textContent = leaderValue;
-  if (els.selectionDockLeaderShare) els.selectionDockLeaderShare.textContent = leaderShare;
+  if (els.selectionDockLeaderName) els.selectionDockLeaderName.textContent = headline.label;
+  if (els.selectionDockLeaderShare) els.selectionDockLeaderShare.textContent = headline.value;
   if (els.selectionDockStats) {
     els.selectionDockStats.innerHTML = stats.map(([label, value]) => `
       <div class="selection-dock-stat">
         <span>${escapeHtml(label)}</span>
         <strong>${escapeHtml(value || 'n/d')}</strong>
       </div>`).join('');
+  }
+  if (els.selectionDockValidVotes) {
+    els.selectionDockValidVotes.textContent = Number.isFinite(breakdown.validVotes)
+      ? `${fmtInt(breakdown.validVotes)} voti validi`
+      : 'dettaglio non disponibile';
+  }
+  if (els.selectionDockPartyResults) {
+    if (!breakdown.rows.length) {
+      els.selectionDockPartyResults.innerHTML = `<div class="selection-results-empty">${state.partyResultsLoading ? 'Caricamento risultati per partito…' : 'Risultati per partito non disponibili per questa elezione.'}</div>`;
+    } else {
+      const leadingRows = breakdown.rows.slice(0, 5);
+      const selectedRow = selectedPartyIndex >= 0 ? breakdown.rows[selectedPartyIndex] : null;
+      const visibleRows = selectedRow && !leadingRows.some(row => samePublicParty(row.label, selectedRow.label))
+        ? [...leadingRows, selectedRow]
+        : leadingRows;
+      const visibleLabels = new Set(visibleRows.map(row => normalizeTextToken(row.label)));
+      const remainingRows = breakdown.rows.filter(row => !visibleLabels.has(normalizeTextToken(row.label)));
+      const rowsHtml = visibleRows.map(row => selectionResultRowHtml(row, {
+        active: state.selectedMetric === 'party_share' && samePublicParty(row.label, state.selectedParty)
+      })).join('');
+      const remainingHtml = remainingRows.length
+        ? `<details class="selection-results-more"><summary>Mostra gli altri ${remainingRows.length} partiti</summary>${remainingRows.map(row => selectionResultRowHtml(row, {
+            active: state.selectedMetric === 'party_share' && samePublicParty(row.label, state.selectedParty)
+          })).join('')}</details>`
+        : '';
+      els.selectionDockPartyResults.innerHTML = rowsHtml + remainingHtml;
+    }
   }
 }
 
@@ -6645,10 +7046,14 @@ async function init() {
     selectionDock: q('selection-dock'),
     selectionDockTitle: q('selection-dock-title'),
     selectionDockMeta: q('selection-dock-meta'),
+    selectionDockMetricLabel: q('selection-dock-metric-label'),
     selectionDockPartyMark: q('selection-dock-party-mark'),
     selectionDockLeaderName: q('selection-dock-leader-name'),
     selectionDockLeaderShare: q('selection-dock-leader-share'),
     selectionDockStats: q('selection-dock-stats'),
+    selectionDockVoteSummary: q('selection-dock-vote-summary'),
+    selectionDockValidVotes: q('selection-dock-valid-votes'),
+    selectionDockPartyResults: q('selection-dock-party-results'),
     selectionDockOpenBtn: q('selection-dock-open-btn'),
     selectionDockCompareBtn: q('selection-dock-compare-btn'),
     selectionDockClearBtn: q('selection-dock-clear-btn'),
@@ -6662,8 +7067,9 @@ async function init() {
   });
 
   try {
-    setLoading(true, 'Caricamento dataset, geometrie e cache mappa…');
+    setLoading(true, 'Carico comuni, elezioni e geometria nazionale…');
     await loadData(state, { buildIndices: updateIndices, registerIssue });
+    setLoading(true, 'Preparo i risultati dell’elezione attiva…');
     restoreLocalState();
     restoreURLState();
     const bootParams = new URLSearchParams(location.hash.startsWith('#') ? location.hash.slice(1) : '');
@@ -6678,9 +7084,10 @@ async function init() {
     initCollapsiblePanels();
     updateBodyAppearance();
     toggleFocusMode(state.focusMode);
+    setLoading(true, 'Ottimizzo colori, zoom e risposta del puntatore…');
     await prepareMapForSmoothUse({ aggressive: true, includePartyResults: true });
     requestRender();
-    await waitForAnimationFrames(2);
+    await waitForAnimationFrames(3);
     setLoading(false);
     if (!state.onboardingDismissed && new URLSearchParams(window.location.search).get('onboarding') === '1') openOnboarding();
     showToast('Explorer pronto. Controlla audit e metodo se i dati sono parziali.', 'success', 2600);
