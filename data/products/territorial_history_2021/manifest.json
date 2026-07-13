@@ -1,0 +1,147 @@
+{
+  "generated_by": "build_result_shards.py",
+  "release_version": "0.22.0",
+  "release_date": "2026-07-14",
+  "product": {
+    "product_key": "territorial_history_2021",
+    "title": "Storia territoriale dei comuni e crosswalk elettorale 2021",
+    "kind": "temporal_crosswalk",
+    "territorial_mode": "date_aware_harmonized",
+    "granularity": "municipality-election",
+    "delivery_strategy": "compact_gzip_crosswalk_plus_machine_readable_report",
+    "primary_dataset_key": "territorialCrosswalk",
+    "companion_dataset_key": "territorialHistoryReport",
+    "extra_dataset_keys": [
+      "territorialLineage",
+      "municipalityAliases",
+      "territorialSources"
+    ],
+    "join_keys": [
+      "election_key",
+      "source_municipality_id",
+      "target_geometry_id"
+    ],
+    "guardrails": [
+      "Solo successioni complete e deterministiche vengono proiettate automaticamente.",
+      "Le scissioni senza pesi ufficiali non vengono distribuite tra i comuni discendenti."
+    ],
+    "intended_use": [
+      "ricerca dei comuni storici tramite alias e successioni amministrative",
+      "proiezione riproducibile delle elezioni sulla geometria comunale 2021",
+      "audit delle eccezioni non allocabili senza inventare voti"
+    ]
+  },
+  "datasets": [
+    {
+      "role": "primary",
+      "dataset_key": "territorialCrosswalk",
+      "path": "data/derived/municipality_election_crosswalk.csv.gz",
+      "kind": "gz",
+      "size_bytes": 3239310,
+      "row_count": 158485,
+      "feature_count": null,
+      "sha256": "8c16af43ef1067e569c8d16e115540d01f766e16cd12ce8111c141ed8733d90d"
+    },
+    {
+      "role": "companion",
+      "dataset_key": "territorialHistoryReport",
+      "path": "data/derived/territorial_history_report.json",
+      "kind": "json",
+      "size_bytes": 85318,
+      "row_count": null,
+      "feature_count": null,
+      "sha256": "3fb87a49e042833e6686d6f827996ff9cfdb205a38e9fccc61a25c52ec5c9c89"
+    },
+    {
+      "role": "extra",
+      "dataset_key": "territorialLineage",
+      "path": "data/derived/territorial_lineage.csv",
+      "kind": "csv",
+      "size_bytes": 1721754,
+      "row_count": 7904,
+      "feature_count": null,
+      "sha256": "75cb4e93d7bad4ac31eb83002c52cb2416b298742ee0bfc5c9cfcc1d1ace4daa"
+    },
+    {
+      "role": "extra",
+      "dataset_key": "municipalityAliases",
+      "path": "data/derived/municipality_aliases.csv",
+      "kind": "csv",
+      "size_bytes": 854314,
+      "row_count": 12637,
+      "feature_count": null,
+      "sha256": "9e78c1b6431ce095da3b9819a20711e146139e09ac9505f47187a6118ee80416"
+    },
+    {
+      "role": "extra",
+      "dataset_key": "territorialSources",
+      "path": "data/reference/territorial_sources.json",
+      "kind": "json",
+      "size_bytes": 1318,
+      "row_count": null,
+      "feature_count": null,
+      "sha256": "fea73969de3831f85d8f56cc12109116368adc72fa4888586444eff97f819b5e"
+    }
+  ],
+  "inventory": {
+    "kind": "declared_datasets",
+    "entry_count": 5,
+    "entries": [
+      {
+        "dataset_key": "territorialCrosswalk",
+        "role": "primary",
+        "path": "data/derived/municipality_election_crosswalk.csv.gz",
+        "kind": "gz",
+        "size_bytes": 3239310,
+        "row_count": 158485
+      },
+      {
+        "dataset_key": "territorialHistoryReport",
+        "role": "companion",
+        "path": "data/derived/territorial_history_report.json",
+        "kind": "json",
+        "size_bytes": 85318,
+        "row_count": null
+      },
+      {
+        "dataset_key": "territorialLineage",
+        "role": "extra",
+        "path": "data/derived/territorial_lineage.csv",
+        "kind": "csv",
+        "size_bytes": 1721754,
+        "row_count": 7904
+      },
+      {
+        "dataset_key": "municipalityAliases",
+        "role": "extra",
+        "path": "data/derived/municipality_aliases.csv",
+        "kind": "csv",
+        "size_bytes": 854314,
+        "row_count": 12637
+      },
+      {
+        "dataset_key": "territorialSources",
+        "role": "extra",
+        "path": "data/reference/territorial_sources.json",
+        "kind": "json",
+        "size_bytes": 1318,
+        "row_count": null
+      }
+    ]
+  },
+  "clients": [
+    {
+      "client_key": "python_loader",
+      "language": "python",
+      "entrypoint": "clients/python/lce_loader.py",
+      "example": "from clients.python.lce_loader import load_bundle\nbundle = load_bundle('.')\nsummary = bundle.load_dataset('municipalitySummary')"
+    },
+    {
+      "client_key": "r_loader",
+      "language": "r",
+      "entrypoint": "clients/r/lce_loader.R",
+      "example": "source('clients/r/lce_loader.R')\nbundle <- load_lce_bundle('.')\nsummary <- lce_read(bundle, 'municipalitySummary')"
+    }
+  ],
+  "bundle_manifest": "data/derived/manifest.json"
+}

@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import gzip
 import json
 import re
 import shutil
@@ -14,8 +15,17 @@ import py_compile
 def read_csv_rows(path: Path):
     if not path.exists():
         return []
-    with path.open(encoding='utf-8', newline='') as fh:
+    opener = gzip.open if path.suffix == '.gz' else path.open
+    with opener(path, 'rt', encoding='utf-8', newline='') if path.suffix == '.gz' else opener(encoding='utf-8', newline='') as fh:
         return list(csv.DictReader(fh))
+
+
+def read_csv_head(path: Path):
+    if not path.exists():
+        return None
+    opener = gzip.open if path.suffix == '.gz' else path.open
+    with opener(path, 'rt', encoding='utf-8', newline='') if path.suffix == '.gz' else opener(encoding='utf-8', newline='') as fh:
+        return next(csv.DictReader(fh), None)
 
 
 def extract_table_sort_options(html_text: str):
@@ -75,6 +85,8 @@ def main() -> int:
         'scripts/build_web_geometry_pack.py',
         'scripts/build_web_compressed_assets.py',
         'scripts/build_municipality_profiles.py',
+        'scripts/build_territorial_history.py',
+        'scripts/territorial_history.py',
         'scripts/refresh_release_manifest.py',
         'scripts/import_archive_gap_report.py',
         'scripts/rebuild_bundle_from_camera_opendata_archives.py',
@@ -86,7 +98,7 @@ def main() -> int:
         if not (root / rel).exists():
             issues.append(f'missing:{rel}')
 
-    for rel_script in ['scripts/preprocess.py', 'scripts/build_web_geometry_pack.py', 'scripts/build_municipality_profiles.py', 'scripts/refresh_release_manifest.py', 'scripts/territory_matching.py', 'scripts/import_archive_gap_report.py', 'scripts/rebuild_bundle_from_camera_opendata_archives.py', 'scripts/rebuild_modern_bundle_from_archive.py', 'scripts/rebuild_historical_bundle_from_grouped.py', 'clients/python/lce_loader.py']:
+    for rel_script in ['scripts/preprocess.py', 'scripts/build_web_geometry_pack.py', 'scripts/build_municipality_profiles.py', 'scripts/build_territorial_history.py', 'scripts/territorial_history.py', 'scripts/refresh_release_manifest.py', 'scripts/territory_matching.py', 'scripts/import_archive_gap_report.py', 'scripts/rebuild_bundle_from_camera_opendata_archives.py', 'scripts/rebuild_modern_bundle_from_archive.py', 'scripts/rebuild_historical_bundle_from_grouped.py', 'clients/python/lce_loader.py']:
         try:
             tmp_pyc = root / f'_tmp_{Path(rel_script).stem}_check.pyc'
             py_compile.compile(str(root / rel_script), cfile=str(tmp_pyc), doraise=True)
@@ -201,7 +213,7 @@ def main() -> int:
     if not geometry_features:
         issues.append('geometry:placeholder_or_missing')
 
-    required_manifest_keys = ['geometryPack', 'geometryPackFull', 'geometryFull', 'provinceGeometryFull', 'dataProducts', 'productCatalog', 'datasetContracts', 'provenance', 'releaseManifest', 'researchRecipes', 'siteGuides', 'municipalitySummaryByElectionIndex', 'municipalityResultsLongByElectionIndex', 'municipalityProfileIndex', 'archiveBundleGapReport', 'webGeometryReport', 'webCompressionReport']
+    required_manifest_keys = ['geometryPack', 'geometryPackFull', 'geometryFull', 'provinceGeometryFull', 'dataProducts', 'productCatalog', 'datasetContracts', 'provenance', 'releaseManifest', 'researchRecipes', 'siteGuides', 'municipalitySummaryByElectionIndex', 'municipalityResultsLongByElectionIndex', 'municipalityProfileIndex', 'archiveBundleGapReport', 'webGeometryReport', 'webCompressionReport', 'territorialCrosswalk', 'territorialHistoryReport', 'territorialSources', 'municipalityRegistryByElection', 'municipalityRegistryHistorical', 'territorialEvents']
     for key in required_manifest_keys:
         rel = files.get(key)
         if not rel:
@@ -235,25 +247,31 @@ def main() -> int:
             if not (inventory.get('entries') or []):
                 issues.append(f"product_manifest:empty_inventory:{product.get('product_key')}")
 
+    summary_shard_payload = {}
     if files.get('municipalitySummaryByElectionIndex') and (root / files['municipalitySummaryByElectionIndex']).exists():
-        shard_payload = json.loads((root / files['municipalitySummaryByElectionIndex']).read_text(encoding='utf-8'))
-        shards = shard_payload.get('shards') or {}
+        summary_shard_payload = json.loads((root / files['municipalitySummaryByElectionIndex']).read_text(encoding='utf-8'))
+        shards = summary_shard_payload.get('shards') or {}
         if not shards:
             warnings.append('summary_shards:empty')
         else:
             missing_shards = [key for key, rel in shards.items() if not (root / rel).exists()]
             if missing_shards:
                 issues.append(f'summary_shards:missing_files:{",".join(missing_shards[:10])}')
+            if summary_shard_payload.get('territorial_mode') != 'harmonized':
+                issues.append('summary_shards:not_harmonized')
 
+    results_shard_payload = {}
     if files.get('municipalityResultsLongByElectionIndex') and (root / files['municipalityResultsLongByElectionIndex']).exists():
-        shard_payload = json.loads((root / files['municipalityResultsLongByElectionIndex']).read_text(encoding='utf-8'))
-        shards = shard_payload.get('shards') or {}
+        results_shard_payload = json.loads((root / files['municipalityResultsLongByElectionIndex']).read_text(encoding='utf-8'))
+        shards = results_shard_payload.get('shards') or {}
         if not shards:
             warnings.append('result_shards:empty')
         else:
             missing_shards = [key for key, rel in shards.items() if not (root / rel).exists()]
             if missing_shards:
                 issues.append(f'result_shards:missing_files:{",".join(missing_shards[:10])}')
+            if results_shard_payload.get('territorial_mode') != 'harmonized':
+                issues.append('result_shards:not_harmonized')
 
     if files.get('municipalityProfileIndex') and (root / files['municipalityProfileIndex']).exists():
         profile_index = json.loads((root / files['municipalityProfileIndex']).read_text(encoding='utf-8'))
@@ -263,8 +281,63 @@ def main() -> int:
         missing_profile_chunks = [key for key, rel in profile_chunks.items() if not (root / rel).exists()]
         if missing_profile_chunks:
             issues.append(f'municipality_profiles:missing_chunks:{",".join(missing_profile_chunks[:10])}')
-        if int(profile_index.get('row_count') or 0) != len(summary):
+        expected_profile_rows = sum(int(value or 0) for value in (summary_shard_payload.get('row_counts') or {}).values())
+        if int(profile_index.get('row_count') or 0) != expected_profile_rows:
             issues.append('municipality_profiles:summary_row_count_mismatch')
+
+    target_codes = {
+        str((feature.get('properties') or {}).get('geometry_id') or (feature.get('properties') or {}).get('municipality_id') or '').strip()
+        for feature in geometry_features
+    }
+    target_codes.discard('')
+    municipalities = read_csv_rows(root / (files.get('municipalitiesMaster') or '')) if files.get('municipalitiesMaster') else []
+    municipality_codes = {str(row.get('municipality_id') or '').strip() for row in municipalities}
+    if target_codes and municipality_codes != target_codes:
+        issues.append(f'territorial_master:target_mismatch:{len(municipality_codes)}:{len(target_codes)}')
+
+    crosswalk_rows = read_csv_rows(root / (files.get('territorialCrosswalk') or '')) if files.get('territorialCrosswalk') else []
+    if not crosswalk_rows:
+        issues.append('territorial_crosswalk:empty')
+    else:
+        keys = [(row.get('election_key'), row.get('source_municipality_id')) for row in crosswalk_rows]
+        if len(keys) != len(set(keys)):
+            issues.append('territorial_crosswalk:duplicate_source_key')
+        invalid_targets = [
+            row for row in crosswalk_rows
+            if row.get('status') == 'resolved' and row.get('target_geometry_id') not in target_codes
+        ]
+        if invalid_targets:
+            issues.append(f'territorial_crosswalk:invalid_targets:{len(invalid_targets)}')
+        brembilla = [
+            row for row in crosswalk_rows
+            if row.get('election_key') == 'camera_2013' and row.get('source_name') in {'Brembilla', 'Gerosa'}
+        ]
+        if len(brembilla) != 2 or {row.get('target_geometry_id') for row in brembilla} != {'016253'}:
+            issues.append('territorial_crosswalk:val_brembilla_regression')
+
+    if files.get('territorialHistoryReport') and (root / files['territorialHistoryReport']).exists():
+        territorial_report = json.loads((root / files['territorialHistoryReport']).read_text(encoding='utf-8'))
+        election_coverage = territorial_report.get('elections') or []
+        if len(election_coverage) != len(elections_master):
+            issues.append('territorial_report:election_count_mismatch')
+        if any(float(row.get('coverage_pct') or 0) < 98 for row in election_coverage):
+            issues.append('territorial_report:coverage_below_98pct')
+
+    invalid_summary_shard_rows = 0
+    for relative_path in (summary_shard_payload.get('shards') or {}).values():
+        for row in read_csv_rows(root / relative_path):
+            if row.get('territorial_mode') != 'harmonized' or row.get('municipality_id') not in target_codes:
+                invalid_summary_shard_rows += 1
+    if invalid_summary_shard_rows:
+        issues.append(f'summary_shards:invalid_harmonized_rows:{invalid_summary_shard_rows}')
+
+    invalid_result_shards = []
+    for election_key, relative_path in (results_shard_payload.get('shards') or {}).items():
+        row = read_csv_head(root / relative_path)
+        if not row or row.get('territorial_mode') != 'harmonized' or row.get('municipality_id') not in target_codes:
+            invalid_result_shards.append(election_key)
+    if invalid_result_shards:
+        issues.append(f'result_shards:invalid_harmonized_head:{",".join(invalid_result_shards)}')
 
     if files.get('releaseManifest') and (root / files['releaseManifest']).exists():
         release_manifest = json.loads((root / files['releaseManifest']).read_text(encoding='utf-8'))

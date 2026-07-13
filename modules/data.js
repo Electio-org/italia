@@ -613,6 +613,8 @@ async function loadBundleWithManifest(state, manifest, resolver, { buildIndices,
   state.summaryShardPaths = summaryShardIndex?.shards || null;
   state.resultsLongShardIndex = resultsShardIndex || null;
   state.resultsLongShardPaths = resultsShardIndex?.shards || null;
+  const publishedTerritorialMode = String(summaryShardIndex?.territorial_mode || resultsShardIndex?.territorial_mode || '').trim();
+  if (publishedTerritorialMode) state.territorialMode = publishedTerritorialMode;
   state.summaryLoadStrategy = state.summaryShardPaths && Object.keys(state.summaryShardPaths).length
     ? 'by_election'
     : (files.municipalitySummary ? 'full' : 'none');

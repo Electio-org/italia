@@ -75,7 +75,8 @@
         "normalizzazione di comuni, province, partiti e join geometry-aware",
         "scrittura di dataset derived, metadata layer e manifest machine-readable",
         "derivazione opzionale dei risultati di partito anche come shard per elezione",
-        "derivazione opzionale del municipality_summary anche come shard per elezione"
+        "derivazione opzionale del municipality_summary anche come shard per elezione",
+        "proiezione implicita degli shard pubblici sulla geometria comunale 2021 tramite crosswalk temporale SITUAS"
       ],
       "limitations": [
         "la provenance del bundle non sostituisce le fonti elettorali originali",
@@ -91,7 +92,8 @@
         "ingest da cartelle camera_YYYY e layout clean/raw/validated quando presenti",
         "normalizzazione di comuni, province, partiti e join geometry-aware",
         "scrittura di dataset derived, metadata layer e manifest machine-readable",
-        "derivazione opzionale dei risultati di partito anche come shard per elezione"
+        "derivazione opzionale dei risultati di partito anche come shard per elezione",
+        "aggregazione dei voti dei predecessori completi sulla geometria comunale 2021 prima della scrittura degli shard"
       ],
       "limitations": [
         "la provenance del bundle non sostituisce le fonti elettorali originali",
@@ -420,6 +422,42 @@
         "the report diagnoses residual gaps and unresolved geometry joins but does not harmonize extinct municipalities",
         "coverage equivalence with the official source does not imply full historical harmonization across boundary changes"
       ]
+    },
+    {
+      "dataset_key": "territorialCrosswalk",
+      "path": "data/derived/municipality_election_crosswalk.csv.gz",
+      "produced_by": "build_territorial_history.py",
+      "source_class": "derived_crosswalk",
+      "transformation_steps": [
+        "identificazione del comune valido alla data dell'elezione",
+        "percorso temporale degli eventi ES, AP e RN fino alla geometria 2021",
+        "classificazione esplicita di risolto, scissione ambigua o irrisolto"
+      ],
+      "limitations": [
+        "non distribuisce voti tra discendenti quando manca una chiave ufficiale di allocazione"
+      ]
+    },
+    {
+      "dataset_key": "territorialHistoryReport",
+      "path": "data/derived/territorial_history_report.json",
+      "produced_by": "build_territorial_history.py",
+      "source_class": "quality_report",
+      "transformation_steps": [
+        "conteggio della copertura del crosswalk per elezione e metodo di risoluzione"
+      ],
+      "limitations": [
+        "le eccezioni restano visibili nel report ma non vengono forzate sulla mappa"
+      ]
+    },
+    {
+      "dataset_key": "territorialSources",
+      "path": "data/reference/territorial_sources.json",
+      "produced_by": "build_territorial_history.py",
+      "source_class": "source_metadata",
+      "transformation_steps": [
+        "dichiarazione di fonti, ruoli e politica di armonizzazione territoriale"
+      ],
+      "limitations": []
     }
   ]
 }

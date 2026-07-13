@@ -3,12 +3,15 @@ from __future__ import annotations
 
 import argparse
 import csv
+import gzip
 import hashlib
 import json
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict, Iterator, List, Tuple
 
 import pandas as pd
+
+from territorial_history import harmonize_public_frames, load_crosswalk_frame
 
 
 EXTRA_NOTE = "Party results can be delivered both as a monolithic CSV and as per-election shards for faster interactive loading."
@@ -20,7 +23,33 @@ PRODUCT_INVENTORY_NOTE = "Every declared product also exposes a product-level in
 WEB_GEOMETRY_NOTE = "The public app now reads a web-optimized geometry pack, while the full-resolution boundaries remain published as a separate product."
 LOCAL_ASSET_NOTE = "Critical browser libraries are now vendored locally and the public documentation pages load only the metadata they actually need."
 PROFILE_NOTE = "Municipality detail pages use province-sized compressed profile chunks instead of loading the national summary table."
-CURRENT_VERSION = "0.21.0"
+TERRITORIAL_HISTORY_NOTE = "Public election shards are projected implicitly to the 2021 municipality geometry through a date-aware ISTAT SITUAS lineage; ambiguous splits are never allocated."
+CURRENT_VERSION = "0.22.0"
+
+
+def iter_election_frames(path: Path, chunk_size: int = 250_000) -> Iterator[Tuple[str, pd.DataFrame]]:
+    """Stream a CSV that is ordered by election without retaining the national long table."""
+    pending_key = ""
+    pending: List[pd.DataFrame] = []
+    completed = set()
+    for chunk in pd.read_csv(path, dtype=str, chunksize=chunk_size):
+        chunk = chunk.fillna("")
+        if "election_key" not in chunk.columns:
+            raise ValueError(f"Dataset senza election_key: {path}")
+        for election_key, part in chunk.groupby("election_key", sort=False):
+            election_key = str(election_key)
+            if not pending_key:
+                pending_key = election_key
+            if election_key != pending_key:
+                completed.add(pending_key)
+                yield pending_key, pd.concat(pending, ignore_index=True)
+                if election_key in completed:
+                    raise ValueError(f"Il dataset non e ordinato per elezione: {path} ({election_key})")
+                pending_key = election_key
+                pending = []
+            pending.append(part)
+    if pending_key:
+        yield pending_key, pd.concat(pending, ignore_index=True)
 
 
 def latest_geometry_rel(derived: Path, folder: str, prefix: str, root: Path) -> str:
@@ -53,11 +82,12 @@ def summarize_file(path: Path, bundle_root: Path) -> Dict[str, object]:
     }
     if not path.exists():
         return info
-    if path.suffix.lower() == ".csv":
-        with path.open(encoding="utf-8", newline="") as fh:
-            rows = list(csv.DictReader(fh))
-        info["row_count"] = len(rows)
-        info["columns"] = list(rows[0].keys()) if rows else []
+    if path.suffix.lower() == ".csv" or path.name.lower().endswith(".csv.gz"):
+        opener = gzip.open if path.name.lower().endswith(".csv.gz") else path.open
+        with opener(path, "rt", encoding="utf-8", newline="") if path.name.lower().endswith(".csv.gz") else opener(encoding="utf-8", newline="") as fh:
+            reader = csv.DictReader(fh)
+            info["columns"] = list(reader.fieldnames or [])
+            info["row_count"] = sum(1 for _ in reader)
     elif path.suffix.lower() in {".json", ".geojson", ".topojson"}:
         obj = json.loads(path.read_text(encoding="utf-8"))
         if isinstance(obj, dict):
@@ -82,27 +112,23 @@ def slugify(value: str) -> str:
 
 
 def ensure_update_log_entry(entries: List[Dict[str, object]]) -> List[Dict[str, object]]:
-    if any(str(entry.get("version")) == CURRENT_VERSION for entry in entries):
-        return entries
-    return [{
+    current = {
         "version": CURRENT_VERSION,
-        "date": "2026-04-07",
-        "title": "National Camera bundle, web/full geometry split, and lighter public metadata loading",
+        "date": "2026-07-14",
+        "title": "Historical municipality lineage and implicit 2021 territorial projection",
         "changes": [
-            "Rebuilt 1946-2022 municipality summary and party results from the official Eligendo open-data zip archives for Assemblea Costituente and Camera.",
-            "Shifted the primary source from HTML archive navigation to the national open-data bundles, keeping HTML only as QA and fallback.",
-            "Added by-election shards for municipality_summary.csv and municipality_results_long.csv.",
-            "Declared deferred loading for municipality summary and party results in manifest.json.",
-            "Aligned dataset registry, provenance, and release metadata to the shard-based delivery layout.",
-            "Added a product catalog plus per-product manifests so the bundle can be navigated as product families, not only as a flat file list.",
-            "Added product-level inventories that declare which election datasets, geometry years, or metadata objects are inside each product.",
-            "Split Italy boundary delivery into a web-optimized geometry pack for the public app plus a full-resolution geometry product for heavier downstream use.",
-            "Vendored the critical browser libraries locally so the dashboard no longer depends on public CDNs at runtime.",
-            "Trimmed the documentation pages so each route fetches only the metadata layer it actually needs.",
-            "Added an official-source-vs-bundle gap report to make residual coverage and geometry-join gaps explicit in the public bundle.",
-            "Release manifest paths are now web-relative, so declared downloads stay usable inside the static site."
+            "Replaced placeholder municipality lineage with dated ISTAT SITUAS succession events and historical ANPR validity intervals.",
+            "Added a reproducible election-by-election crosswalk from the municipality valid on election day to the 2021 map geometry.",
+            "Changed public summary and result shards to aggregate complete predecessors implicitly on the 2021 municipality geography.",
+            "Kept the original Eligendo-derived monolithic CSVs unchanged as source-geography data for audit and reuse.",
+            "Added current-municipality search aliases for historical names, including predecessor municipalities absorbed by mergers.",
+            "Published a coverage report that leaves ambiguous splits and partial territorial transfers unallocated instead of inventing votes.",
+            "Added compact, versioned SITUAS and ANPR source registries plus source and method metadata.",
+            "Recovered municipalities present only in party-result rows and kept unavailable turnout fields explicitly null.",
+            "Added auditable repair of corrupted municipality labels when dated ISTAT code and source region agree unambiguously."
         ]
-    }, *entries]
+    }
+    return [current, *[entry for entry in entries if str(entry.get("version")) != CURRENT_VERSION]]
 
 
 def main() -> None:
@@ -139,6 +165,8 @@ def main() -> None:
         notes.append(LOCAL_ASSET_NOTE)
     if PROFILE_NOTE not in notes:
         notes.append(PROFILE_NOTE)
+    if TERRITORIAL_HISTORY_NOTE not in notes:
+        notes.append(TERRITORIAL_HISTORY_NOTE)
     project["notes"] = notes
 
     files = manifest.setdefault("files", {})
@@ -163,6 +191,12 @@ def main() -> None:
     if (derived / "web_geometry_report.json").exists():
         files["webGeometryReport"] = "data/derived/web_geometry_report.json"
     files["productCatalog"] = "data/products/product_catalog.json"
+    files["territorialCrosswalk"] = "data/derived/municipality_election_crosswalk.csv.gz"
+    files["territorialHistoryReport"] = "data/derived/territorial_history_report.json"
+    files["territorialSources"] = "data/reference/territorial_sources.json"
+    files["municipalityRegistryByElection"] = "data/reference/municipality_registry_by_election.csv.gz"
+    files["municipalityRegistryHistorical"] = "data/reference/municipality_registry_historical_anpr.csv.gz"
+    files["territorialEvents"] = "data/reference/situas_municipality_events_1861_2021.csv.gz"
     files["municipalitySummaryByElectionIndex"] = "data/derived/municipality_summary_by_election.json"
     files["municipalityResultsLongByElectionIndex"] = "data/derived/municipality_results_long_by_election.json"
     if (derived / "municipality_profiles" / "index.json").exists():
@@ -180,6 +214,14 @@ def main() -> None:
 
     summary_path = derived / "municipality_summary.csv"
     summary = pd.read_csv(summary_path, dtype=str).fillna("")
+    summary_by_key = {
+        str(election_key): chunk.copy()
+        for election_key, chunk in summary.groupby("election_key", sort=False)
+    }
+    crosswalk_path = derived / "municipality_election_crosswalk.csv.gz"
+    if not crosswalk_path.exists():
+        raise SystemExit("Crosswalk territoriale mancante. Esegui prima scripts/build_territorial_history.py")
+    crosswalk = load_crosswalk_frame(crosswalk_path)
     summary_shard_dir = derived / "summary_by_election"
     summary_shard_dir.mkdir(parents=True, exist_ok=True)
     for old in summary_shard_dir.glob("*.csv"):
@@ -187,26 +229,8 @@ def main() -> None:
 
     summary_shards: Dict[str, str] = {}
     summary_row_counts: Dict[str, int] = {}
-    if not summary.empty and "election_key" in summary.columns:
-        for election_key, chunk in sorted(summary.groupby("election_key"), key=lambda item: str(item[0])):
-            filename = f"{slugify(str(election_key))}.csv"
-            path = summary_shard_dir / filename
-            chunk.to_csv(path, index=False)
-            summary_shards[str(election_key)] = str(path.relative_to(root)).replace("\\", "/")
-            summary_row_counts[str(election_key)] = int(len(chunk))
-
-    summary_shard_index = {
-        "generated_by": "build_result_shards.py",
-        "dataset": "municipality_summary.csv",
-        "strategy": "by_election",
-        "shards": summary_shards,
-        "row_counts": summary_row_counts,
-    }
-    summary_shard_index_path = derived / "municipality_summary_by_election.json"
-    summary_shard_index_path.write_text(json.dumps(summary_shard_index, ensure_ascii=False, indent=2), encoding="utf-8")
 
     results_path = derived / "municipality_results_long.csv"
-    results = pd.read_csv(results_path, dtype=str).fillna("")
     shard_dir = derived / "results_by_election"
     shard_dir.mkdir(parents=True, exist_ok=True)
     for old in shard_dir.glob("*.csv"):
@@ -214,17 +238,51 @@ def main() -> None:
 
     shards: Dict[str, str] = {}
     row_counts: Dict[str, int] = {}
-    if not results.empty and "election_key" in results.columns:
-        for election_key, chunk in sorted(results.groupby("election_key"), key=lambda item: str(item[0])):
-            filename = f"{slugify(str(election_key))}.csv"
-            path = shard_dir / filename
-            chunk.to_csv(path, index=False)
-            shards[str(election_key)] = str(path.relative_to(root)).replace("\\", "/")
-            row_counts[str(election_key)] = int(len(chunk))
+    processed = set()
+    for election_key, raw_results in iter_election_frames(results_path):
+        raw_summary = summary_by_key.get(election_key)
+        if raw_summary is None:
+            raise ValueError(f"Summary mancante per {election_key}")
+        harmonized_summary, harmonized_results = harmonize_public_frames(raw_summary, raw_results, crosswalk)
+
+        summary_filename = f"{slugify(election_key)}.csv"
+        summary_output = summary_shard_dir / summary_filename
+        harmonized_summary.to_csv(summary_output, index=False)
+        summary_shards[election_key] = str(summary_output.relative_to(root)).replace("\\", "/")
+        summary_row_counts[election_key] = int(len(harmonized_summary))
+
+        results_filename = f"{slugify(election_key)}.csv"
+        results_output = shard_dir / results_filename
+        harmonized_results.to_csv(results_output, index=False)
+        shards[election_key] = str(results_output.relative_to(root)).replace("\\", "/")
+        row_counts[election_key] = int(len(harmonized_results))
+        processed.add(election_key)
+
+    missing_elections = sorted(set(summary_by_key) - processed)
+    if missing_elections:
+        raise ValueError(f"Risultati mancanti per: {', '.join(missing_elections)}")
+
+    summary_shard_index = {
+        "generated_by": "build_result_shards.py",
+        "dataset": "municipality_summary_harmonized_to_2021_geometry",
+        "source_dataset": "data/derived/municipality_summary.csv",
+        "territorial_mode": "harmonized",
+        "target_geometry_date": "2021-12-31",
+        "crosswalk": "data/derived/municipality_election_crosswalk.csv.gz",
+        "strategy": "by_election",
+        "shards": summary_shards,
+        "row_counts": summary_row_counts,
+    }
+    summary_shard_index_path = derived / "municipality_summary_by_election.json"
+    summary_shard_index_path.write_text(json.dumps(summary_shard_index, ensure_ascii=False, indent=2), encoding="utf-8")
 
     shard_index = {
         "generated_by": "build_result_shards.py",
-        "dataset": "municipality_results_long.csv",
+        "dataset": "municipality_results_long_harmonized_to_2021_geometry",
+        "source_dataset": "data/derived/municipality_results_long.csv",
+        "territorial_mode": "harmonized",
+        "target_geometry_date": "2021-12-31",
+        "crosswalk": "data/derived/municipality_election_crosswalk.csv.gz",
         "strategy": "by_election",
         "shards": shards,
         "row_counts": row_counts,
@@ -268,27 +326,61 @@ def main() -> None:
             "metadata_layer": [
                 "audit della release, codebook, guardrail e provenance",
                 "documentazione machine-readable del bundle"
+            ],
+            "territorial_history_2021": [
+                "ricerca dei comuni storici tramite alias e successioni amministrative",
+                "proiezione riproducibile delle elezioni sulla geometria comunale 2021",
+                "audit delle eccezioni non allocabili senza inventare voti"
             ]
         }
         for product in data_products.get("products") or []:
             if product.get("product_key") == "camera_muni_historical":
-                product["title"] = "Camera e Costituente Italia - comuni storici"
-                product["delivery_strategy"] = "summary_and_results_monolith_plus_election_shards"
+                product["title"] = "Camera e Costituente - fonte storica e vista comunale 2021"
+                product["territorial_mode"] = "source_monolith_and_harmonized_public_shards"
+                product["delivery_strategy"] = "raw_source_geography_monolith_plus_2021_harmonized_election_shards"
                 product["intended_use"] = intended_use_defaults["camera_muni_historical"]
+                extras = list(product.get("extra_dataset_keys") or [])
+                for key in ["territorialCrosswalk", "territorialHistoryReport"]:
+                    if key not in extras:
+                        extras.append(key)
+                product["extra_dataset_keys"] = extras
+                product["guardrails"] = [
+                    "I CSV monolitici conservano la geografia osservata nella fonte Eligendo.",
+                    "La dashboard e gli shard per elezione usano la proiezione implicita sulla geometria 2021.",
+                    "Scissioni ambigue e trasferimenti parziali restano no-data senza una chiave ufficiale."
+                ]
             if product.get("product_key") == "geometry_pack_italy":
                 product["title"] = "Pacchetto geometrie Italia - web"
             if product.get("product_key") == "geometry_pack_italy_full":
                 product["title"] = "Pacchetto geometrie Italia - full"
             if not (product.get("intended_use") or []):
                 product["intended_use"] = intended_use_defaults.get(str(product.get("product_key") or ""), [])
+        if not any(product.get("product_key") == "territorial_history_2021" for product in data_products.get("products") or []):
+            data_products.setdefault("products", []).append({
+                "product_key": "territorial_history_2021",
+                "title": "Storia territoriale dei comuni e crosswalk elettorale 2021",
+                "kind": "temporal_crosswalk",
+                "territorial_mode": "date_aware_harmonized",
+                "granularity": "municipality-election",
+                "primary_dataset_key": "territorialCrosswalk",
+                "companion_dataset_key": "territorialHistoryReport",
+                "extra_dataset_keys": ["territorialLineage", "municipalityAliases", "territorialSources"],
+                "join_keys": ["election_key", "source_municipality_id", "target_geometry_id"],
+                "guardrails": [
+                    "Solo successioni complete e deterministiche vengono proiettate automaticamente.",
+                    "Le scissioni senza pesi ufficiali non vengono distribuite tra i comuni discendenti."
+                ],
+                "delivery_strategy": "compact_gzip_crosswalk_plus_machine_readable_report",
+                "intended_use": intended_use_defaults["territorial_history_2021"]
+            })
         data_products_path.write_text(json.dumps(data_products, ensure_ascii=False, indent=2), encoding="utf-8")
 
     provenance_path = derived / "provenance.json"
     if provenance_path.exists():
         provenance = json.loads(provenance_path.read_text(encoding="utf-8"))
         entries = provenance.get("entries") or []
-        summary_shard_step = "derivazione opzionale del municipality_summary anche come shard per elezione"
-        shard_step = "derivazione opzionale dei risultati di partito anche come shard per elezione"
+        summary_shard_step = "proiezione implicita degli shard pubblici sulla geometria comunale 2021 tramite crosswalk temporale SITUAS"
+        shard_step = "aggregazione dei voti dei predecessori completi sulla geometria comunale 2021 prima della scrittura degli shard"
         for entry in entries:
             if entry.get("dataset_key") == "municipalitySummary":
                 steps = list(entry.get("transformation_steps") or [])
@@ -308,11 +400,13 @@ def main() -> None:
                 "produced_by": "build_result_shards.py",
                 "source_class": "derived_bundle",
                 "transformation_steps": [
-                    "lettura del dataset municipality_summary.csv gia validato",
-                    "scrittura di shard per election_key per caricamento progressivo lato app"
+                    "lettura del dataset municipality_summary.csv nella geografia osservata alla fonte",
+                    "join con il crosswalk valido alla data dell'elezione",
+                    "aggregazione dei predecessori completi e ricalcolo di affluenza, leader e margine",
+                    "scrittura di shard per election_key sulla geometria 2021"
                 ],
                 "limitations": [
-                    "gli shard non aggiungono copertura sostanziale: cambiano solo la strategia di consegna del bundle"
+                    "scissioni ambigue e trasferimenti territoriali parziali non vengono allocati senza una chiave ufficiale"
                 ]
             })
         if not any(entry.get("dataset_key") == "municipalityResultsLongByElectionIndex" for entry in entries):
@@ -322,13 +416,43 @@ def main() -> None:
                 "produced_by": "build_result_shards.py",
                 "source_class": "derived_bundle",
                 "transformation_steps": [
-                    "lettura del dataset municipality_results_long.csv gia validato",
-                    "scrittura di shard per election_key per caricamento progressivo lato app"
+                    "lettura del dataset municipality_results_long.csv nella geografia osservata alla fonte",
+                    "join con il crosswalk valido alla data dell'elezione",
+                    "somma dei voti dei predecessori completi e ricalcolo di quote e rank",
+                    "scrittura di shard per election_key sulla geometria 2021"
                 ],
                 "limitations": [
-                    "gli shard non aggiungono copertura sostanziale: cambiano solo la strategia di consegna del bundle"
+                    "scissioni ambigue e trasferimenti territoriali parziali non vengono allocati senza una chiave ufficiale"
                 ]
             })
+        territorial_entries = {
+            "territorialCrosswalk": {
+                "produced_by": "build_territorial_history.py",
+                "source_class": "derived_crosswalk",
+                "transformation_steps": [
+                    "identificazione del comune valido alla data dell'elezione",
+                    "percorso temporale degli eventi ES, AP e RN fino alla geometria 2021",
+                    "classificazione esplicita di risolto, scissione ambigua o irrisolto"
+                ],
+                "limitations": ["non distribuisce voti tra discendenti quando manca una chiave ufficiale di allocazione"]
+            },
+            "territorialHistoryReport": {
+                "produced_by": "build_territorial_history.py",
+                "source_class": "quality_report",
+                "transformation_steps": ["conteggio della copertura del crosswalk per elezione e metodo di risoluzione"],
+                "limitations": ["le eccezioni restano visibili nel report ma non vengono forzate sulla mappa"]
+            },
+            "territorialSources": {
+                "produced_by": "build_territorial_history.py",
+                "source_class": "source_metadata",
+                "transformation_steps": ["dichiarazione di fonti, ruoli e politica di armonizzazione territoriale"],
+                "limitations": []
+            }
+        }
+        for dataset_key, spec in territorial_entries.items():
+            if any(entry.get("dataset_key") == dataset_key for entry in entries):
+                continue
+            entries.append({"dataset_key": dataset_key, "path": files[dataset_key], **spec})
         provenance["entries"] = entries
         provenance_path.write_text(json.dumps(provenance, ensure_ascii=False, indent=2), encoding="utf-8")
 
@@ -439,6 +563,19 @@ def main() -> None:
                         "row_count": meta.get("row_count"),
                         "feature_count": meta.get("feature_count"),
                     })
+            if not inventory_entries:
+                inventory_kind = "declared_datasets"
+                inventory_entries = [
+                    {
+                        "dataset_key": entry.get("dataset_key"),
+                        "role": entry.get("role"),
+                        "path": entry.get("path"),
+                        "kind": entry.get("kind"),
+                        "size_bytes": entry.get("size_bytes"),
+                        "row_count": entry.get("row_count"),
+                    }
+                    for entry in dataset_entries
+                ]
 
             product_manifest = {
                 "generated_by": "build_result_shards.py",

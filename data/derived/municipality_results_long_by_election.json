@@ -1,6 +1,10 @@
 {
   "generated_by": "build_result_shards.py",
-  "dataset": "municipality_results_long.csv",
+  "dataset": "municipality_results_long_harmonized_to_2021_geometry",
+  "source_dataset": "data/derived/municipality_results_long.csv",
+  "territorial_mode": "harmonized",
+  "target_geometry_date": "2021-12-31",
+  "crosswalk": "data/derived/municipality_election_crosswalk.csv.gz",
   "strategy": "by_election",
   "shards": {
     "assemblea_costituente_1946": "data/derived/results_by_election/assemblea_costituente_1946.csv.gz",
@@ -25,26 +29,26 @@
     "camera_2022": "data/derived/results_by_election/camera_2022.csv.gz"
   },
   "row_counts": {
-    "assemblea_costituente_1946": 66613,
-    "camera_1948": 75533,
-    "camera_1953": 84967,
-    "camera_1958": 80534,
-    "camera_1963": 73921,
-    "camera_1968": 73682,
-    "camera_1972": 85415,
-    "camera_1976": 74089,
-    "camera_1979": 91220,
-    "camera_1983": 88885,
-    "camera_1987": 106925,
-    "camera_1992": 120749,
-    "camera_1994": 98071,
-    "camera_1996": 90755,
-    "camera_2001": 117558,
-    "camera_2006": 135365,
-    "camera_2008": 116269,
-    "camera_2013": 139499,
-    "camera_2018": 121934,
-    "camera_2022": 111212
+    "assemblea_costituente_1946": 65102,
+    "camera_1948": 74095,
+    "camera_1953": 83094,
+    "camera_1958": 78875,
+    "camera_1963": 72388,
+    "camera_1968": 72159,
+    "camera_1972": 83658,
+    "camera_1976": 72459,
+    "camera_1979": 89339,
+    "camera_1983": 87020,
+    "camera_1987": 104787,
+    "camera_1992": 118280,
+    "camera_1994": 95977,
+    "camera_1996": 88760,
+    "camera_2001": 115084,
+    "camera_2006": 132786,
+    "camera_2008": 114044,
+    "camera_2013": 137169,
+    "camera_2018": 121366,
+    "camera_2022": 111199
   },
   "shards_uncompressed": {
     "assemblea_costituente_1946": "data/derived/results_by_election/assemblea_costituente_1946.csv",
@@ -70,8 +74,8 @@
   },
   "compression": {
     "format": "gzip",
-    "original_bytes": 530219797,
-    "compressed_bytes": 40564921,
-    "reduction_pct": 92.35
+    "original_bytes": 513550645,
+    "compressed_bytes": 34473566,
+    "reduction_pct": 93.29
   }
 }

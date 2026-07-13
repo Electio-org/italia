@@ -14,7 +14,7 @@
  * `cache.addAll()` that would reject the whole install on any 404.
  */
 
-const SW_VERSION = 'electio-v61-2026-07-13-smooth-map-context';
+const SW_VERSION = 'electio-v62-2026-07-14-territorial-history';
 const SHELL_CACHE = `shell::${SW_VERSION}`;
 const DATA_CACHE = `data::${SW_VERSION}`;
 const NAV_FALLBACK = './index.html';

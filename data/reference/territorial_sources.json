@@ -1,0 +1,33 @@
+{
+  "generated_by": "build_territorial_history.py",
+  "retrieved_on": "2026-07-14",
+  "target_geometry_date": "2021-12-31",
+  "sources": [
+    {
+      "name": "ISTAT SITUAS",
+      "role": "Snapshot comunali datati ed eventi ufficiali di successione amministrativa.",
+      "url": "https://situas.istat.it/",
+      "reports": [
+        61,
+        98,
+        100,
+        103,
+        104,
+        105,
+        129
+      ]
+    },
+    {
+      "name": "Archivio storico dei comuni ANPR via OnData",
+      "role": "Registro integrativo per il 1946, denominazioni storiche e intervalli di validità.",
+      "url": "https://www.confini-amministrativi.it/api/v2/it/archivio-storico-comuni.csv",
+      "caveat": "Distribuzione secondaria di dati anagrafici ANPR/ISTAT; SITUAS resta la fonte primaria per le successioni."
+    }
+  ],
+  "method": {
+    "public_projection": "I predecessori completi vengono aggregati sulla geometria comunale 2021.",
+    "source_registry": "Le identità comunali sono ricavate dall'unione dei riepiloghi e dei risultati per partito.",
+    "partial_transfers": "I trasferimenti parziali non vengono allocati senza una chiave ufficiale dei voti.",
+    "ambiguous_splits": "Le scissioni ambigue sono escluse dagli shard pubblici proiettati e dichiarate nel report."
+  }
+}

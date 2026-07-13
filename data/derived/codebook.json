@@ -500,6 +500,25 @@
           "type_hint": "string"
         }
       ]
+    },
+    {
+      "dataset": "municipality_election_crosswalk.csv.gz",
+      "title": "Crosswalk storico dei comuni per elezione",
+      "columns": [
+        {"name": "election_key", "description": "Chiave stabile dell'elezione.", "type_hint": "string"},
+        {"name": "election_date", "description": "Data usata per interrogare il registro territoriale.", "type_hint": "date"},
+        {"name": "source_municipality_id", "description": "Identificativo presente nel dato elettorale originale.", "type_hint": "string"},
+        {"name": "source_name", "description": "Denominazione comunale osservata nella fonte elettorale.", "type_hint": "string"},
+        {"name": "source_province", "description": "Provincia osservata nella fonte elettorale.", "type_hint": "string"},
+        {"name": "source_region", "description": "Regione osservata nella fonte, usata anche per riconoscere etichette territoriali incoerenti.", "type_hint": "string"},
+        {"name": "historical_istat_code", "description": "Codice ISTAT valido alla data dell'elezione, quando identificato.", "type_hint": "string"},
+        {"name": "target_geometry_id", "description": "Codice del comune nella geometria ISTAT 2021.", "type_hint": "string"},
+        {"name": "target_name", "description": "Denominazione del comune target 2021.", "type_hint": "string"},
+        {"name": "resolution_method", "description": "Metodo conservativo usato per identificare, correggere eventuali etichette incoerenti e percorrere la successione.", "type_hint": "string"},
+        {"name": "confidence", "description": "Livello di confidenza del collegamento.", "type_hint": "string"},
+        {"name": "status", "description": "resolved, ambiguous_split oppure unresolved.", "type_hint": "string"},
+        {"name": "lineage_path", "description": "Sequenza datata dei codici e degli eventi amministrativi fino al target.", "type_hint": "string"}
+      ]
     }
   ]
 }

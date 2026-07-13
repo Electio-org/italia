@@ -32,7 +32,8 @@ def chunk_key_for(municipality_id: str) -> str:
 
 
 def read_csv(path: Path) -> Iterable[Dict[str, str]]:
-    with path.open(encoding="utf-8", newline="") as handle:
+    opener = gzip.open if path.suffix == ".gz" else path.open
+    with opener(path, "rt", encoding="utf-8", newline="") if path.suffix == ".gz" else opener(encoding="utf-8", newline="") as handle:
         yield from csv.DictReader(handle)
 
 
@@ -43,7 +44,7 @@ def main() -> None:
 
     root = Path(args.root).resolve()
     derived = root / "data" / "derived"
-    summary_path = derived / "municipality_summary.csv"
+    summary_index_path = derived / "municipality_summary_by_election.json"
     municipalities_path = derived / "municipalities_master.csv"
     output = derived / "municipality_profiles"
     chunks_dir = output / "chunks"
@@ -70,32 +71,34 @@ def main() -> None:
         "year": None,
     })
     total_rows = 0
-    for row in read_csv(summary_path):
-        municipality_id = str(row.get("municipality_id") or "").strip()
-        election_key = str(row.get("election_key") or "").strip()
-        if not municipality_id or not election_key:
-            continue
-        chunk_key = municipality_chunks.get(municipality_id) or chunk_key_for(municipality_id)
-        municipality_chunks[municipality_id] = chunk_key
-        rows_by_chunk[chunk_key].append(row)
-        total_rows += 1
+    summary_index = json.loads(summary_index_path.read_text(encoding="utf-8"))
+    for relative_path in (summary_index.get("shards") or {}).values():
+        for row in read_csv(root / relative_path):
+            municipality_id = str(row.get("municipality_id") or "").strip()
+            election_key = str(row.get("election_key") or "").strip()
+            if not municipality_id or not election_key:
+                continue
+            chunk_key = municipality_chunks.get(municipality_id) or chunk_key_for(municipality_id)
+            municipality_chunks[municipality_id] = chunk_key
+            rows_by_chunk[chunk_key].append(row)
+            total_rows += 1
 
-        acc = national[election_key]
-        electors = safe_number(row.get("electors"))
-        voters = safe_number(row.get("voters"))
-        valid_votes = safe_number(row.get("valid_votes"))
-        first_share = safe_number(row.get("first_party_share"))
-        if electors is not None and voters is not None:
-            acc["electors"] += electors
-            acc["voters"] += voters
-        if valid_votes is not None and first_share is not None:
-            acc["first_share_weighted"] += first_share * valid_votes
-            acc["first_share_weight"] += valid_votes
-        block = str(row.get("dominant_block") or "").strip()
-        if block:
-            acc["blocks"][block] += 1
-        acc["municipalities"] += 1
-        acc["year"] = safe_number(row.get("election_year"))
+            acc = national[election_key]
+            electors = safe_number(row.get("electors"))
+            voters = safe_number(row.get("voters"))
+            valid_votes = safe_number(row.get("valid_votes"))
+            first_share = safe_number(row.get("first_party_share"))
+            if electors is not None and voters is not None:
+                acc["electors"] += electors
+                acc["voters"] += voters
+            if valid_votes is not None and first_share is not None:
+                acc["first_share_weighted"] += first_share * valid_votes
+                acc["first_share_weight"] += valid_votes
+            block = str(row.get("dominant_block") or "").strip()
+            if block:
+                acc["blocks"][block] += 1
+            acc["municipalities"] += 1
+            acc["year"] = safe_number(row.get("election_year"))
 
     chunk_paths = {}
     for chunk_key in sorted(set(rows_by_chunk) | set(municipalities_by_chunk)):
@@ -129,6 +132,7 @@ def main() -> None:
 
     index = {
         "generated_by": "build_municipality_profiles.py",
+        "source": "municipality_summary_by_election.json (harmonized to 2021 geometry)",
         "strategy": "province_chunks",
         "row_count": total_rows,
         "chunks": chunk_paths,

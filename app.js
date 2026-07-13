@@ -91,7 +91,7 @@ const state = {
   selectedPartyMode: 'party_raw',
   selectedParty: null,
   selectedCustomIndicator: null,
-  territorialMode: 'historical',
+  territorialMode: 'harmonized',
   // Map aggregation level: 'comune' (default — one polygon per comune) |
   // 'province' | 'region'. When non-comune the renderer recolors every
   // comune by its group's aggregated metric value (regional/provincial
@@ -805,6 +805,21 @@ function selectMunicipality(id, options = {}) {
   if (options.updateSearch !== false && els.municipalitySearch) els.municipalitySearch.value = municipalityLabelById(id);
   updateMunicipalityNoteUI();
   syncURLState();
+
+  const electionKey = state.selectedElection;
+  const summaryPending = electionKey && !state.loadedSummaryElectionKeys?.has(electionKey);
+  const resultsPending = electionKey
+    && electionCoverageFor(state, electionKey)?.results
+    && !state.loadedResultElectionKeys?.has(electionKey);
+  if (summaryPending || resultsPending) {
+    const tasks = [];
+    if (summaryPending) tasks.push(ensureVisibleSummary({ silent: true }));
+    if (resultsPending) tasks.push(ensureVisibleResults({ silent: true }));
+    Promise.allSettled(tasks).then(() => {
+      renderSelectionDock();
+      requestRender();
+    });
+  }
 }
 
 function clearMunicipalitySelection() {
@@ -5520,7 +5535,7 @@ function restoreURLState() {
   state.selectedPartyMode = params.get('selectedPartyMode') || state.selectedPartyMode;
   state.selectedParty = params.get('selectedParty') || state.selectedParty;
   state.selectedCustomIndicator = params.get('selectedCustomIndicator') || state.selectedCustomIndicator;
-  state.territorialMode = params.get('territorialMode') || state.territorialMode;
+  state.territorialMode = state.summaryShardIndex?.territorial_mode || params.get('territorialMode') || state.territorialMode;
   state.geometryReferenceYear = params.get('geometryReferenceYear') || state.geometryReferenceYear;
   state.selectedMunicipalityId = params.get('selectedMunicipalityId') || state.selectedMunicipalityId;
   state.selectedCompleteness = params.get('selectedCompleteness') || state.selectedCompleteness;
@@ -5591,7 +5606,7 @@ function resetFilters() {
   state.selectedPartyMode = 'party_raw';
   state.selectedProvinceSet = new Set();
   state.selectedAreaPreset = 'all';
-  state.territorialMode = 'historical';
+  state.territorialMode = state.summaryShardIndex?.territorial_mode || 'harmonized';
   state.selectedCompleteness = 'all';
   state.selectedTerritorialStatus = 'all';
   state.sameScaleAcrossYears = true;
@@ -6630,9 +6645,13 @@ function selectionResultRowHtml(row, { active = false } = {}) {
 }
 
 function selectionMetricHeadline(currentRow, partyBreakdown) {
-  const mid = currentRow?.municipality_id;
-  const leaderLabel = currentRow ? leadingPartyLabelFor(currentRow) : null;
-  const leaderShareValue = currentRow?.first_party_runtime_share ?? currentRow?.first_party_share;
+  const electionKey = currentRow?.election_key || state.selectedElection;
+  const mid = currentRow?.municipality_id || state.selectedMunicipalityId;
+  const resultLeader = partyBreakdown?.rows?.[0] || null;
+  const leaderLabel = currentRow ? leadingPartyLabelFor(currentRow) : resultLeader?.label;
+  const leaderShareValue = currentRow?.first_party_runtime_share
+    ?? currentRow?.first_party_share
+    ?? resultLeader?.share;
   const base = {
     metricLabel: 'Partito vincente',
     label: leaderLabel ? partyDisplayLabel(leaderLabel) : 'n.d.',
@@ -6640,10 +6659,9 @@ function selectionMetricHeadline(currentRow, partyBreakdown) {
     mark: partyMarkLabel(leaderLabel),
     color: leaderLabel ? getPartyColor(leaderLabel) : '#64748b'
   };
-  if (!currentRow) return base;
   if (state.selectedMetric === 'party_share' && state.selectedParty) {
     const selected = partyBreakdown.rows.find(row => samePublicParty(row.label, state.selectedParty));
-    const share = selected?.share ?? aggregateShareFor(state, currentRow.election_key, mid, state.selectedParty);
+    const share = selected?.share ?? aggregateShareFor(state, electionKey, mid, state.selectedParty);
     return {
       metricLabel: 'Quota del partito',
       label: partyDisplayLabel(state.selectedParty),
@@ -6669,7 +6687,7 @@ function selectionMetricHeadline(currentRow, partyBreakdown) {
     };
   }
   if (state.selectedMetric === 'dominant_block') {
-    const blocks = municipalityBlockBreakdown(currentRow.election_key, mid, currentRow);
+    const blocks = municipalityBlockBreakdown(electionKey, mid, currentRow);
     const blockKey = currentRow.dominant_block || blocks[0]?.block || 'altro';
     const block = blocks.find(row => row.block === blockKey) || blocks[0] || null;
     const display = blockDisplayLabel(blockKey);
@@ -6698,9 +6716,7 @@ function renderSelectionDock() {
   const leaderLabel = currentRow ? leadingPartyLabelFor(currentRow) : null;
   const inferredBlock = leaderLabel ? inferPartyMeta(leaderLabel).bloc : null;
   const topBlock = inferredBlock && inferredBlock !== 'altro' ? inferredBlock : (currentRow?.dominant_block || null);
-  const breakdown = currentRow
-    ? municipalityPartyBreakdown(currentRow.election_key, mid, currentRow)
-    : { rows: [], validVotes: null };
+  const breakdown = municipalityPartyBreakdown(state.selectedElection, mid, currentRow);
   const headline = selectionMetricHeadline(currentRow, breakdown);
   const selectedPartyIndex = state.selectedParty
     ? breakdown.rows.findIndex(row => samePublicParty(row.label, state.selectedParty))
