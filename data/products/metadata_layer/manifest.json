@@ -1,6 +1,6 @@
 {
   "generated_by": "build_result_shards.py",
-  "release_version": "0.24.0",
+  "release_version": "0.25.0",
   "release_date": "2026-07-15",
   "product": {
     "product_key": "metadata_layer",
@@ -30,40 +30,40 @@
       "dataset_key": "datasetRegistry",
       "path": "data/derived/dataset_registry.json",
       "kind": "json",
-      "size_bytes": 11346,
+      "size_bytes": 17413,
       "row_count": null,
       "feature_count": null,
-      "sha256": "3f555edef2adc81f5512a1a10725f91534a8bcb1a0f3d279dc5b4bd4eb1cbf6d"
+      "sha256": "97f1c6b9c5fa5cfe1a428fca4aa4a4c159521bcc6e18e3c95a7aa24e10c13d02"
     },
     {
       "role": "companion",
       "dataset_key": "codebook",
       "path": "data/derived/codebook.json",
       "kind": "json",
-      "size_bytes": 17430,
+      "size_bytes": 19347,
       "row_count": null,
       "feature_count": null,
-      "sha256": "22661d693cae225ba7b4f417db48943f74c7d6753b30ff2f8819b8dc6e65f379"
+      "sha256": "33aeb3495cfdcc63afc577d23d5194a26e7bebb29b0001b8e053a4b396fc730f"
     },
     {
       "role": "extra",
       "dataset_key": "usageNotes",
       "path": "data/derived/usage_notes.json",
       "kind": "json",
-      "size_bytes": 4642,
+      "size_bytes": 4739,
       "row_count": null,
       "feature_count": null,
-      "sha256": "ee4ac0d9b6a5ea799bd6e47540134d9333ee83d0c0585ac1194d50462aedb4a3"
+      "sha256": "ef6909f88d05661f74dde10f5ba78438ec31d2f1526bf033312d209436faabc6"
     },
     {
       "role": "extra",
       "dataset_key": "updateLog",
       "path": "data/derived/update_log.json",
       "kind": "json",
-      "size_bytes": 19084,
+      "size_bytes": 19836,
       "row_count": null,
       "feature_count": null,
-      "sha256": "c41a7c39fe36d6755c223207d08f481e50f736de9e6d250cb2e9bd61766f29af"
+      "sha256": "15847bbe2e188345c379a5bfb79358998e743255eb1a242d92c6d2fde05eee7d"
     },
     {
       "role": "extra",
@@ -94,7 +94,7 @@
         "dataset_key": "datasetRegistry",
         "path": "data/derived/dataset_registry.json",
         "kind": "json",
-        "size_bytes": 11346,
+        "size_bytes": 17413,
         "row_count": null,
         "feature_count": null
       },
@@ -102,7 +102,7 @@
         "dataset_key": "codebook",
         "path": "data/derived/codebook.json",
         "kind": "json",
-        "size_bytes": 17430,
+        "size_bytes": 19347,
         "row_count": null,
         "feature_count": null
       },
@@ -110,7 +110,7 @@
         "dataset_key": "usageNotes",
         "path": "data/derived/usage_notes.json",
         "kind": "json",
-        "size_bytes": 4642,
+        "size_bytes": 4739,
         "row_count": null,
         "feature_count": null
       },
@@ -118,7 +118,7 @@
         "dataset_key": "updateLog",
         "path": "data/derived/update_log.json",
         "kind": "json",
-        "size_bytes": 19084,
+        "size_bytes": 19836,
         "row_count": null,
         "feature_count": null
       },

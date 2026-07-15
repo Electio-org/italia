@@ -635,6 +635,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 003022,Bolzano Novarese,current_name,,2021-12-31,ISTAT geometry 2021
 003023,Borgolavezzaro,current_name,,2021-12-31,ISTAT geometry 2021
 003024,Borgomanero,current_name,,2021-12-31,ISTAT geometry 2021
+003024,Borgomanero 1,election_source_name,1989-06-18,1989-06-18,official election source label
 003024,Vergano,historical_name,,1863-06-01,ISTAT SITUAS report 104
 003024,Vergano Novarese,historical_name,,1863-06-01,ISTAT SITUAS report 104
 003025,Borgo Ticino,current_name,,2021-12-31,ISTAT geometry 2021
@@ -650,6 +651,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 003041,Casalvolone,current_name,,2021-12-31,ISTAT geometry 2021
 003042,Castellazzo Novarese,current_name,,2021-12-31,ISTAT geometry 2021
 003043,Castelletto sopra Ticino,current_name,,2021-12-31,ISTAT geometry 2021
+003043,Castelletto Sora Ticino,election_source_name,1999-06-13,1999-06-13,official election source label
 003044,Cavaglietto,current_name,,2021-12-31,ISTAT geometry 2021
 003045,Cavaglio,historical_name,,1863-06-01,ISTAT SITUAS report 104
 003045,Cavaglio d'Agogna,current_name,,2021-12-31,ISTAT geometry 2021
@@ -808,8 +810,8 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 004061,Centallo,current_name,,2021-12-31,ISTAT geometry 2021
 004062,Ceresole,historical_name,,1863-01-11,ISTAT SITUAS report 104
 004062,Ceresole Alba,current_name,,2021-12-31,ISTAT geometry 2021
-004063,Cerreto delle Langhe,election_source_name,1992-04-05,1992-04-05,official election source label
-004063,Cerreto Langhe,election_source_name,1994-03-27,1994-03-27,official election source label
+004063,Cerreto delle Langhe,election_source_name,1979-06-10,1979-06-10,official election source label
+004063,Cerreto Langhe,election_source_name,1989-06-18,1989-06-18,official election source label
 004063,Cerretto delle Langhe,historical_name,,1929-01-24,ISTAT SITUAS report 98
 004063,Cerretto Langhe,current_name,,2021-12-31,ISTAT geometry 2021
 004064,Cervasca,current_name,,2021-12-31,ISTAT geometry 2021
@@ -1168,6 +1170,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 005076,Montegrosso d'Asti,current_name,,2021-12-31,ISTAT geometry 2021
 005077,Montemagno,current_name,,2021-12-31,ISTAT geometry 2021
 005079,Moransengo,current_name,,2021-12-31,ISTAT geometry 2021
+005079,Moransengo-Tonengo,election_source_name,2024-06-09,2024-06-09,official election source label
 005080,Nizza Monferrato,current_name,,2021-12-31,ISTAT geometry 2021
 005081,Olmo,historical_name,,1863-05-05,ISTAT SITUAS report 104
 005081,Olmo Gentile,current_name,,2021-12-31,ISTAT geometry 2021
@@ -1574,6 +1577,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 007034,Hone Bard,election_source_name,1946-06-02,1946-06-02,official election source label
 007035,Introd,current_name,,2021-12-31,ISTAT geometry 2021
 007036,Issime,current_name,,2021-12-31,ISTAT geometry 2021
+007037,Isogne,election_source_name,1999-06-13,1999-06-13,official election source label
 007037,Issogne,current_name,,2021-12-31,ISTAT geometry 2021
 007038,Jovençan,current_name,,2021-12-31,ISTAT geometry 2021
 007039,Antey la Magdeleine,historical_name,,1883-10-01,ISTAT SITUAS report 104
@@ -1770,7 +1774,9 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 009001,Alassio,current_name,,2021-12-31,ISTAT geometry 2021
 009002,Albenga,current_name,,2021-12-31,ISTAT geometry 2021
 009002,Campochiesa,historical_name,,1927-01-12,ISTAT SITUAS report 105
+009003,Albisola Marina,election_source_name,1979-06-10,1979-06-10,official election source label
 009003,Albissola Marina,current_name,,2021-12-31,ISTAT geometry 2021
+009004,Albisola Sueriore,election_source_name,1999-06-13,1999-06-13,official election source label
 009004,Albisola Superiore,current_name,,2021-12-31,ISTAT geometry 2021
 009004,Ellera,historical_name,,1927-01-12,ISTAT SITUAS report 105
 009005,Altare,current_name,,2021-12-31,ISTAT geometry 2021
@@ -1780,6 +1786,8 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 009009,Bardineto,current_name,,2021-12-31,ISTAT geometry 2021
 009010,Bergeggi,current_name,,2021-12-31,ISTAT geometry 2021
 009011,Boissano,current_name,,2021-12-31,ISTAT geometry 2021
+009012,Borghetto Santo S.,election_source_name,2004-06-12,2004-06-12,official election source label
+009012,Borghetto Santo Sirito,election_source_name,1999-06-13,1999-06-13,official election source label
 009012,Borghetto Santo Spirito,current_name,,2021-12-31,ISTAT geometry 2021
 009013,Borgio,historical_name,,1927-01-12,ISTAT SITUAS report 105
 009013,Borgio Verezzi,current_name,,2021-12-31,ISTAT geometry 2021
@@ -1790,6 +1798,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 009016,Calice,historical_name,,1863-06-01,ISTAT SITUAS report 104
 009016,Calice Ligure,current_name,,2021-12-31,ISTAT geometry 2021
 009017,Calizzano,current_name,,2021-12-31,ISTAT geometry 2021
+009018,Car Care,election_source_name,1979-06-10,1979-06-10,official election source label
 009018,Carcare,current_name,,2021-12-31,ISTAT geometry 2021
 009019,Casanova,historical_name,,1863-06-01,ISTAT SITUAS report 104
 009019,Casanova Lerrone,current_name,,2021-12-31,ISTAT geometry 2021
@@ -1874,6 +1883,8 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 010007,Camogli,current_name,,2021-12-31,ISTAT geometry 2021
 010008,Campo Freddo,historical_name,,1884-05-01,ISTAT SITUAS report 104
 010008,Campo Ligure,current_name,,2021-12-31,ISTAT geometry 2021
+010008,Campoligure,election_source_name,1979-06-10,1979-06-10,official election source label
+010009,Camomorone,election_source_name,1999-06-13,1999-06-13,official election source label
 010009,Campomorone,current_name,,2021-12-31,ISTAT geometry 2021
 010009,Larvego,historical_name,,1871-04-28,ISTAT SITUAS report 104
 010010,Carasco,current_name,,2021-12-31,ISTAT geometry 2021
@@ -2071,6 +2082,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 012033,Castelseprio,historical_name,,1927-01-12,ISTAT SITUAS report 105
 012033,Rovate,historical_name,,1927-01-12,ISTAT SITUAS report 105
 012034,Caronno,historical_name,,1863-09-20,ISTAT SITUAS report 104
+012034,Caronno Ertusella,election_source_name,1999-06-13,1999-06-13,official election source label
 012034,Caronno Milanese,historical_name,,1863-09-20,ISTAT SITUAS report 104
 012034,Caronno Pertusella,current_name,,2021-12-31,ISTAT geometry 2021
 012035,Caronno Ghiringhello,historical_name,,1927-01-12,ISTAT SITUAS report 105
@@ -2190,6 +2202,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 012088,LEGGIUNO-SANGIANO,historical_name,1928-01-07,1963-09-13,ANPR historical archive
 012088,Sangiano,historical_name,,1927-01-12,ISTAT SITUAS report 105
 012089,Lonate Ceppino,current_name,,2021-12-31,ISTAT geometry 2021
+012090,Lonate Ozzolo,election_source_name,1999-06-13,1999-06-13,official election source label
 012090,Lonate Pozzolo,current_name,,2021-12-31,ISTAT geometry 2021
 012090,Sant'Antonino,historical_name,,1862-12-21,ISTAT SITUAS report 104
 012090,Sant'Antonino Ticino,historical_name,,1862-12-21,ISTAT SITUAS report 104
@@ -2281,6 +2294,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 012134,Vedano,historical_name,,1863-05-09,ISTAT SITUAS report 104
 012134,Vedano Olona,current_name,,2021-12-31,ISTAT geometry 2021
 012136,Venegono Inferiore,current_name,,2021-12-31,ISTAT geometry 2021
+012137,Venegono Sueriore,election_source_name,1999-06-13,1999-06-13,official election source label
 012137,Venegono Superiore,current_name,,2021-12-31,ISTAT geometry 2021
 012138,Vergiate,current_name,,2021-12-31,ISTAT geometry 2021
 012139,Clivio,historical_name,,1927-01-12,ISTAT SITUAS report 105
@@ -2324,6 +2338,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 013007,Fabbrica Durini,historical_name,,1863-05-09,ISTAT SITUAS report 104
 013009,Anzano,historical_name,,1863-09-27,ISTAT SITUAS report 104
 013009,Anzano del Parco,current_name,,2021-12-31,ISTAT geometry 2021
+013010,Aiano Gentile,election_source_name,1999-06-13,1999-06-13,official election source label
 013010,Appiano,historical_name,,1867-05-15,ISTAT SITUAS report 103
 013010,Appiano Gentile,current_name,,2021-12-31,ISTAT geometry 2021
 013010,San Bartolomeo,historical_name,,1863-05-09,ISTAT SITUAS report 104
@@ -2489,6 +2504,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 013201,Rovello,historical_name,,1877-09-01,ISTAT SITUAS report 103
 013201,Rovello Porro,historical_name,,1926-08-04,ISTAT SITUAS report 104
 013201,Rovi Porro,historical_name,,1928-05-12,ISTAT SITUAS report 103
+013202,Rovello Orro,election_source_name,1999-06-13,1999-06-13,official election source label
 013202,Rovello Porro,current_name,,2021-12-31,ISTAT geometry 2021
 013203,Sala Comacina,current_name,,2021-12-31,ISTAT geometry 2021
 013204,San Bartolomeo,historical_name,,1863-05-09,ISTAT SITUAS report 104
@@ -2698,6 +2714,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 015059,Cassano d'Adda,current_name,,2021-12-31,ISTAT geometry 2021
 015059,Groppello,historical_name,,1862-11-28,ISTAT SITUAS report 104
 015059,Groppello d'Adda,historical_name,,1862-11-28,ISTAT SITUAS report 104
+015060,Cassina De' Ecchi,election_source_name,1999-06-13,1999-06-13,official election source label
 015060,Cassina de' Pecchi,current_name,,2021-12-31,ISTAT geometry 2021
 015060,Sant'Agata,historical_name,,1863-01-22,ISTAT SITUAS report 104
 015060,Sant'Agata Martesana,historical_name,,1863-01-22,ISTAT SITUAS report 104
@@ -2705,6 +2722,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 015061,Lugagnano,historical_name,,1862-12-21,ISTAT SITUAS report 104
 015062,Castano,historical_name,,1864-03-11,ISTAT SITUAS report 104
 015062,Castano Primo,current_name,,2021-12-31,ISTAT geometry 2021
+015062,Castano Rimo,election_source_name,1999-06-13,1999-06-13,official election source label
 015070,Cernusco sul Naviglio,current_name,,2021-12-31,ISTAT geometry 2021
 015071,Cerro,historical_name,,1862-11-28,ISTAT SITUAS report 104
 015071,Cerro al Lambro,current_name,,2021-12-31,ISTAT geometry 2021
@@ -2837,6 +2855,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 015189,Rozzano,current_name,,2021-12-31,ISTAT geometry 2021
 015191,San Colombano,historical_name,,1863-02-21,ISTAT SITUAS report 104
 015191,San Colombano al Lambro,current_name,,2021-12-31,ISTAT geometry 2021
+015191,San Colombano al Lambro 5,election_source_name,1989-06-18,1989-06-18,official election source label
 015192,San Donato,historical_name,,1862-11-28,ISTAT SITUAS report 104
 015192,San Donato Milanese,current_name,,2021-12-31,ISTAT geometry 2021
 015194,San Giorgio,historical_name,,1862-11-30,ISTAT SITUAS report 104
@@ -2871,6 +2890,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 015229,Vanzago,current_name,,2021-12-31,ISTAT geometry 2021
 015230,Vaprio,historical_name,,1862-11-28,ISTAT SITUAS report 104
 015230,Vaprio d'Adda,current_name,,2021-12-31,ISTAT geometry 2021
+015230,Vario d'Adda,election_source_name,1999-06-13,1999-06-13,official election source label
 015236,Moncucco,historical_name,,1862-12-21,ISTAT SITUAS report 104
 015236,Moncucco Vecchio,historical_name,,1862-12-21,ISTAT SITUAS report 104
 015236,Vernate,current_name,,2021-12-31,ISTAT geometry 2021
@@ -2907,6 +2927,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 016014,Averara,current_name,,2021-12-31,ISTAT geometry 2021
 016015,Aviatico,current_name,,2021-12-31,ISTAT geometry 2021
 016016,Azzano,historical_name,,1863-09-27,ISTAT SITUAS report 104
+016016,Azzano San Aolo,election_source_name,1999-06-13,1999-06-13,official election source label
 016016,Azzano San Paolo,current_name,,2021-12-31,ISTAT geometry 2021
 016017,Azzone,current_name,,2021-12-31,ISTAT geometry 2021
 016018,Bagnatica,current_name,,2021-12-31,ISTAT geometry 2021
@@ -2949,6 +2970,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 016051,Capriate,historical_name,,1863-09-27,ISTAT SITUAS report 104
 016051,Capriate d'Adda,historical_name,,1863-09-27,ISTAT SITUAS report 104
 016051,Capriate San Gervasio,current_name,,2021-12-31,ISTAT geometry 2021
+016051,Cariate San Gervasio,election_source_name,1999-06-13,1999-06-13,official election source label
 016051,San Gervasio,historical_name,,1863-09-27,ISTAT SITUAS report 104
 016051,San Gervasio d'Adda,historical_name,,1863-09-27,ISTAT SITUAS report 104
 016052,Caprino Bergamasco,current_name,,2021-12-31,ISTAT geometry 2021
@@ -3133,6 +3155,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 016187,Rovetta,current_name,,2021-12-31,ISTAT geometry 2021
 016188,San Giovanni Bianco,current_name,,2021-12-31,ISTAT geometry 2021
 016189,San Paolo d'Argon,current_name,,2021-12-31,ISTAT geometry 2021
+016190,San Ellegrino Terme,election_source_name,1999-06-13,1999-06-13,official election source label
 016190,SAN PELLEGRINO,historical_name,1928-04-17,1956-06-11,ANPR historical archive
 016190,San Pellegrino Terme,current_name,,2021-12-31,ISTAT geometry 2021
 016191,Santa Brigida,current_name,,2021-12-31,ISTAT geometry 2021
@@ -3280,6 +3303,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 017037,CAPRIANO AZZANO,historical_name,1927-12-27,1957-07-11,ANPR historical archive
 017037,Capriano del Colle,current_name,,2021-12-31,ISTAT geometry 2021
 017038,Capriolo,current_name,,2021-12-31,ISTAT geometry 2021
+017039,Carenedolo,election_source_name,1999-06-13,1999-06-13,official election source label
 017039,Carpenedolo,current_name,,2021-12-31,ISTAT geometry 2021
 017040,Castegnato,current_name,,2021-12-31,ISTAT geometry 2021
 017041,Castelcovati,current_name,,2021-12-31,ISTAT geometry 2021
@@ -3326,6 +3350,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 017072,Flero,current_name,,2021-12-31,ISTAT geometry 2021
 017073,Gambara,current_name,,2021-12-31,ISTAT geometry 2021
 017074,Gardone Riviera,current_name,,2021-12-31,ISTAT geometry 2021
+017075,Gardone Val Tromia,election_source_name,1999-06-13,1999-06-13,official election source label
 017075,Gardone Val Trompia,current_name,,2021-12-31,ISTAT geometry 2021
 017076,Gargnano,current_name,,2021-12-31,ISTAT geometry 2021
 017077,Gavardo,current_name,,2021-12-31,ISTAT geometry 2021
@@ -3394,6 +3419,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 017124,Ono San Pietro,current_name,,2021-12-31,ISTAT geometry 2021
 017125,Orzinuovi,current_name,,2021-12-31,ISTAT geometry 2021
 017126,Orzivecchi,current_name,,2021-12-31,ISTAT geometry 2021
+017127,Ositaletto,election_source_name,1999-06-13,1999-06-13,official election source label
 017127,Ospitaletto,current_name,,2021-12-31,ISTAT geometry 2021
 017128,Ossimo,current_name,,2021-12-31,ISTAT geometry 2021
 017129,PADENGHE,historical_name,1928-04-07,1947-08-14,ANPR historical archive
@@ -3574,6 +3600,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 018033,Casei Gerola,current_name,,2021-12-31,ISTAT geometry 2021
 018034,Casorate,historical_name,,1863-05-12,ISTAT SITUAS report 104
 018034,Casorate Primo,current_name,,2021-12-31,ISTAT geometry 2021
+018034,Casorate Rimo,election_source_name,1999-06-13,1999-06-13,official election source label
 018035,Cassolnovo,current_name,,2021-12-31,ISTAT geometry 2021
 018036,Castana,current_name,,2021-12-31,ISTAT geometry 2021
 018037,Casteggio,current_name,,2021-12-31,ISTAT geometry 2021
@@ -4060,6 +4087,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 020053,Roverbella,current_name,,2021-12-31,ISTAT geometry 2021
 020054,Sabbioneta,current_name,,2021-12-31,ISTAT geometry 2021
 020055,San Benedetto,historical_name,,1866-11-20,ISTAT SITUAS report 100
+020055,San Benedetto O,election_source_name,1999-06-13,1999-06-13,official election source label
 020055,San Benedetto Po,current_name,,2021-12-31,ISTAT geometry 2021
 020056,San Giacomo delle Segnate,current_name,,2021-12-31,ISTAT geometry 2021
 020057,BIGARELLO,historical_name,1866-11-19,1980-06-14,ANPR historical archive
@@ -4106,11 +4134,12 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 021003,ALTREI,alternate_name,1948-03-14,9999-12-31,ANPR historical archive
 021003,Anterivo,current_name,,2021-12-31,ISTAT geometry 2021
 021003,Anterivo/Altrei,historical_name,,1925-10-22,ISTAT SITUAS report 103
+021004,Aiano sulla Strada del Vino,election_source_name,1999-06-13,1999-06-13,official election source label
 021004,APPIANO,historical_name,1927-01-12,1971-09-21,ANPR historical archive
 021004,Appiano/Eppan,historical_name,,1920-10-16,ISTAT SITUAS report 100
 021004,Appiano sulla strada del vino,current_name,,2021-12-31,ISTAT geometry 2021
 021004,Appiano sulla strada del vino/Eppan an der Weinstraße,historical_name,,1971-09-22,ISTAT SITUAS report 104
-021004,Appiano sulla Strada del Vino/Eppan An Der Weinstrasse,election_source_name,2018-03-04,2018-03-04,official election source label
+021004,Appiano sulla Strada del Vino/Eppan An Der Weinstrasse,election_source_name,2014-05-25,2014-05-25,official election source label
 021004,EPPAN,alternate_name,1927-01-12,1971-09-21,ANPR historical archive
 021004,EPPAN AN DER WEINSTRAßE,alternate_name,1971-09-22,9999-12-31,ANPR historical archive
 021005,Avelengo,current_name,,2021-12-31,ISTAT geometry 2021
@@ -4164,7 +4193,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 021015,Caldaro/Kaltern,historical_name,,1920-10-16,ISTAT SITUAS report 100
 021015,Caldaro sulla strada del vino,current_name,,2021-12-31,ISTAT geometry 2021
 021015,Caldaro sulla strada del vino/Kaltern an der Weinstraße,historical_name,,1971-09-22,ISTAT SITUAS report 104
-021015,Caldaro sulla Strada del Vino/Kaltern An Der Weinstrasse,election_source_name,2018-03-04,2018-03-04,official election source label
+021015,Caldaro sulla Strada del Vino/Kaltern An Der Weinstrasse,election_source_name,2014-05-25,2014-05-25,official election source label
 021015,KALTERN,alternate_name,1927-01-12,1971-09-21,ANPR historical archive
 021015,KALTERN AN DER WEINSTRAßE,alternate_name,1971-09-22,1989-09-05,ANPR historical archive
 021016,Campo di Trens,current_name,,2021-12-31,ISTAT geometry 2021
@@ -4224,14 +4253,14 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 021024,Cortaccia/Kurtatsch,historical_name,,1920-10-16,ISTAT SITUAS report 100
 021024,Cortaccia sulla strada del vino,current_name,,2021-12-31,ISTAT geometry 2021
 021024,Cortaccia sulla strada del vino/Kurtatsch an der Weinstraße,historical_name,,1971-09-22,ISTAT SITUAS report 104
-021024,Cortaccia sulla Strada del Vino/Kurtatsch An Der Weinstrasse,election_source_name,2018-03-04,2018-03-04,official election source label
+021024,Cortaccia sulla Strada del Vino/Kurtatsch An Der Weinstrasse,election_source_name,2014-05-25,2014-05-25,official election source label
 021024,KURTATSCH,alternate_name,1948-03-14,1971-09-21,ANPR historical archive
 021024,KURTATSCH AN DER WEINSTRAßE,alternate_name,1971-09-22,1978-01-31,ANPR historical archive
 021025,CORTINA ALL'ADIGE,historical_name,1952-05-17,1971-09-21,ANPR historical archive
 021025,Cortina all'Adige/Kurtinig,historical_name,,1952-05-17,ISTAT SITUAS report 100
 021025,Cortina sulla strada del vino,current_name,,2021-12-31,ISTAT geometry 2021
 021025,Cortina sulla strada del vino/Kurtinig an der Weinstraße,historical_name,,1971-09-22,ISTAT SITUAS report 104
-021025,Cortina sulla Strada del Vino/Kurtinig An Der Weinstrasse,election_source_name,2018-03-04,2018-03-04,official election source label
+021025,Cortina sulla Strada del Vino/Kurtinig An Der Weinstrasse,election_source_name,2014-05-25,2014-05-25,official election source label
 021025,KURTINIG,alternate_name,1952-05-17,1971-09-21,ANPR historical archive
 021025,KURTINIG AN DER WEINSTRAßE,alternate_name,1971-09-22,9999-12-31,ANPR historical archive
 021026,Colfosco/Colfosco,historical_name,,1920-10-16,ISTAT SITUAS report 100
@@ -4267,6 +4296,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 021031,FIÈ,historical_name,1927-01-12,1971-08-17,ANPR historical archive
 021031,Fiè allo Sciliar,current_name,,2021-12-31,ISTAT geometry 2021
 021031,Fie' Allo Sciliar/Víls Am Schlern,election_source_name,2018-03-04,2018-03-04,official election source label
+021031,Fie' Allo Sciliar/Voels Am Schlern,election_source_name,2014-05-25,2014-05-25,official election source label
 021031,Fiè allo Sciliar/Völs am Schlern,historical_name,,1971-08-18,ISTAT SITUAS report 104
 021031,Fiè/Völs,historical_name,,1920-10-16,ISTAT SITUAS report 100
 021031,VÖLS,alternate_name,1927-01-12,1971-08-17,ANPR historical archive
@@ -4279,7 +4309,8 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 021033,Funes,current_name,,2021-12-31,ISTAT geometry 2021
 021033,Funes/Villníss,election_source_name,2018-03-04,2018-03-04,official election source label
 021033,Funes/Villnöß,historical_name,,1920-10-16,ISTAT SITUAS report 100
-021033,Funes/Villnoss,election_source_name,2022-09-25,2022-09-25,official election source label
+021033,Funes/Villnoess,election_source_name,2014-05-25,2014-05-25,official election source label
+021033,Funes/Villnöss,election_source_name,2019-05-26,2019-05-26,official election source label
 021033,Tisa/Theis,historical_name,,1920-10-16,ISTAT SITUAS report 100
 021033,Tiso/Teis,historical_name,,1923-04-27,ISTAT SITUAS report 104
 021033,VILLNÖß,alternate_name,1929-04-11,9999-12-31,ANPR historical archive
@@ -4330,6 +4361,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 021044,LÜSEN,alternate_name,1927-01-12,9999-12-31,ANPR historical archive
 021044,Luson,current_name,,2021-12-31,ISTAT geometry 2021
 021044,Luson/L_Sen,election_source_name,2018-03-04,2018-03-04,official election source label
+021044,Luson/Luesen,election_source_name,2014-05-25,2014-05-25,official election source label
 021044,Luson/Lüsen,historical_name,,1920-10-16,ISTAT SITUAS report 100
 021045,Cortina all'Adige/Kurtinig,historical_name,,1920-10-16,ISTAT SITUAS report 100
 021045,Favogna di Sotto/Unterfennberg,historical_name,,1920-10-16,ISTAT SITUAS report 100
@@ -4338,7 +4370,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 021045,Magrè/Margreid,historical_name,,1920-10-16,ISTAT SITUAS report 100
 021045,Magrè sulla strada del vino,current_name,,2021-12-31,ISTAT geometry 2021
 021045,Magrè sulla strada del vino/Margreid an der Weinstraße,historical_name,,1971-09-22,ISTAT SITUAS report 104
-021045,Magre' sulla Strada del Vino/Margreid An Der Weinstrasse,election_source_name,2018-03-04,2018-03-04,official election source label
+021045,Magre' sulla Strada del Vino/Margreid An Der Weinstrasse,election_source_name,2014-05-25,2014-05-25,official election source label
 021045,MARGREID,alternate_name,1948-03-14,1952-05-16,ANPR historical archive
 021045,MARGREID AN DER WEINSTRAßE,alternate_name,1971-09-22,9999-12-31,ANPR historical archive
 021046,Burgusio/Burgeis,historical_name,,1920-10-16,ISTAT SITUAS report 100
@@ -4369,6 +4401,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 021049,Martello/Martell,historical_name,,1920-10-16,ISTAT SITUAS report 100
 021050,Meltina,current_name,,2021-12-31,ISTAT geometry 2021
 021050,Meltina/Mílten,election_source_name,2018-03-04,2018-03-04,official election source label
+021050,Meltina/Moelten,election_source_name,2014-05-25,2014-05-25,official election source label
 021050,Meltina/Mölten,historical_name,,1920-10-16,ISTAT SITUAS report 100
 021050,MÖLTEN,alternate_name,1927-01-12,9999-12-31,ANPR historical archive
 021051,Avelengo/Hafling,historical_name,,1923-04-27,ISTAT SITUAS report 104
@@ -4394,6 +4427,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 021054,MOOS,alternate_name,1928-06-15,1955-03-01,ANPR historical archive
 021054,MOOS IN PASSEIER,alternate_name,1955-03-02,9999-12-31,ANPR historical archive
 021054,MOSO,historical_name,1928-06-15,1955-03-01,ANPR historical archive
+021054,Moso in Assiria,election_source_name,1999-06-13,1999-06-13,official election source label
 021054,Moso in Passiria,current_name,,2021-12-31,ISTAT geometry 2021
 021054,Moso in Passiria/Moos in Passeier,historical_name,,1955-03-02,ISTAT SITUAS report 104
 021054,Moso/Moos,historical_name,,1923-04-27,ISTAT SITUAS report 104
@@ -4421,6 +4455,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 021058,Nova Levante/Welschnofen,historical_name,,1920-10-16,ISTAT SITUAS report 100
 021058,WELSCHNOFEN,alternate_name,1927-01-12,2011-04-13,ANPR historical archive
 021059,DEUTSCHNOFEN,alternate_name,1927-01-12,2011-04-13,ANPR historical archive
+021059,Nova Onente,election_source_name,1999-06-13,1999-06-13,official election source label
 021059,Nova Ponente,current_name,,2021-12-31,ISTAT geometry 2021
 021059,Nova Ponente/Deutschnofen,historical_name,,1920-10-16,ISTAT SITUAS report 100
 021060,AUER,alternate_name,1948-03-14,1985-09-10,ANPR historical archive
@@ -4450,7 +4485,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 021067,PRAD,alternate_name,1953-05-23,1954-07-16,ANPR historical archive
 021067,PRAD AM STILFSERJOCH,alternate_name,1929-05-14,1953-05-22,ANPR historical archive
 021067,Prato allo Stelvio,current_name,,2021-12-31,ISTAT geometry 2021
-021067,Prato Allo Stelvio/Prad Am Stilfser Joch,election_source_name,2018-03-04,2018-03-04,official election source label
+021067,Prato Allo Stelvio/Prad Am Stilfser Joch,election_source_name,2014-05-25,2014-05-25,official election source label
 021067,Prato allo Stelvio/Prad am Stilfserjoch,historical_name,,1929-05-14,ISTAT SITUAS report 100
 021067,Prato di Venosta/Prad,historical_name,,1920-10-16,ISTAT SITUAS report 100
 021067,PRATO VENOSTA,historical_name,1953-05-23,1954-07-16,ANPR historical archive
@@ -4486,7 +4521,9 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 021074,MÜHLBACH,alternate_name,1929-05-30,1956-01-03,ANPR historical archive
 021074,Rio di Pusteria,current_name,,2021-12-31,ISTAT geometry 2021
 021074,Rio di Pusteria/M_Hlbach,election_source_name,2018-03-04,2018-03-04,official election source label
+021074,Rio di Pusteria/Muehlbach,election_source_name,2014-05-25,2014-05-25,official election source label
 021074,Rio di Pusteria/Mühlbach,historical_name,,1920-10-16,ISTAT SITUAS report 100
+021074,Rio di Usteria,election_source_name,1999-06-13,1999-06-13,official election source label
 021074,Rodengo/Rodeneck,historical_name,,1920-10-16,ISTAT SITUAS report 100
 021074,Spignes/Spinges,historical_name,,1920-10-16,ISTAT SITUAS report 100
 021074,Spinga/Spinges,historical_name,,1923-04-27,ISTAT SITUAS report 104
@@ -4536,10 +4573,12 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 021082,San Martino in Badia/St. Martin in Thurn,historical_name,,1920-10-16,ISTAT SITUAS report 100
 021082,San Martino/St. Martin,historical_name,,1923-04-27,ISTAT SITUAS report 104
 021082,ST. MARTIN IN THURN,alternate_name,1928-06-15,1964-06-09,ANPR historical archive
+021083,San Martino in Assiria,election_source_name,1999-06-13,1999-06-13,official election source label
 021083,San Martino in Passiria,current_name,,2021-12-31,ISTAT geometry 2021
 021083,San Martino in Passiria/St. Martin in Passeier,historical_name,,1953-11-25,ISTAT SITUAS report 103
 021083,San Martino/St. Martin,historical_name,,1928-04-07,ISTAT SITUAS report 100
 021083,ST. MARTIN IN PASSEIER,alternate_name,1953-11-25,9999-12-31,ANPR historical archive
+021084,San Ancrazio,election_source_name,1999-06-13,1999-06-13,official election source label
 021084,San Pancrazio,current_name,,2021-12-31,ISTAT geometry 2021
 021084,San Pancrazio/St. Pankraz,historical_name,,1960-04-27,ISTAT SITUAS report 100
 021084,ST. PANKRAZ,alternate_name,1960-04-27,9999-12-31,ANPR historical archive
@@ -4549,6 +4588,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 021085,Santa Cristina Valgardena,current_name,,2021-12-31,ISTAT geometry 2021
 021085,Santa Cristina Valgardena/St. Christina in Gríden,election_source_name,2018-03-04,2018-03-04,official election source label
 021085,Santa Cristina Valgardena/St. Christina in Gröden,historical_name,,1956-01-04,ISTAT SITUAS report 104
+021085,Santa Cristina Valgardena/St. Christina in Groeden,election_source_name,2014-05-25,2014-05-25,official election source label
 021085,ST. CHRISTINA,alternate_name,1927-01-12,1956-01-03,ANPR historical archive
 021085,ST. CHRISTINA IN GRÖDEN,alternate_name,1956-01-04,9999-12-31,ANPR historical archive
 021086,Sarentino,current_name,,2021-12-31,ISTAT geometry 2021
@@ -4561,11 +4601,13 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 021088,MÜHLWALD,alternate_name,1928-06-19,9999-12-31,ANPR historical archive
 021088,Selva dei Molini,current_name,,2021-12-31,ISTAT geometry 2021
 021088,Selva dei Molini/M_Hlwald,election_source_name,2018-03-04,2018-03-04,official election source label
+021088,Selva dei Molini/Muehlwald,election_source_name,2014-05-25,2014-05-25,official election source label
 021088,Selva dei Molini/Mühlwald,historical_name,,1920-10-16,ISTAT SITUAS report 100
 021089,SELVA,historical_name,1927-01-12,1955-03-01,ANPR historical archive
 021089,Selva di Val Gardena,current_name,,2021-12-31,ISTAT geometry 2021
 021089,Selva di Val Gardena/Wolkenstein in Gríden,election_source_name,2018-03-04,2018-03-04,official election source label
 021089,Selva di Val Gardena/Wolkenstein in Gröden,historical_name,,1955-03-02,ISTAT SITUAS report 104
+021089,Selva di Val Gardena/Wolkenstein in Groeden,election_source_name,2014-05-25,2014-05-25,official election source label
 021089,Selva in Gardena/Wolkenstein,historical_name,,1920-10-16,ISTAT SITUAS report 100
 021089,Selva/Wolkenstein,historical_name,,1923-04-27,ISTAT SITUAS report 104
 021089,WOLKENSTEIN,alternate_name,1927-01-12,1955-03-01,ANPR historical archive
@@ -4605,7 +4647,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 021098,TERMENO,historical_name,1948-03-14,1971-09-21,ANPR historical archive
 021098,Termeno sulla strada del vino,current_name,,2021-12-31,ISTAT geometry 2021
 021098,Termeno sulla strada del vino/Tramin an der Weinstraße,historical_name,,1971-09-22,ISTAT SITUAS report 104
-021098,Termeno sulla Strada del Vino/Tramin An Der Weinstrasse,election_source_name,2018-03-04,2018-03-04,official election source label
+021098,Termeno sulla Strada del Vino/Tramin An Der Weinstrasse,election_source_name,2014-05-25,2014-05-25,official election source label
 021098,Termeno/Tramin,historical_name,,1920-10-16,ISTAT SITUAS report 100
 021098,TRAMIN,alternate_name,1948-03-14,1971-09-21,ANPR historical archive
 021098,TRAMIN AN DER WEINSTRAßE,alternate_name,1971-09-22,1978-01-31,ANPR historical archive
@@ -4628,6 +4670,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 021103,TAUFERS IM MÜNSTERTAL,alternate_name,1927-01-12,9999-12-31,ANPR historical archive
 021103,Tubre,current_name,,2021-12-31,ISTAT geometry 2021
 021103,Tubre/Taufers Im M_Nstertal,election_source_name,2018-03-04,2018-03-04,official election source label
+021103,Tubre/Taufers Im Muenstertal,election_source_name,2014-05-25,2014-05-25,official election source label
 021103,Tubre/Taufers im Münstertal,historical_name,,1920-10-16,ISTAT SITUAS report 100
 021104,ULTEN,alternate_name,1927-01-12,1960-04-26,ANPR historical archive
 021104,Ultimo,current_name,,2021-12-31,ISTAT geometry 2021
@@ -4677,6 +4720,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 021111,Varna/Vahrn,historical_name,,1920-10-16,ISTAT SITUAS report 100
 021112,Verano,current_name,,2021-12-31,ISTAT geometry 2021
 021112,Verano/Víran,election_source_name,2018-03-04,2018-03-04,official election source label
+021112,Verano/Voeran,election_source_name,2014-05-25,2014-05-25,official election source label
 021112,Verano/Vöran,historical_name,,1920-10-16,ISTAT SITUAS report 100
 021112,VÖRAN,alternate_name,1927-01-12,9999-12-31,ANPR historical archive
 021113,NIEDERDORF,alternate_name,1927-01-12,9999-12-31,ANPR historical archive
@@ -4688,6 +4732,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 021115,Ceves/Tschöfs,historical_name,,1923-04-27,ISTAT SITUAS report 104
 021115,STERZING,alternate_name,1931-12-06,9999-12-31,ANPR historical archive
 021115,Tunes/Thuins,historical_name,,1920-10-16,ISTAT SITUAS report 100
+021115,Viiteno,election_source_name,1999-06-13,1999-06-13,official election source label
 021115,Vipiteno,current_name,,2021-12-31,ISTAT geometry 2021
 021115,Vipiteno/Sterzing,historical_name,,1920-10-16,ISTAT SITUAS report 100
 021115,Zedes/Tshöfs,historical_name,,1920-10-16,ISTAT SITUAS report 100
@@ -4727,6 +4772,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 022011,Bedollo,current_name,,2021-12-31,ISTAT geometry 2021
 022013,Besenello,current_name,,2021-12-31,ISTAT geometry 2021
 022015,Bieno,current_name,,2021-12-31,ISTAT geometry 2021
+022017,Bleggio Sueriore,election_source_name,1999-06-13,1999-06-13,official election source label
 022017,Bleggio Superiore,current_name,,2021-12-31,ISTAT geometry 2021
 022018,Bocenago,current_name,,2021-12-31,ISTAT geometry 2021
 022021,Bondone,current_name,,2021-12-31,ISTAT geometry 2021
@@ -4752,10 +4798,12 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 022034,Caldonazzo,current_name,,2021-12-31,ISTAT geometry 2021
 022034,Centa San Nicolò,historical_name,,1920-10-16,ISTAT SITUAS report 100
 022035,Calliano,current_name,,2021-12-31,ISTAT geometry 2021
+022035,Calliano Monferrato,election_source_name,2024-06-09,2024-06-09,official election source label
 022035,Calliano Tn,election_source_name,2006-04-09,2006-04-09,official election source label
 022036,Campitello,historical_name,,1926-03-02,ISTAT SITUAS report 98
 022036,Campitello di Fassa,current_name,,2021-12-31,ISTAT geometry 2021
 022036,CIAMPEDEL,alternate_name,1956-11-04,1999-12-07,ANPR historical archive
+022037,Camodenno,election_source_name,1999-06-13,1999-06-13,official election source label
 022037,Campodenno,current_name,,2021-12-31,ISTAT geometry 2021
 022038,Canal San Bovo,current_name,,2021-12-31,ISTAT geometry 2021
 022039,Campitello,historical_name,,1920-10-16,ISTAT SITUAS report 100
@@ -4958,6 +5006,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 022179,Mortaso,historical_name,,1920-10-16,ISTAT SITUAS report 100
 022179,Spiazzo,current_name,,2021-12-31,ISTAT geometry 2021
 022180,Cavedago,historical_name,,1920-10-16,ISTAT SITUAS report 100
+022180,Sormaggiore,election_source_name,1999-06-13,1999-06-13,official election source label
 022180,SPOR,historical_name,1930-02-07,1947-07-08,ANPR historical archive
 022180,Spormaggiore,current_name,,2021-12-31,ISTAT geometry 2021
 022180,Sporminore,historical_name,,1920-10-16,ISTAT SITUAS report 100
@@ -5232,6 +5281,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 023017,Caldiero,current_name,,2021-12-31,ISTAT geometry 2021
 023018,Caprino,historical_name,,1866-11-20,ISTAT SITUAS report 100
 023018,Caprino Veronese,current_name,,2021-12-31,ISTAT geometry 2021
+023018,Carino Veronese,election_source_name,1999-06-13,1999-06-13,official election source label
 023019,Casaleone,current_name,,2021-12-31,ISTAT geometry 2021
 023020,Castagnaro,current_name,,2021-12-31,ISTAT geometry 2021
 023021,Castel d'Azzano,current_name,,2021-12-31,ISTAT geometry 2021
@@ -5279,6 +5329,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 023048,Minerbe,current_name,,2021-12-31,ISTAT geometry 2021
 023049,Montecchia di Crosara,current_name,,2021-12-31,ISTAT geometry 2021
 023050,Monteforte,historical_name,,1866-11-20,ISTAT SITUAS report 100
+023050,Monteforte d'Alone,election_source_name,1999-06-13,1999-06-13,official election source label
 023050,Monteforte d'Alpone,current_name,,2021-12-31,ISTAT geometry 2021
 023051,Mozzecane,current_name,,2021-12-31,ISTAT geometry 2021
 023052,NEGRAR,historical_name,1929-01-24,2019-02-22,ANPR historical archive
@@ -5317,13 +5368,16 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 023074,Saline,historical_name,,1866-11-20,ISTAT SITUAS report 100
 023074,San Mauro di Saline,current_name,,2021-12-31,ISTAT geometry 2021
 023075,San Pietro di Morubio,current_name,,2021-12-31,ISTAT geometry 2021
+023076,San Ietro in Cariano,election_source_name,1999-06-13,1999-06-13,official election source label
 023076,San Pietro in Cariano,current_name,,2021-12-31,ISTAT geometry 2021
 023077,Sant'Ambrogio,historical_name,,1866-11-20,ISTAT SITUAS report 100
+023077,Sant'Ambrogio di Valolicella,election_source_name,1999-06-13,1999-06-13,official election source label
 023077,Sant'Ambrogio di Valpolicella,current_name,,2021-12-31,ISTAT geometry 2021
 023078,Sant'Anna d'Alfaedo,current_name,,2021-12-31,ISTAT geometry 2021
 023079,San Zeno di Montagna,current_name,,2021-12-31,ISTAT geometry 2021
 023080,Selva di Progno,current_name,,2021-12-31,ISTAT geometry 2021
 023081,Soave,current_name,,2021-12-31,ISTAT geometry 2021
+023082,Sommacamagna,election_source_name,1999-06-13,1999-06-13,official election source label
 023082,Sommacampagna,current_name,,2021-12-31,ISTAT geometry 2021
 023083,Sona,current_name,,2021-12-31,ISTAT geometry 2021
 023084,Sorgà,current_name,,2021-12-31,ISTAT geometry 2021
@@ -5399,6 +5453,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 024026,Cassola,current_name,,2021-12-31,ISTAT geometry 2021
 024027,Castegnero,current_name,,2021-12-31,ISTAT geometry 2021
 024028,Castelgomberto,current_name,,2021-12-31,ISTAT geometry 2021
+024029,Chiamo,election_source_name,1999-06-13,1999-06-13,official election source label
 024029,Chiampo,current_name,,2021-12-31,ISTAT geometry 2021
 024030,Chiuppano,current_name,,2021-12-31,ISTAT geometry 2021
 024032,Cogollo,historical_name,,1866-11-20,ISTAT SITUAS report 100
@@ -5559,6 +5614,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 025014,Colle Santa Lucia,current_name,,2021-12-31,ISTAT geometry 2021
 025015,Comelico Superiore,current_name,,2021-12-31,ISTAT geometry 2021
 025016,Ampezzo,historical_name,,1920-10-16,ISTAT SITUAS report 100
+025016,Cortina d'Amezzo,election_source_name,1999-06-13,1999-06-13,official election source label
 025016,Cortina d'Ampezzo,current_name,,2021-12-31,ISTAT geometry 2021
 025017,DANTA,historical_name,1866-11-19,1984-12-14,ANPR historical archive
 025017,Danta di Cadore,current_name,,2021-12-31,ISTAT geometry 2021
@@ -5702,6 +5758,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 026036,Loria,current_name,,2021-12-31,ISTAT geometry 2021
 026037,Mansuè,current_name,,2021-12-31,ISTAT geometry 2021
 026038,Mareno,historical_name,,1866-11-20,ISTAT SITUAS report 100
+026038,Mareno di Iave,election_source_name,1999-06-13,1999-06-13,official election source label
 026038,Mareno di Piave,current_name,,2021-12-31,ISTAT geometry 2021
 026039,Maser,current_name,,2021-12-31,ISTAT geometry 2021
 026040,Maserada,historical_name,,1866-11-20,ISTAT SITUAS report 100
@@ -5748,6 +5805,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 026067,Revine Lago,current_name,,2021-12-31,ISTAT geometry 2021
 026067,San Giorgio di Lago,historical_name,,1868-01-11,ISTAT SITUAS report 104
 026068,RIESE,historical_name,1866-11-19,1952-03-27,ANPR historical archive
+026068,Riese Io X,election_source_name,1999-06-13,1999-06-13,official election source label
 026068,Riese Pio X,current_name,,2021-12-31,ISTAT geometry 2021
 026069,Roncade,current_name,,2021-12-31,ISTAT geometry 2021
 026070,Salgareda,current_name,,2021-12-31,ISTAT geometry 2021
@@ -5757,6 +5815,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 026074,San Polo,historical_name,,1866-11-20,ISTAT SITUAS report 100
 026074,San Polo di Piave,current_name,,2021-12-31,ISTAT geometry 2021
 026075,Santa Lucia,historical_name,,1866-11-20,ISTAT SITUAS report 100
+026075,Santa Lucia di Iave,election_source_name,1999-06-13,1999-06-13,official election source label
 026075,Santa Lucia di Piave,current_name,,2021-12-31,ISTAT geometry 2021
 026076,San Vendemiano,current_name,,2021-12-31,ISTAT geometry 2021
 026077,San Zenone,historical_name,,1866-11-20,ISTAT SITUAS report 100
@@ -5768,6 +5827,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 026081,Melma,historical_name,,1866-11-20,ISTAT SITUAS report 100
 026081,Silea,current_name,,2021-12-31,ISTAT geometry 2021
 026082,Spresiano,current_name,,2021-12-31,ISTAT geometry 2021
+026082,Sresiano,election_source_name,1999-06-13,1999-06-13,official election source label
 026083,Susegana,current_name,,2021-12-31,ISTAT geometry 2021
 026084,Tarzo,current_name,,2021-12-31,ISTAT geometry 2021
 026085,Trevignano,current_name,,2021-12-31,ISTAT geometry 2021
@@ -5801,6 +5861,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 027002,Campagna Lupia,current_name,,2021-12-31,ISTAT geometry 2021
 027003,Campolongo,historical_name,,1866-11-20,ISTAT SITUAS report 100
 027003,Campolongo Maggiore,current_name,,2021-12-31,ISTAT geometry 2021
+027004,Camonogara,election_source_name,1999-06-13,1999-06-13,official election source label
 027004,Camponogara,current_name,,2021-12-31,ISTAT geometry 2021
 027005,Caorle,current_name,,2021-12-31,ISTAT geometry 2021
 027006,Cavarzere,current_name,,2021-12-31,ISTAT geometry 2021
@@ -5820,6 +5881,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 027015,Fossalta,historical_name,,1866-11-20,ISTAT SITUAS report 100
 027015,Fossalta di Piave,current_name,,2021-12-31,ISTAT geometry 2021
 027016,Fossalta,historical_name,,1866-11-20,ISTAT SITUAS report 100
+027016,Fossalta di Ortogruaro,election_source_name,1999-06-13,1999-06-13,official election source label
 027016,Fossalta di Portogruaro,current_name,,2021-12-31,ISTAT geometry 2021
 027017,Fossò,current_name,,2021-12-31,ISTAT geometry 2021
 027018,Gruaro,current_name,,2021-12-31,ISTAT geometry 2021
@@ -5833,6 +5895,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 027023,Oriago,historical_name,,1866-11-20,ISTAT SITUAS report 100
 027024,Mirano,current_name,,2021-12-31,ISTAT geometry 2021
 027025,Musile,historical_name,,1866-11-20,ISTAT SITUAS report 100
+027025,Musile di Iave,election_source_name,1999-06-13,1999-06-13,official election source label
 027025,Musile di Piave,current_name,,2021-12-31,ISTAT geometry 2021
 027026,Noale,current_name,,2021-12-31,ISTAT geometry 2021
 027027,Noventa,historical_name,,1866-11-20,ISTAT SITUAS report 100
@@ -5892,9 +5955,11 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 028014,Bovolenta,current_name,,2021-12-31,ISTAT geometry 2021
 028015,Brugine,current_name,,2021-12-31,ISTAT geometry 2021
 028016,Cadoneghe,current_name,,2021-12-31,ISTAT geometry 2021
+028017,Camodarsego,election_source_name,1999-06-13,1999-06-13,official election source label
 028017,Campodarsego,current_name,,2021-12-31,ISTAT geometry 2021
 028018,Campodoro,current_name,,2021-12-31,ISTAT geometry 2021
 028018,Campolongo,historical_name,,1866-11-20,ISTAT SITUAS report 100
+028019,Camosamiero,election_source_name,1999-06-13,1999-06-13,official election source label
 028019,Camposampiero,current_name,,2021-12-31,ISTAT geometry 2021
 028020,Campo San Martino,current_name,,2021-12-31,ISTAT geometry 2021
 028021,Candiana,current_name,,2021-12-31,ISTAT geometry 2021
@@ -5943,6 +6008,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 028057,San Pietro Montagnon,historical_name,,1919-04-23,ISTAT SITUAS report 103
 028058,Noventa,historical_name,,1866-11-20,ISTAT SITUAS report 100
 028058,Noventa Padovana,current_name,,2021-12-31,ISTAT geometry 2021
+028059,Osedaletto Euganeo,election_source_name,1999-06-13,1999-06-13,official election source label
 028059,Ospedaletto,historical_name,,1866-11-20,ISTAT SITUAS report 100
 028059,Ospedaletto Euganeo,current_name,,2021-12-31,ISTAT geometry 2021
 028060,Padova,current_name,,2021-12-31,ISTAT geometry 2021
@@ -5962,6 +6028,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 028071,Rovolon,current_name,,2021-12-31,ISTAT geometry 2021
 028072,Rubano,current_name,,2021-12-31,ISTAT geometry 2021
 028073,Saccolongo,current_name,,2021-12-31,ISTAT geometry 2021
+028075,San Giorgio delle Ertiche,election_source_name,1999-06-13,1999-06-13,official election source label
 028075,San Giorgio delle Pertiche,current_name,,2021-12-31,ISTAT geometry 2021
 028076,San Giorgio in Bosco,current_name,,2021-12-31,ISTAT geometry 2021
 028077,San Martino di Lupari,current_name,,2021-12-31,ISTAT geometry 2021
@@ -5995,6 +6062,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 028102,Villa di Villa,historical_name,,1866-11-20,ISTAT SITUAS report 100
 028102,Villa Estense,current_name,,2021-12-31,ISTAT geometry 2021
 028103,Villafranca,historical_name,,1866-11-20,ISTAT SITUAS report 100
+028103,Villafranca Adovana,election_source_name,1999-06-13,1999-06-13,official election source label
 028103,Villafranca Padovana,current_name,,2021-12-31,ISTAT geometry 2021
 028104,Villanova,historical_name,,1866-11-20,ISTAT SITUAS report 100
 028104,Villanova di Camposampiero,current_name,,2021-12-31,ISTAT geometry 2021
@@ -6002,6 +6070,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 028106,CARRARA SAN GIORGIO,historical_name,1866-11-19,1995-04-07,ANPR historical archive
 028106,CARRARA SANTO STEFANO,historical_name,1866-11-19,1995-04-07,ANPR historical archive
 028106,Due Carrare,current_name,,2021-12-31,ISTAT geometry 2021
+028106,Duedue Carrare,election_source_name,1999-06-13,1999-06-13,official election source label
 028107,Borgo Veneto,current_name,,2021-12-31,ISTAT geometry 2021
 028107,MEGLIADINO SAN FIDENZIO,historical_name,1866-11-19,2018-02-16,ANPR historical archive
 028107,SALETTO,historical_name,1866-11-19,2018-02-16,ANPR historical archive
@@ -6010,6 +6079,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 029001,Adria,current_name,,2021-12-31,ISTAT geometry 2021
 029001,Bottrighe,historical_name,,1866-11-20,ISTAT SITUAS report 100
 029002,Ariano,historical_name,,1866-11-20,ISTAT SITUAS report 100
+029002,Ariano Nel Olesine,election_source_name,1999-06-13,1999-06-13,official election source label
 029002,Ariano nel Polesine,current_name,,2021-12-31,ISTAT geometry 2021
 029003,Arquà,historical_name,,1866-11-20,ISTAT SITUAS report 100
 029003,Arquà Polesine,current_name,,2021-12-31,ISTAT geometry 2021
@@ -6081,6 +6151,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 029044,San Martino,historical_name,,1866-11-20,ISTAT SITUAS report 100
 029044,San Martino di Venezze,current_name,,2021-12-31,ISTAT geometry 2021
 029045,Stienta,current_name,,2021-12-31,ISTAT geometry 2021
+029046,Taglio di O,election_source_name,1999-06-13,1999-06-13,official election source label
 029046,Taglio di Po,current_name,,2021-12-31,ISTAT geometry 2021
 029047,Trecenta,current_name,,2021-12-31,ISTAT geometry 2021
 029048,Villadose,current_name,,2021-12-31,ISTAT geometry 2021
@@ -6186,6 +6257,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 030039,Flaibano,current_name,,2021-12-31,ISTAT geometry 2021
 030039,Sant'Odorico,historical_name,,1866-11-20,ISTAT SITUAS report 100
 030040,Cividale del Friuli,historical_name,,1968-04-06,ISTAT SITUAS report 105
+030040,Forni A Voltri,election_source_name,1979-06-10,1979-06-10,official election source label
 030040,Forni Avoltri,current_name,,2021-12-31,ISTAT geometry 2021
 030041,Claut,historical_name,,1968-04-06,ISTAT SITUAS report 105
 030041,Forni di Sopra,current_name,,2021-12-31,ISTAT geometry 2021
@@ -6278,6 +6350,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 030077,Porpetto,current_name,,2021-12-31,ISTAT geometry 2021
 030078,Malborghetto Valbruna,historical_name,,1968-04-06,ISTAT SITUAS report 105
 030078,Povoletto,current_name,,2021-12-31,ISTAT geometry 2021
+030078,Povoletto M,election_source_name,1999-06-13,1999-06-13,official election source label
 030079,Maniago,historical_name,,1968-04-06,ISTAT SITUAS report 105
 030079,Pozzuolo,historical_name,,1866-11-20,ISTAT SITUAS report 100
 030079,Pozzuolo del Friuli,current_name,,2021-12-31,ISTAT geometry 2021
@@ -6311,6 +6384,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 030090,Reana del Rojale,current_name,,2021-12-31,ISTAT geometry 2021
 030091,Moruzzo,historical_name,,1968-04-06,ISTAT SITUAS report 105
 030091,Remanzacco,current_name,,2021-12-31,ISTAT geometry 2021
+030091,Remanzacco M,election_source_name,1999-06-13,1999-06-13,official election source label
 030092,Muzzana del Turgnano,historical_name,,1968-04-06,ISTAT SITUAS report 105
 030092,Resia,current_name,,2021-12-31,ISTAT geometry 2021
 030093,Nimis,historical_name,,1968-04-06,ISTAT SITUAS report 105
@@ -6535,6 +6609,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 033007,Cadeo,current_name,,2021-12-31,ISTAT geometry 2021
 033008,Calendasco,current_name,,2021-12-31,ISTAT geometry 2021
 033010,Caorso,current_name,,2021-12-31,ISTAT geometry 2021
+033011,Caraneto Iacentino,election_source_name,1999-06-13,1999-06-13,official election source label
 033011,Carpaneto,historical_name,,1929-10-06,ISTAT SITUAS report 104
 033011,Carpaneto Piacentino,current_name,,2021-12-31,ISTAT geometry 2021
 033012,Castell'Arquato,current_name,,2021-12-31,ISTAT geometry 2021
@@ -6559,6 +6634,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 033025,Gropparello,current_name,,2021-12-31,ISTAT geometry 2021
 033026,Lugagnano,historical_name,,1862-12-20,ISTAT SITUAS report 104
 033026,Lugagnano Val d'Arda,current_name,,2021-12-31,ISTAT geometry 2021
+033026,Lugagnano Val Darda,election_source_name,1979-06-10,1979-06-10,official election source label
 033027,Monticelli,historical_name,,1863-02-21,ISTAT SITUAS report 104
 033027,Monticelli d'Ongina,current_name,,2021-12-31,ISTAT geometry 2021
 033028,Morfasso,current_name,,2021-12-31,ISTAT geometry 2021
@@ -6623,6 +6699,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 034016,Fontevivo,current_name,,2021-12-31,ISTAT geometry 2021
 034017,Fornovo,historical_name,,1862-12-20,ISTAT SITUAS report 104
 034017,Fornovo di Taro,current_name,,2021-12-31,ISTAT geometry 2021
+034017,Fornovodi Taro,election_source_name,1979-06-10,1979-06-10,official election source label
 034018,Langhirano,current_name,,2021-12-31,ISTAT geometry 2021
 034019,Lesignano de' Bagni,current_name,,2021-12-31,ISTAT geometry 2021
 034020,Medesano,current_name,,2021-12-31,ISTAT geometry 2021
@@ -6675,12 +6752,14 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 034051,Sorbolo Mezzani,current_name,,2021-12-31,ISTAT geometry 2021
 035001,Albinea,current_name,,2021-12-31,ISTAT geometry 2021
 035002,Bagnolo,historical_name,,1862-11-08,ISTAT SITUAS report 104
+035002,Bagnolo in Iano,election_source_name,1999-06-13,1999-06-13,official election source label
 035002,Bagnolo in Piano,current_name,,2021-12-31,ISTAT geometry 2021
 035003,Baiso,current_name,,2021-12-31,ISTAT geometry 2021
 035004,Bibbiano,current_name,,2021-12-31,ISTAT geometry 2021
 035005,Boretto,current_name,,2021-12-31,ISTAT geometry 2021
 035006,Brescello,current_name,,2021-12-31,ISTAT geometry 2021
 035008,Cadelbosco di Sopra,current_name,,2021-12-31,ISTAT geometry 2021
+035008,Cadelbosco di Sora,election_source_name,1999-06-13,1999-06-13,official election source label
 035009,Campagnola,historical_name,,1862-11-08,ISTAT SITUAS report 104
 035009,Campagnola Emilia,current_name,,2021-12-31,ISTAT geometry 2021
 035010,Campegine,current_name,,2021-12-31,ISTAT geometry 2021
@@ -6732,7 +6811,9 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 035046,RAMISETO,historical_name,1873-01-20,2015-12-31,ANPR historical archive
 035046,Ventasso,current_name,,2021-12-31,ISTAT geometry 2021
 036001,Bastiglia,current_name,,2021-12-31,ISTAT geometry 2021
+036002,Bomorto,election_source_name,1999-06-13,1999-06-13,official election source label
 036002,Bomporto,current_name,,2021-12-31,ISTAT geometry 2021
+036003,Camogalliano,election_source_name,1999-06-13,1999-06-13,official election source label
 036003,Campogalliano,current_name,,2021-12-31,ISTAT geometry 2021
 036004,Camposanto,current_name,,2021-12-31,ISTAT geometry 2021
 036005,Carpi,current_name,,2021-12-31,ISTAT geometry 2021
@@ -6781,16 +6862,19 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 036036,San Cesario,historical_name,,1863-01-24,ISTAT SITUAS report 104
 036036,San Cesario sul Panaro,current_name,,2021-12-31,ISTAT geometry 2021
 036037,San Felice,historical_name,,1863-01-24,ISTAT SITUAS report 104
+036037,San Felice sul Anaro,election_source_name,1999-06-13,1999-06-13,official election source label
 036037,San Felice sul Panaro,current_name,,2021-12-31,ISTAT geometry 2021
 036038,San Possidonio,current_name,,2021-12-31,ISTAT geometry 2021
 036039,San Prospero,current_name,,2021-12-31,ISTAT geometry 2021
 036040,Sassuolo,current_name,,2021-12-31,ISTAT geometry 2021
 036041,Savignano,historical_name,,1863-01-24,ISTAT SITUAS report 104
+036041,Savignano sul Anaro,election_source_name,1999-06-13,1999-06-13,official election source label
 036041,Savignano sul Panaro,current_name,,2021-12-31,ISTAT geometry 2021
 036042,MONFESTINO IN SERRAMAZZONI,historical_name,1861-03-17,1948-03-14,ANPR historical archive
 036042,Serramazzoni,current_name,,2021-12-31,ISTAT geometry 2021
 036043,Sestola,current_name,,2021-12-31,ISTAT geometry 2021
 036044,Soliera,current_name,,2021-12-31,ISTAT geometry 2021
+036045,Silamberto,election_source_name,1999-06-13,1999-06-13,official election source label
 036045,Spilamberto,current_name,,2021-12-31,ISTAT geometry 2021
 036046,Vignola,current_name,,2021-12-31,ISTAT geometry 2021
 036047,Zocca,current_name,,2021-12-31,ISTAT geometry 2021
@@ -6823,6 +6907,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 037020,Castel San Pietro Terme,current_name,,2021-12-31,ISTAT geometry 2021
 037021,Castenaso,current_name,,2021-12-31,ISTAT geometry 2021
 037022,Castiglione,historical_name,,1863-06-14,ISTAT SITUAS report 104
+037022,Castiglione dei Eoli,election_source_name,1999-06-13,1999-06-13,official election source label
 037022,Castiglione dei Pepoli,current_name,,2021-12-31,ISTAT geometry 2021
 037024,Crevalcore,current_name,,2021-12-31,ISTAT geometry 2021
 037025,Dozza,current_name,,2021-12-31,ISTAT geometry 2021
@@ -6849,6 +6934,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 037039,Molinella,current_name,,2021-12-31,ISTAT geometry 2021
 037040,Monghidoro,current_name,,2021-12-31,ISTAT geometry 2021
 037041,Monterenzio,current_name,,2021-12-31,ISTAT geometry 2021
+037042,Monte San Ietro,election_source_name,1999-06-13,1999-06-13,official election source label
 037042,Monte San Pietro,current_name,,2021-12-31,ISTAT geometry 2021
 037044,Monzuno,current_name,,2021-12-31,ISTAT geometry 2021
 037045,Mordano,current_name,,2021-12-31,ISTAT geometry 2021
@@ -6861,11 +6947,13 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 037051,Pian del Voglio,historical_name,,1862-11-30,ISTAT SITUAS report 104
 037051,Piano,historical_name,,1862-11-30,ISTAT SITUAS report 104
 037051,San Benedetto Val di Sambro,current_name,,2021-12-31,ISTAT geometry 2021
+037052,San Giorgio di Iano,election_source_name,1999-06-13,1999-06-13,official election source label
 037052,San Giorgio di Piano,current_name,,2021-12-31,ISTAT geometry 2021
 037053,Persiceto,historical_name,,1912-08-24,ISTAT SITUAS report 104
 037053,San Giovanni in Persiceto,current_name,,2021-12-31,ISTAT geometry 2021
 037054,San Lazzaro,historical_name,,1862-11-30,ISTAT SITUAS report 104
 037054,San Lazzaro di Savena,current_name,,2021-12-31,ISTAT geometry 2021
+037055,San Ietro in Casale,election_source_name,1999-06-13,1999-06-13,official election source label
 037055,San Pietro in Casale,current_name,,2021-12-31,ISTAT geometry 2021
 037056,Sant'Agata,historical_name,,1862-11-30,ISTAT SITUAS report 104
 037056,Sant'Agata Bolognese,current_name,,2021-12-31,ISTAT geometry 2021
@@ -6876,6 +6964,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 037060,Zola Predosa,current_name,,2021-12-31,ISTAT geometry 2021
 037061,BAZZANO,historical_name,1861-03-17,2013-12-31,ANPR historical archive
 037061,CASTELLO DI SERRAVALLE,historical_name,1862-12-19,2013-12-31,ANPR historical archive
+037061,Cresellano,election_source_name,1999-06-13,1999-06-13,official election source label
 037061,CRESPELLANO,historical_name,1861-03-17,1981-12-19,ANPR historical archive
 037061,MONTEVEGLIO,historical_name,1861-03-17,2013-12-31,ANPR historical archive
 037061,SAVIGNO,historical_name,1910-05-20,2013-12-31,ANPR historical archive
@@ -6901,6 +6990,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 038014,Mesola,current_name,,2021-12-31,ISTAT geometry 2021
 038017,Ostellato,current_name,,2021-12-31,ISTAT geometry 2021
 038018,Poggio Renatico,current_name,,2021-12-31,ISTAT geometry 2021
+038019,Porto Maggiore,election_source_name,1979-06-10,1979-06-10,official election source label
 038019,Portomaggiore,current_name,,2021-12-31,ISTAT geometry 2021
 038022,Vigarano Mainarda,current_name,,2021-12-31,ISTAT geometry 2021
 038023,Voghiera,current_name,,2021-12-31,ISTAT geometry 2021
@@ -6955,6 +7045,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 040009,Civitella di Romagna,current_name,,2021-12-31,ISTAT geometry 2021
 040011,Dovadola,current_name,,2021-12-31,ISTAT geometry 2021
 040012,Forlì,current_name,,2021-12-31,ISTAT geometry 2021
+040013,Forlimooli,election_source_name,1999-06-13,1999-06-13,official election source label
 040013,Forlimpopoli,current_name,,2021-12-31,ISTAT geometry 2021
 040014,Galeata,current_name,,2021-12-31,ISTAT geometry 2021
 040015,Gambettola,current_name,,2021-12-31,ISTAT geometry 2021
@@ -6973,6 +7064,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 040036,Rocca San Casciano,current_name,,2021-12-31,ISTAT geometry 2021
 040037,Roncofreddo,current_name,,2021-12-31,ISTAT geometry 2021
 040041,San Mauro,historical_name,,1862-12-18,ISTAT SITUAS report 104
+040041,San Mauro Ascoli,election_source_name,1999-06-13,1999-06-13,official election source label
 040041,San Mauro di Roma,historical_name,,1862-12-18,ISTAT SITUAS report 104
 040041,San Mauro di Romagna,historical_name,,1863-02-06,ISTAT SITUAS report 104
 040041,San Mauro Pascoli,current_name,,2021-12-31,ISTAT geometry 2021
@@ -7131,6 +7223,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 042038,Polverigi,current_name,,2021-12-31,ISTAT geometry 2021
 042040,Rosora,current_name,,2021-12-31,ISTAT geometry 2021
 042041,San Marcello,current_name,,2021-12-31,ISTAT geometry 2021
+042041,San Marcello Piteglio,election_source_name,1999-06-13,1999-06-13,official election source label
 042042,San Paolo di Jesi,current_name,,2021-12-31,ISTAT geometry 2021
 042043,Santa Maria Nuova,current_name,,2021-12-31,ISTAT geometry 2021
 042044,Sassoferrato,current_name,,2021-12-31,ISTAT geometry 2021
@@ -7267,6 +7360,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 044038,Montegallo,current_name,,2021-12-31,ISTAT geometry 2021
 044044,Montemonaco,current_name,,2021-12-31,ISTAT geometry 2021
 044045,Monteprandone,current_name,,2021-12-31,ISTAT geometry 2021
+044045,Monterandone,election_source_name,1999-06-13,1999-06-13,official election source label
 044054,Offida,current_name,,2021-12-31,ISTAT geometry 2021
 044056,Palmiano,current_name,,2021-12-31,ISTAT geometry 2021
 044063,Ripatransone,current_name,,2021-12-31,ISTAT geometry 2021
@@ -7342,6 +7436,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 046037,Sillano Giuncugnano,current_name,,2021-12-31,ISTAT geometry 2021
 047002,Agliana,current_name,,2021-12-31,ISTAT geometry 2021
 047003,Buggiano,current_name,,2021-12-31,ISTAT geometry 2021
+047005,Lamorecchio,election_source_name,1999-06-13,1999-06-13,official election source label
 047005,Lamporecchio,current_name,,2021-12-31,ISTAT geometry 2021
 047006,Larciano,current_name,,2021-12-31,ISTAT geometry 2021
 047007,Marliana,current_name,,2021-12-31,ISTAT geometry 2021
@@ -7350,6 +7445,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 047009,Monsummano Terme,current_name,,2021-12-31,ISTAT geometry 2021
 047010,Montale,current_name,,2021-12-31,ISTAT geometry 2021
 047011,Bagni di Montecatini,historical_name,,1905-07-30,ISTAT SITUAS report 103
+047011,Monte Catini Terme,election_source_name,1979-06-10,1979-06-10,official election source label
 047011,Montecatini di Val di Nievole,historical_name,,1905-07-30,ISTAT SITUAS report 103
 047011,Montecatini-Terme,current_name,,2021-12-31,ISTAT geometry 2021
 047012,Pescia,current_name,,2021-12-31,ISTAT geometry 2021
@@ -7399,6 +7495,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 048025,Londa,current_name,,2021-12-31,ISTAT geometry 2021
 048026,Marradi,current_name,,2021-12-31,ISTAT geometry 2021
 048027,Montaione,current_name,,2021-12-31,ISTAT geometry 2021
+048028,Monteluo Fiorentino,election_source_name,1999-06-13,1999-06-13,official election source label
 048028,Montelupo,historical_name,,1863-06-14,ISTAT SITUAS report 104
 048028,Montelupo Fiorentino,current_name,,2021-12-31,ISTAT geometry 2021
 048030,Montespertoli,current_name,,2021-12-31,ISTAT geometry 2021
@@ -7426,15 +7523,19 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 048052,Incisa,historical_name,,1863-06-14,ISTAT SITUAS report 104
 048052,INCISA IN VAL D'ARNO,historical_name,1863-04-13,2013-12-31,ANPR historical archive
 048053,SAN PIERO A SIEVE,historical_name,1861-03-17,2013-12-31,ANPR historical archive
+048053,Scareria,election_source_name,1999-06-13,1999-06-13,official election source label
 048053,SCARPERIA,historical_name,1861-03-17,2013-12-31,ANPR historical archive
 048053,Scarperia e San Piero,current_name,,2021-12-31,ISTAT geometry 2021
 048054,Barberino Tavarnelle,current_name,,2021-12-31,ISTAT geometry 2021
 048054,BARBERINO VAL D'ELSA,historical_name,1893-01-02,2018-12-31,ANPR historical archive
 048054,Tavarnelle,historical_name,,1893-05-01,ISTAT SITUAS report 103
+048054,Tavarnelle Val di Esa,election_source_name,1999-06-13,1999-06-13,official election source label
 048054,TAVARNELLE VAL DI PESA,historical_name,1909-04-14,2018-12-31,ANPR historical archive
 049001,Bibbona,current_name,,2021-12-31,ISTAT geometry 2021
+049002,Camiglia Marittima,election_source_name,1999-06-13,1999-06-13,official election source label
 049002,Campiglia,historical_name,,1862-11-08,ISTAT SITUAS report 104
 049002,Campiglia Marittima,current_name,,2021-12-31,ISTAT geometry 2021
+049003,Campo Dell'Elba,election_source_name,1989-06-18,1989-06-18,official election source label
 049003,Campo nell'Elba,current_name,,2021-12-31,ISTAT geometry 2021
 049004,Capoliveri,current_name,,2021-12-31,ISTAT geometry 2021
 049005,Capraia Isola,current_name,,2021-12-31,ISTAT geometry 2021
@@ -7481,6 +7582,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 050020,Montescudaio,current_name,,2021-12-31,ISTAT geometry 2021
 050021,Monteverdi,historical_name,,1920-07-31,ISTAT SITUAS report 104
 050021,Monteverdi Marittimo,current_name,,2021-12-31,ISTAT geometry 2021
+050022,Montooli in Val d'Arno,election_source_name,1999-06-13,1999-06-13,official election source label
 050022,Montopoli,historical_name,,1863-06-14,ISTAT SITUAS report 104
 050022,Montopoli in Val d'Arno,current_name,,2021-12-31,ISTAT geometry 2021
 050023,Orciano Pisano,current_name,,2021-12-31,ISTAT geometry 2021
@@ -7500,6 +7602,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 050035,Santa Maria a Monte,current_name,,2021-12-31,ISTAT geometry 2021
 050036,Terricciola,current_name,,2021-12-31,ISTAT geometry 2021
 050037,Vecchiano,current_name,,2021-12-31,ISTAT geometry 2021
+050038,Vicoisano,election_source_name,1999-06-13,1999-06-13,official election source label
 050038,Vicopisano,current_name,,2021-12-31,ISTAT geometry 2021
 050039,Volterra,current_name,,2021-12-31,ISTAT geometry 2021
 050040,BAGNI DI CASCIANA,historical_name,1927-12-04,1956-08-14,ANPR historical archive
@@ -7580,6 +7683,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 052013,Gaiole,historical_name,,1911-06-14,ISTAT SITUAS report 104
 052013,Gaiole in Chianti,current_name,,2021-12-31,ISTAT geometry 2021
 052015,Montepulciano,current_name,,2021-12-31,ISTAT geometry 2021
+052015,Monteulciano,election_source_name,1999-06-13,1999-06-13,official election source label
 052016,Monteriggioni,current_name,,2021-12-31,ISTAT geometry 2021
 052017,Monteroni,historical_name,,1862-10-29,ISTAT SITUAS report 104
 052017,Monteroni d'Arbia,current_name,,2021-12-31,ISTAT geometry 2021
@@ -7592,6 +7696,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 052023,Radda in Chianti,current_name,,2021-12-31,ISTAT geometry 2021
 052024,Radicofani,current_name,,2021-12-31,ISTAT geometry 2021
 052025,Radicondoli,current_name,,2021-12-31,ISTAT geometry 2021
+052026,Raolano Terme,election_source_name,1999-06-13,1999-06-13,official election source label
 052026,RAPOLANO,historical_name,1861-03-17,1949-09-08,ANPR historical archive
 052026,Rapolano Terme,current_name,,2021-12-31,ISTAT geometry 2021
 052027,San Casciano dei Bagni,current_name,,2021-12-31,ISTAT geometry 2021
@@ -7609,11 +7714,13 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 052036,Trequanda,current_name,,2021-12-31,ISTAT geometry 2021
 052037,Montalcino,current_name,,2021-12-31,ISTAT geometry 2021
 052037,SAN GIOVANNI D'ASSO,historical_name,1877-07-16,2016-12-31,ANPR historical archive
+052037,San Giovanni di Fassa,election_source_name,1999-06-13,1999-06-13,official election source label
 053001,Arcidosso,current_name,,2021-12-31,ISTAT geometry 2021
 053002,Campagnatico,current_name,,2021-12-31,ISTAT geometry 2021
 053003,Capalbio,current_name,,2021-12-31,ISTAT geometry 2021
 053004,Castel del Piano,current_name,,2021-12-31,ISTAT geometry 2021
 053005,Castell'Azzara,current_name,,2021-12-31,ISTAT geometry 2021
+053005,Castellazzara,election_source_name,1979-06-10,1979-06-10,official election source label
 053006,Castiglione della Pescaia,current_name,,2021-12-31,ISTAT geometry 2021
 053007,Cinigiano,current_name,,2021-12-31,ISTAT geometry 2021
 053008,Civitella Paganico,current_name,,2021-12-31,ISTAT geometry 2021
@@ -8071,10 +8178,12 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 058058,Mazzano Romano,current_name,,2021-12-31,ISTAT geometry 2021
 058059,Mentana,current_name,,2021-12-31,ISTAT geometry 2021
 058060,Monte Compatri,current_name,,2021-12-31,ISTAT geometry 2021
+058060,Montecomatri,election_source_name,1999-06-13,1999-06-13,official election source label
 058060,Montecompatri,election_source_name,1946-06-02,1946-06-02,official election source label
 058061,Monteflavio,current_name,,2021-12-31,ISTAT geometry 2021
 058062,Montelanico,current_name,,2021-12-31,ISTAT geometry 2021
 058063,Montelibretti,current_name,,2021-12-31,ISTAT geometry 2021
+058064,Monte Orzio Catone,election_source_name,1999-06-13,1999-06-13,official election source label
 058064,Monte Porzio,historical_name,,1871-01-15,ISTAT SITUAS report 100
 058064,Monte Porzio Catone,current_name,,2021-12-31,ISTAT geometry 2021
 058065,Monterotondo,current_name,,2021-12-31,ISTAT geometry 2021
@@ -8106,6 +8215,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 058086,Rocca di Papa,current_name,,2021-12-31,ISTAT geometry 2021
 058087,Roccagiovine,current_name,,2021-12-31,ISTAT geometry 2021
 058088,Rocca Priora,current_name,,2021-12-31,ISTAT geometry 2021
+058088,Rocca Riora,election_source_name,1999-06-13,1999-06-13,official election source label
 058089,Rocca Santo Stefano,current_name,,2021-12-31,ISTAT geometry 2021
 058090,Roiate,current_name,,2021-12-31,ISTAT geometry 2021
 058091,Roma,current_name,,2021-12-31,ISTAT geometry 2021
@@ -8264,6 +8374,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 060043,Isola del Liri,current_name,,2021-12-31,ISTAT geometry 2021
 060043,Isola presso Sora,historical_name,,1863-09-20,ISTAT SITUAS report 104
 060044,Monte San Giovanni,historical_name,,1871-01-15,ISTAT SITUAS report 100
+060044,Monte San Giovanni Camano,election_source_name,1999-06-13,1999-06-13,official election source label
 060044,Monte San Giovanni Campano,current_name,,2021-12-31,ISTAT geometry 2021
 060045,Morolo,current_name,,2021-12-31,ISTAT geometry 2021
 060046,Paliano,current_name,,2021-12-31,ISTAT geometry 2021
@@ -8296,6 +8407,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 060066,Sant'Andrea del Garigliano,current_name,,2021-12-31,ISTAT geometry 2021
 060067,Sant'Apollinare,current_name,,2021-12-31,ISTAT geometry 2021
 060068,Sant'Elia,historical_name,,1862-10-15,ISTAT SITUAS report 104
+060068,Sant'Elia Fiumeraido,election_source_name,1999-06-13,1999-06-13,official election source label
 060068,Sant'Elia Fiumerapido,current_name,,2021-12-31,ISTAT geometry 2021
 060069,Santopadre,current_name,,2021-12-31,ISTAT geometry 2021
 060070,San Vittore,historical_name,,1862-12-20,ISTAT SITUAS report 104
@@ -8356,6 +8468,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 061019,Casal di Principe,current_name,,2021-12-31,ISTAT geometry 2021
 061020,Casaluce,current_name,,2021-12-31,ISTAT geometry 2021
 061021,Casapulla,current_name,,2021-12-31,ISTAT geometry 2021
+061021,Casaulla,election_source_name,1999-06-13,1999-06-13,official election source label
 061022,Casagiove,historical_name,,1872-03-25,ISTAT SITUAS report 104
 061022,Casanova,historical_name,,1863-05-27,ISTAT SITUAS report 104
 061022,Casanova e Coccagna,historical_name,,1863-05-27,ISTAT SITUAS report 104
@@ -8442,6 +8555,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 061073,Raiano,historical_name,,1863-02-01,ISTAT SITUAS report 104
 061073,Ruviano,current_name,,2021-12-31,ISTAT geometry 2021
 061074,San Cipriano d'Aversa,current_name,,2021-12-31,ISTAT geometry 2021
+061074,San Ciriano d'Aversa,election_source_name,1999-06-13,1999-06-13,official election source label
 061075,San Felice a Cancello,current_name,,2021-12-31,ISTAT geometry 2021
 061076,SAN GREGORIO,historical_name,1945-09-01,1954-06-24,ANPR historical archive
 061076,San Gregorio Matese,current_name,,2021-12-31,ISTAT geometry 2021
@@ -8451,6 +8565,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 061080,San Potito,historical_name,,1862-12-20,ISTAT SITUAS report 104
 061080,San Potito Sannitico,current_name,,2021-12-31,ISTAT geometry 2021
 061081,San Prisco,current_name,,2021-12-31,ISTAT geometry 2021
+061081,San Risco,election_source_name,1999-06-13,1999-06-13,official election source label
 061082,Santa Maria a Vico,current_name,,2021-12-31,ISTAT geometry 2021
 061083,Casapulla,historical_name,,1927-01-12,ISTAT SITUAS report 105
 061083,Curti,historical_name,,1927-01-12,ISTAT SITUAS report 105
@@ -8461,9 +8576,11 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 061085,San Tammaro,current_name,,2021-12-31,ISTAT geometry 2021
 061086,Sant'Angelo,historical_name,,1863-04-10,ISTAT SITUAS report 104
 061086,Sant'Angelo d'Alife,current_name,,2021-12-31,ISTAT geometry 2021
+061087,Sant'Arino,election_source_name,1999-06-13,1999-06-13,official election source label
 061087,Sant'Arpino,current_name,,2021-12-31,ISTAT geometry 2021
 061088,Sessa,historical_name,,1864-12-07,ISTAT SITUAS report 104
 061088,Sessa Aurunca,current_name,,2021-12-31,ISTAT geometry 2021
+061089,Saranise,election_source_name,1999-06-13,1999-06-13,official election source label
 061089,Sparanise,current_name,,2021-12-31,ISTAT geometry 2021
 061090,Succivo,current_name,,2021-12-31,ISTAT geometry 2021
 061091,Teano,current_name,,2021-12-31,ISTAT geometry 2021
@@ -8472,6 +8589,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 061094,TRENTOLA,historical_name,1945-09-01,1946-12-22,ANPR historical archive
 061094,Trentola Ducenta,current_name,,2021-12-31,ISTAT geometry 2021
 061095,Vairano,historical_name,,1863-02-01,ISTAT SITUAS report 104
+061095,Vairano Atenora,election_source_name,1999-06-13,1999-06-13,official election source label
 061095,Vairano Patenora,current_name,,2021-12-31,ISTAT geometry 2021
 061096,Valle Agricola,current_name,,2021-12-31,ISTAT geometry 2021
 061096,Valle di Prata,historical_name,,1863-09-20,ISTAT SITUAS report 104
@@ -8603,6 +8721,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 063010,Brusciano,current_name,,2021-12-31,ISTAT geometry 2021
 063011,Caivano,current_name,,2021-12-31,ISTAT geometry 2021
 063012,Calvizzano,current_name,,2021-12-31,ISTAT geometry 2021
+063013,Camosano,election_source_name,1999-06-13,1999-06-13,official election source label
 063013,Camposano,current_name,,2021-12-31,ISTAT geometry 2021
 063014,Capri,current_name,,2021-12-31,ISTAT geometry 2021
 063015,Carbonara,historical_name,,1863-02-01,ISTAT SITUAS report 104
@@ -8738,6 +8857,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 064005,Ariano,historical_name,,1868-12-31,ISTAT SITUAS report 104
 064005,Ariano di Puglia,historical_name,,1868-12-31,ISTAT SITUAS report 104
 064005,Ariano Irpino,current_name,,2021-12-31,ISTAT geometry 2021
+064006,Atrialda,election_source_name,1999-06-13,1999-06-13,official election source label
 064006,Atripalda,current_name,,2021-12-31,ISTAT geometry 2021
 064007,Avella,current_name,,2021-12-31,ISTAT geometry 2021
 064008,Avellino,current_name,,2021-12-31,ISTAT geometry 2021
@@ -8801,6 +8921,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 064052,Montecalvo Irpino,current_name,,2021-12-31,ISTAT geometry 2021
 064053,Montefalcione,current_name,,2021-12-31,ISTAT geometry 2021
 064054,Monteforte,historical_name,,1863-04-10,ISTAT SITUAS report 104
+064054,Monteforte Irino,election_source_name,1999-06-13,1999-06-13,official election source label
 064054,Monteforte Irpino,current_name,,2021-12-31,ISTAT geometry 2021
 064055,Montefredane,current_name,,2021-12-31,ISTAT geometry 2021
 064056,Montefusco,current_name,,2021-12-31,ISTAT geometry 2021
@@ -8895,6 +9016,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 064120,Zungoli,current_name,,2021-12-31,ISTAT geometry 2021
 064121,Montoro,current_name,,2021-12-31,ISTAT geometry 2021
 064121,MONTORO INFERIORE,historical_name,1861-03-17,2013-12-02,ANPR historical archive
+064121,Montoro Sueriore,election_source_name,1999-06-13,1999-06-13,official election source label
 064121,MONTORO SUPERIORE,historical_name,1861-03-17,2013-12-02,ANPR historical archive
 065001,Acerno,current_name,,2021-12-31,ISTAT geometry 2021
 065002,Agropoli,current_name,,2021-12-31,ISTAT geometry 2021
@@ -8968,6 +9090,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 065053,Furore,current_name,,2021-12-31,ISTAT geometry 2021
 065054,Futani,current_name,,2021-12-31,ISTAT geometry 2021
 065055,Giffoni Sei Casali,current_name,,2021-12-31,ISTAT geometry 2021
+065056,Giffoni Valle Iana,election_source_name,1999-06-13,1999-06-13,official election source label
 065056,Giffoni Valle Piana,current_name,,2021-12-31,ISTAT geometry 2021
 065057,Gioi,current_name,,2021-12-31,ISTAT geometry 2021
 065058,Giungano,current_name,,2021-12-31,ISTAT geometry 2021
@@ -9036,6 +9159,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 065105,Ricigliano,current_name,,2021-12-31,ISTAT geometry 2021
 065106,Roccadaspide,current_name,,2021-12-31,ISTAT geometry 2021
 065107,Roccagloriosa,current_name,,2021-12-31,ISTAT geometry 2021
+065108,Roccaiemonte,election_source_name,1999-06-13,1999-06-13,official election source label
 065108,Roccapiemonte,current_name,,2021-12-31,ISTAT geometry 2021
 065109,Rofrano,current_name,,2021-12-31,ISTAT geometry 2021
 065110,Romagnano,historical_name,,1863-04-10,ISTAT SITUAS report 104
@@ -9132,6 +9256,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 066017,Canistro,current_name,,2021-12-31,ISTAT geometry 2021
 066018,Cansano,current_name,,2021-12-31,ISTAT geometry 2021
 066019,Capestrano,current_name,,2021-12-31,ISTAT geometry 2021
+066020,Caistrello,election_source_name,1999-06-13,1999-06-13,official election source label
 066020,Capistrello,current_name,,2021-12-31,ISTAT geometry 2021
 066021,Capitignano,current_name,,2021-12-31,ISTAT geometry 2021
 066022,Caporciano,current_name,,2021-12-31,ISTAT geometry 2021
@@ -9518,6 +9643,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 070008,Campodipietra,current_name,,2021-12-31,ISTAT geometry 2021
 070009,Busso,historical_name,,1970-03-03,ISTAT SITUAS report 105
 070009,Campolieto,current_name,,2021-12-31,ISTAT geometry 2021
+070010,Camomarino,election_source_name,1999-06-13,1999-06-13,official election source label
 070010,Campobasso,historical_name,,1970-03-03,ISTAT SITUAS report 105
 070010,Campomarino,current_name,,2021-12-31,ISTAT geometry 2021
 070011,Campochiaro,historical_name,,1970-03-03,ISTAT SITUAS report 105
@@ -9658,6 +9784,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 070068,San Giuliano in Puglia,election_source_name,1948-04-18,1948-04-18,official election source label
 070069,Montaquila,historical_name,,1970-03-03,ISTAT SITUAS report 105
 070069,San Martino,historical_name,,1863-09-20,ISTAT SITUAS report 104
+070069,San Martino in Pensiliis,election_source_name,1979-06-10,1979-06-10,official election source label
 070069,San Martino in Pensilis,current_name,,2021-12-31,ISTAT geometry 2021
 070070,Montecilfone,historical_name,,1970-03-03,ISTAT SITUAS report 105
 070070,San Massimo,current_name,,2021-12-31,ISTAT geometry 2021
@@ -9844,12 +9971,14 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 073001,Avetrana,current_name,,2021-12-31,ISTAT geometry 2021
 073002,Carosino,current_name,,2021-12-31,ISTAT geometry 2021
 073003,Castellaneta,current_name,,2021-12-31,ISTAT geometry 2021
+073004,Crisiano,election_source_name,1999-06-13,1999-06-13,official election source label
 073004,Crispiano,current_name,,2021-12-31,ISTAT geometry 2021
 073005,Faggiano,current_name,,2021-12-31,ISTAT geometry 2021
 073006,Fragagnano,current_name,,2021-12-31,ISTAT geometry 2021
 073007,Ginosa,current_name,,2021-12-31,ISTAT geometry 2021
 073008,Grottaglie,current_name,,2021-12-31,ISTAT geometry 2021
 073009,Laterza,current_name,,2021-12-31,ISTAT geometry 2021
+073010,Leorano,election_source_name,1999-06-13,1999-06-13,official election source label
 073010,Leporano,current_name,,2021-12-31,ISTAT geometry 2021
 073011,Lizzano,current_name,,2021-12-31,ISTAT geometry 2021
 073012,Manduria,current_name,,2021-12-31,ISTAT geometry 2021
@@ -9869,6 +9998,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 073024,San Giorgio Ionico,current_name,,2021-12-31,ISTAT geometry 2021
 073024,San Giorgio sotto Taranto,historical_name,,1862-12-23,ISTAT SITUAS report 104
 073025,San Marzano,historical_name,,1864-04-01,ISTAT SITUAS report 104
+073025,San Marzano di San Giusee,election_source_name,1999-06-13,1999-06-13,official election source label
 073025,San Marzano di San Giuseppe,current_name,,2021-12-31,ISTAT geometry 2021
 073026,Sava,current_name,,2021-12-31,ISTAT geometry 2021
 073027,Taranto,current_name,,2021-12-31,ISTAT geometry 2021
@@ -9892,6 +10022,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 074012,Ostuni,current_name,,2021-12-31,ISTAT geometry 2021
 074013,San Donaci,current_name,,2021-12-31,ISTAT geometry 2021
 074014,San Michele Salentino,current_name,,2021-12-31,ISTAT geometry 2021
+074015,San Ancrazio Salentino,election_source_name,1999-06-13,1999-06-13,official election source label
 074015,San Pancrazio,historical_name,,1862-12-23,ISTAT SITUAS report 104
 074015,San Pancrazio Salentino,current_name,,2021-12-31,ISTAT geometry 2021
 074016,San Pietro Vernotico,current_name,,2021-12-31,ISTAT geometry 2021
@@ -9911,6 +10042,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 075008,Bagnolo del Salento,current_name,,2021-12-31,ISTAT geometry 2021
 075009,Botrugno,current_name,,2021-12-31,ISTAT geometry 2021
 075010,Calimera,current_name,,2021-12-31,ISTAT geometry 2021
+075011,Cami Salentina,election_source_name,1999-06-13,1999-06-13,official election source label
 075011,Campi,historical_name,,1864-06-23,ISTAT SITUAS report 104
 075011,Campi Salentina,current_name,,2021-12-31,ISTAT geometry 2021
 075012,Cannole,current_name,,2021-12-31,ISTAT geometry 2021
@@ -9922,8 +10054,11 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 075017,Castri di Lecce,current_name,,2021-12-31,ISTAT geometry 2021
 075017,Castrifrancone,historical_name,,1892-01-31,ISTAT SITUAS report 104
 075018,Castrignano de' Greci,current_name,,2021-12-31,ISTAT geometry 2021
+075019,Castrignano del Cao,election_source_name,1999-06-13,1999-06-13,official election source label
 075019,Castrignano del Capo,current_name,,2021-12-31,ISTAT geometry 2021
 075020,Cavallino,current_name,,2021-12-31,ISTAT geometry 2021
+075020,Cavallino-Treporti,election_source_name,2009-06-07,2009-06-07,official election source label
+075021,Colleasso,election_source_name,1999-06-13,1999-06-13,official election source label
 075021,Collepasso,current_name,,2021-12-31,ISTAT geometry 2021
 075022,Copertino,current_name,,2021-12-31,ISTAT geometry 2021
 075023,Corigliano,historical_name,,1862-12-23,ISTAT SITUAS report 104
@@ -9933,6 +10068,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 075026,Cutrofiano,current_name,,2021-12-31,ISTAT geometry 2021
 075027,Diso,current_name,,2021-12-31,ISTAT geometry 2021
 075028,Gagliano,historical_name,,1862-12-23,ISTAT SITUAS report 104
+075028,Gagliano del Cao,election_source_name,1999-06-13,1999-06-13,official election source label
 075028,Gagliano del Capo,current_name,,2021-12-31,ISTAT geometry 2021
 075029,Galatina,current_name,,2021-12-31,ISTAT geometry 2021
 075030,Galatone,current_name,,2021-12-31,ISTAT geometry 2021
@@ -10004,6 +10140,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 075085,Taviano,current_name,,2021-12-31,ISTAT geometry 2021
 075086,Tiggiano,current_name,,2021-12-31,ISTAT geometry 2021
 075087,Trepuzzi,current_name,,2021-12-31,ISTAT geometry 2021
+075087,Treuzzi,election_source_name,1999-06-13,1999-06-13,official election source label
 075088,Tricase,current_name,,2021-12-31,ISTAT geometry 2021
 075089,Tuglie,current_name,,2021-12-31,ISTAT geometry 2021
 075090,Ugento,current_name,,2021-12-31,ISTAT geometry 2021
@@ -10372,6 +10509,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 078138,Scalea,current_name,,2021-12-31,ISTAT geometry 2021
 078139,Scigliano,current_name,,2021-12-31,ISTAT geometry 2021
 078140,Serra d'Aiello,current_name,,2021-12-31,ISTAT geometry 2021
+078142,Sezzano Albanese,election_source_name,1999-06-13,1999-06-13,official election source label
 078142,Spezzano Albanese,current_name,,2021-12-31,ISTAT geometry 2021
 078143,Spezzano della Sila,current_name,,2021-12-31,ISTAT geometry 2021
 078145,Tarsia,current_name,,2021-12-31,ISTAT geometry 2021
@@ -10564,6 +10702,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 080053,Montebello,historical_name,,1864-06-23,ISTAT SITUAS report 104
 080053,Montebello Jonico,current_name,,2021-12-31,ISTAT geometry 2021
 080054,Motta San Giovanni,current_name,,2021-12-31,ISTAT geometry 2021
+080055,Oido Mamertina,election_source_name,1999-06-13,1999-06-13,official election source label
 080055,Oppido,historical_name,,1863-05-27,ISTAT SITUAS report 104
 080055,Oppido Mamertina,current_name,,2021-12-31,ISTAT geometry 2021
 080056,Palizzi,current_name,,2021-12-31,ISTAT geometry 2021
@@ -10633,6 +10772,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 081002,Buseto Palizzolo,current_name,,2021-12-31,ISTAT geometry 2021
 081003,CALATAFIMI,historical_name,1861-03-17,1999-09-19,ANPR historical archive
 081003,Calatafimi-Segesta,current_name,,2021-12-31,ISTAT geometry 2021
+081004,Camobello di Mazara,election_source_name,1999-06-13,1999-06-13,official election source label
 081004,Campobello di Mazara,current_name,,2021-12-31,ISTAT geometry 2021
 081005,Castellammare del Golfo,current_name,,2021-12-31,ISTAT geometry 2021
 081006,Castelvetrano,current_name,,2021-12-31,ISTAT geometry 2021
@@ -10775,6 +10915,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 083006,Casalnuovo,historical_name,,1862-12-09,ISTAT SITUAS report 104
 083007,Brolo,current_name,,2021-12-31,ISTAT geometry 2021
 083008,Capizzi,current_name,,2021-12-31,ISTAT geometry 2021
+083009,Cao d'Orlando,election_source_name,1999-06-13,1999-06-13,official election source label
 083009,Capo d'Orlando,current_name,,2021-12-31,ISTAT geometry 2021
 083010,Capri,historical_name,,1862-12-09,ISTAT SITUAS report 104
 083010,Capri Leone,current_name,,2021-12-31,ISTAT geometry 2021
@@ -10901,6 +11042,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 083094,Scaletta Zanclea,current_name,,2021-12-31,ISTAT geometry 2021
 083094,SCALETTA ZANGLEA,historical_name,1928-09-25,1947-05-11,ANPR historical archive
 083095,Sinagra,current_name,,2021-12-31,ISTAT geometry 2021
+083096,Sadafora,election_source_name,1999-06-13,1999-06-13,official election source label
 083096,Spadafora,current_name,,2021-12-31,ISTAT geometry 2021
 083097,Castelmola,historical_name,,1862-12-09,ISTAT SITUAS report 104
 083097,Mola,historical_name,,1862-12-09,ISTAT SITUAS report 104
@@ -10930,6 +11072,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 084007,Caltabellotta,current_name,,2021-12-31,ISTAT geometry 2021
 084008,Camastra,current_name,,2021-12-31,ISTAT geometry 2021
 084009,Cammarata,current_name,,2021-12-31,ISTAT geometry 2021
+084010,Camobello di Licata,election_source_name,1999-06-13,1999-06-13,official election source label
 084010,Campobello di Licata,current_name,,2021-12-31,ISTAT geometry 2021
 084011,Canicattì,current_name,,2021-12-31,ISTAT geometry 2021
 084012,Casteltermini,current_name,,2021-12-31,ISTAT geometry 2021
@@ -11000,6 +11143,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 085016,San Cataldo,current_name,,2021-12-31,ISTAT geometry 2021
 085017,Santa Caterina,historical_name,,1862-11-27,ISTAT SITUAS report 104
 085017,Santa Caterina Villarmosa,current_name,,2021-12-31,ISTAT geometry 2021
+085018,Serra di Falco,election_source_name,1979-06-10,1979-06-10,official election source label
 085018,Serradifalco,current_name,,2021-12-31,ISTAT geometry 2021
 085019,Sommatino,current_name,,2021-12-31,ISTAT geometry 2021
 085020,Sutera,current_name,,2021-12-31,ISTAT geometry 2021
@@ -11079,6 +11223,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 087036,Raddusa,current_name,,2021-12-31,ISTAT geometry 2021
 087037,Ramacca,current_name,,2021-12-31,ISTAT geometry 2021
 087038,Randazzo,current_name,,2021-12-31,ISTAT geometry 2021
+087039,Riosto,election_source_name,1999-06-13,1999-06-13,official election source label
 087039,Riposto,current_name,,2021-12-31,ISTAT geometry 2021
 087040,San Cono,current_name,,2021-12-31,ISTAT geometry 2021
 087041,San Giovanni la Punta,current_name,,2021-12-31,ISTAT geometry 2021
@@ -11218,6 +11363,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 090067,Sennori,current_name,,2021-12-31,ISTAT geometry 2021
 090068,Siligo,current_name,,2021-12-31,ISTAT geometry 2021
 090069,Sorso,current_name,,2021-12-31,ISTAT geometry 2021
+090070,Temio Ausania,election_source_name,1999-06-13,1999-06-13,official election source label
 090070,Tempio Pausania,current_name,,2021-12-31,ISTAT geometry 2021
 090071,Thiesi,current_name,,2021-12-31,ISTAT geometry 2021
 090072,Tissi,current_name,,2021-12-31,ISTAT geometry 2021
@@ -11894,6 +12040,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 098009,Casalmaiocco,current_name,,2021-12-31,ISTAT geometry 2021
 098009,Cologno,historical_name,,1863-02-21,ISTAT SITUAS report 104
 098010,Casalpusterlengo,current_name,,2021-12-31,ISTAT geometry 2021
+098010,Casalusterlengo,election_source_name,1999-06-13,1999-06-13,official election source label
 098011,Caselle Landi,current_name,,2021-12-31,ISTAT geometry 2021
 098012,Caselle,historical_name,,1863-06-14,ISTAT SITUAS report 104
 098012,Caselle Lurani,current_name,,2021-12-31,ISTAT geometry 2021
@@ -12387,6 +12534,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 109036,Santa Vittoria,historical_name,,1862-12-18,ISTAT SITUAS report 104
 109036,Santa Vittoria in Matemano,election_source_name,2006-04-09,2006-04-09,official election source label
 109036,Santa Vittoria in Matenano,current_name,,2021-12-31,ISTAT geometry 2021
+109037,Sant'Elidio A Mare,election_source_name,1999-06-13,1999-06-13,official election source label
 109037,Sant'Elpidio a Mare,current_name,,2021-12-31,ISTAT geometry 2021
 109038,Castel Clementino,historical_name,,1863-02-21,ISTAT SITUAS report 104
 109038,Servigliano,current_name,,2021-12-31,ISTAT geometry 2021
@@ -12482,6 +12630,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 111033,Collinas,historical_name,,1974-08-20,ISTAT SITUAS report 105
 111033,Guasila,current_name,,2021-12-31,ISTAT geometry 2021
 111034,Decimomannu,historical_name,,1974-08-20,ISTAT SITUAS report 105
+111034,Gusini,election_source_name,1999-06-13,1999-06-13,official election source label
 111034,Guspini,current_name,,2021-12-31,ISTAT geometry 2021
 111035,Decimoputzu,historical_name,,1974-08-20,ISTAT SITUAS report 105
 111035,Iglesias,current_name,,2021-12-31,ISTAT geometry 2021
@@ -12549,6 +12698,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 111064,Pauli Gerrei,historical_name,,1864-01-29,ISTAT SITUAS report 104
 111064,San Nicolò Gerrei,current_name,,2021-12-31,ISTAT geometry 2021
 111065,Maracalagonis,historical_name,,1974-08-20,ISTAT SITUAS report 105
+111065,San Serate,election_source_name,1999-06-13,1999-06-13,official election source label
 111065,San Sperate,current_name,,2021-12-31,ISTAT geometry 2021
 111066,Mogoro,historical_name,,1974-08-20,ISTAT SITUAS report 105
 111066,San Vito,current_name,,2021-12-31,ISTAT geometry 2021
@@ -12627,6 +12777,7 @@ municipality_id,alias,alias_type,valid_from,valid_to,notes
 111102,Villaperuccio,current_name,,2021-12-31,ISTAT geometry 2021
 111103,San Basilio,historical_name,,1974-08-20,ISTAT SITUAS report 105
 111103,Villaputzu,current_name,,2021-12-31,ISTAT geometry 2021
+111103,Villautzu,election_source_name,1999-06-13,1999-06-13,official election source label
 111104,San Gavino Monreale,historical_name,,1974-08-20,ISTAT SITUAS report 105
 111104,Villasalto,current_name,,2021-12-31,ISTAT geometry 2021
 111105,Carbonara,historical_name,,1862-10-15,ISTAT SITUAS report 104

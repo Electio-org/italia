@@ -600,7 +600,7 @@ print(summary.head())`;
 function buildProjectCitation() {
   const version = currentReleaseVersion();
   const date = currentReleaseDate();
-  return `Electio Italia, release ${version} (${date}). Bundle statico boundary-aware per l'analisi comunale delle elezioni della Camera e dell'Assemblea Costituente in Italia.`;
+  return `Electio Italia, release ${version} (${date}). Bundle statico boundary-aware per l'analisi comunale delle elezioni della Camera, dell'Assemblea Costituente e del Parlamento europeo in Italia.`;
 }
 
 function researchRecipesForAudience() {
@@ -1082,8 +1082,21 @@ function setupControls() {
       const suffix = hasData ? '' : ' · non ancora pubblicato';
       return `<option value="${escapeHtml(d.election_key)}"${hasData ? '' : ' disabled'}>${escapeHtml(d.election_label || d.election_key)}${escapeHtml(suffix)}</option>`;
     };
-    els.electionSelect.innerHTML = `${withData.length ? `<optgroup label="Elezioni con copertura">${withData.map(renderOption).join('')}</optgroup>` : ''}${withoutData.length ? `<optgroup label="Anni noti ma non ancora pubblicati a livello comunale">${withoutData.map(renderOption).join('')}</optgroup>` : ''}`;
-    els.compareElectionSelect.innerHTML = `<option value="">Nessun confronto</option>` + `${withData.length ? `<optgroup label="Elezioni con copertura">${withData.map(renderOption).join('')}</optgroup>` : ''}${withoutData.length ? `<optgroup label="Anni noti ma non ancora pubblicati a livello comunale">${withoutData.map(renderOption).join('')}</optgroup>` : ''}`;
+    const renderElectionGroups = rows => {
+      const families = [
+        ['Elezioni europee', rows.filter(d => String(d.election_key || '').startsWith('europee_'))],
+        ['Camera e Assemblea Costituente', rows.filter(d => !String(d.election_key || '').startsWith('europee_'))]
+      ];
+      return families
+        .filter(([, items]) => items.length)
+        .map(([label, items]) => `<optgroup label="${label}">${items.slice().sort((a, b) => (b.election_year || 0) - (a.election_year || 0)).map(renderOption).join('')}</optgroup>`)
+        .join('');
+    };
+    const unpublished = withoutData.length
+      ? `<optgroup label="Non ancora pubblicate">${withoutData.slice().sort((a, b) => (b.election_year || 0) - (a.election_year || 0)).map(renderOption).join('')}</optgroup>`
+      : '';
+    els.electionSelect.innerHTML = `${renderElectionGroups(withData)}${unpublished}`;
+    els.compareElectionSelect.innerHTML = `<option value="">Nessun confronto</option>${renderElectionGroups(withData)}${unpublished}`;
     state.electionLabels = (withData.length ? withData : state.elections).map(d => ({ value: d.election_key, label: d.election_label || String(d.election_year || d.election_key) }));
     els.electionSelect.value = state.selectedElection || (withData.at(-1)?.election_key || state.elections.at(-1)?.election_key || '');
     els.compareElectionSelect.value = state.compareElection || '';

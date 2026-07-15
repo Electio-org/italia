@@ -11,6 +11,8 @@ import subprocess
 from pathlib import Path
 import py_compile
 
+from election_sources import canonical_results_paths, canonical_summary_paths
+
 
 def read_csv_rows(path: Path):
     if not path.exists():
@@ -86,6 +88,9 @@ def main() -> int:
         'scripts/build_web_compressed_assets.py',
         'scripts/build_municipality_profiles.py',
         'scripts/build_territorial_history.py',
+        'scripts/build_european_election_sources.py',
+        'scripts/election_sources.py',
+        'scripts/sync_european_opendata_archives.py',
         'scripts/territorial_history.py',
         'scripts/refresh_release_manifest.py',
         'scripts/import_archive_gap_report.py',
@@ -98,7 +103,7 @@ def main() -> int:
         if not (root / rel).exists():
             issues.append(f'missing:{rel}')
 
-    for rel_script in ['scripts/preprocess.py', 'scripts/build_web_geometry_pack.py', 'scripts/build_municipality_profiles.py', 'scripts/build_territorial_history.py', 'scripts/territorial_history.py', 'scripts/refresh_release_manifest.py', 'scripts/territory_matching.py', 'scripts/import_archive_gap_report.py', 'scripts/rebuild_bundle_from_camera_opendata_archives.py', 'scripts/rebuild_modern_bundle_from_archive.py', 'scripts/rebuild_historical_bundle_from_grouped.py', 'clients/python/lce_loader.py']:
+    for rel_script in ['scripts/preprocess.py', 'scripts/build_web_geometry_pack.py', 'scripts/build_municipality_profiles.py', 'scripts/build_territorial_history.py', 'scripts/build_european_election_sources.py', 'scripts/election_sources.py', 'scripts/sync_european_opendata_archives.py', 'scripts/territorial_history.py', 'scripts/refresh_release_manifest.py', 'scripts/territory_matching.py', 'scripts/import_archive_gap_report.py', 'scripts/rebuild_bundle_from_camera_opendata_archives.py', 'scripts/rebuild_modern_bundle_from_archive.py', 'scripts/rebuild_historical_bundle_from_grouped.py', 'clients/python/lce_loader.py']:
         try:
             tmp_pyc = root / f'_tmp_{Path(rel_script).stem}_check.pyc'
             py_compile.compile(str(root / rel_script), cfile=str(tmp_pyc), doraise=True)
@@ -164,6 +169,9 @@ def main() -> int:
     loader_product_dataset = subprocess.run(['python', str(root / 'clients' / 'python' / 'lce_loader.py'), '--root', str(root), '--product-dataset', 'camera_muni_historical:primary', '--head', '3'], capture_output=True, text=True)
     if loader_product_dataset.returncode != 0:
         issues.append(f'python_loader_product_dataset:{loader_product_dataset.stderr.strip() or loader_product_dataset.stdout.strip()}')
+    loader_europe_inventory = subprocess.run(['python', str(root / 'clients' / 'python' / 'lce_loader.py'), '--root', str(root), '--product-inventory', 'european_muni_historical'], capture_output=True, text=True)
+    if loader_europe_inventory.returncode != 0:
+        issues.append(f'python_loader_europe_inventory:{loader_europe_inventory.stderr.strip() or loader_europe_inventory.stdout.strip()}')
 
     loader_tests = subprocess.run(['python', '-m', 'unittest', 'clients.python.tests.test_loader'], capture_output=True, text=True, cwd=str(root))
     if loader_tests.returncode != 0:
@@ -192,8 +200,9 @@ def main() -> int:
     if missing_runtime:
         issues.append(f'runtime_missing_functions:{",".join(missing_runtime)}')
 
-    summary = read_csv_rows(root / 'data' / 'derived' / 'municipality_summary.csv')
-    results = read_csv_rows(root / 'data' / 'derived' / 'municipality_results_long.csv')
+    derived = root / 'data' / 'derived'
+    summary = [row for path in canonical_summary_paths(derived) for row in read_csv_rows(path)]
+    results = [row for path in canonical_results_paths(derived) for row in read_csv_rows(path)]
     aliases = read_csv_rows(root / 'data' / 'derived' / 'municipality_aliases.csv')
     manifest = json.loads((root / 'data' / 'derived' / 'manifest.json').read_text(encoding='utf-8')) if (root / 'data' / 'derived' / 'manifest.json').exists() else {}
     files = manifest.get('files', {})
@@ -213,13 +222,27 @@ def main() -> int:
     if not geometry_features:
         issues.append('geometry:placeholder_or_missing')
 
-    required_manifest_keys = ['geometryPack', 'geometryPackFull', 'geometryFull', 'provinceGeometryFull', 'dataProducts', 'productCatalog', 'datasetContracts', 'provenance', 'releaseManifest', 'researchRecipes', 'siteGuides', 'municipalitySummaryByElectionIndex', 'municipalityResultsLongByElectionIndex', 'municipalityProfileIndex', 'archiveBundleGapReport', 'webGeometryReport', 'webCompressionReport', 'territorialCrosswalk', 'territorialHistoryReport', 'territorialSources', 'municipalityRegistryByElection', 'municipalityRegistryHistorical', 'territorialEvents']
+    required_manifest_keys = ['geometryPack', 'geometryPackFull', 'geometryFull', 'provinceGeometryFull', 'dataProducts', 'productCatalog', 'datasetContracts', 'provenance', 'releaseManifest', 'researchRecipes', 'siteGuides', 'municipalitySummaryByElectionIndex', 'municipalityResultsLongByElectionIndex', 'municipalityProfileIndex', 'archiveBundleGapReport', 'webGeometryReport', 'webCompressionReport', 'territorialCrosswalk', 'territorialHistoryReport', 'territorialSources', 'municipalityRegistryByElection', 'municipalityRegistryHistorical', 'territorialEvents', 'europeanElectionsMaster', 'europeanMunicipalitySummarySource', 'europeanMunicipalityResultsSource', 'europeanSourceAudit', 'europeanArchiveManifest']
     for key in required_manifest_keys:
         rel = files.get(key)
         if not rel:
             issues.append(f'manifest:missing_{key}')
         elif not (root / rel).exists():
             issues.append(f'manifest:missing_file_for_{key}')
+
+    european_elections = [row for row in elections_master if str(row.get('election_key') or '').startswith('europee_')]
+    if len(european_elections) != 10:
+        issues.append(f'european_elections:expected_10_found_{len(european_elections)}')
+    european_years = {int(row.get('election_year') or 0) for row in european_elections}
+    if european_years != {1979, 1984, 1989, 1994, 1999, 2004, 2009, 2014, 2019, 2024}:
+        issues.append('european_elections:year_sequence_mismatch')
+    european_audit_path = root / str(files.get('europeanSourceAudit') or '')
+    if european_audit_path.exists():
+        european_audit = json.loads(european_audit_path.read_text(encoding='utf-8'))
+        if int(european_audit.get('archive_count') or 0) != 10 or int(european_audit.get('election_count') or 0) != 10:
+            issues.append('european_source_audit:incomplete_archive_set')
+        if any(int(row.get('municipality_rows') or 0) < 7_800 for row in european_audit.get('elections') or []):
+            issues.append('european_source_audit:municipality_coverage_below_7800')
 
     if files.get('dataProducts') and (root / files['dataProducts']).exists():
         data_products = json.loads((root / files['dataProducts']).read_text(encoding='utf-8'))

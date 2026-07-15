@@ -1,6 +1,6 @@
 {
   "generated_by": "build_result_shards.py",
-  "release_version": "0.24.0",
+  "release_version": "0.25.0",
   "release_date": "2026-07-15",
   "product": {
     "product_key": "camera_muni_historical",
@@ -61,20 +61,20 @@
       "dataset_key": "territorialCrosswalk",
       "path": "data/derived/municipality_election_crosswalk.csv.gz",
       "kind": "gz",
-      "size_bytes": 3239310,
-      "row_count": 158485,
+      "size_bytes": 5211344,
+      "row_count": 239010,
       "feature_count": null,
-      "sha256": "8c16af43ef1067e569c8d16e115540d01f766e16cd12ce8111c141ed8733d90d"
+      "sha256": "1646c1dacf7a45d6784636b854c129dae455b9e1f30f5f66c515aabd97a19eb9"
     },
     {
       "role": "extra",
       "dataset_key": "territorialHistoryReport",
       "path": "data/derived/territorial_history_report.json",
       "kind": "json",
-      "size_bytes": 85323,
+      "size_bytes": 128573,
       "row_count": null,
       "feature_count": null,
-      "sha256": "4351168453c36f8b12bd2eff6b6505c94876bdc8f3915b4f1a06abe20a98d713"
+      "sha256": "233b95f64337bd1f3db3c674574e75b8c2179f16399aaf4fcbb724d343d85e84"
     }
   ],
   "inventory": {

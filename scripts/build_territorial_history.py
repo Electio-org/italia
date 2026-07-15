@@ -28,6 +28,7 @@ from territorial_history import (
     succession_events_from_rows,
     write_csv_gzip,
 )
+from election_sources import canonical_results_paths, canonical_summary_paths, publish_combined_elections_master
 
 
 SITUAS_PUBLISH = "https://situas-servizi.istat.it/publish/reportspooljson"
@@ -162,8 +163,7 @@ def write_csv(path: Path, rows: Iterable[Mapping[str, object]], columns: Sequenc
 
 
 def load_elections(derived: Path) -> List[Dict[str, str]]:
-    rows = read_csv_rows(derived / "elections_master.csv")
-    return sorted(rows, key=lambda row: (row.get("election_date") or "", row.get("election_key") or ""))
+    return publish_combined_elections_master(derived)
 
 
 def load_targets(derived: Path) -> Dict[str, Dict[str, str]]:
@@ -325,7 +325,7 @@ def anpr_active_snapshot(election: Mapping[str, str], anpr_rows: Iterable[Mappin
             "province_sigla": raw.get("province_sigla", ""),
             "region": "",
             "cadastral_code": raw.get("cadastral_code", ""),
-            "source": "ANPR historical archive via OnData (pre-1948 fallback)",
+            "source": "ANPR historical archive via OnData (dated registry fallback)",
         })
     return rows
 
@@ -338,7 +338,17 @@ def ensure_registry_reference(
 ) -> List[Dict[str, str]]:
     path = root / "data" / "reference" / "municipality_registry_by_election.csv.gz"
     if path.exists() and not refresh:
-        return read_csv_rows(path)
+        existing = read_csv_rows(path)
+        present = {row.get("election_key") for row in existing}
+        missing = [election for election in elections if election.get("election_key") not in present]
+        if not missing:
+            return existing
+        rows = list(existing)
+        for election in missing:
+            rows.extend(anpr_active_snapshot(election, anpr_rows))
+        rows.sort(key=lambda row: (row["election_date"], row["istat_code"]))
+        write_csv_gzip(path, rows, REGISTRY_COLUMNS)
+        return rows
 
     rows = []
     cache_dir = Path(tempfile.gettempdir()) / "electio_situas_snapshots"
@@ -477,7 +487,7 @@ def build_crosswalk(
 
     source_rows = []
     seen = set()
-    for source_path in [derived / "municipality_summary.csv", derived / "municipality_results_long.csv"]:
+    for source_path in [*canonical_summary_paths(derived), *canonical_results_paths(derived)]:
         for row in iter_csv_rows(source_path):
             key = (row.get("election_key", ""), row.get("municipality_id", ""))
             if key in seen:

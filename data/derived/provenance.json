@@ -487,6 +487,66 @@
       "limitations": [
         "l'audit verifica coerenza, copertura e anacronismi noti ma non sostituisce la ricerca storico-politica sulle liste minori"
       ]
+    },
+    {
+      "dataset_key": "europeanElectionsMaster",
+      "path": "data/derived/european_elections_master.csv",
+      "produced_by": "build_european_election_sources.py",
+      "source_class": "official_eligendo_european_archive",
+      "transformation_steps": [
+        "Metadati delle dieci consultazioni europee 1979-2024."
+      ],
+      "limitations": [
+        "Le geometrie pubbliche sono armonizzate separatamente alla base comunale 2021."
+      ]
+    },
+    {
+      "dataset_key": "europeanMunicipalitySummarySource",
+      "path": "data/derived/european_municipality_summary.csv.gz",
+      "produced_by": "build_european_election_sources.py",
+      "source_class": "official_eligendo_european_archive",
+      "transformation_steps": [
+        "Affluenza e sintesi comunale nella geografia osservata alla fonte."
+      ],
+      "limitations": [
+        "Le geometrie pubbliche sono armonizzate separatamente alla base comunale 2021."
+      ]
+    },
+    {
+      "dataset_key": "europeanMunicipalityResultsSource",
+      "path": "data/derived/european_municipality_results_long.csv.gz",
+      "produced_by": "build_european_election_sources.py",
+      "source_class": "official_eligendo_european_archive",
+      "transformation_steps": [
+        "Voti di lista comunali con etichetta ufficiale party_raw preservata."
+      ],
+      "limitations": [
+        "Le geometrie pubbliche sono armonizzate separatamente alla base comunale 2021."
+      ]
+    },
+    {
+      "dataset_key": "europeanSourceAudit",
+      "path": "data/derived/european_source_audit.json",
+      "produced_by": "build_european_election_sources.py",
+      "source_class": "official_eligendo_european_archive",
+      "transformation_steps": [
+        "Audit per archivio, membro, hash, copertura e vincitore nazionale."
+      ],
+      "limitations": [
+        "Le geometrie pubbliche sono armonizzate separatamente alla base comunale 2021."
+      ]
+    },
+    {
+      "dataset_key": "europeanArchiveManifest",
+      "path": "data/reference/european_opendata_archives_manifest.json",
+      "produced_by": "build_european_election_sources.py",
+      "source_class": "official_eligendo_european_archive",
+      "transformation_steps": [
+        "Inventario riproducibile degli archivi ufficiali Eligendo."
+      ],
+      "limitations": [
+        "Le geometrie pubbliche sono armonizzate separatamente alla base comunale 2021."
+      ]
     }
   ]
 }

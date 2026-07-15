@@ -1,7 +1,7 @@
 {
   "project": {
     "title": "Electio Italia",
-    "version": "0.24.0",
+    "version": "0.25.0",
     "ready_for_real_data": true,
     "notes": [
       "Vote shares are recomputed from votes whenever a plausible denominator is available.",
@@ -21,7 +21,8 @@
       "The public app now reads a web-optimized geometry pack, while the full-resolution boundaries remain published as a separate product.",
       "Critical browser libraries are now vendored locally and the public documentation pages load only the metadata they actually need.",
       "Municipality detail pages use province-sized compressed profile chunks instead of loading the national summary table.",
-      "Public election shards are projected implicitly to the 2021 municipality geometry through a date-aware ISTAT SITUAS lineage; ambiguous splits are never allocated."
+      "Public election shards are projected implicitly to the 2021 municipality geometry through a date-aware ISTAT SITUAS lineage; ambiguous splits are never allocated.",
+      "European Parliament elections 1979-2024 are published from the official Eligendo municipality archives as a separate reproducible source product and shared lazy public shards."
     ]
   },
   "files": {
@@ -67,7 +68,12 @@
     "territorialEvents": "data/reference/situas_municipality_events_1861_2021.csv.gz",
     "partyTaxonomy": "data/reference/party_taxonomy_overrides.csv",
     "partyTaxonomyAudit": "data/derived/party_taxonomy_audit.json",
-    "nationalElectionChecks": "data/reference/national_election_checks.csv"
+    "nationalElectionChecks": "data/reference/national_election_checks.csv",
+    "europeanElectionsMaster": "data/derived/european_elections_master.csv",
+    "europeanMunicipalitySummarySource": "data/derived/european_municipality_summary.csv.gz",
+    "europeanMunicipalityResultsSource": "data/derived/european_municipality_results_long.csv.gz",
+    "europeanSourceAudit": "data/derived/european_source_audit.json",
+    "europeanArchiveManifest": "data/reference/european_opendata_archives_manifest.json"
   },
   "contracts": {
     "geometryJoinPriority": [

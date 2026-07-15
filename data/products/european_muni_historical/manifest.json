@@ -1,0 +1,239 @@
+{
+  "generated_by": "build_result_shards.py",
+  "release_version": "0.25.0",
+  "release_date": "2026-07-15",
+  "product": {
+    "product_key": "european_muni_historical",
+    "title": "Elezioni europee 1979-2024 - fonte comunale e vista 2021",
+    "kind": "election_panel",
+    "territorial_mode": "source_gzip_and_harmonized_public_shards",
+    "granularity": "municipality-election-list",
+    "delivery_strategy": "official_source_gzip_plus_2021_harmonized_election_shards",
+    "primary_dataset_key": "europeanMunicipalitySummarySource",
+    "companion_dataset_key": "europeanMunicipalityResultsSource",
+    "extra_dataset_keys": [
+      "europeanElectionsMaster",
+      "europeanSourceAudit",
+      "europeanArchiveManifest",
+      "territorialCrosswalk"
+    ],
+    "join_keys": [
+      "municipality_id",
+      "geometry_id",
+      "election_key"
+    ],
+    "guardrails": [
+      "Le etichette party_raw conservano le liste ufficiali osservate in ogni elezione.",
+      "La dashboard usa shard per elezione proiettati implicitamente sulla geometria comunale 2021.",
+      "Scissioni ambigue e comuni successivi al 2021 restano no-data senza allocazioni inventate."
+    ],
+    "intended_use": [
+      "analisi storica comunale delle elezioni europee in Italia dal 1979 al 2024",
+      "mappa pubblica di affluenza, liste, quote e blocchi per consultazione",
+      "download riproducibile delle fonti comunali e degli shard armonizzati"
+    ]
+  },
+  "datasets": [
+    {
+      "role": "primary",
+      "dataset_key": "europeanMunicipalitySummarySource",
+      "path": "data/derived/european_municipality_summary.csv.gz",
+      "kind": "gz",
+      "size_bytes": 4669424,
+      "row_count": 80525,
+      "feature_count": null,
+      "sha256": "7b34b06c58bfb629235d57eeca0cc05e1946dafaa7ccd7f7eaeda3e57218691b"
+    },
+    {
+      "role": "companion",
+      "dataset_key": "europeanMunicipalityResultsSource",
+      "path": "data/derived/european_municipality_results_long.csv.gz",
+      "kind": "gz",
+      "size_bytes": 17179699,
+      "row_count": 1115503,
+      "feature_count": null,
+      "sha256": "74f620c2683c5c18043e19ab5f3f3824b4d9aac2fc6e1634a77ff16bb5026d28"
+    },
+    {
+      "role": "extra",
+      "dataset_key": "europeanElectionsMaster",
+      "path": "data/derived/european_elections_master.csv",
+      "kind": "csv",
+      "size_bytes": 4332,
+      "row_count": 10,
+      "feature_count": null,
+      "sha256": "893acd0b103500d5ed2d8b0d8931a5b28c5556e7d96342d0c538482c26b3c351"
+    },
+    {
+      "role": "extra",
+      "dataset_key": "europeanSourceAudit",
+      "path": "data/derived/european_source_audit.json",
+      "kind": "json",
+      "size_bytes": 32598,
+      "row_count": null,
+      "feature_count": null,
+      "sha256": "5c487874c8ca7c5cc7e4b985bbe7194dc68575eea31e40796c3f6c0a42d9f572"
+    },
+    {
+      "role": "extra",
+      "dataset_key": "europeanArchiveManifest",
+      "path": "data/reference/european_opendata_archives_manifest.json",
+      "kind": "json",
+      "size_bytes": 7583,
+      "row_count": null,
+      "feature_count": null,
+      "sha256": "d234e5de7eef6c95d5c3fcd760051188ead82271c59425fdd9fd9320a3e0e48f"
+    },
+    {
+      "role": "extra",
+      "dataset_key": "territorialCrosswalk",
+      "path": "data/derived/municipality_election_crosswalk.csv.gz",
+      "kind": "gz",
+      "size_bytes": 5211344,
+      "row_count": 239010,
+      "feature_count": null,
+      "sha256": "1646c1dacf7a45d6784636b854c129dae455b9e1f30f5f66c515aabd97a19eb9"
+    }
+  ],
+  "inventory": {
+    "kind": "election_datasets",
+    "entry_count": 10,
+    "entries": [
+      {
+        "dataset_key": "europee_1979",
+        "dataset_family": "european_parliament_municipality_historical",
+        "election_key": "europee_1979",
+        "election_year": 1979,
+        "coverage_label": "summary+results",
+        "status": "usable",
+        "summary_rows": 7860,
+        "result_rows": 92409,
+        "download_summary": "data/derived/summary_by_election/europee_1979.csv",
+        "download_results": "data/derived/results_by_election/europee_1979.csv"
+      },
+      {
+        "dataset_key": "europee_1984",
+        "dataset_family": "european_parliament_municipality_historical",
+        "election_key": "europee_1984",
+        "election_year": 1984,
+        "coverage_label": "summary+results",
+        "status": "usable",
+        "summary_rows": 7876,
+        "result_rows": 76199,
+        "download_summary": "data/derived/summary_by_election/europee_1984.csv",
+        "download_results": "data/derived/results_by_election/europee_1984.csv"
+      },
+      {
+        "dataset_key": "europee_1989",
+        "dataset_family": "european_parliament_municipality_historical",
+        "election_key": "europee_1989",
+        "election_year": 1989,
+        "coverage_label": "summary+results",
+        "status": "usable",
+        "summary_rows": 7884,
+        "result_rows": 94615,
+        "download_summary": "data/derived/summary_by_election/europee_1989.csv",
+        "download_results": "data/derived/results_by_election/europee_1989.csv"
+      },
+      {
+        "dataset_key": "europee_1994",
+        "dataset_family": "european_parliament_municipality_historical",
+        "election_key": "europee_1994",
+        "election_year": 1994,
+        "coverage_label": "summary+results",
+        "status": "usable",
+        "summary_rows": 7892,
+        "result_rows": 124683,
+        "download_summary": "data/derived/summary_by_election/europee_1994.csv",
+        "download_results": "data/derived/results_by_election/europee_1994.csv"
+      },
+      {
+        "dataset_key": "europee_1999",
+        "dataset_family": "european_parliament_municipality_historical",
+        "election_key": "europee_1999",
+        "election_year": 1999,
+        "coverage_label": "summary+results",
+        "status": "usable",
+        "summary_rows": 7886,
+        "result_rows": 156445,
+        "download_summary": "data/derived/summary_by_election/europee_1999.csv",
+        "download_results": "data/derived/results_by_election/europee_1999.csv"
+      },
+      {
+        "dataset_key": "europee_2004",
+        "dataset_family": "european_parliament_municipality_historical",
+        "election_key": "europee_2004",
+        "election_year": 2004,
+        "coverage_label": "summary+results",
+        "status": "usable",
+        "summary_rows": 7890,
+        "result_rows": 162555,
+        "download_summary": "data/derived/summary_by_election/europee_2004.csv",
+        "download_results": "data/derived/results_by_election/europee_2004.csv"
+      },
+      {
+        "dataset_key": "europee_2009",
+        "dataset_family": "european_parliament_municipality_historical",
+        "election_key": "europee_2009",
+        "election_year": 2009,
+        "coverage_label": "summary+results",
+        "status": "usable",
+        "summary_rows": 7897,
+        "result_rows": 100706,
+        "download_summary": "data/derived/summary_by_election/europee_2009.csv",
+        "download_results": "data/derived/results_by_election/europee_2009.csv"
+      },
+      {
+        "dataset_key": "europee_2014",
+        "dataset_family": "european_parliament_municipality_historical",
+        "election_key": "europee_2014",
+        "election_year": 2014,
+        "coverage_label": "summary+results",
+        "status": "usable",
+        "summary_rows": 7897,
+        "result_rows": 83979,
+        "download_summary": "data/derived/summary_by_election/europee_2014.csv",
+        "download_results": "data/derived/results_by_election/europee_2014.csv"
+      },
+      {
+        "dataset_key": "europee_2019",
+        "dataset_family": "european_parliament_municipality_historical",
+        "election_key": "europee_2019",
+        "election_year": 2019,
+        "coverage_label": "summary+results",
+        "status": "usable",
+        "summary_rows": 7898,
+        "result_rows": 112065,
+        "download_summary": "data/derived/summary_by_election/europee_2019.csv",
+        "download_results": "data/derived/results_by_election/europee_2019.csv"
+      },
+      {
+        "dataset_key": "europee_2024",
+        "dataset_family": "european_parliament_municipality_historical",
+        "election_key": "europee_2024",
+        "election_year": 2024,
+        "coverage_label": "summary+results",
+        "status": "usable",
+        "summary_rows": 7880,
+        "result_rows": 89932,
+        "download_summary": "data/derived/summary_by_election/europee_2024.csv",
+        "download_results": "data/derived/results_by_election/europee_2024.csv"
+      }
+    ]
+  },
+  "clients": [
+    {
+      "client_key": "python_loader",
+      "language": "python",
+      "entrypoint": "clients/python/lce_loader.py",
+      "example": "from clients.python.lce_loader import load_bundle\nbundle = load_bundle('.')\nsummary = bundle.load_dataset('municipalitySummary')"
+    },
+    {
+      "client_key": "r_loader",
+      "language": "r",
+      "entrypoint": "clients/r/lce_loader.R",
+      "example": "source('clients/r/lce_loader.R')\nbundle <- load_lce_bundle('.')\nsummary <- lce_read(bundle, 'municipalitySummary')"
+    }
+  ],
+  "bundle_manifest": "data/derived/manifest.json"
+}

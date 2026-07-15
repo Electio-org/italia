@@ -1,7 +1,10 @@
 {
   "generated_by": "build_result_shards.py",
   "dataset": "municipality_results_long_harmonized_to_2021_geometry",
-  "source_dataset": "data/derived/municipality_results_long.csv",
+  "source_dataset": [
+    "data/derived/municipality_results_long.csv",
+    "data/derived/european_municipality_results_long.csv.gz"
+  ],
   "territorial_mode": "harmonized",
   "target_geometry_date": "2021-12-31",
   "crosswalk": "data/derived/municipality_election_crosswalk.csv.gz",
@@ -26,7 +29,17 @@
     "camera_2008": "data/derived/results_by_election/camera_2008.csv.gz",
     "camera_2013": "data/derived/results_by_election/camera_2013.csv.gz",
     "camera_2018": "data/derived/results_by_election/camera_2018.csv.gz",
-    "camera_2022": "data/derived/results_by_election/camera_2022.csv.gz"
+    "camera_2022": "data/derived/results_by_election/camera_2022.csv.gz",
+    "europee_1979": "data/derived/results_by_election/europee_1979.csv.gz",
+    "europee_1984": "data/derived/results_by_election/europee_1984.csv.gz",
+    "europee_1989": "data/derived/results_by_election/europee_1989.csv.gz",
+    "europee_1994": "data/derived/results_by_election/europee_1994.csv.gz",
+    "europee_1999": "data/derived/results_by_election/europee_1999.csv.gz",
+    "europee_2004": "data/derived/results_by_election/europee_2004.csv.gz",
+    "europee_2009": "data/derived/results_by_election/europee_2009.csv.gz",
+    "europee_2014": "data/derived/results_by_election/europee_2014.csv.gz",
+    "europee_2019": "data/derived/results_by_election/europee_2019.csv.gz",
+    "europee_2024": "data/derived/results_by_election/europee_2024.csv.gz"
   },
   "row_counts": {
     "assemblea_costituente_1946": 65102,
@@ -48,7 +61,17 @@
     "camera_2008": 114050,
     "camera_2013": 137169,
     "camera_2018": 121366,
-    "camera_2022": 111199
+    "camera_2022": 111199,
+    "europee_1979": 92409,
+    "europee_1984": 76199,
+    "europee_1989": 94615,
+    "europee_1994": 124683,
+    "europee_1999": 156445,
+    "europee_2004": 162555,
+    "europee_2009": 100706,
+    "europee_2014": 83979,
+    "europee_2019": 112065,
+    "europee_2024": 89932
   },
   "shards_uncompressed": {
     "assemblea_costituente_1946": "data/derived/results_by_election/assemblea_costituente_1946.csv",
@@ -70,12 +93,22 @@
     "camera_2008": "data/derived/results_by_election/camera_2008.csv",
     "camera_2013": "data/derived/results_by_election/camera_2013.csv",
     "camera_2018": "data/derived/results_by_election/camera_2018.csv",
-    "camera_2022": "data/derived/results_by_election/camera_2022.csv"
+    "camera_2022": "data/derived/results_by_election/camera_2022.csv",
+    "europee_1979": "data/derived/results_by_election/europee_1979.csv",
+    "europee_1984": "data/derived/results_by_election/europee_1984.csv",
+    "europee_1989": "data/derived/results_by_election/europee_1989.csv",
+    "europee_1994": "data/derived/results_by_election/europee_1994.csv",
+    "europee_1999": "data/derived/results_by_election/europee_1999.csv",
+    "europee_2004": "data/derived/results_by_election/europee_2004.csv",
+    "europee_2009": "data/derived/results_by_election/europee_2009.csv",
+    "europee_2014": "data/derived/results_by_election/europee_2014.csv",
+    "europee_2019": "data/derived/results_by_election/europee_2019.csv",
+    "europee_2024": "data/derived/results_by_election/europee_2024.csv"
   },
   "compression": {
     "format": "gzip",
-    "original_bytes": 518493165,
-    "compressed_bytes": 35065019,
-    "reduction_pct": 93.24
+    "original_bytes": 819343623,
+    "compressed_bytes": 54757610,
+    "reduction_pct": 93.32
   }
 }

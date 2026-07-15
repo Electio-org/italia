@@ -2,7 +2,7 @@
   "generated_by": "build_municipality_profiles.py",
   "source": "municipality_summary_by_election.json (harmonized to 2021 geometry)",
   "strategy": "province_chunks",
-  "row_count": 155202,
+  "row_count": 234062,
   "chunks": {
     "001": "data/derived/municipality_profiles/chunks/001.json.gz",
     "002": "data/derived/municipality_profiles/chunks/002.json.gz",
@@ -8158,6 +8158,76 @@
       "first_party_share": 30.960080577310645,
       "dominant_block": "destra",
       "municipalities": 7829
+    },
+    "europee_1979": {
+      "year": 1979,
+      "turnout_pct": 85.32117045173855,
+      "first_party_share": 42.57996820435545,
+      "dominant_block": "centro",
+      "municipalities": 7860
+    },
+    "europee_1984": {
+      "year": 1984,
+      "turnout_pct": 82.97727514734392,
+      "first_party_share": 42.44148411387712,
+      "dominant_block": "centro",
+      "municipalities": 7876
+    },
+    "europee_1989": {
+      "year": 1989,
+      "turnout_pct": 81.65649680355422,
+      "first_party_share": 39.262844820252745,
+      "dominant_block": "centro",
+      "municipalities": 7884
+    },
+    "europee_1994": {
+      "year": 1994,
+      "turnout_pct": 74.6549469886687,
+      "first_party_share": 34.35481979076859,
+      "dominant_block": "centro-destra",
+      "municipalities": 7892
+    },
+    "europee_1999": {
+      "year": 1999,
+      "turnout_pct": 70.76468907999168,
+      "first_party_share": 29.390340610179656,
+      "dominant_block": "centro-destra",
+      "municipalities": 7886
+    },
+    "europee_2004": {
+      "year": 2004,
+      "turnout_pct": 72.87304847184164,
+      "first_party_share": 33.20368880482719,
+      "dominant_block": "centro-sinistra",
+      "municipalities": 7890
+    },
+    "europee_2009": {
+      "year": 2009,
+      "turnout_pct": 66.46815744513992,
+      "first_party_share": 38.813110836113765,
+      "dominant_block": "centro-destra",
+      "municipalities": 7897
+    },
+    "europee_2014": {
+      "year": 2014,
+      "turnout_pct": 58.689096812137684,
+      "first_party_share": 41.65970298929552,
+      "dominant_block": "centro-sinistra",
+      "municipalities": 7897
+    },
+    "europee_2019": {
+      "year": 2019,
+      "turnout_pct": 56.08981752700043,
+      "first_party_share": 38.79905390856425,
+      "dominant_block": "centro-destra",
+      "municipalities": 7898
+    },
+    "europee_2024": {
+      "year": 2024,
+      "turnout_pct": 49.66808476702303,
+      "first_party_share": 33.597058907174564,
+      "dominant_block": "destra",
+      "municipalities": 7880
     }
   }
 }
