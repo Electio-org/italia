@@ -38,7 +38,7 @@ export const mean = values => {
 //     map to a family/bloc that reflects their political tradition.
 export const PARTY_FALLBACKS = [
   // --- Hard-left / extra-parliamentary ---
-  [/rifondazione (comunista|miss)|^prc$|^rc$/i, { family: 'sinistra storica', bloc: 'sinistra', color: '#7f1d1d', display: 'Rifondazione Comunista' }],
+  [/rifondazione comunista|^prc$|^rc$/i, { family: 'sinistra storica', bloc: 'sinistra', color: '#7f1d1d', display: 'Rifondazione Comunista' }],
   [/comunisti italiani|^pdci$|partito dei comunisti/i, { family: 'sinistra storica', bloc: 'sinistra', color: '#991b1b', display: 'Comunisti Italiani' }],
   [/partito comunista dei lavoratori|alternativa comunista|^pcl$|sinistra critica|pc\(marx-len\)/i, { family: 'sinistra storica', bloc: 'sinistra', color: '#7f1d1d', display: 'PC Lavoratori / Sin. Critica' }],
   [/^pdup\b|^p\.?\s?d\.?\s?u\.?\s?p\.?$|democrazia proletaria|^dem\.?\s?prol\b|nuova sin(istra)?\.?\s?unit/i, { family: 'sinistra storica', bloc: 'sinistra', color: '#7f1d1d', display: 'PDUP / DemProl' }],
@@ -74,7 +74,7 @@ export const PARTY_FALLBACKS = [
   [/scelta civica|monti per l/i, { family: 'liberale-riformista', bloc: 'centro', color: '#fb923c', display: 'Scelta Civica' }],
   [/futuro e liberta|^fli$/i, { family: 'liberale-riformista', bloc: 'centro-destra', color: '#fdba74', display: 'FLI' }],
   [/fare per fermare/i, { family: 'liberale-riformista', bloc: 'centro', color: '#f59e0b', display: 'Fare' }],
-  [/lega d.?azione|movimento per le autonomie|\bmpa\b|movimento per l.?autonomia|grande sud/i, { family: 'liberal-conservatore', bloc: 'centro-destra', color: '#3b82f6', display: "Lega d'Azione / MpA" }],
+  [/lega d.?azione|movimento per le autonomie|\bmpa\b|movimento per l.?autonomia|grande sud/i, { family: 'liberale-conservatore', bloc: 'centro-destra', color: '#3b82f6', display: "Lega d'Azione / MpA" }],
   [/\bazione\b|^az$|italia viva|^iv$|renew|^calenda$/i, { family: 'liberale-riformista', bloc: 'centro', color: '#fb923c', display: 'Azione / IV' }],
   [/italia dei valori|di pietro|^idv$/i, { family: 'liberale-riformista', bloc: 'centro-sinistra', color: '#fcd34d', display: 'IdV' }],
   [/\+europa|piu europa/i, { family: 'liberale-riformista', bloc: 'centro', color: '#22d3ee', display: '+Europa' }],
@@ -96,9 +96,9 @@ export const PARTY_FALLBACKS = [
   [/^dc\b|democrazia cristiana/i, { family: 'cattolico-popolare', bloc: 'centro', color: '#2e7d32', display: 'DC' }],
 
   // --- Centro-destra liberal-conservatore ---
-  [/forza italia|^fi$|^f\.?\s?i\.?$/i, { family: 'liberal-conservatore', bloc: 'centro-destra', color: '#1976d2', display: 'Forza Italia' }],
-  [/popolo della liberta|^pdl$|^p\.?\s?d\.?\s?l\.?$/i, { family: 'liberal-conservatore', bloc: 'centro-destra', color: '#1d4ed8', display: 'PdL' }],
-  [/noi (con l|moderati)|civica popolare|toti.*brugnaro|noi di centro/i, { family: 'liberal-conservatore', bloc: 'centro-destra', color: '#3b82f6', display: 'Noi Moderati' }],
+  [/forza italia|^fi$|^f\.?\s?i\.?$/i, { family: 'liberale-conservatore', bloc: 'centro-destra', color: '#1976d2', display: 'Forza Italia' }],
+  [/popolo della liberta|^pdl$|^p\.?\s?d\.?\s?l\.?$/i, { family: 'liberale-conservatore', bloc: 'centro-destra', color: '#1d4ed8', display: 'PdL' }],
+  [/noi (con l|moderati)|civica popolare|toti.*brugnaro|noi di centro/i, { family: 'liberale-conservatore', bloc: 'centro-destra', color: '#3b82f6', display: 'Noi Moderati' }],
   // FIX (PR #16): was /lega|.../ which leaked into "Sviluppo-Legalità". Now \blega\b plus
   // explicit liga regional variants. Lega d'Azione is matched earlier so unaffected.
   [/\blega\b|leganord|^ln$|\bliga\b/i, { family: 'regionalista', bloc: 'centro-destra', color: '#2e7d32', display: 'Lega' }],
@@ -114,16 +114,16 @@ export const PARTY_FALLBACKS = [
   [/^pnm\b|partito nazionale monarchico|p\.?\s?naz\.?\s?monarchico|p\.?\s?naz\.?\s?mon\.|^pmp\b|p\.?\s?monarchico|pdium|partito democratico italiano di unit.?\s?monarchica|all\.?\s?monarc|mov\.?\s?dem\.?\s?monarc|alleanza monarchica|\bmonarchic/i, { family: 'monarchico', bloc: 'destra', color: '#7c2d12', display: 'Monarchici' }],
 
   // --- Populista ---
-  [/movimento 5 stelle|^m5s$|beppegrillo|impegno civico|\bgrillo\b|\bconte\b/i, { family: 'populista', bloc: 'populista', color: '#f59e0b', display: 'M5S' }],
+  [/movimento 5 stelle|^m5s$|beppegrillo|\bgrillo\b|\bconte\b/i, { family: 'populista', bloc: 'populista', color: '#f59e0b', display: 'M5S' }],
   [/fronte (dell.?\s?)?uomo qualunque|fr\.?\s?uomo qualunque|qualunqui/i, { family: 'populista', bloc: 'populista', color: '#fb923c', display: 'Uomo Qualunque' }],
 
   // --- Pensionati ---
   [/partito pensionat|part\.?\s?naz\.?\s?pens\b|^pens\b/i, { family: 'pensionati', bloc: 'centro', color: '#a1a1aa', display: 'Pensionati' }],
 
   // --- Regional autonomista ---
-  [/^svp\b|sudtiroler|sud tirol|die freiheitlichen|union fur sud|valle d.aosta|union valdotaine|^ppst\b|partito popolare sudtirolese|svp\s*[\-\s\.]*\s*patt|^patt\b/i, { family: 'regionalista', bloc: 'centro-destra', color: '#16a34a', display: 'Autonomisti' }],
-  [/mov\.?\s?indipend\.?\s?sic|movimento indipendentista siciliano|^mis\b|sud chiama nord|cateno de luca/i, { family: 'regionalista', bloc: 'centro-destra', color: '#16a34a', display: 'Sicilianisti' }],
-  [/^ps\.?\s?d.?\s?az\b|partito sardo d.?azione|^psdaz\b|^piemont\b/i, { family: 'regionalista', bloc: 'centro-destra', color: '#22c55e', display: 'Autonomisti regionali' }],
+  [/^svp\b|sudtiroler|sud tirol|die freiheitlichen|union fur sud|valle d.aosta|union valdotaine|^ppst\b|partito popolare sudtirolese|svp\s*[\-\s\.]*\s*patt|^patt\b/i, { family: 'regionalista', bloc: 'regionalista', color: '#16a34a', display: 'Autonomisti' }],
+  [/mov\.?\s?indipend\.?\s?sic|movimento indipendentista siciliano|^mis\b|sud chiama nord|cateno de luca/i, { family: 'regionalista', bloc: 'regionalista', color: '#16a34a', display: 'Sicilianisti' }],
+  [/^ps\.?\s?d.?\s?az\b|partito sardo d.?azione|^psdaz\b|^piemont\b/i, { family: 'regionalista', bloc: 'regionalista', color: '#22c55e', display: 'Autonomisti regionali' }],
 ];
 
 // Ordine canonico dei blocchi politici: continuum destra → sinistra,
@@ -277,6 +277,7 @@ export const FAMILY_COLORS = {
   'socialdemocratico': '#ec4899',
   'monarchico': '#7c2d12',
   'pensionati': '#71717a',
+  'agrario': '#6b7f2a',
   'altro': '#64748b'
 };
 

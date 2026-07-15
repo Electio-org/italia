@@ -1,6 +1,6 @@
 {
   "generated_by": "build_result_shards.py",
-  "release_version": "0.23.0",
+  "release_version": "0.24.0",
   "release_date": "2026-07-15",
   "product": {
     "product_key": "metadata_layer",
@@ -60,10 +60,10 @@
       "dataset_key": "updateLog",
       "path": "data/derived/update_log.json",
       "kind": "json",
-      "size_bytes": 18367,
+      "size_bytes": 19084,
       "row_count": null,
       "feature_count": null,
-      "sha256": "bced32a35fba193e2d241d0b02208f6b2b27147d82d1fef58c2311e8fdc5310f"
+      "sha256": "c41a7c39fe36d6755c223207d08f481e50f736de9e6d250cb2e9bd61766f29af"
     },
     {
       "role": "extra",
@@ -118,7 +118,7 @@
         "dataset_key": "updateLog",
         "path": "data/derived/update_log.json",
         "kind": "json",
-        "size_bytes": 18367,
+        "size_bytes": 19084,
         "row_count": null,
         "feature_count": null
       },

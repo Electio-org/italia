@@ -33,3 +33,47 @@ camera_2018,Partito Comunista,Partito Comunista,Partito Comunista,sinistra stori
 camera_2022,Partito Comunista Italiano,Partito Comunista Italiano,Partito Comunista Italiano,sinistra storica,sinistra,#991b1b,curated_exact,Preserve current list identity without historical continuity claim
 camera_2022,Unione Popolare Con de Magistris,Unione Popolare,Unione Popolare,sinistra storica,sinistra,#b91c1c,curated_exact,Distinct from UDC and other popular lists
 camera_2022,Impegno Civico Luigi di Maio - Centro Democratico,Impegno Civico,Impegno Civico,centro-sinistra,centro-sinistra,#ef5350,curated_exact,Distinct from M5S despite candidate history
+assemblea_costituente_1946,Cdr,Cdr,Concentrazione Democratica Repubblicana,laico-repubblicano,centro,#10b981,curated_exact,Republican democratic formation later merged into PRI
+assemblea_costituente_1946,P.Contadini d'Italia,P.Contadini d'Italia,Partito dei Contadini d'Italia,agrario,centro,#6b7f2a,curated_exact,Agrarian list preserved as a distinct historical identity
+assemblea_costituente_1946,Part.Democr.Lavoro,Part.Democr.Lavoro,Partito Democratico del Lavoro,centro-sinistra,centro-sinistra,#ef5350,curated_exact,Historical labour-democratic list
+assemblea_costituente_1946,All.Repub.It.,All.Repub.It.,Alleanza Repubblicana Italiana,laico-repubblicano,centro,#10b981,curated_exact,Historical republican list
+assemblea_costituente_1946,Pc.Internazionalista,Pc.Internazionalista,Partito Comunista Internazionalista,sinistra storica,sinistra,#7f1d1d,curated_exact,Distinct from PCI
+camera_1948,P.Contadini d'Italia,P.Contadini d'Italia,Partito dei Contadini d'Italia,agrario,centro,#6b7f2a,curated_exact,Agrarian list preserved as a distinct historical identity
+camera_1948,Pc.Internazionalista,Pc.Internazionalista,Partito Comunista Internazionalista,sinistra storica,sinistra,#7f1d1d,curated_exact,Distinct from PCI
+camera_1958,Movim.Aut.Reg.-M.A.R.P.,Movim.Aut.Reg.-M.A.R.P.,Movimento Autonomista Regionale - MARP,regionalista,regionalista,#15803d,curated_exact,Regional autonomist list
+camera_1958,Uv,Uv,Union Valdotaine,regionalista,regionalista,#15803d,curated_exact,Valle d'Aosta regional list
+camera_1963,Uv,Uv,Union Valdotaine,regionalista,regionalista,#15803d,curated_exact,Valle d'Aosta regional list
+camera_1963,Conc.Unita'Rurale,Conc.Unita'Rurale,Concentrazione di Unita Rurale,agrario,centro,#6b7f2a,curated_exact,Rural agrarian list
+camera_1968,Uv,Uv,Union Valdotaine,regionalista,regionalista,#15803d,curated_exact,Valle d'Aosta regional list
+camera_1972,Mov.Pol.Lav.,Mov.Pol.Lav.,Movimento Politico dei Lavoratori,centro-sinistra,centro-sinistra,#ef5350,curated_exact,Christian-left labour movement
+camera_1979,Lista Per Trieste,Lista Per Trieste,Lista per Trieste,regionalista,regionalista,#15803d,curated_exact,Trieste territorial list
+camera_1979,Mov.Friuli,Mov.Friuli,Movimento Friuli,regionalista,regionalista,#15803d,curated_exact,Friuli territorial list
+camera_1979,Unita della Sinistra,Unita della Sinistra,Unita della Sinistra,sinistra storica,sinistra,#7f1d1d,curated_exact,Historical unitary left list
+camera_1983,Lista Per Trieste,Lista Per Trieste,Lista per Trieste,regionalista,regionalista,#15803d,curated_exact,Trieste territorial list
+camera_1983,Mov.Friuli,Mov.Friuli,Movimento Friuli,regionalista,regionalista,#15803d,curated_exact,Friuli territorial list
+camera_1983,Uv-Uvp-D.Pop.,Uv-Uvp-D.Pop.,UV - UVP - Democratici Popolari,regionalista,regionalista,#15803d,curated_exact,Valle d'Aosta regional alliance
+camera_1983,Pptt,Pptt,Partito Popolare Trentino Tirolese,regionalista,regionalista,#15803d,curated_exact,Trentino-South Tyrol regional party
+camera_1987,Uv-Adp-Pri,Uv-Adp-Pri,UV - ADP - PRI,regionalista,regionalista,#15803d,curated_exact,Valle d'Aosta regional alliance
+camera_1987,All.Pens.,All.Pens.,Alleanza Pensionati,pensionati,centro,#71717a,curated_exact,Pensioners list
+camera_1987,P.Verde I.Ver.E.,P.Verde I.Ver.E.,Partito Verde - Italia Verde Europa,ecologista,sinistra,#2f855a,curated_exact,Historical green list
+camera_1992,Lista Referendum,Lista Referendum,Lista Referendum,liberale-riformista,centro,#fbbf24,curated_exact,Electoral-reform list associated with the referendum movement
+camera_1992,Federalismo-Pens.Uv.,Federalismo-Pens.Uv.,Federalismo - Pensionati - Union Valdotaine,regionalista,regionalista,#15803d,curated_exact,Federalist and Valle d'Aosta regional alliance
+camera_1992,Mov.Ven.Reg.Aut,Mov.Ven.Reg.Aut,Movimento Veneto Regione Autonoma,regionalista,regionalista,#15803d,curated_exact,Veneto autonomist list
+camera_1992,Union Veneto,Union Veneto,Union del Popolo Veneto,regionalista,regionalista,#15803d,curated_exact,Veneto regional list
+camera_1992,Lg.Lomb.Eur.T.Lib.,Lg.Lomb.Eur.T.Lib.,Lega Lombarda Europea,regionalista,regionalista,#15803d,curated_exact,Lombardy regional list
+camera_1992,Gruppo Dolchi-Fosson,Gruppo Dolchi-Fosson,Gruppo Dolchi-Fosson,regionalista,regionalista,#15803d,curated_exact,Valle d'Aosta territorial list
+camera_1996,Unione Nord Est,Unione Nord Est,Unione Nord Est,regionalista,regionalista,#15803d,curated_exact,North-East territorial list
+camera_1996,Noi Siciliani-Fns,Noi Siciliani-Fns,Noi Siciliani - FNS,regionalista,regionalista,#15803d,curated_exact,Sicilian territorial list
+camera_1996,Sardigna Natzione,Sardigna Natzione,Sardigna Natzione,regionalista,regionalista,#15803d,curated_exact,Sardinian independence list
+camera_2001,Fronte Nazionale,Fronte Nazionale,Fronte Nazionale,destra nazionale,destra,#0d47a1,curated_exact,National-right list
+camera_2006,Progetto Nordest,Progetto Nordest,Progetto Nordest,regionalista,regionalista,#15803d,curated_exact,North-East territorial list
+camera_2006,Alleanza Lombarda Autonomia,Alleanza Lombarda Autonomia,Alleanza Lombarda Autonomia,regionalista,regionalista,#15803d,curated_exact,Lombardy autonomist list
+camera_2006,Pensionati Uniti,Pensionati Uniti,Pensionati Uniti,pensionati,centro,#71717a,curated_exact,Pensioners list
+camera_2008,Lg.Veneta Repubblica,Lg.Veneta Repubblica,Liga Veneta Repubblica,regionalista,regionalista,#15803d,curated_exact,Veneto regional list
+camera_2013,Mir - Moderati in Rivoluzione,Mir - Moderati in Rivoluzione,Moderati in Rivoluzione,liberale-conservatore,centro-destra,#3b82f6,curated_exact,Centre-right list
+camera_2013,Lista Amnistia Giustizia Liberta',Lista Amnistia Giustizia Liberta',Lista Amnistia Giustizia Liberta,radicale,liberale,#8b5cf6,curated_exact,Radical justice-reform list
+camera_2013,Io Amo l'Italia,Io Amo l'Italia,Io Amo l'Italia,destra nazionale,destra,#0d47a1,curated_exact,National-conservative list
+camera_2013,Indipendenza Veneta,Indipendenza Veneta,Indipendenza Veneta,regionalista,regionalista,#15803d,curated_exact,Veneto independence list
+camera_2018,Grande Nord,Grande Nord,Grande Nord,regionalista,regionalista,#15803d,curated_exact,Northern regionalist list
+camera_2018,Autodeterminatzione,Autodeterminatzione,Autodeterminatzione,regionalista,regionalista,#15803d,curated_exact,Sardinian territorial list
+camera_2022,Alternativa Per l'Italia - No Green Pass,Alternativa Per l'Italia - No Green Pass,Alternativa per l'Italia - No Green Pass,destra nazionale,destra,#0c4a6e,curated_exact,Sovereigntist protest list

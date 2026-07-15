@@ -458,6 +458,35 @@
         "dichiarazione di fonti, ruoli e politica di armonizzazione territoriale"
       ],
       "limitations": []
+    },
+    {
+      "dataset_key": "partyTaxonomy",
+      "path": "data/reference/party_taxonomy_overrides.csv",
+      "produced_by": "manual editorial registry + scripts/party_taxonomy.py",
+      "source_class": "curated_reference",
+      "transformation_steps": [
+        "conservazione della denominazione party_raw osservata nella fonte",
+        "applicazione di corrispondenze esatte election_key + party_raw prima delle regole generiche",
+        "assegnazione separata di identita standardizzata, famiglia e area politica"
+      ],
+      "limitations": [
+        "famiglia e area politica sono classificazioni analitiche, non fatti presenti nella scheda elettorale",
+        "le identita ambigue restano non classificate invece di essere dedotte dal solo nome"
+      ]
+    },
+    {
+      "dataset_key": "partyTaxonomyAudit",
+      "path": "data/derived/party_taxonomy_audit.json",
+      "produced_by": "scripts/audit_party_taxonomy.py",
+      "source_class": "quality_report",
+      "transformation_steps": [
+        "ricostruzione dei totali nazionali per lista per tutte le elezioni pubblicate",
+        "verifica di vincitore e intervallo della quota nazionale",
+        "misura della copertura classificata e pubblicazione delle liste residue"
+      ],
+      "limitations": [
+        "l'audit verifica coerenza, copertura e anacronismi noti ma non sostituisce la ricerca storico-politica sulle liste minori"
+      ]
     }
   ]
 }

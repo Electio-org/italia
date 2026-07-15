@@ -74,8 +74,8 @@
   },
   "compression": {
     "format": "gzip",
-    "original_bytes": 516201641,
-    "compressed_bytes": 34884089,
+    "original_bytes": 518493165,
+    "compressed_bytes": 35065019,
     "reduction_pct": 93.24
   }
 }

@@ -53,6 +53,9 @@ def audit(root: Path) -> Dict[str, object]:
     elections: List[Dict[str, object]] = []
     errors: List[str] = []
     warnings: List[str] = []
+    audited_votes = 0.0
+    classified_votes = 0.0
+    exact_votes = 0.0
 
     for path in source_files(root):
         election_key = path.stem
@@ -88,6 +91,7 @@ def audit(root: Path) -> Dict[str, object]:
             rows.groupby("party_raw", sort=False)["votes_num"].sum().sort_values(ascending=False)
         )
         national_total = float(party_totals.sum())
+        audited_votes += national_total
         winner_raw = str(party_totals.index[0])
         winner_share = float(party_totals.iloc[0] / national_total * 100) if national_total else 0.0
         expected = checks.get(election_key)
@@ -112,14 +116,42 @@ def audit(root: Path) -> Dict[str, object]:
             if national_total
         }
         unmatched_share = bloc_shares.get("altro", 0.0)
-        if unmatched_share > 3.5:
-            warnings.append(f"{election_key}: {unmatched_share:.2f}% of votes remains in altro")
+        party_meta = {}
+        for raw in party_totals.index:
+            sample = rows[rows["party_raw"] == raw].iloc[0]
+            exact = taxonomy_key(election_key, raw) in registry
+            bloc = str(sample.get("bloc") or "altro")
+            party_meta[str(raw)] = {
+                "party_std": str(sample.get("party_std") or raw),
+                "party_family": str(sample.get("party_family") or "altro"),
+                "bloc": bloc,
+                "classification_status": "curated_exact" if exact else ("fallback_rule" if bloc != "altro" else "unclassified"),
+            }
+        election_classified_votes = float(sum(votes for raw, votes in party_totals.items() if party_meta[str(raw)]["bloc"] != "altro"))
+        election_exact_votes = float(sum(votes for raw, votes in party_totals.items() if party_meta[str(raw)]["classification_status"] == "curated_exact"))
+        classified_votes += election_classified_votes
+        exact_votes += election_exact_votes
+        unclassified_lists = [
+            {
+                "party_raw": str(raw),
+                "votes": int(votes),
+                "share": round(float(votes / national_total * 100), 4),
+            }
+            for raw, votes in party_totals.items()
+            if party_meta[str(raw)]["bloc"] == "altro" and national_total and votes / national_total * 100 >= 0.05
+        ]
+        for item in unclassified_lists:
+            if item["share"] >= 0.5:
+                warnings.append(
+                    f"{election_key}: unclassified list above 0.5% ({item['party_raw']}, {item['share']:.2f}%)"
+                )
 
         top_parties = [
             {
                 "party_raw": str(label),
                 "votes": int(votes),
                 "share": round(float(votes / national_total * 100), 4),
+                **party_meta[str(label)],
             }
             for label, votes in party_totals.head(12).items()
         ]
@@ -133,7 +165,10 @@ def audit(root: Path) -> Dict[str, object]:
                 "winner_raw": winner_raw,
                 "winner_share": round(winner_share, 4),
                 "unmatched_bloc_share": unmatched_share,
+                "classification_coverage_share": round(election_classified_votes / national_total * 100, 4) if national_total else 0.0,
+                "curated_exact_share": round(election_exact_votes / national_total * 100, 4) if national_total else 0.0,
                 "bloc_shares": bloc_shares,
+                "unclassified_lists": unclassified_lists,
                 "top_parties": top_parties,
             }
         )
@@ -150,6 +185,8 @@ def audit(root: Path) -> Dict[str, object]:
         "method": "Raw list labels are preserved; exact election-aware overrides precede generic fallback rules.",
         "election_count": len(elections),
         "override_count": len(registry),
+        "classification_coverage_share": round(classified_votes / audited_votes * 100, 4) if audited_votes else 0.0,
+        "curated_exact_share": round(exact_votes / audited_votes * 100, 4) if audited_votes else 0.0,
         "errors": sorted(set(errors)),
         "warnings": sorted(set(warnings)),
         "ok": not errors,

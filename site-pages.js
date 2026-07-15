@@ -231,11 +231,10 @@ function renderDownloadPage(bundle) {
 
   const partyTaxonomySummary = q('party-taxonomy-summary');
   if (partyTaxonomySummary) {
-    const maxUnmatched = partyElections.reduce((max, row) => Math.max(max, Number(row.unmatched_bloc_share || 0)), 0);
     partyTaxonomySummary.innerHTML = [
       ['Elezioni controllate', partyAudit.election_count || 0, 'Vincitore e quota nazionale verificati'],
       ['Eccezioni storiche', partyAudit.override_count || 0, 'Mapping esatti prima delle regole generiche'],
-      ['Massimo non classificato', `${formatNumber(maxUnmatched, 2)}%`, 'Quota nazionale lasciata prudenzialmente in altro'],
+      ['Voti classificati', `${formatNumber(partyAudit.classification_coverage_share || 0, 2)}%`, 'Copertura complessiva delle aree politiche'],
     ].map(([label, value, meta]) => statCard(label, value, meta)).join('');
   }
 
@@ -247,7 +246,7 @@ function renderDownloadPage(bundle) {
         <td>${escapeHtml(row.winner_raw || 'n.d.')}</td>
         <td>${formatNumber(row.winner_share || 0, 2)}%</td>
         <td>${formatNumber(row.unique_raw_lists || 0)}</td>
-        <td>${formatNumber(row.unmatched_bloc_share || 0, 2)}%</td>
+        <td>${formatNumber(row.classification_coverage_share || 0, 2)}%</td>
       </tr>
     `).join('');
   }
@@ -815,7 +814,7 @@ function renderUsageNotesPage(bundle) {
     partyTaxonomyMethodGrid.innerHTML = [
       ['dato', 'Lista originale', 'party_raw conserva la denominazione pubblicata nella fonte elettorale e separa le liste presenti sulla scheda.'],
       ['classificazione', 'Identita datata', 'Le eccezioni election_key + party_raw impediscono continuita anacronistiche come Partito d’Azione/Azione o Verdi/AVS.'],
-      ['controllo', 'Audit nazionale', `${partyAudit.election_count || 0} elezioni controllate; ${partyAudit.errors?.length || 0} errori aperti e ${partyAudit.warnings?.length || 0} avvisi.`],
+      ['controllo', 'Audit nazionale', `${partyAudit.election_count || 0} elezioni controllate; ${formatNumber(partyAudit.classification_coverage_share || 0, 2)}% dei voti classificato; ${partyAudit.errors?.length || 0} errori aperti.`],
     ].map(([pill, title, text]) => `
       <article class="doc-card">
         <div class="doc-card-head"><span class="doc-pill">${escapeHtml(pill)}</span><strong>${escapeHtml(title)}</strong></div>
