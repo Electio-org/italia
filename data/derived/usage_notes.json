@@ -50,6 +50,18 @@
       "text": "Dopo l'aggregazione territoriale le quote, i rank, il primo partito e il margine sono ricalcolati dai voti e dai voti validi, non mediati tra i comuni predecessori."
     },
     {
+      "key": "party_identity",
+      "title": "Identita dei partiti nel tempo",
+      "severity": "info",
+      "text": "party_raw conserva la lista osservata nell'elezione. party_std, famiglia e blocco vengono assegnati con eccezioni datate prima delle regole generiche, senza rinominare soggetti storici con identita contemporanee."
+    },
+    {
+      "key": "party_coalition_distinction",
+      "title": "Area politica e coalizione non sono sinonimi",
+      "severity": "info",
+      "text": "bloc e una classificazione analitica ampia; le coalizioni elettorali pre-voto sono pubblicate separatamente e soltanto dove esistono dati curati per quella elezione."
+    },
+    {
       "key": "summary_reconstruction",
       "title": "Riepiloghi mancanti nella fonte",
       "severity": "info",

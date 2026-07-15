@@ -615,7 +615,7 @@ def build_codebook_payload() -> Dict[str, object]:
         "valid_votes": "Voti validi, se disponibili.",
         "first_party_std": "Leader della competizione dopo standardizzazione partiti.",
         "vote_share": "Quota percentuale ricalcolata dai voti quando possibile.",
-        "party_std": "Nome standardizzato del partito/lista.",
+        "party_std": "Identita standardizzata nel contesto della specifica elezione; non implica continuita organizzativa tra epoche.",
         "party_family": "Famiglia politica comparabile.",
         "bloc": "Blocco ideologico aggregato.",
         "comparability_note": "Note metodologiche e fallback applicati al record.",

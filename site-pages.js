@@ -9,10 +9,13 @@ function escapeHtml(value) {
     .replace(/'/g, '&#39;');
 }
 
-function formatNumber(value) {
+function formatNumber(value, fractionDigits = 0) {
   const numeric = Number(value);
   if (!Number.isFinite(numeric)) return '0';
-  return new Intl.NumberFormat('it-IT').format(numeric);
+  return new Intl.NumberFormat('it-IT', {
+    minimumFractionDigits: fractionDigits,
+    maximumFractionDigits: fractionDigits,
+  }).format(numeric);
 }
 
 function formatBytes(bytes) {
@@ -91,10 +94,10 @@ async function fetchText(path) {
 }
 
 const PAGE_JSON_TARGETS = {
-  'data-download': ['releaseManifest', 'dataProducts', 'productCatalog', 'datasetRegistry', 'usageNotes', 'researchRecipes', 'dataQualityReport', 'archiveBundleGapReport', 'webGeometryReport', 'territorialHistoryReport', 'territorialSources'],
+  'data-download': ['releaseManifest', 'dataProducts', 'productCatalog', 'datasetRegistry', 'usageNotes', 'researchRecipes', 'dataQualityReport', 'archiveBundleGapReport', 'webGeometryReport', 'territorialHistoryReport', 'territorialSources', 'partyTaxonomyAudit'],
   products: ['releaseManifest', 'dataProducts', 'productCatalog'],
   'programmatic-access': ['releaseManifest', 'dataProducts', 'productCatalog', 'researchRecipes', 'siteGuides'],
-  'usage-notes': ['usageNotes', 'siteGuides', 'codebook', 'datasetContracts', 'provenance', 'datasetRegistry', 'dataQualityReport', 'archiveBundleGapReport', 'territorialHistoryReport', 'territorialSources'],
+  'usage-notes': ['usageNotes', 'siteGuides', 'codebook', 'datasetContracts', 'provenance', 'datasetRegistry', 'dataQualityReport', 'archiveBundleGapReport', 'territorialHistoryReport', 'territorialSources', 'partyTaxonomyAudit'],
   'update-log': ['updateLog', 'releaseManifest', 'dataQualityReport', 'datasetRegistry'],
 };
 
@@ -119,6 +122,7 @@ async function loadBundle(page = 'dashboard') {
     webGeometryReport: 'webGeometryReport',
     territorialHistoryReport: 'territorialHistoryReport',
     territorialSources: 'territorialSources',
+    partyTaxonomyAudit: 'partyTaxonomyAudit',
   };
   const wanted = new Set(PAGE_JSON_TARGETS[page] || Object.keys(jsonTargets));
 
@@ -202,6 +206,8 @@ function renderDownloadPage(bundle) {
   const webGeometryTotals = bundle.webGeometryReport?.totals || {};
   const territorialHistory = bundle.territorialHistoryReport || {};
   const territorialElections = territorialHistory.elections || [];
+  const partyAudit = bundle.partyTaxonomyAudit || {};
+  const partyElections = partyAudit.elections || [];
   const archiveGapByKey = new Map(archiveGap.map((row) => [row.consultation_key || row.election_key, row]));
   const usableElectionRows = registryDatasets.filter((row) => row.election_key);
   const geometryRows = registryDatasets.filter((row) => row.dataset_family === 'geometry_boundary');
@@ -221,6 +227,29 @@ function renderDownloadPage(bundle) {
   const statGrid = q('page-stat-grid');
   if (statGrid) {
     statGrid.innerHTML = stats.map(([label, value, meta]) => statCard(label, value, meta)).join('');
+  }
+
+  const partyTaxonomySummary = q('party-taxonomy-summary');
+  if (partyTaxonomySummary) {
+    const maxUnmatched = partyElections.reduce((max, row) => Math.max(max, Number(row.unmatched_bloc_share || 0)), 0);
+    partyTaxonomySummary.innerHTML = [
+      ['Elezioni controllate', partyAudit.election_count || 0, 'Vincitore e quota nazionale verificati'],
+      ['Eccezioni storiche', partyAudit.override_count || 0, 'Mapping esatti prima delle regole generiche'],
+      ['Massimo non classificato', `${formatNumber(maxUnmatched, 2)}%`, 'Quota nazionale lasciata prudenzialmente in altro'],
+    ].map(([label, value, meta]) => statCard(label, value, meta)).join('');
+  }
+
+  const partyTaxonomyBody = q('party-taxonomy-table-body');
+  if (partyTaxonomyBody) {
+    partyTaxonomyBody.innerHTML = partyElections.map((row) => `
+      <tr>
+        <td>${escapeHtml(row.election_key || '')}</td>
+        <td>${escapeHtml(row.winner_raw || 'n.d.')}</td>
+        <td>${formatNumber(row.winner_share || 0, 2)}%</td>
+        <td>${formatNumber(row.unique_raw_lists || 0)}</td>
+        <td>${formatNumber(row.unmatched_bloc_share || 0, 2)}%</td>
+      </tr>
+    `).join('');
   }
 
   const productGrid = q('product-card-grid');
@@ -728,6 +757,7 @@ function renderUsageNotesPage(bundle) {
   const provenance = bundle.provenance?.entries || [];
   const territorialSources = bundle.territorialSources?.sources || [];
   const territorialPolicy = bundle.territorialHistoryReport?.policy || {};
+  const partyAudit = bundle.partyTaxonomyAudit || {};
 
   const stats = [
     ['Note', notes.length, 'Guardrail e limiti dichiarati'],
@@ -778,6 +808,20 @@ function renderUsageNotesPage(bundle) {
       </article>
     `;
     territorialMethodGrid.innerHTML = [...sourceCards, policyCard].join('');
+  }
+
+  const partyTaxonomyMethodGrid = q('party-taxonomy-method-grid');
+  if (partyTaxonomyMethodGrid) {
+    partyTaxonomyMethodGrid.innerHTML = [
+      ['dato', 'Lista originale', 'party_raw conserva la denominazione pubblicata nella fonte elettorale e separa le liste presenti sulla scheda.'],
+      ['classificazione', 'Identita datata', 'Le eccezioni election_key + party_raw impediscono continuita anacronistiche come Partito d’Azione/Azione o Verdi/AVS.'],
+      ['controllo', 'Audit nazionale', `${partyAudit.election_count || 0} elezioni controllate; ${partyAudit.errors?.length || 0} errori aperti e ${partyAudit.warnings?.length || 0} avvisi.`],
+    ].map(([pill, title, text]) => `
+      <article class="doc-card">
+        <div class="doc-card-head"><span class="doc-pill">${escapeHtml(pill)}</span><strong>${escapeHtml(title)}</strong></div>
+        <p>${escapeHtml(text)}</p>
+      </article>
+    `).join('');
   }
 
   const explainerGrid = q('explainer-grid');

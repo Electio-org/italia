@@ -1,0 +1,35 @@
+election_key,party_raw,party_std,party_display_name,party_family,bloc,color,classification_status,notes
+assemblea_costituente_1946,Mov.Dem.Monarc.It.,Mov.Dem.Monarc.It.,Movimento Democratico Monarchico,monarchico,destra,#7c2d12,curated_exact,Avoid generic movimento democratico match
+assemblea_costituente_1946,Partito d'Azione,Partito d'Azione,Partito d'Azione,azionista,centro-sinistra,#0f766e,curated_exact,Historical party distinct from contemporary Azione
+assemblea_costituente_1946,Lega Sarda,Lega Sarda,Lega Sarda,regionalista,regionalista,#15803d,curated_exact,Historical regional list distinct from Lega Nord
+camera_1953,P.Radical Socialista,P.Radical Socialista,P. Radical Socialista,radicale,liberale,#8b5cf6,curated_exact,Avoid generic socialista match
+camera_1958,Mov.Azione-Rinnovam.,Mov.Azione-Rinnovam.,Mov. Azione-Rinnovamento,altro,altro,#64748b,curated_exact,Preserve historical identity without inferred continuity
+camera_1968,Socialdemocrazia,Socialdemocrazia,Socialdemocrazia,socialdemocratico,centro-sinistra,#ec4899,curated_exact,Avoid generic socialista match
+camera_1987,Lista Verde,Verdi,Lista Verde,ecologista,sinistra,#2f855a,curated_exact,Historical green list before AVS
+camera_1987,Verdi It.-P.Ecol,Verdi,Verdi Italiani - P. Ecologista,ecologista,sinistra,#2f855a,curated_exact,Historical green list before AVS
+camera_1992,Federazione dei Verdi,Verdi,Federazione dei Verdi,ecologista,sinistra,#2f855a,curated_exact,Historical green federation before AVS
+camera_1992,Verdi Federalisti,Verdi Federalisti,Verdi Federalisti,ecologista,sinistra,#2f855a,curated_exact,Preserve distinct historical list
+camera_1992,Verdi-Verdi,Verdi-Verdi,Verdi-Verdi,ecologista,sinistra,#2f855a,curated_exact,Preserve distinct historical list
+camera_1992,Rifondazione Comunista,Rifondazione Comunista,Rifondazione Comunista,sinistra storica,sinistra,#7f1d1d,curated_exact,Avoid stale Azione standardization
+camera_1992,Lega d'Azione Meridionale,Lega d'Azione Meridionale,Lega d'Azione Meridionale,regionalista,regionalista,#15803d,curated_exact,Historical regional list distinct from contemporary Azione and Lega Nord
+camera_1994,Federazione dei Verdi,Verdi,Federazione dei Verdi,ecologista,sinistra,#2f855a,curated_exact,Historical green federation before AVS
+camera_1994,Verdi-Verdi,Verdi-Verdi,Verdi-Verdi,ecologista,sinistra,#2f855a,curated_exact,Preserve distinct historical list
+camera_1994,Rifondazione Comunista,Rifondazione Comunista,Rifondazione Comunista,sinistra storica,sinistra,#7f1d1d,curated_exact,Avoid stale Azione standardization
+camera_1994,Lega d'Azione Meridionale,Lega d'Azione Meridionale,Lega d'Azione Meridionale,regionalista,regionalista,#15803d,curated_exact,Historical regional list distinct from contemporary Azione and Lega Nord
+camera_1996,Federazione dei Verdi,Verdi,Federazione dei Verdi,ecologista,sinistra,#2f855a,curated_exact,Historical green federation before AVS
+camera_1996,Verdi-Verdi,Verdi-Verdi,Verdi-Verdi,ecologista,sinistra,#2f855a,curated_exact,Preserve distinct historical list
+camera_1996,Rifondazione Comunista,Rifondazione Comunista,Rifondazione Comunista,sinistra storica,sinistra,#7f1d1d,curated_exact,Avoid stale Azione standardization
+camera_1996,Lega d'Azione Meridionale,Lega d'Azione Meridionale,Lega d'Azione Meridionale,regionalista,regionalista,#15803d,curated_exact,Historical regional list distinct from contemporary Azione and Lega Nord
+camera_2001,Il Girasole,Il Girasole,Il Girasole,centro-sinistra,centro-sinistra,#ef5350,curated_exact,Electoral list including greens and socialists; do not rename AVS
+camera_2001,Verdi-Verdi,Verdi-Verdi,Verdi-Verdi,ecologista,sinistra,#2f855a,curated_exact,Preserve distinct historical list
+camera_2001,Rifondazione Comunista,Rifondazione Comunista,Rifondazione Comunista,sinistra storica,sinistra,#7f1d1d,curated_exact,Avoid stale Azione standardization
+camera_2001,Lega d'Azione Meridionale,Lega d'Azione Meridionale,Lega d'Azione Meridionale,regionalista,regionalista,#15803d,curated_exact,Historical regional list distinct from contemporary Azione and Lega Nord
+camera_2006,Federazione dei Verdi,Verdi,Federazione dei Verdi,ecologista,sinistra,#2f855a,curated_exact,Historical green federation before AVS
+camera_2006,Rifondazione Comunista,Rifondazione Comunista,Rifondazione Comunista,sinistra storica,sinistra,#7f1d1d,curated_exact,Avoid stale Azione standardization
+camera_2008,Partito Comunista dei Lavoratori,PCL,Partito Comunista dei Lavoratori,sinistra storica,sinistra,#7f1d1d,curated_exact,Distinct from historical PCI
+camera_2013,Partito Comunista dei Lavoratori,PCL,Partito Comunista dei Lavoratori,sinistra storica,sinistra,#7f1d1d,curated_exact,Distinct from historical PCI
+camera_2013,Rifondazione Missina Italiana,Rifondazione Missina Italiana,Rifondazione Missina Italiana,destra nazionale,destra,#0d47a1,curated_exact,Missina is not Rifondazione Comunista
+camera_2018,Partito Comunista,Partito Comunista,Partito Comunista,sinistra storica,sinistra,#991b1b,curated_exact,Distinct organization from historical PCI
+camera_2022,Partito Comunista Italiano,Partito Comunista Italiano,Partito Comunista Italiano,sinistra storica,sinistra,#991b1b,curated_exact,Preserve current list identity without historical continuity claim
+camera_2022,Unione Popolare Con de Magistris,Unione Popolare,Unione Popolare,sinistra storica,sinistra,#b91c1c,curated_exact,Distinct from UDC and other popular lists
+camera_2022,Impegno Civico Luigi di Maio - Centro Democratico,Impegno Civico,Impegno Civico,centro-sinistra,centro-sinistra,#ef5350,curated_exact,Distinct from M5S despite candidate history

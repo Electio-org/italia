@@ -11,6 +11,8 @@ from typing import Dict, Iterator, List, Tuple
 
 import pandas as pd
 
+from party_taxonomy import apply_party_taxonomy_frame, resolve_party_meta
+from preprocess import infer_party_meta
 from territorial_history import harmonize_public_frames, load_crosswalk_frame
 
 
@@ -24,7 +26,7 @@ WEB_GEOMETRY_NOTE = "The public app now reads a web-optimized geometry pack, whi
 LOCAL_ASSET_NOTE = "Critical browser libraries are now vendored locally and the public documentation pages load only the metadata they actually need."
 PROFILE_NOTE = "Municipality detail pages use province-sized compressed profile chunks instead of loading the national summary table."
 TERRITORIAL_HISTORY_NOTE = "Public election shards are projected implicitly to the 2021 municipality geometry through a date-aware ISTAT SITUAS lineage; ambiguous splits are never allocated."
-CURRENT_VERSION = "0.22.0"
+CURRENT_VERSION = "0.23.0"
 
 
 def iter_election_frames(path: Path, chunk_size: int = 250_000) -> Iterator[Tuple[str, pd.DataFrame]]:
@@ -82,6 +84,11 @@ def summarize_file(path: Path, bundle_root: Path) -> Dict[str, object]:
     }
     if not path.exists():
         return info
+    with path.open("rb") as head:
+        prefix = head.read(160)
+    if prefix.startswith(b"version https://git-lfs.github.com/spec/v1"):
+        info["kind"] = "git-lfs-pointer"
+        return info
     if path.suffix.lower() == ".csv" or path.name.lower().endswith(".csv.gz"):
         opener = gzip.open if path.name.lower().endswith(".csv.gz") else path.open
         with opener(path, "rt", encoding="utf-8", newline="") if path.name.lower().endswith(".csv.gz") else opener(encoding="utf-8", newline="") as fh:
@@ -111,21 +118,79 @@ def slugify(value: str) -> str:
     return str(value).strip().lower().replace(" ", "_")
 
 
+def update_party_catalog(catalog: Dict[str, Dict[str, object]], frame: pd.DataFrame) -> None:
+    if frame.empty:
+        return
+    work = frame.copy()
+    work["votes"] = pd.to_numeric(work["votes"], errors="coerce").fillna(0)
+    grouped = (
+        work.groupby(
+            ["election_key", "election_year", "party_raw", "party_std", "party_family", "bloc"],
+            dropna=False,
+            sort=False,
+        )["votes"]
+        .sum()
+        .reset_index()
+    )
+    for row in grouped.to_dict("records"):
+        party_std = str(row.get("party_std") or row.get("party_raw") or "").strip()
+        party_raw = str(row.get("party_raw") or party_std).strip()
+        if not party_std:
+            continue
+        entry = catalog.setdefault(
+            party_std,
+            {"aliases": set(), "years": set(), "variants": {}, "colors": {}},
+        )
+        entry["aliases"].add(party_raw)
+        year = int(float(row.get("election_year") or 0))
+        if year:
+            entry["years"].add(year)
+        votes = float(row.get("votes") or 0)
+        variant = (str(row.get("party_family") or "altro"), str(row.get("bloc") or "altro"))
+        entry["variants"][variant] = entry["variants"].get(variant, 0.0) + votes
+        meta = resolve_party_meta(row.get("election_key"), party_raw, infer_party_meta)
+        color = str(meta.get("color") or "#64748b")
+        entry["colors"][color] = entry["colors"].get(color, 0.0) + votes
+
+
+def write_parties_master(catalog: Dict[str, Dict[str, object]], output: Path) -> None:
+    rows = []
+    for party_std, entry in catalog.items():
+        variants = entry.get("variants") or {("altro", "altro"): 0}
+        family, bloc = max(variants.items(), key=lambda item: item[1])[0]
+        colors = entry.get("colors") or {"#64748b": 0}
+        color = max(colors.items(), key=lambda item: item[1])[0]
+        years = sorted(entry.get("years") or [])
+        rows.append({
+            "party_std": party_std,
+            "party_display_name": party_std,
+            "party_family": family,
+            "bloc": bloc,
+            "color": color,
+            "aliases": "|".join(sorted(entry.get("aliases") or [], key=str.casefold)),
+            "valid_from": years[0] if years else "",
+            "valid_to": years[-1] if years else "",
+            "comparability_note": "election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved",
+        })
+    rows.sort(key=lambda row: (int(row["valid_from"] or 9999), str(row["party_std"]).casefold()))
+    columns = ["party_std", "party_display_name", "party_family", "bloc", "color", "aliases", "valid_from", "valid_to", "comparability_note"]
+    with output.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=columns, lineterminator="\n")
+        writer.writeheader()
+        writer.writerows(rows)
+
+
 def ensure_update_log_entry(entries: List[Dict[str, object]]) -> List[Dict[str, object]]:
     current = {
         "version": CURRENT_VERSION,
-        "date": "2026-07-14",
-        "title": "Historical municipality lineage and implicit 2021 territorial projection",
+        "date": "2026-07-15",
+        "title": "Election-aware party taxonomy and national audit",
         "changes": [
-            "Replaced placeholder municipality lineage with dated ISTAT SITUAS succession events and historical ANPR validity intervals.",
-            "Added a reproducible election-by-election crosswalk from the municipality valid on election day to the 2021 map geometry.",
-            "Changed public summary and result shards to aggregate complete predecessors implicitly on the 2021 municipality geography.",
-            "Kept the original Eligendo-derived monolithic CSVs unchanged as source-geography data for audit and reuse.",
-            "Added current-municipality search aliases for historical names, including predecessor municipalities absorbed by mergers.",
-            "Published a coverage report that leaves ambiguous splits and partial territorial transfers unallocated instead of inventing votes.",
-            "Added compact, versioned SITUAS and ANPR source registries plus source and method metadata.",
-            "Recovered municipalities present only in party-result rows and kept unavailable turnout fields explicitly null.",
-            "Added auditable repair of corrupted municipality labels when dated ISTAT code and source region agree unambiguously."
+            "Added election-specific exact mappings for historical party names that collided with modern identities.",
+            "Applied party taxonomy before territorial aggregation so winners, shares and dominant blocks use corrected identities.",
+            "Added national winner/share guardrails for every published election from 1946 to 2022.",
+            "Published a machine-readable taxonomy audit with unmatched-share and block-distribution diagnostics.",
+            "Kept raw list labels unchanged and marked exact editorial classifications separately from fallback rules."
         ]
     }
     return [current, *[entry for entry in entries if str(entry.get("version")) != CURRENT_VERSION]]
@@ -197,6 +262,9 @@ def main() -> None:
     files["municipalityRegistryByElection"] = "data/reference/municipality_registry_by_election.csv.gz"
     files["municipalityRegistryHistorical"] = "data/reference/municipality_registry_historical_anpr.csv.gz"
     files["territorialEvents"] = "data/reference/situas_municipality_events_1861_2021.csv.gz"
+    files["partyTaxonomy"] = "data/reference/party_taxonomy_overrides.csv"
+    files["partyTaxonomyAudit"] = "data/derived/party_taxonomy_audit.json"
+    files["nationalElectionChecks"] = "data/reference/national_election_checks.csv"
     files["municipalitySummaryByElectionIndex"] = "data/derived/municipality_summary_by_election.json"
     files["municipalityResultsLongByElectionIndex"] = "data/derived/municipality_results_long_by_election.json"
     if (derived / "municipality_profiles" / "index.json").exists():
@@ -238,12 +306,18 @@ def main() -> None:
 
     shards: Dict[str, str] = {}
     row_counts: Dict[str, int] = {}
+    party_catalog: Dict[str, Dict[str, object]] = {}
     processed = set()
     for election_key, raw_results in iter_election_frames(results_path):
         raw_summary = summary_by_key.get(election_key)
         if raw_summary is None:
             raise ValueError(f"Summary mancante per {election_key}")
-        harmonized_summary, harmonized_results = harmonize_public_frames(raw_summary, raw_results, crosswalk)
+        harmonized_summary, harmonized_results = harmonize_public_frames(
+            raw_summary,
+            raw_results,
+            crosswalk,
+            results_transform=lambda frame: apply_party_taxonomy_frame(frame, infer_party_meta),
+        )
 
         summary_filename = f"{slugify(election_key)}.csv"
         summary_output = summary_shard_dir / summary_filename
@@ -254,6 +328,7 @@ def main() -> None:
         results_filename = f"{slugify(election_key)}.csv"
         results_output = shard_dir / results_filename
         harmonized_results.to_csv(results_output, index=False)
+        update_party_catalog(party_catalog, harmonized_results)
         shards[election_key] = str(results_output.relative_to(root)).replace("\\", "/")
         row_counts[election_key] = int(len(harmonized_results))
         processed.add(election_key)
@@ -261,6 +336,7 @@ def main() -> None:
     missing_elections = sorted(set(summary_by_key) - processed)
     if missing_elections:
         raise ValueError(f"Risultati mancanti per: {', '.join(missing_elections)}")
+    write_parties_master(party_catalog, derived / "parties_master.csv")
 
     summary_shard_index = {
         "generated_by": "build_result_shards.py",

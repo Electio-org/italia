@@ -1,4 +1,9 @@
-import { safeNumber, inferredPartyMetaOrNull } from './shared.js';
+import {
+  safeNumber,
+  inferredPartyMetaOrNull,
+  buildPartyTaxonomyLookup,
+  resolvePartyMeta
+} from './shared.js';
 
 const SUMMARY_NUMBER_FIELDS = ['election_year', 'turnout_pct', 'electors', 'voters', 'valid_votes', 'total_votes', 'first_party_share', 'second_party_share', 'first_second_margin'];
 const RESULTS_LONG_NUMBER_FIELDS = ['election_year', 'votes', 'vote_share', 'rank'];
@@ -140,23 +145,26 @@ function parseSummaryRows(rows) {
 // match it produces is also produced (and is a strict subset of) the JS set.
 // The only difference is that JS sometimes refines a generic "altro" into
 // the correct bloc.
-function applyRuntimeTaxonomy(row) {
+function applyRuntimeTaxonomy(row, taxonomyLookup = null) {
   const raw = String(row?.party_raw || row?.party_std || '').trim();
   if (!raw) return row;
-  const meta = inferredPartyMetaOrNull(raw);
+  const exact = resolvePartyMeta(taxonomyLookup, row?.election_key, raw);
+  const meta = exact || inferredPartyMetaOrNull(raw);
   if (!meta) return row;
   // Spread the row first, then layer in only the fields the JS taxonomy
   // wants to set. We do NOT touch votes / vote_share / rank / election keys.
   return {
     ...row,
-    party_std: meta.display || row.party_std || raw,
+    party_std: exact
+      ? (exact.party_std || exact.display || raw)
+      : (row.party_std || meta.display || raw),
     party_family: meta.family || row.party_family || 'altro',
     bloc: meta.bloc || row.bloc || 'altro'
   };
 }
 
-function parseResultsLongRows(rows) {
-  return parseNumberFields(rows, RESULTS_LONG_NUMBER_FIELDS).map(applyRuntimeTaxonomy);
+function parseResultsLongRows(rows, taxonomyLookup = null) {
+  return parseNumberFields(rows, RESULTS_LONG_NUMBER_FIELDS).map(row => applyRuntimeTaxonomy(row, taxonomyLookup));
 }
 
 // Build a per-election Map<lowercased_party_raw, coalition_record> from
@@ -550,10 +558,11 @@ async function loadBundleWithManifest(state, manifest, resolver, { buildIndices,
   // manifest. Falls back to null silently — coalition UI elements
   // gracefully no-op when state.electoralCoalitions is absent.
   const coalitionsPath = files.electoralCoalitions || 'data/derived/electoral_coalitions.json';
-  const [elections, municipalities, parties, eagerSummary, summaryShardIndex, eagerResultsLong, resultsShardIndex, geometryPack, electoralCoalitions] = await Promise.all([
+  const [elections, municipalities, parties, partyTaxonomy, eagerSummary, summaryShardIndex, eagerResultsLong, resultsShardIndex, geometryPack, electoralCoalitions] = await Promise.all([
     resolver.csv(files.electionsMaster),
     resolver.csv(files.municipalitiesMaster),
     resolver.csv(files.partiesMaster),
+    files.partyTaxonomy ? resolver.csv(files.partyTaxonomy).catch(() => []) : Promise.resolve([]),
     !preferDeferredSummary && files.municipalitySummary ? resolver.csv(files.municipalitySummary).catch(() => []) : Promise.resolve([]),
     files.municipalitySummaryByElectionIndex ? resolver.json(files.municipalitySummaryByElectionIndex).catch(() => null) : Promise.resolve(null),
     !preferDeferredResults && files.municipalityResultsLong ? resolver.csv(files.municipalityResultsLong).catch(() => []) : Promise.resolve([]),
@@ -571,10 +580,12 @@ async function loadBundleWithManifest(state, manifest, resolver, { buildIndices,
   state.municipalities = normalizeMunicipalityRegions(municipalities);
   state.municipalityLookupMaps = buildMunicipalityLookupMaps(state.municipalities);
   state.parties = parties;
+  state.partyTaxonomy = partyTaxonomy;
+  state.partyTaxonomyLookup = buildPartyTaxonomyLookup(partyTaxonomy);
   state.lineage = [];
   state.aliases = [];
   state.summary = enrichRowsWithCurrentTerritory(parseSummaryRows(eagerSummary), state.municipalityLookupMaps);
-  state.resultsLong = enrichRowsWithCurrentTerritory(parseResultsLongRows(eagerResultsLong), state.municipalityLookupMaps);
+  state.resultsLong = enrichRowsWithCurrentTerritory(parseResultsLongRows(eagerResultsLong, state.partyTaxonomyLookup), state.municipalityLookupMaps);
   state.customIndicators = [];
   state.qualityReport = null;
   state.datasetRegistry = [];
@@ -723,7 +734,7 @@ async function loadFullResultsLongOnce(state, { buildIndices, registerIssue = ()
   state.resultsFullLoadPromise = state.resultsResolver(rel)
     .then(rows => {
       const parsed = enrichRowsWithCurrentTerritory(
-        parseResultsLongRows(rows),
+        parseResultsLongRows(rows, state.partyTaxonomyLookup),
         state.municipalityLookupMaps || buildMunicipalityLookupMaps(state.municipalities)
       );
       state.resultsLong = parsed;
@@ -764,7 +775,7 @@ export async function ensureResultsForElections(state, electionKeys, { buildIndi
       .then(rows => ({
         key,
         rows: enrichRowsWithCurrentTerritory(
-          parseResultsLongRows(rows),
+          parseResultsLongRows(rows, state.partyTaxonomyLookup),
           state.municipalityLookupMaps || buildMunicipalityLookupMaps(state.municipalities)
         )
       }))

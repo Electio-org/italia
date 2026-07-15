@@ -187,6 +187,33 @@ export function inferredPartyMetaOrNull(label) {
   return match ? match[1] : null;
 }
 
+export function partyTaxonomyKey(electionKey, partyRaw) {
+  return `${String(electionKey || '').trim()}__${String(partyRaw || '').trim().replace(/\s+/g, ' ').toLocaleLowerCase('it')}`;
+}
+
+export function buildPartyTaxonomyLookup(rows = []) {
+  const lookup = new Map();
+  rows.forEach(row => {
+    const key = partyTaxonomyKey(row?.election_key, row?.party_raw);
+    if (!row?.election_key || !row?.party_raw || lookup.has(key)) return;
+    lookup.set(key, {
+      display: row.party_display_name || row.party_std || row.party_raw,
+      party_std: row.party_std || row.party_raw,
+      family: row.party_family || 'altro',
+      bloc: row.bloc || 'altro',
+      color: row.color || '#64748b',
+      classification_status: row.classification_status || 'curated_exact',
+      notes: row.notes || ''
+    });
+  });
+  return lookup;
+}
+
+export function resolvePartyMeta(lookup, electionKey, partyRaw) {
+  if (!lookup?.get || !electionKey || !partyRaw) return null;
+  return lookup.get(partyTaxonomyKey(electionKey, partyRaw)) || null;
+}
+
 // Resolve the historical pre-vote electoral coalition for a (election,
 // party_raw) pair. Reads the per-election lookup that `data.js` builds
 // from `data/derived/electoral_coalitions.json` at load time. Returns

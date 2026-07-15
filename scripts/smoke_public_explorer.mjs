@@ -207,6 +207,16 @@ try {
   const mobileOverflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
   assert.ok(mobileOverflow <= 1, `municipality detail must not overflow on mobile (${mobileOverflow}px)`);
 
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto(`${baseUrl}data-download.html`, { waitUntil: 'networkidle' });
+  await page.waitForFunction(() => document.querySelectorAll('#party-taxonomy-table-body tr').length === 20);
+  assert.equal(await page.locator('#party-taxonomy-summary > *').count(), 3, 'party taxonomy summary must expose its national audit');
+  assert.equal(await page.locator('#party-taxonomy-table-body tr').count(), 20, 'party taxonomy audit must cover every published election');
+
+  await page.goto(`${baseUrl}usage-notes.html`, { waitUntil: 'networkidle' });
+  await page.waitForFunction(() => document.querySelectorAll('#party-taxonomy-method-grid .doc-card').length === 3);
+  assert.equal(await page.locator('#party-taxonomy-method-grid .doc-card').count(), 3, 'party taxonomy method must remain public');
+
   assert.deepEqual(runtimeErrors, []);
   console.log(`public explorer smoke: ok (${audit.map(row => row.election).join(', ')}; municipality detail)`);
 } finally {

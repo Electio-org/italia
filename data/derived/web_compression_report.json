@@ -20,14 +20,14 @@
   ],
   "summary_shards": {
     "format": "gzip",
-    "original_bytes": 51317457,
-    "compressed_bytes": 10305552,
+    "original_bytes": 51326977,
+    "compressed_bytes": 10305825,
     "reduction_pct": 79.92
   },
   "result_shards": {
     "format": "gzip",
-    "original_bytes": 513550645,
-    "compressed_bytes": 34473566,
-    "reduction_pct": 93.29
+    "original_bytes": 516201641,
+    "compressed_bytes": 34884089,
+    "reduction_pct": 93.24
   }
 }

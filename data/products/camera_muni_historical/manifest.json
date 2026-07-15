@@ -1,7 +1,7 @@
 {
   "generated_by": "build_result_shards.py",
-  "release_version": "0.22.0",
-  "release_date": "2026-07-14",
+  "release_version": "0.23.0",
+  "release_date": "2026-07-15",
   "product": {
     "product_key": "camera_muni_historical",
     "title": "Camera e Costituente - fonte storica e vista comunale 2021",
@@ -37,10 +37,10 @@
       "dataset_key": "municipalitySummary",
       "path": "data/derived/municipality_summary.csv",
       "kind": "csv",
-      "size_bytes": 50901013,
+      "size_bytes": 51059499,
       "row_count": 158485,
       "feature_count": null,
-      "sha256": "dea5003c19392f8a9c13849996eb2df81fa6b50e386d9d066b26268a90770ac3",
+      "sha256": "7317fa000ac86aa832067386b72475fe8856add6aae52da438f85a1a07423128",
       "delivery_strategy": "deferred_by_election",
       "by_election_index": "data/derived/municipality_summary_by_election.json"
     },
@@ -71,10 +71,10 @@
       "dataset_key": "territorialHistoryReport",
       "path": "data/derived/territorial_history_report.json",
       "kind": "json",
-      "size_bytes": 85318,
+      "size_bytes": 85323,
       "row_count": null,
       "feature_count": null,
-      "sha256": "3fb87a49e042833e6686d6f827996ff9cfdb205a38e9fccc61a25c52ec5c9c89"
+      "sha256": "4351168453c36f8b12bd2eff6b6505c94876bdc8f3915b4f1a06abe20a98d713"
     }
   ],
   "inventory": {

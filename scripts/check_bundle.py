@@ -399,6 +399,22 @@ def main() -> int:
     if not citation_path.exists():
         issues.append('citation:missing_cff')
 
+    taxonomy_path = root / (files.get('partyTaxonomy') or '')
+    taxonomy_audit_path = root / (files.get('partyTaxonomyAudit') or '')
+    national_checks_path = root / (files.get('nationalElectionChecks') or '')
+    if not taxonomy_path.exists():
+        issues.append('party_taxonomy:missing_registry')
+    if not national_checks_path.exists():
+        issues.append('party_taxonomy:missing_national_checks')
+    if not taxonomy_audit_path.exists():
+        issues.append('party_taxonomy:missing_audit')
+    else:
+        taxonomy_audit = json.loads(taxonomy_audit_path.read_text(encoding='utf-8'))
+        if not taxonomy_audit.get('ok') or taxonomy_audit.get('errors'):
+            issues.append('party_taxonomy:audit_failed')
+        if int(taxonomy_audit.get('election_count') or 0) != len(elections_master):
+            issues.append('party_taxonomy:election_count_mismatch')
+
     bad_share = 0
     for row in results:
         try:
