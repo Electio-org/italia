@@ -273,7 +273,10 @@ def harmonize_results(
 ) -> pd.DataFrame:
     work = _merge_crosswalk(results.fillna(""), crosswalk)
     work["votes"] = pd.to_numeric(work["votes"], errors="coerce")
-    work["_party_key"] = work["party_std"].where(work["party_std"].str.strip() != "", work["party_raw"])
+    # Preserve the election's original list identity during territorial
+    # aggregation. Standardized identities may intentionally connect related
+    # lists across years, but must never merge distinct lists within a ballot.
+    work["_party_key"] = work["party_raw"].where(work["party_raw"].str.strip() != "", work["party_std"])
     keys = [
         "election_key",
         "election_year",
@@ -376,6 +379,7 @@ def harmonize_public_frames(
     summary: pd.DataFrame,
     results: pd.DataFrame,
     crosswalk: pd.DataFrame,
+    results_transform=None,
 ) -> Tuple[pd.DataFrame, pd.DataFrame]:
     counts = supplement_summary_counts_from_results(
         aggregate_summary_counts(summary, crosswalk),
@@ -383,5 +387,7 @@ def harmonize_public_frames(
         crosswalk,
     )
     harmonized_results = harmonize_results(results, crosswalk, counts)
+    if results_transform is not None:
+        harmonized_results = results_transform(harmonized_results)
     harmonized_summary = finalize_summary(counts, harmonized_results)
     return harmonized_summary, harmonized_results

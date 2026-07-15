@@ -1,0 +1,21 @@
+election_key,expected_winner_raw,min_winner_share,max_winner_share,notes
+assemblea_costituente_1946,Dc,34.5,35.8,Official-list national order guardrail
+camera_1948,Dc,47.8,49.1,Official-list national order guardrail
+camera_1953,Dc,39.4,40.8,Official-list national order guardrail
+camera_1958,Dc,41.7,43.0,Official-list national order guardrail
+camera_1963,Dc,37.6,39.0,Official-list national order guardrail
+camera_1968,Dc,38.4,39.8,Official-list national order guardrail
+camera_1972,Dc,38.0,39.3,Official-list national order guardrail
+camera_1976,Dc,38.0,39.4,Official-list national order guardrail
+camera_1979,Dc,37.6,39.0,Official-list national order guardrail
+camera_1983,Dc,32.2,33.6,Official-list national order guardrail
+camera_1987,Dc,33.6,35.0,Official-list national order guardrail
+camera_1992,Dc,29.0,30.3,Official-list national order guardrail
+camera_1994,Forza Italia,20.3,21.7,Official-list national order guardrail
+camera_1996,Pds,20.4,21.7,Official-list national order guardrail
+camera_2001,Forza Italia,28.8,30.1,Official-list national order guardrail
+camera_2006,L'Ulivo,30.6,31.9,Official-list national order guardrail
+camera_2008,Il Popolo della Liberta',36.7,38.1,Official-list national order guardrail
+camera_2013,Movimento 5 Stelle Beppegrillo.It,24.9,26.2,Official-list national order guardrail
+camera_2018,Movimento 5 Stelle,31.8,33.1,Official-list national order guardrail
+camera_2022,Fratelli d'Italia Con Giorgia Meloni,25.6,26.9,Official-list national order guardrail

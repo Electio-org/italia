@@ -31,7 +31,7 @@
   "row_counts": {
     "assemblea_costituente_1946": 65102,
     "camera_1948": 74095,
-    "camera_1953": 83094,
+    "camera_1953": 83096,
     "camera_1958": 78875,
     "camera_1963": 72388,
     "camera_1968": 72159,
@@ -40,12 +40,12 @@
     "camera_1979": 89339,
     "camera_1983": 87020,
     "camera_1987": 104787,
-    "camera_1992": 118280,
-    "camera_1994": 95977,
-    "camera_1996": 88760,
+    "camera_1992": 118297,
+    "camera_1994": 96001,
+    "camera_1996": 88762,
     "camera_2001": 115084,
     "camera_2006": 132786,
-    "camera_2008": 114044,
+    "camera_2008": 114050,
     "camera_2013": 137169,
     "camera_2018": 121366,
     "camera_2022": 111199
@@ -74,8 +74,8 @@
   },
   "compression": {
     "format": "gzip",
-    "original_bytes": 513550645,
-    "compressed_bytes": 34473566,
-    "reduction_pct": 93.29
+    "original_bytes": 516201641,
+    "compressed_bytes": 34884089,
+    "reduction_pct": 93.24
   }
 }

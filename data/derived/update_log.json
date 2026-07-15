@@ -2,6 +2,18 @@
   "generated_by": "preprocess.py",
   "entries": [
     {
+      "version": "0.23.0",
+      "date": "2026-07-15",
+      "title": "Election-aware party taxonomy and national audit",
+      "changes": [
+        "Added election-specific exact mappings for historical party names that collided with modern identities.",
+        "Applied party taxonomy before territorial aggregation so winners, shares and dominant blocks use corrected identities.",
+        "Added national winner/share guardrails for every published election from 1946 to 2022.",
+        "Published a machine-readable taxonomy audit with unmatched-share and block-distribution diagnostics.",
+        "Kept raw list labels unchanged and marked exact editorial classifications separately from fallback rules."
+      ]
+    },
+    {
       "version": "0.22.0",
       "date": "2026-07-14",
       "title": "Historical municipality lineage and implicit 2021 territorial projection",

@@ -1,7 +1,7 @@
 {
   "project": {
     "title": "Electio Italia",
-    "version": "0.22.0",
+    "version": "0.23.0",
     "ready_for_real_data": true,
     "notes": [
       "Vote shares are recomputed from votes whenever a plausible denominator is available.",
@@ -64,7 +64,10 @@
     "territorialSources": "data/reference/territorial_sources.json",
     "municipalityRegistryByElection": "data/reference/municipality_registry_by_election.csv.gz",
     "municipalityRegistryHistorical": "data/reference/municipality_registry_historical_anpr.csv.gz",
-    "territorialEvents": "data/reference/situas_municipality_events_1861_2021.csv.gz"
+    "territorialEvents": "data/reference/situas_municipality_events_1861_2021.csv.gz",
+    "partyTaxonomy": "data/reference/party_taxonomy_overrides.csv",
+    "partyTaxonomyAudit": "data/derived/party_taxonomy_audit.json",
+    "nationalElectionChecks": "data/reference/national_election_checks.csv"
   },
   "contracts": {
     "geometryJoinPriority": [

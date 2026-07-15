@@ -1,7 +1,7 @@
 {
   "generated_by": "build_result_shards.py",
-  "release_version": "0.22.0",
-  "release_date": "2026-07-14",
+  "release_version": "0.23.0",
+  "release_date": "2026-07-15",
   "products": [
     {
       "product_key": "camera_muni_historical",

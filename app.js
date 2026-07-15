@@ -13,7 +13,8 @@ import {
   FAMILY_COLORS,
   AREA_PRESETS,
   FALLBACK_PARTY_OPTIONS,
-  coalitionForParty
+  coalitionForParty,
+  resolvePartyMeta
 } from './modules/shared.js';
 import {
   trustStyle,
@@ -225,14 +226,16 @@ function updateMunicipalityNoteUI() {
   els.municipalityNoteMeta.textContent = rec?.updated_at ? `Nota locale aggiornata ${new Date(rec.updated_at).toLocaleString('it-IT')}` : 'Aggiungi una nota privata salvata nel browser.';
 }
 
-function inferPartyMeta(label) {
+function inferPartyMeta(label, electionKey = state.selectedElection) {
   const raw = String(label || '').trim();
+  const exact = resolvePartyMeta(state.partyTaxonomyLookup, electionKey, raw);
+  if (exact) return exact;
   const match = PARTY_FALLBACKS.find(([re]) => re.test(raw));
   const meta = match ? match[1] : { family: 'altro', bloc: 'altro', color: '#64748b', display: raw || 'N/D' };
   return { display: meta.display || raw || 'N/D', family: meta.family || 'altro', bloc: meta.bloc || 'altro', color: meta.color || '#64748b' };
 }
 
-function getPartyColor(label) { return inferPartyMeta(label).color; }
+function getPartyColor(label, electionKey = state.selectedElection) { return inferPartyMeta(label, electionKey).color; }
 
 // Resolve the color of a coalition by its `label`. The curated catalog
 // already stores per-coalition colors; we build a label-keyed lookup
@@ -266,6 +269,8 @@ const HISTORICAL_PARTY_ACRONYMS = {
 function partyDisplayLabel(label, electionKey = state.selectedElection) {
   const raw = String(label || '').trim();
   if (!raw) return 'n/d';
+  const exact = resolvePartyMeta(state.partyTaxonomyLookup, electionKey, raw);
+  if (exact) return exact.display || exact.party_std || raw;
   const year = Number(String(electionKey || '').match(/(?:19|20)\d{2}/)?.[0] || 0);
   const token = normalizeTextToken(raw);
   if (year && year < 2022) {

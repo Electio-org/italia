@@ -1,7 +1,7 @@
 {
   "generated_by": "build_result_shards.py",
-  "release_version": "0.22.0",
-  "release_date": "2026-07-14",
+  "release_version": "0.23.0",
+  "release_date": "2026-07-15",
   "product": {
     "product_key": "metadata_layer",
     "title": "Metadata layer del bundle",
@@ -40,40 +40,40 @@
       "dataset_key": "codebook",
       "path": "data/derived/codebook.json",
       "kind": "json",
-      "size_bytes": 16762,
+      "size_bytes": 17430,
       "row_count": null,
       "feature_count": null,
-      "sha256": "d7775bbf3fffcacc9566584ff47fe64076e33ff1ac9fe658ebdb68c481c97584"
+      "sha256": "22661d693cae225ba7b4f417db48943f74c7d6753b30ff2f8819b8dc6e65f379"
     },
     {
       "role": "extra",
       "dataset_key": "usageNotes",
       "path": "data/derived/usage_notes.json",
       "kind": "json",
-      "size_bytes": 3899,
+      "size_bytes": 4642,
       "row_count": null,
       "feature_count": null,
-      "sha256": "f99fede5952d277015ebbb41ed965411cfa413b79684bd912c633dbce428e438"
+      "sha256": "ee4ac0d9b6a5ea799bd6e47540134d9333ee83d0c0585ac1194d50462aedb4a3"
     },
     {
       "role": "extra",
       "dataset_key": "updateLog",
       "path": "data/derived/update_log.json",
       "kind": "json",
-      "size_bytes": 17622,
+      "size_bytes": 18367,
       "row_count": null,
       "feature_count": null,
-      "sha256": "60a88cddfcaf135d034cb31279d022176cfefa7a1453a6f4bcf38e5ccea8f794"
+      "sha256": "bced32a35fba193e2d241d0b02208f6b2b27147d82d1fef58c2311e8fdc5310f"
     },
     {
       "role": "extra",
       "dataset_key": "archiveBundleGapReport",
       "path": "data/derived/archive_bundle_gap_report.json",
       "kind": "json",
-      "size_bytes": 17621,
+      "size_bytes": 18091,
       "row_count": null,
       "feature_count": null,
-      "sha256": "ffb1a1685a65ba6b0ef9c7fcb1b3e03fcbdedd1eed29a08c2fc4a282283ece9c"
+      "sha256": "aa78f62582d45ddeb769b21ab113637076900de048df58314b6b7d19ddb1433a"
     },
     {
       "role": "extra",
@@ -102,7 +102,7 @@
         "dataset_key": "codebook",
         "path": "data/derived/codebook.json",
         "kind": "json",
-        "size_bytes": 16762,
+        "size_bytes": 17430,
         "row_count": null,
         "feature_count": null
       },
@@ -110,7 +110,7 @@
         "dataset_key": "usageNotes",
         "path": "data/derived/usage_notes.json",
         "kind": "json",
-        "size_bytes": 3899,
+        "size_bytes": 4642,
         "row_count": null,
         "feature_count": null
       },
@@ -118,7 +118,7 @@
         "dataset_key": "updateLog",
         "path": "data/derived/update_log.json",
         "kind": "json",
-        "size_bytes": 17622,
+        "size_bytes": 18367,
         "row_count": null,
         "feature_count": null
       },
@@ -126,7 +126,7 @@
         "dataset_key": "archiveBundleGapReport",
         "path": "data/derived/archive_bundle_gap_report.json",
         "kind": "json",
-        "size_bytes": 17621,
+        "size_bytes": 18091,
         "row_count": null,
         "feature_count": null
       },

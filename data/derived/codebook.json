@@ -81,7 +81,7 @@
       "columns": [
         {
           "name": "party_std",
-          "description": "Nome standardizzato del partito/lista.",
+          "description": "Identita standardizzata nel contesto della specifica elezione; non implica continuita organizzativa tra epoche.",
           "type_hint": "string"
         },
         {
@@ -366,7 +366,7 @@
         },
         {
           "name": "party_std",
-          "description": "Nome standardizzato del partito/lista.",
+          "description": "Identita standardizzata nel contesto della specifica elezione; non implica continuita organizzativa tra epoche.",
           "type_hint": "string"
         },
         {
