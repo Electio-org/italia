@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-07-15",
+  "generated_at": "2026-07-16",
   "source": "harmonized public result shards derived from official Eligendo archives",
   "method": "Raw list labels are preserved; exact election-aware overrides precede generic fallback rules.",
-  "election_count": 20,
-  "override_count": 78,
-  "classification_coverage_share": 99.4625,
-  "curated_exact_share": 3.2478,
+  "election_count": 30,
+  "override_count": 121,
+  "classification_coverage_share": 99.5098,
+  "curated_exact_share": 5.1762,
   "errors": [],
   "warnings": [],
   "ok": true,
@@ -1348,6 +1348,138 @@
       ]
     },
     {
+      "election_key": "europee_1979",
+      "year": 1979,
+      "result_rows": 92409,
+      "unique_raw_lists": 13,
+      "national_votes": 34841879,
+      "winner_raw": "DC",
+      "winner_share": 36.4958,
+      "unmatched_bloc_share": 0.0,
+      "classification_coverage_share": 100.0,
+      "curated_exact_share": 0.4687,
+      "bloc_shares": {
+        "centro": 39.0573,
+        "sinistra": 31.4111,
+        "centro-sinistra": 15.3416,
+        "destra": 5.8572,
+        "liberale": 3.67,
+        "centro-destra": 3.6338,
+        "regionalista": 1.0291
+      },
+      "unclassified_lists": [],
+      "top_parties": [
+        {
+          "party_raw": "DC",
+          "votes": 12715818,
+          "share": 36.4958,
+          "party_std": "DC",
+          "party_family": "cattolico-popolare",
+          "bloc": "centro",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "PCI",
+          "votes": 10299477,
+          "share": 29.5606,
+          "party_std": "PCI",
+          "party_family": "sinistra storica",
+          "bloc": "sinistra",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "PSI",
+          "votes": 3844514,
+          "share": 11.0342,
+          "party_std": "PSI",
+          "party_family": "sinistra socialista",
+          "bloc": "centro-sinistra",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "MSI-DN",
+          "votes": 1902805,
+          "share": 5.4613,
+          "party_std": "Destra naz.",
+          "party_family": "destra nazionale",
+          "bloc": "destra",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "PSDI",
+          "votes": 1500792,
+          "share": 4.3074,
+          "party_std": "PSDI",
+          "party_family": "socialdemocratico",
+          "bloc": "centro-sinistra",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "P.RAD",
+          "votes": 1278686,
+          "share": 3.67,
+          "party_std": "Radicali",
+          "party_family": "radicale",
+          "bloc": "liberale",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "PLI",
+          "votes": 1266069,
+          "share": 3.6338,
+          "party_std": "PLI",
+          "party_family": "liberale",
+          "bloc": "centro-destra",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "PRI",
+          "votes": 892476,
+          "share": 2.5615,
+          "party_std": "PRI",
+          "party_family": "laico-repubblicano",
+          "bloc": "centro",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "PDUP",
+          "votes": 398515,
+          "share": 1.1438,
+          "party_std": "PDUP / DemProl",
+          "party_family": "sinistra storica",
+          "bloc": "sinistra",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "DEM.PROL",
+          "votes": 246235,
+          "share": 0.7067,
+          "party_std": "PDUP / DemProl",
+          "party_family": "sinistra storica",
+          "bloc": "sinistra",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "PPST",
+          "votes": 195246,
+          "share": 0.5604,
+          "party_std": "Autonomisti",
+          "party_family": "regionalista",
+          "bloc": "regionalista",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "UV",
+          "votes": 163308,
+          "share": 0.4687,
+          "party_std": "UV",
+          "party_family": "regionalista",
+          "bloc": "regionalista",
+          "classification_status": "curated_exact"
+        }
+      ]
+    },
+    {
       "election_key": "camera_1983",
       "year": 1983,
       "result_rows": 87020,
@@ -1477,6 +1609,129 @@
           "party_family": "regionalista",
           "bloc": "centro-destra",
           "classification_status": "fallback_rule"
+        }
+      ]
+    },
+    {
+      "election_key": "europee_1984",
+      "year": 1984,
+      "result_rows": 76199,
+      "unique_raw_lists": 11,
+      "national_votes": 34892875,
+      "winner_raw": "PCI",
+      "winner_share": 33.2948,
+      "unmatched_bloc_share": 0.0,
+      "classification_coverage_share": 100.0,
+      "curated_exact_share": 1.0059,
+      "bloc_shares": {
+        "sinistra": 34.7135,
+        "centro": 33.0373,
+        "centro-sinistra": 14.6603,
+        "destra": 6.491,
+        "centro-destra": 6.108,
+        "liberale": 3.4189,
+        "regionalista": 1.571
+      },
+      "unclassified_lists": [],
+      "top_parties": [
+        {
+          "party_raw": "PCI",
+          "votes": 11617509,
+          "share": 33.2948,
+          "party_std": "PCI",
+          "party_family": "sinistra storica",
+          "bloc": "sinistra",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "DC",
+          "votes": 11527665,
+          "share": 33.0373,
+          "party_std": "DC",
+          "party_family": "cattolico-popolare",
+          "bloc": "centro",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "PSI",
+          "votes": 3907892,
+          "share": 11.1997,
+          "party_std": "PSI",
+          "party_family": "sinistra socialista",
+          "bloc": "centro-sinistra",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "MSI-DN",
+          "votes": 2264894,
+          "share": 6.491,
+          "party_std": "Destra naz.",
+          "party_family": "destra nazionale",
+          "bloc": "destra",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "PLI-PRI",
+          "votes": 2131245,
+          "share": 6.108,
+          "party_std": "PLI",
+          "party_family": "liberale",
+          "bloc": "centro-destra",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "PSDI",
+          "votes": 1207521,
+          "share": 3.4607,
+          "party_std": "PSDI",
+          "party_family": "socialdemocratico",
+          "bloc": "centro-sinistra",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "P.RAD",
+          "votes": 1192946,
+          "share": 3.4189,
+          "party_std": "Radicali",
+          "party_family": "radicale",
+          "bloc": "liberale",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "DEM.PROL",
+          "votes": 495036,
+          "share": 1.4187,
+          "party_std": "PDUP / DemProl",
+          "party_family": "sinistra storica",
+          "bloc": "sinistra",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "PPST",
+          "votes": 197173,
+          "share": 0.5651,
+          "party_std": "Autonomisti",
+          "party_family": "regionalista",
+          "bloc": "regionalista",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "UV-PS.D'AZ.",
+          "votes": 190113,
+          "share": 0.5448,
+          "party_std": "UV - PSd'Az",
+          "party_family": "regionalista",
+          "bloc": "regionalista",
+          "classification_status": "curated_exact"
+        },
+        {
+          "party_raw": "LIGA VENETA",
+          "votes": 160881,
+          "share": 0.4611,
+          "party_std": "Liga Veneta",
+          "party_family": "regionalista",
+          "bloc": "regionalista",
+          "classification_status": "curated_exact"
         }
       ]
     },
@@ -1626,6 +1881,138 @@
           "party_family": "regionalista",
           "bloc": "regionalista",
           "classification_status": "fallback_rule"
+        }
+      ]
+    },
+    {
+      "election_key": "europee_1989",
+      "year": 1989,
+      "result_rows": 94615,
+      "unique_raw_lists": 14,
+      "national_votes": 34619305,
+      "winner_raw": "DC",
+      "winner_share": 32.9547,
+      "unmatched_bloc_share": 0.0,
+      "classification_coverage_share": 100.0,
+      "curated_exact_share": 7.9738,
+      "bloc_shares": {
+        "sinistra": 35.0103,
+        "centro": 33.4229,
+        "centro-sinistra": 17.4686,
+        "centro-destra": 6.2459,
+        "destra": 5.5325,
+        "liberale": 1.2321,
+        "regionalista": 1.0877
+      },
+      "unclassified_lists": [],
+      "top_parties": [
+        {
+          "party_raw": "DC",
+          "votes": 11408677,
+          "share": 32.9547,
+          "party_std": "DC",
+          "party_family": "cattolico-popolare",
+          "bloc": "centro",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "PCI",
+          "votes": 9551527,
+          "share": 27.5902,
+          "party_std": "PCI",
+          "party_family": "sinistra storica",
+          "bloc": "sinistra",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "PSI",
+          "votes": 5114711,
+          "share": 14.7742,
+          "party_std": "PSI",
+          "party_family": "sinistra socialista",
+          "bloc": "centro-sinistra",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "MSI-DN",
+          "votes": 1915297,
+          "share": 5.5325,
+          "party_std": "Destra naz.",
+          "party_family": "destra nazionale",
+          "bloc": "destra",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "PLI-PRI-FED",
+          "votes": 1527890,
+          "share": 4.4134,
+          "party_std": "PLI",
+          "party_family": "liberale",
+          "bloc": "centro-destra",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "FED.LISTE VERDI",
+          "votes": 1306833,
+          "share": 3.7749,
+          "party_std": "Verdi",
+          "party_family": "ecologista",
+          "bloc": "sinistra",
+          "classification_status": "curated_exact"
+        },
+        {
+          "party_raw": "PSDI",
+          "votes": 932785,
+          "share": 2.6944,
+          "party_std": "PSDI",
+          "party_family": "socialdemocratico",
+          "bloc": "centro-sinistra",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "VERDI ARCOBALENO",
+          "votes": 821615,
+          "share": 2.3733,
+          "party_std": "Verdi Arcobaleno",
+          "party_family": "ecologista",
+          "bloc": "sinistra",
+          "classification_status": "curated_exact"
+        },
+        {
+          "party_raw": "LEGA LOMBARDA-A.NORD",
+          "votes": 634405,
+          "share": 1.8325,
+          "party_std": "Lega",
+          "party_family": "regionalista",
+          "bloc": "centro-destra",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "DEM.PROL",
+          "votes": 440352,
+          "share": 1.272,
+          "party_std": "PDUP / DemProl",
+          "party_family": "sinistra storica",
+          "bloc": "sinistra",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "L.ANTIPROIB.DROGA",
+          "votes": 426557,
+          "share": 1.2321,
+          "party_std": "Lista Antiproibizionista",
+          "party_family": "radicale",
+          "bloc": "liberale",
+          "classification_status": "curated_exact"
+        },
+        {
+          "party_raw": "FEDERALISMO",
+          "votes": 205455,
+          "share": 0.5935,
+          "party_std": "Federalismo",
+          "party_family": "regionalista",
+          "bloc": "regionalista",
+          "classification_status": "curated_exact"
         }
       ]
     },
@@ -1938,6 +2325,150 @@
       ]
     },
     {
+      "election_key": "europee_1994",
+      "year": 1994,
+      "result_rows": 124683,
+      "unique_raw_lists": 19,
+      "national_votes": 32916377,
+      "winner_raw": "FORZA ITALIA",
+      "winner_share": 30.611,
+      "unmatched_bloc_share": 0.5887,
+      "classification_coverage_share": 99.4113,
+      "curated_exact_share": 5.6769,
+      "bloc_shares": {
+        "centro-destra": 37.5369,
+        "centro-sinistra": 32.6968,
+        "destra": 12.5324,
+        "sinistra": 9.2406,
+        "centro": 3.9933,
+        "liberale": 2.1374,
+        "regionalista": 1.274,
+        "altro": 0.5887
+      },
+      "unclassified_lists": [
+        {
+          "party_raw": "UV",
+          "votes": 126127,
+          "share": 0.3832
+        },
+        {
+          "party_raw": "LIBERALI",
+          "votes": 52748,
+          "share": 0.1602
+        }
+      ],
+      "top_parties": [
+        {
+          "party_raw": "FORZA ITALIA",
+          "votes": 10076019,
+          "share": 30.611,
+          "party_std": "Forza Italia",
+          "party_family": "liberale-conservatore",
+          "bloc": "centro-destra",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "PDS",
+          "votes": 6285865,
+          "share": 19.0965,
+          "party_std": "PDS / DS",
+          "party_family": "centro-sinistra",
+          "bloc": "centro-sinistra",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "ALLEANZA NAZIONALE",
+          "votes": 4125201,
+          "share": 12.5324,
+          "party_std": "AN",
+          "party_family": "destra nazionale",
+          "bloc": "destra",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "P.POPOLARE ITALIANO",
+          "votes": 3288043,
+          "share": 9.9891,
+          "party_std": "PPI",
+          "party_family": "cattolico-popolare",
+          "bloc": "centro-sinistra",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "LEGA NORD",
+          "votes": 2171341,
+          "share": 6.5965,
+          "party_std": "Lega",
+          "party_family": "regionalista",
+          "bloc": "centro-destra",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "RIFONDAZIONE COMUNISTA",
+          "votes": 1994467,
+          "share": 6.0592,
+          "party_std": "Rifondazione Comunista",
+          "party_family": "sinistra storica",
+          "bloc": "sinistra",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "PATTO SEGNI",
+          "votes": 1073003,
+          "share": 3.2598,
+          "party_std": "Patto Segni",
+          "party_family": "liberale-riformista",
+          "bloc": "centro",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "FED.DEI VERDI",
+          "votes": 1047193,
+          "share": 3.1814,
+          "party_std": "Verdi",
+          "party_family": "ecologista",
+          "bloc": "sinistra",
+          "classification_status": "curated_exact"
+        },
+        {
+          "party_raw": "PANNELLA-RIFORMATORI",
+          "votes": 703559,
+          "share": 2.1374,
+          "party_std": "Radicali",
+          "party_family": "radicale",
+          "bloc": "liberale",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "PSI-AD",
+          "votes": 599992,
+          "share": 1.8228,
+          "party_std": "PSI - AD",
+          "party_family": "sinistra socialista",
+          "bloc": "centro-sinistra",
+          "classification_status": "curated_exact"
+        },
+        {
+          "party_raw": "LA RETE-MOV.DEM.",
+          "votes": 365850,
+          "share": 1.1115,
+          "party_std": "La Rete",
+          "party_family": "centro-sinistra",
+          "bloc": "centro-sinistra",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "PRI",
+          "votes": 241457,
+          "share": 0.7335,
+          "party_std": "PRI",
+          "party_family": "laico-repubblicano",
+          "bloc": "centro",
+          "classification_status": "fallback_rule"
+        }
+      ]
+    },
+    {
       "election_key": "camera_1996",
       "year": 1996,
       "result_rows": 88762,
@@ -2072,6 +2603,155 @@
           "party_std": "PSI",
           "party_family": "sinistra socialista",
           "bloc": "centro-sinistra",
+          "classification_status": "fallback_rule"
+        }
+      ]
+    },
+    {
+      "election_key": "europee_1999",
+      "year": 1999,
+      "result_rows": 156445,
+      "unique_raw_lists": 26,
+      "national_votes": 30945640,
+      "winner_raw": "FORZA ITALIA",
+      "winner_share": 25.1928,
+      "unmatched_bloc_share": 0.6851,
+      "classification_coverage_share": 99.3149,
+      "curated_exact_share": 32.0268,
+      "bloc_shares": {
+        "centro-destra": 42.9912,
+        "centro-sinistra": 34.3386,
+        "liberale": 8.4692,
+        "sinistra": 8.0019,
+        "centro": 3.4233,
+        "destra": 1.5894,
+        "altro": 0.6851,
+        "regionalista": 0.5014
+      },
+      "unclassified_lists": [
+        {
+          "party_raw": "LS.CITO LG.AZ.MERID.",
+          "votes": 92480,
+          "share": 0.2988
+        },
+        {
+          "party_raw": "LDR-PS D'AZ-PCONSI",
+          "votes": 58734,
+          "share": 0.1898
+        },
+        {
+          "party_raw": "UV",
+          "votes": 41091,
+          "share": 0.1328
+        }
+      ],
+      "top_parties": [
+        {
+          "party_raw": "FORZA ITALIA",
+          "votes": 7796068,
+          "share": 25.1928,
+          "party_std": "Forza Italia",
+          "party_family": "liberale-conservatore",
+          "bloc": "centro-destra",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "DEMOCRATICI SINISTRA",
+          "votes": 5379534,
+          "share": 17.3838,
+          "party_std": "PDS / DS",
+          "party_family": "centro-sinistra",
+          "bloc": "centro-sinistra",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "AN - P.SEGNI",
+          "votes": 3193765,
+          "share": 10.3206,
+          "party_std": "AN - Patto Segni",
+          "party_family": "destra nazionale",
+          "bloc": "centro-destra",
+          "classification_status": "curated_exact"
+        },
+        {
+          "party_raw": "LISTA EMMA BONINO",
+          "votes": 2620834,
+          "share": 8.4692,
+          "party_std": "Radicali",
+          "party_family": "radicale",
+          "bloc": "liberale",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "I DEMOCRATICI",
+          "votes": 2380279,
+          "share": 7.6918,
+          "party_std": "I Democratici",
+          "party_family": "centro-sinistra",
+          "bloc": "centro-sinistra",
+          "classification_status": "curated_exact"
+        },
+        {
+          "party_raw": "LEGA NORD",
+          "votes": 1393050,
+          "share": 4.5016,
+          "party_std": "Lega",
+          "party_family": "regionalista",
+          "bloc": "centro-destra",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "RIFONDAZIONE COMUNISTA",
+          "votes": 1321086,
+          "share": 4.2691,
+          "party_std": "Rifondazione Comunista",
+          "party_family": "sinistra storica",
+          "bloc": "sinistra",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "PPI (POP)",
+          "votes": 1315835,
+          "share": 4.2521,
+          "party_std": "PPI",
+          "party_family": "cattolico-popolare",
+          "bloc": "centro-sinistra",
+          "classification_status": "curated_exact"
+        },
+        {
+          "party_raw": "CENTRO CRIST.DEM.",
+          "votes": 803381,
+          "share": 2.5961,
+          "party_std": "CCD",
+          "party_family": "cattolico-popolare",
+          "bloc": "centro-destra",
+          "classification_status": "curated_exact"
+        },
+        {
+          "party_raw": "SDI",
+          "votes": 663876,
+          "share": 2.1453,
+          "party_std": "SDI",
+          "party_family": "sinistra socialista",
+          "bloc": "centro-sinistra",
+          "classification_status": "curated_exact"
+        },
+        {
+          "party_raw": "CDU",
+          "votes": 663770,
+          "share": 2.145,
+          "party_std": "UDC",
+          "party_family": "cattolico-popolare",
+          "bloc": "centro",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "COMUNISTI ITALIANI",
+          "votes": 614529,
+          "share": 1.9858,
+          "party_std": "Comunisti Italiani",
+          "party_family": "sinistra storica",
+          "bloc": "sinistra",
           "classification_status": "fallback_rule"
         }
       ]
@@ -2217,6 +2897,161 @@
           "party_family": "sinistra storica",
           "bloc": "sinistra",
           "classification_status": "fallback_rule"
+        }
+      ]
+    },
+    {
+      "election_key": "europee_2004",
+      "year": 2004,
+      "result_rows": 162555,
+      "unique_raw_lists": 25,
+      "national_votes": 32460812,
+      "winner_raw": "UNITI NELL'ULIVO",
+      "winner_share": 31.0923,
+      "unmatched_bloc_share": 0.9618,
+      "classification_coverage_share": 99.0382,
+      "curated_exact_share": 9.4027,
+      "bloc_shares": {
+        "centro-sinistra": 36.5458,
+        "centro-destra": 25.9179,
+        "destra": 13.7165,
+        "sinistra": 10.918,
+        "centro": 8.2776,
+        "liberale": 2.2465,
+        "altro": 0.9618,
+        "regionalista": 0.9336,
+        "ecologista": 0.4823
+      },
+      "unclassified_lists": [
+        {
+          "party_raw": "LISTA CONSUMATORI",
+          "votes": 159576,
+          "share": 0.4916
+        },
+        {
+          "party_raw": "PAESE NUOVO",
+          "votes": 76935,
+          "share": 0.237
+        },
+        {
+          "party_raw": "MOV.IDEA SOC. RAUTI",
+          "votes": 46400,
+          "share": 0.1429
+        },
+        {
+          "party_raw": "UV",
+          "votes": 29301,
+          "share": 0.0903
+        }
+      ],
+      "top_parties": [
+        {
+          "party_raw": "UNITI NELL'ULIVO",
+          "votes": 10092802,
+          "share": 31.0923,
+          "party_std": "L'Ulivo",
+          "party_family": "centro-sinistra",
+          "bloc": "centro-sinistra",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "FORZA ITALIA",
+          "votes": 6799494,
+          "share": 20.9468,
+          "party_std": "Forza Italia",
+          "party_family": "liberale-conservatore",
+          "bloc": "centro-destra",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "ALLEANZA NAZIONALE",
+          "votes": 3751981,
+          "share": 11.5585,
+          "party_std": "AN",
+          "party_family": "destra nazionale",
+          "bloc": "destra",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "RIFONDAZIONE COMUNISTA",
+          "votes": 1966502,
+          "share": 6.0581,
+          "party_std": "Rifondazione Comunista",
+          "party_family": "sinistra storica",
+          "bloc": "sinistra",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "UNIONE DI CENTRO",
+          "votes": 1913185,
+          "share": 5.8938,
+          "party_std": "UDC",
+          "party_family": "cattolico-popolare",
+          "bloc": "centro",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "LEGA NORD",
+          "votes": 1613651,
+          "share": 4.9711,
+          "party_std": "Lega",
+          "party_family": "regionalista",
+          "bloc": "centro-destra",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "FED.DEI VERDI",
+          "votes": 796565,
+          "share": 2.4539,
+          "party_std": "Verdi",
+          "party_family": "ecologista",
+          "bloc": "sinistra",
+          "classification_status": "curated_exact"
+        },
+        {
+          "party_raw": "COMUNISTI ITALIANI",
+          "votes": 780995,
+          "share": 2.406,
+          "party_std": "Comunisti Italiani",
+          "party_family": "sinistra storica",
+          "bloc": "sinistra",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "LISTA EMMA BONINO",
+          "votes": 729246,
+          "share": 2.2465,
+          "party_std": "Radicali",
+          "party_family": "radicale",
+          "bloc": "liberale",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "DIPIETRO OCCHETTO",
+          "votes": 691002,
+          "share": 2.1287,
+          "party_std": "Di Pietro - Occhetto",
+          "party_family": "liberale-riformista",
+          "bloc": "centro-sinistra",
+          "classification_status": "curated_exact"
+        },
+        {
+          "party_raw": "SOCIALISTI UNITI",
+          "votes": 660310,
+          "share": 2.0342,
+          "party_std": "Socialisti Uniti",
+          "party_family": "sinistra socialista",
+          "bloc": "centro-sinistra",
+          "classification_status": "curated_exact"
+        },
+        {
+          "party_raw": "A.P. UDEUR",
+          "votes": 418942,
+          "share": 1.2906,
+          "party_std": "UDEUR",
+          "party_family": "cattolico-popolare",
+          "bloc": "centro-sinistra",
+          "classification_status": "curated_exact"
         }
       ]
     },
@@ -2512,6 +3347,155 @@
       ]
     },
     {
+      "election_key": "europee_2009",
+      "year": 2009,
+      "result_rows": 100706,
+      "unique_raw_lists": 16,
+      "national_votes": 30562719,
+      "winner_raw": "IL POPOLO DELLA LIBERTA'",
+      "winner_share": 35.2663,
+      "unmatched_bloc_share": 0.4275,
+      "classification_coverage_share": 99.5725,
+      "curated_exact_share": 8.7307,
+      "bloc_shares": {
+        "centro-destra": 47.7159,
+        "centro-sinistra": 34.1288,
+        "sinistra": 7.0462,
+        "centro": 6.5218,
+        "liberale": 2.422,
+        "destra": 1.2717,
+        "regionalista": 0.4661,
+        "altro": 0.4275
+      },
+      "unclassified_lists": [
+        {
+          "party_raw": "LIBERAL DEMOCRATICI - MAIE",
+          "votes": 70766,
+          "share": 0.2315
+        },
+        {
+          "party_raw": "VALLEE D'AOSTE",
+          "votes": 32855,
+          "share": 0.1075
+        },
+        {
+          "party_raw": "AUTONOMIE LIBERTE' DEMOCRATIE",
+          "votes": 27029,
+          "share": 0.0884
+        }
+      ],
+      "top_parties": [
+        {
+          "party_raw": "IL POPOLO DELLA LIBERTA'",
+          "votes": 10778353,
+          "share": 35.2663,
+          "party_std": "PdL",
+          "party_family": "liberale-conservatore",
+          "bloc": "centro-destra",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "PARTITO DEMOCRATICO",
+          "votes": 7989218,
+          "share": 26.1404,
+          "party_std": "PD",
+          "party_family": "centro-sinistra",
+          "bloc": "centro-sinistra",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "LEGA NORD",
+          "votes": 3124223,
+          "share": 10.2223,
+          "party_std": "Lega",
+          "party_family": "regionalista",
+          "bloc": "centro-destra",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "DI PIETRO ITALIA DEI VALORI",
+          "votes": 2441457,
+          "share": 7.9884,
+          "party_std": "IdV",
+          "party_family": "liberale-riformista",
+          "bloc": "centro-sinistra",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "UNIONE DI CENTRO",
+          "votes": 1993235,
+          "share": 6.5218,
+          "party_std": "UDC",
+          "party_family": "cattolico-popolare",
+          "bloc": "centro",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "RIFOND.COM. - SIN.EUROPEA - COM.ITALIANI",
+          "votes": 1035169,
+          "share": 3.387,
+          "party_std": "PRC - PdCI",
+          "party_family": "sinistra storica",
+          "bloc": "sinistra",
+          "classification_status": "curated_exact"
+        },
+        {
+          "party_raw": "SINISTRA E LIBERTA'",
+          "votes": 952467,
+          "share": 3.1164,
+          "party_std": "Sinistra e Liberta",
+          "party_family": "ecologista",
+          "bloc": "sinistra",
+          "classification_status": "curated_exact"
+        },
+        {
+          "party_raw": "LISTA MARCO PANNELLA - EMMA BONINO",
+          "votes": 740241,
+          "share": 2.422,
+          "party_std": "Radicali",
+          "party_family": "radicale",
+          "bloc": "liberale",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "LA DESTRA-MPA- PENSIONATI -ALL.DI CENTRO",
+          "votes": 680705,
+          "share": 2.2272,
+          "party_std": "La Destra - MpA",
+          "party_family": "destra nazionale",
+          "bloc": "centro-destra",
+          "classification_status": "curated_exact"
+        },
+        {
+          "party_raw": "FIAMMA TRICOLORE",
+          "votes": 242892,
+          "share": 0.7947,
+          "party_std": "Destra naz.",
+          "party_family": "destra nazionale",
+          "bloc": "destra",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "PARTITO COMUNISTA DEI LAVORATORI",
+          "votes": 165870,
+          "share": 0.5427,
+          "party_std": "PC Lavoratori / Sin. Critica",
+          "party_family": "sinistra storica",
+          "bloc": "sinistra",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "FORZA NUOVA",
+          "votes": 145773,
+          "share": 0.477,
+          "party_std": "Destra naz.",
+          "party_family": "destra nazionale",
+          "bloc": "destra",
+          "classification_status": "fallback_rule"
+        }
+      ]
+    },
+    {
       "election_key": "camera_2013",
       "year": 2013,
       "result_rows": 137169,
@@ -2648,6 +3632,146 @@
           "party_family": "centro-sinistra",
           "bloc": "centro-sinistra",
           "classification_status": "fallback_rule"
+        }
+      ]
+    },
+    {
+      "election_key": "europee_2014",
+      "year": 2014,
+      "result_rows": 83979,
+      "unique_raw_lists": 12,
+      "national_votes": 27370596,
+      "winner_raw": "PARTITO DEMOCRATICO",
+      "winner_share": 40.8192,
+      "unmatched_bloc_share": 0.177,
+      "classification_coverage_share": 99.823,
+      "curated_exact_share": 10.027,
+      "bloc_shares": {
+        "centro-sinistra": 41.4756,
+        "centro-destra": 27.3693,
+        "populista": 21.1639,
+        "sinistra": 4.0305,
+        "destra": 3.6682,
+        "ecologista": 0.8967,
+        "centro": 0.7167,
+        "regionalista": 0.502,
+        "altro": 0.177
+      },
+      "unclassified_lists": [
+        {
+          "party_raw": "IO CAMBIO - MAIE",
+          "votes": 48444,
+          "share": 0.177
+        }
+      ],
+      "top_parties": [
+        {
+          "party_raw": "PARTITO DEMOCRATICO",
+          "votes": 11172445,
+          "share": 40.8192,
+          "party_std": "PD",
+          "party_family": "centro-sinistra",
+          "bloc": "centro-sinistra",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "MOVIMENTO 5 STELLE BEPPEGRILLO.IT",
+          "votes": 5792689,
+          "share": 21.1639,
+          "party_std": "M5S",
+          "party_family": "populista",
+          "bloc": "populista",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "FORZA ITALIA",
+          "votes": 4605103,
+          "share": 16.825,
+          "party_std": "Forza Italia",
+          "party_family": "liberale-conservatore",
+          "bloc": "centro-destra",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "LEGA NORD-DIE FREIHEITLICHEN-BASTA EURO",
+          "votes": 1686366,
+          "share": 6.1612,
+          "party_std": "Lega",
+          "party_family": "regionalista",
+          "bloc": "centro-destra",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "NUOVO CENTRO DESTRA - UDC",
+          "votes": 1199683,
+          "share": 4.3831,
+          "party_std": "NCD - UDC",
+          "party_family": "cattolico-popolare",
+          "bloc": "centro-destra",
+          "classification_status": "curated_exact"
+        },
+        {
+          "party_raw": "L'ALTRA EUROPA CON TSIPRAS",
+          "votes": 1103182,
+          "share": 4.0305,
+          "party_std": "L'Altra Europa con Tsipras",
+          "party_family": "sinistra europea",
+          "bloc": "sinistra",
+          "classification_status": "curated_exact"
+        },
+        {
+          "party_raw": "FRATELLI D'ITALIA - ALLEANZA NAZIONALE",
+          "votes": 1004016,
+          "share": 3.6682,
+          "party_std": "AN",
+          "party_family": "destra nazionale",
+          "bloc": "destra",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "VERDI EUROPEI-GREEN ITALIA",
+          "votes": 245431,
+          "share": 0.8967,
+          "party_std": "Verdi Europei",
+          "party_family": "ecologista",
+          "bloc": "ecologista",
+          "classification_status": "curated_exact"
+        },
+        {
+          "party_raw": "SCELTA EUROPEA",
+          "votes": 196153,
+          "share": 0.7167,
+          "party_std": "Scelta Europea",
+          "party_family": "liberale-riformista",
+          "bloc": "centro",
+          "classification_status": "curated_exact"
+        },
+        {
+          "party_raw": "ITALIA DEI VALORI",
+          "votes": 179684,
+          "share": 0.6565,
+          "party_std": "IdV",
+          "party_family": "liberale-riformista",
+          "bloc": "centro-sinistra",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "SVP",
+          "votes": 137400,
+          "share": 0.502,
+          "party_std": "Autonomisti",
+          "party_family": "regionalista",
+          "bloc": "regionalista",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "IO CAMBIO - MAIE",
+          "votes": 48444,
+          "share": 0.177,
+          "party_std": "IO CAMBIO - MAIE",
+          "party_family": "altro",
+          "bloc": "altro",
+          "classification_status": "unclassified"
         }
       ]
     },
@@ -2796,6 +3920,156 @@
       ]
     },
     {
+      "election_key": "europee_2019",
+      "year": 2019,
+      "result_rows": 112065,
+      "unique_raw_lists": 18,
+      "national_votes": 26662962,
+      "winner_raw": "LEGA SALVINI PREMIER",
+      "winner_share": 34.3309,
+      "unmatched_bloc_share": 0.5922,
+      "classification_coverage_share": 99.4078,
+      "curated_exact_share": 4.6474,
+      "bloc_shares": {
+        "centro-destra": 43.551,
+        "centro-sinistra": 22.692,
+        "populista": 17.0743,
+        "destra": 6.9487,
+        "sinistra": 4.9094,
+        "centro": 3.1046,
+        "ecologista": 0.5976,
+        "altro": 0.5922,
+        "regionalista": 0.5301
+      },
+      "unclassified_lists": [
+        {
+          "party_raw": "POPOLARI PER L'ITALIA",
+          "votes": 79951,
+          "share": 0.2999
+        },
+        {
+          "party_raw": "PARTITO PIRATA",
+          "votes": 60308,
+          "share": 0.2262
+        },
+        {
+          "party_raw": "AUTONOMIE PER L'EUROPA",
+          "votes": 17629,
+          "share": 0.0661
+        }
+      ],
+      "top_parties": [
+        {
+          "party_raw": "LEGA SALVINI PREMIER",
+          "votes": 9153638,
+          "share": 34.3309,
+          "party_std": "Lega",
+          "party_family": "regionalista",
+          "bloc": "centro-destra",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "PARTITO DEMOCRATICO",
+          "votes": 6050351,
+          "share": 22.692,
+          "party_std": "PD",
+          "party_family": "centro-sinistra",
+          "bloc": "centro-sinistra",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "MOVIMENTO 5 STELLE",
+          "votes": 4552527,
+          "share": 17.0743,
+          "party_std": "M5S",
+          "party_family": "populista",
+          "bloc": "populista",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "FORZA ITALIA",
+          "votes": 2344465,
+          "share": 8.793,
+          "party_std": "Forza Italia",
+          "party_family": "liberale-conservatore",
+          "bloc": "centro-destra",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "FRATELLI D'ITALIA",
+          "votes": 1723232,
+          "share": 6.463,
+          "party_std": "FdI",
+          "party_family": "destra nazionale",
+          "bloc": "destra",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "+EUROPA - ITALIA IN COMUNE - PDE ITALIA",
+          "votes": 822764,
+          "share": 3.0858,
+          "party_std": "+Europa",
+          "party_family": "liberale-riformista",
+          "bloc": "centro",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "EUROPA VERDE",
+          "votes": 609678,
+          "share": 2.2866,
+          "party_std": "Europa Verde",
+          "party_family": "ecologista",
+          "bloc": "sinistra",
+          "classification_status": "curated_exact"
+        },
+        {
+          "party_raw": "LA SINISTRA",
+          "votes": 465092,
+          "share": 1.7443,
+          "party_std": "La Sinistra",
+          "party_family": "sinistra europea",
+          "bloc": "sinistra",
+          "classification_status": "curated_exact"
+        },
+        {
+          "party_raw": "PARTITO COMUNISTA",
+          "votes": 234232,
+          "share": 0.8785,
+          "party_std": "PCI",
+          "party_family": "sinistra storica",
+          "bloc": "sinistra",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "PARTITO ANIMALISTA",
+          "votes": 159344,
+          "share": 0.5976,
+          "party_std": "Partito Animalista",
+          "party_family": "animalista",
+          "bloc": "ecologista",
+          "classification_status": "curated_exact"
+        },
+        {
+          "party_raw": "SVP",
+          "votes": 141353,
+          "share": 0.5301,
+          "party_std": "Autonomisti",
+          "party_family": "regionalista",
+          "bloc": "regionalista",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "POPOLO DELLA FAMIGLIA - ALTERNATIVA POPOLARE",
+          "votes": 113875,
+          "share": 0.4271,
+          "party_std": "Popolo della Famiglia",
+          "party_family": "cattolico-popolare",
+          "bloc": "centro-destra",
+          "classification_status": "fallback_rule"
+        }
+      ]
+    },
+    {
       "election_key": "camera_2022",
       "year": 2022,
       "result_rows": 111199,
@@ -2931,6 +4205,155 @@
           "party_family": "liberale-conservatore",
           "bloc": "centro-destra",
           "classification_status": "fallback_rule"
+        }
+      ]
+    },
+    {
+      "election_key": "europee_2024",
+      "year": 2024,
+      "result_rows": 89932,
+      "unique_raw_lists": 15,
+      "national_votes": 23277606,
+      "winner_raw": "FRATELLI D'ITALIA",
+      "winner_share": 28.822,
+      "unmatched_bloc_share": 0.6057,
+      "classification_coverage_share": 99.3943,
+      "curated_exact_share": 17.7556,
+      "bloc_shares": {
+        "destra": 28.948,
+        "centro-sinistra": 24.0887,
+        "centro-destra": 18.6107,
+        "populista": 11.2132,
+        "sinistra": 8.9161,
+        "centro": 7.1038,
+        "altro": 0.6057,
+        "regionalista": 0.5138
+      },
+      "unclassified_lists": [
+        {
+          "party_raw": "ALTERNATIVA POPOLARE",
+          "votes": 90569,
+          "share": 0.3891
+        },
+        {
+          "party_raw": "DEMOCRAZIA SOVRANA POPOLARE",
+          "votes": 36037,
+          "share": 0.1548
+        },
+        {
+          "party_raw": "RASSEMBLEMENT VALDÔTAIN",
+          "votes": 14394,
+          "share": 0.0618
+        }
+      ],
+      "top_parties": [
+        {
+          "party_raw": "FRATELLI D'ITALIA",
+          "votes": 6709081,
+          "share": 28.822,
+          "party_std": "FdI",
+          "party_family": "destra nazionale",
+          "bloc": "destra",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "PARTITO DEMOCRATICO",
+          "votes": 5607273,
+          "share": 24.0887,
+          "party_std": "PD",
+          "party_family": "centro-sinistra",
+          "bloc": "centro-sinistra",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "MOVIMENTO 5 STELLE",
+          "votes": 2325718,
+          "share": 9.9912,
+          "party_std": "M5S",
+          "party_family": "populista",
+          "bloc": "populista",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "FORZA ITALIA - NOI MODERATI - PPE",
+          "votes": 2237562,
+          "share": 9.6125,
+          "party_std": "Forza Italia",
+          "party_family": "liberale-conservatore",
+          "bloc": "centro-destra",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "LEGA SALVINI PREMIER",
+          "votes": 2094568,
+          "share": 8.9982,
+          "party_std": "Lega",
+          "party_family": "regionalista",
+          "bloc": "centro-destra",
+          "classification_status": "fallback_rule"
+        },
+        {
+          "party_raw": "ALLEANZA VERDI E SINISTRA",
+          "votes": 1561806,
+          "share": 6.7095,
+          "party_std": "AVS",
+          "party_family": "ecologista",
+          "bloc": "sinistra",
+          "classification_status": "curated_exact"
+        },
+        {
+          "party_raw": "STATI UNITI D'EUROPA",
+          "votes": 875403,
+          "share": 3.7607,
+          "party_std": "Stati Uniti d'Europa",
+          "party_family": "liberale-riformista",
+          "bloc": "centro",
+          "classification_status": "curated_exact"
+        },
+        {
+          "party_raw": "AZIONE - SIAMO EUROPEI",
+          "votes": 778193,
+          "share": 3.3431,
+          "party_std": "Azione",
+          "party_family": "liberale-riformista",
+          "bloc": "centro",
+          "classification_status": "curated_exact"
+        },
+        {
+          "party_raw": "PACE TERRA DIGNITA'",
+          "votes": 513640,
+          "share": 2.2066,
+          "party_std": "Pace Terra Dignita",
+          "party_family": "sinistra civica",
+          "bloc": "sinistra",
+          "classification_status": "curated_exact"
+        },
+        {
+          "party_raw": "LIBERTA'",
+          "votes": 284449,
+          "share": 1.222,
+          "party_std": "Liberta",
+          "party_family": "populista",
+          "bloc": "populista",
+          "classification_status": "curated_exact"
+        },
+        {
+          "party_raw": "SÜDTIROLER VOLKSPARTEI (SVP)",
+          "votes": 119596,
+          "share": 0.5138,
+          "party_std": "SVP",
+          "party_family": "regionalista",
+          "bloc": "regionalista",
+          "classification_status": "curated_exact"
+        },
+        {
+          "party_raw": "ALTERNATIVA POPOLARE",
+          "votes": 90569,
+          "share": 0.3891,
+          "party_std": "ALTERNATIVA POPOLARE",
+          "party_family": "altro",
+          "bloc": "altro",
+          "classification_status": "unclassified"
         }
       ]
     }

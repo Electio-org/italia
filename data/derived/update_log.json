@@ -2,6 +2,18 @@
   "generated_by": "preprocess.py",
   "entries": [
     {
+      "version": "0.25.0",
+      "date": "2026-07-15",
+      "title": "Elezioni europee 1979-2024 al livello comunale",
+      "changes": [
+        "Aggiunte tutte le dieci elezioni europee dal 1979 al 2024 dagli archivi ufficiali Eligendo.",
+        "Pubblicati risultati comunali, affluenza, liste, blocchi e shard lazy separati per consultazione.",
+        "Integrata la ricostruzione territoriale implicita sulla geometria comunale 2021 con copertura superiore al 99,8% in ogni anno.",
+        "Conservate le etichette ufficiali delle liste con tassonomia specifica per elezione e controlli sui vincitori nazionali.",
+        "Documentati archivi, hash, membri sorgente, eccezioni e prodotto dati Europee dedicato."
+      ]
+    },
+    {
       "version": "0.24.0",
       "date": "2026-07-15",
       "title": "Historical party taxonomy completeness",

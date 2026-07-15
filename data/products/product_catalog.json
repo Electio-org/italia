@@ -1,6 +1,6 @@
 {
   "generated_by": "build_result_shards.py",
-  "release_version": "0.24.0",
+  "release_version": "0.25.0",
   "release_date": "2026-07-15",
   "products": [
     {
@@ -40,6 +40,47 @@
         "camera_1948",
         "camera_1953",
         "camera_1958"
+      ]
+    },
+    {
+      "product_key": "european_muni_historical",
+      "title": "Elezioni europee 1979-2024 - fonte comunale e vista 2021",
+      "kind": "election_panel",
+      "territorial_mode": "source_gzip_and_harmonized_public_shards",
+      "granularity": "municipality-election-list",
+      "delivery_strategy": "official_source_gzip_plus_2021_harmonized_election_shards",
+      "manifest_path": "data/products/european_muni_historical/manifest.json",
+      "dataset_count": 6,
+      "primary_dataset_key": "europeanMunicipalitySummarySource",
+      "companion_dataset_key": "europeanMunicipalityResultsSource",
+      "extra_dataset_keys": [
+        "europeanElectionsMaster",
+        "europeanSourceAudit",
+        "europeanArchiveManifest",
+        "territorialCrosswalk"
+      ],
+      "guardrails": [
+        "Le etichette party_raw conservano le liste ufficiali osservate in ogni elezione.",
+        "La dashboard usa shard per elezione proiettati implicitamente sulla geometria comunale 2021.",
+        "Scissioni ambigue e comuni successivi al 2021 restano no-data senza allocazioni inventate."
+      ],
+      "join_keys": [
+        "municipality_id",
+        "geometry_id",
+        "election_key"
+      ],
+      "intended_use": [
+        "analisi storica comunale delle elezioni europee in Italia dal 1979 al 2024",
+        "mappa pubblica di affluenza, liste, quote e blocchi per consultazione",
+        "download riproducibile delle fonti comunali e degli shard armonizzati"
+      ],
+      "inventory_kind": "election_datasets",
+      "inventory_count": 10,
+      "inventory_preview": [
+        "europee_1979",
+        "europee_1984",
+        "europee_1989",
+        "europee_1994"
       ]
     },
     {

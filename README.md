@@ -4,8 +4,8 @@ Public-facing electoral atlas of Italy — mapping every Italian election, from 
 
 This repository is the focused home for the national build: a web dashboard, a structured derived-data bundle, and lightweight programmatic access for research and reuse. Data is sourced from official Eligendo open-data archives.
 
-**Current coverage (shipped):** `Camera dei Deputati` (1948–2022) + `Assemblea Costituente` 1946.
-**Roadmap:** `Senato`, `Parlamento Europeo`, `Regionali`, `Comunali`, `Referendum` — all at the municipal level, all from 1946 onward.
+**Current coverage (shipped):** `Camera dei Deputati` (1948–2022), `Assemblea Costituente` 1946, and every `European Parliament election` (1979–2024).
+**Roadmap:** `Senato`, `Regionali`, `Comunali`, `Referendum` — all at the municipal level.
 
 **Live site:** https://simoneghezzicolombo.github.io/electio/ (GitHub Pages; a custom domain can be added later by restoring the `CNAME` file).
 
@@ -21,7 +21,7 @@ This repository is the focused home for the national build: a web dashboard, a s
 
 - **Geography:** Italy — all ~7,900 comuni, with province and region context layers
 - **Granularity:** primarily municipal
-- **Election families shipped:** `Camera dei Deputati` (1948–2022) + `Assemblea Costituente` 1946
+- **Election families shipped:** `Camera dei Deputati` (1948–2022), `Assemblea Costituente` 1946, and `European Parliament` (1979–2024)
 - **Roadmap (next waves):** `Senato della Repubblica` · `Parlamento Europeo` · `Regionali` · `Comunali` · `Referendum`
 - **Product style:** public-facing and explorable, but structured as a data product rather than a one-off dashboard
 

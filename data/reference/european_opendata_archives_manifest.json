@@ -1,0 +1,182 @@
+{
+  "generated_by": "scripts/sync_european_opendata_archives.py",
+  "source": "Eligendo open data - Ministero dell'Interno",
+  "archive_count": 10,
+  "entries": [
+    {
+      "election_type": "europee",
+      "election_key": "europee_1979",
+      "year": 1979,
+      "election_date": "1979-06-10",
+      "filename": "europee-19790610.zip",
+      "relative_path": "europee/europee-19790610.zip",
+      "download_url": "https://dait.interno.gov.it/documenti/opendata/europee/europee-19790610.zip",
+      "local_path": "source_cache/european_archives/europee-19790610.zip",
+      "size_bytes": 640104,
+      "sha256": "345629a713c899180e8a67eaa9c9bb5b3dc54a6d836b1c7ee9528fe0e5060822",
+      "members": [
+        "europee-19790610.txt",
+        "_Preferenze_Europee_1979_Italia+Estero_LivCircoscrizione.txt"
+      ]
+    },
+    {
+      "election_type": "europee",
+      "election_key": "europee_1984",
+      "year": 1984,
+      "election_date": "1984-06-17",
+      "filename": "europee-19840617.zip",
+      "relative_path": "europee/europee-19840617.zip",
+      "download_url": "https://dait.interno.gov.it/documenti/opendata/europee/europee-19840617.zip",
+      "local_path": "source_cache/european_archives/europee-19840617.zip",
+      "size_bytes": 566942,
+      "sha256": "235259c74c52e3d2da551089c17f21b96725461c2c765e77678b649550a71146",
+      "members": [
+        "europee-19840617.txt",
+        "_Preferenze_Europee_1984_Italia+Estero_LivCircoscrizione.txt"
+      ]
+    },
+    {
+      "election_type": "europee",
+      "election_key": "europee_1989",
+      "year": 1989,
+      "election_date": "1989-06-18",
+      "filename": "europee-19890618.zip",
+      "relative_path": "europee/europee-19890618.zip",
+      "download_url": "https://dait.interno.gov.it/documenti/opendata/europee/europee-19890618.zip",
+      "local_path": "source_cache/european_archives/europee-19890618.zip",
+      "size_bytes": 679221,
+      "sha256": "1e0f66da6316c16bc4936923dc547d8f88930cfaf166e6fcf3627326df5fd39a",
+      "members": [
+        "europee-19890618.txt",
+        "_Preferenze_Europee_1989Italia+Estero_LivCircoscrizione.txt"
+      ]
+    },
+    {
+      "election_type": "europee",
+      "election_key": "europee_1994",
+      "year": 1994,
+      "election_date": "1994-06-12",
+      "filename": "europee-19940612.zip",
+      "relative_path": "europee/europee-19940612.zip",
+      "download_url": "https://dait.interno.gov.it/documenti/opendata/europee/europee-19940612.zip",
+      "local_path": "source_cache/european_archives/europee-19940612.zip",
+      "size_bytes": 1155693,
+      "sha256": "0a41d519fcb3e1fa22f4775e84701ff652e14c3d65297f957414dd51b24f8fd9",
+      "members": [
+        "europee-19940612.txt",
+        "_Preferenze_Europee_1994.txt"
+      ]
+    },
+    {
+      "election_type": "europee",
+      "election_key": "europee_1999",
+      "year": 1999,
+      "election_date": "1999-06-13",
+      "filename": "europee-19990613.zip",
+      "relative_path": "europee/europee-19990613.zip",
+      "download_url": "https://dait.interno.gov.it/documenti/opendata/europee/europee-19990613.zip",
+      "local_path": "source_cache/european_archives/europee-19990613.zip",
+      "size_bytes": 1915932,
+      "sha256": "1850ef3edc072374ad6a8b9a7ee328a5a8e67e3ce7a23c297c48023d21560965",
+      "members": [
+        "europee-19990613.txt",
+        "_Preferenze_Europee_1999.txt"
+      ]
+    },
+    {
+      "election_type": "europee",
+      "election_key": "europee_2004",
+      "year": 2004,
+      "election_date": "2004-06-12",
+      "filename": "europee-20040612.zip",
+      "relative_path": "europee/europee-20040612.zip",
+      "download_url": "https://dait.interno.gov.it/documenti/opendata/europee/europee-20040612.zip",
+      "local_path": "source_cache/european_archives/europee-20040612.zip",
+      "size_bytes": 1886572,
+      "sha256": "aee730b366d3b0232d59ddd1f784d257c5f03bda930c72212b7b5adf3b30d29c",
+      "members": [
+        "europee-20040612.txt",
+        "_Preferenze_Europee_2004.txt"
+      ]
+    },
+    {
+      "election_type": "europee",
+      "election_key": "europee_2009",
+      "year": 2009,
+      "election_date": "2009-06-07",
+      "filename": "europee-20090607.zip",
+      "relative_path": "europee/europee-20090607.zip",
+      "download_url": "https://dait.interno.gov.it/documenti/opendata/europee/europee-20090607.zip",
+      "local_path": "source_cache/european_archives/europee-20090607.zip",
+      "size_bytes": 28362090,
+      "sha256": "54c7befc2463d9a8e9e8e06b11a95883fac7a7015d4c4330782882efe8788df7",
+      "members": [
+        "_Preferenze_Europee_2009_livComune.txt",
+        "europee-20090607.txt"
+      ]
+    },
+    {
+      "election_type": "europee",
+      "election_key": "europee_2014",
+      "year": 2014,
+      "election_date": "2014-05-25",
+      "filename": "europee-20140525.zip",
+      "relative_path": "europee/europee-20140525.zip",
+      "download_url": "https://dait.interno.gov.it/documenti/opendata/europee/europee-20140525.zip",
+      "local_path": "source_cache/european_archives/europee-20140525.zip",
+      "size_bytes": 9125018,
+      "sha256": "a54aa5ae6f25af865162f494a45530d71580d5718f16aa62619703913388f974",
+      "members": [
+        "europee-20140525.txt",
+        "_Preferenze_Europee_2014_LivComune.txt"
+      ]
+    },
+    {
+      "election_type": "europee",
+      "election_key": "europee_2019",
+      "year": 2019,
+      "election_date": "2019-05-26",
+      "filename": "europee-20190526.zip",
+      "relative_path": "europee/europee-20190526.zip",
+      "download_url": "https://dait.interno.gov.it/documenti/opendata/europee/europee-20190526.zip",
+      "local_path": "source_cache/european_archives/europee-20190526.zip",
+      "size_bytes": 31187859,
+      "sha256": "81d21e26d5761ba81797a726316718ef82aa56894c0cdbd3ad236535148daa19",
+      "members": [
+        "_PrefEuropee2019_LivComune.txt",
+        "europee-20190526.txt"
+      ]
+    },
+    {
+      "election_type": "europee",
+      "election_key": "europee_2024",
+      "year": 2024,
+      "election_date": "2024-06-09",
+      "filename": "europee-20240609.zip",
+      "relative_path": "europee/europee-20240609.zip",
+      "download_url": "https://dait.interno.gov.it/documenti/opendata/europee/europee-20240609.zip",
+      "local_path": "source_cache/european_archives/europee-20240609.zip",
+      "size_bytes": 113583227,
+      "sha256": "37d8d5ef583ff230144352f0f2b2d2da2913ed8869059a90ca29a8601fcd6854",
+      "members": [
+        "Europee_Preferenze_CIRCOSCRIZIONE_III_SEZIONI_20240609.csv",
+        "Europee_Preferenze_CIRCOSCRIZIONE_IV_SEZIONI_20240609.csv",
+        "Europee_Preferenze_CIRCOSCRIZIONE_V_SEZIONI_20240609.csv",
+        "Europee_Scrutini_FUORISEDE_SEZIONI_20240609.csv",
+        "Europee_Scrutini_SEZIONI_20240609.csv",
+        "Europee_Votanti_ITALIA_LivSez.csv",
+        "Europee_Scrutini_Estero_Liv_CircNaz.xlsx",
+        "Europee_Liste_Estero_Liv_CircNaz.xlsx",
+        "EUROPEE_FUORI_SEDE.csv",
+        "EUROPEE_ITALIA_LivComune.csv",
+        "Europee_Preferenze_Circ1_LivComune.xlsx",
+        "Europee_Preferenze_Circ2_LivComune.xlsx",
+        "Europee_Preferenze_Circ3_LivComune.xlsx",
+        "Europee_Preferenze_Circ4_LivComune.xlsx",
+        "Europee_Preferenze_Circ5_LivComune.xlsx",
+        "Europee_Preferenze_CIRCOSCRIZIONE_I_SEZIONI_20240609.csv",
+        "Europee_Preferenze_CIRCOSCRIZIONE_II_SEZIONI_20240609.csv"
+      ]
+    }
+  ]
+}

@@ -14,6 +14,7 @@ import pandas as pd
 from party_taxonomy import apply_party_taxonomy_frame, resolve_party_meta
 from preprocess import infer_party_meta
 from territorial_history import harmonize_public_frames, load_crosswalk_frame
+from election_sources import canonical_results_paths, canonical_summary_paths, publish_combined_elections_master
 
 
 EXTRA_NOTE = "Party results can be delivered both as a monolithic CSV and as per-election shards for faster interactive loading."
@@ -26,7 +27,8 @@ WEB_GEOMETRY_NOTE = "The public app now reads a web-optimized geometry pack, whi
 LOCAL_ASSET_NOTE = "Critical browser libraries are now vendored locally and the public documentation pages load only the metadata they actually need."
 PROFILE_NOTE = "Municipality detail pages use province-sized compressed profile chunks instead of loading the national summary table."
 TERRITORIAL_HISTORY_NOTE = "Public election shards are projected implicitly to the 2021 municipality geometry through a date-aware ISTAT SITUAS lineage; ambiguous splits are never allocated."
-CURRENT_VERSION = "0.24.0"
+EUROPEAN_ELECTION_NOTE = "European Parliament elections 1979-2024 are published from the official Eligendo municipality archives as a separate reproducible source product and shared lazy public shards."
+CURRENT_VERSION = "0.25.0"
 
 
 def iter_election_frames(path: Path, chunk_size: int = 250_000) -> Iterator[Tuple[str, pd.DataFrame]]:
@@ -184,13 +186,13 @@ def ensure_update_log_entry(entries: List[Dict[str, object]]) -> List[Dict[str, 
     current = {
         "version": CURRENT_VERSION,
         "date": "2026-07-15",
-        "title": "Historical party taxonomy completeness",
+        "title": "Elezioni europee 1979-2024 al livello comunale",
         "changes": [
-            "Raised classified national vote coverage above 99% while preserving every original ballot-list label.",
-            "Corrected regional and autonomist lists that were previously folded into the centre-right bloc.",
-            "Removed generic rules that could confuse Impegno Civico with M5S or Rifondazione Missina with the communist left.",
-            "Standardized the liberal-conservative family key across Python and JavaScript.",
-            "Added CI parity checks for all observed party labels and explicit reporting of unclassified residual lists."
+            "Aggiunte tutte le dieci elezioni europee dal 1979 al 2024 dagli archivi ufficiali Eligendo.",
+            "Pubblicati risultati comunali, affluenza, liste, blocchi e shard lazy separati per consultazione.",
+            "Integrata la ricostruzione territoriale implicita sulla geometria comunale 2021 con copertura superiore al 99,8% in ogni anno.",
+            "Conservate le etichette ufficiali delle liste con tassonomia specifica per elezione e controlli sui vincitori nazionali.",
+            "Documentati archivi, hash, membri sorgente, eccezioni e prodotto dati Europee dedicato."
         ]
     }
     return [current, *[entry for entry in entries if str(entry.get("version")) != CURRENT_VERSION]]
@@ -232,6 +234,8 @@ def main() -> None:
         notes.append(PROFILE_NOTE)
     if TERRITORIAL_HISTORY_NOTE not in notes:
         notes.append(TERRITORIAL_HISTORY_NOTE)
+    if EUROPEAN_ELECTION_NOTE not in notes:
+        notes.append(EUROPEAN_ELECTION_NOTE)
     project["notes"] = notes
 
     files = manifest.setdefault("files", {})
@@ -267,6 +271,16 @@ def main() -> None:
     files["nationalElectionChecks"] = "data/reference/national_election_checks.csv"
     files["municipalitySummaryByElectionIndex"] = "data/derived/municipality_summary_by_election.json"
     files["municipalityResultsLongByElectionIndex"] = "data/derived/municipality_results_long_by_election.json"
+    european_files = {
+        "europeanElectionsMaster": "data/derived/european_elections_master.csv",
+        "europeanMunicipalitySummarySource": "data/derived/european_municipality_summary.csv.gz",
+        "europeanMunicipalityResultsSource": "data/derived/european_municipality_results_long.csv.gz",
+        "europeanSourceAudit": "data/derived/european_source_audit.json",
+        "europeanArchiveManifest": "data/reference/european_opendata_archives_manifest.json",
+    }
+    for key, relative_path in european_files.items():
+        if (root / relative_path).exists():
+            files[key] = relative_path
     if (derived / "municipality_profiles" / "index.json").exists():
         files["municipalityProfileIndex"] = "data/derived/municipality_profiles/index.json"
     manifest["loading"] = {
@@ -280,8 +294,12 @@ def main() -> None:
         }
     }
 
-    summary_path = derived / "municipality_summary.csv"
-    summary = pd.read_csv(summary_path, dtype=str).fillna("")
+    publish_combined_elections_master(derived)
+    summary_paths = canonical_summary_paths(derived)
+    summary = pd.concat(
+        [pd.read_csv(path, dtype=str).fillna("") for path in summary_paths],
+        ignore_index=True,
+    )
     summary_by_key = {
         str(election_key): chunk.copy()
         for election_key, chunk in summary.groupby("election_key", sort=False)
@@ -298,7 +316,7 @@ def main() -> None:
     summary_shards: Dict[str, str] = {}
     summary_row_counts: Dict[str, int] = {}
 
-    results_path = derived / "municipality_results_long.csv"
+    results_paths = canonical_results_paths(derived)
     shard_dir = derived / "results_by_election"
     shard_dir.mkdir(parents=True, exist_ok=True)
     for old in shard_dir.glob("*.csv"):
@@ -308,30 +326,33 @@ def main() -> None:
     row_counts: Dict[str, int] = {}
     party_catalog: Dict[str, Dict[str, object]] = {}
     processed = set()
-    for election_key, raw_results in iter_election_frames(results_path):
-        raw_summary = summary_by_key.get(election_key)
-        if raw_summary is None:
-            raise ValueError(f"Summary mancante per {election_key}")
-        harmonized_summary, harmonized_results = harmonize_public_frames(
-            raw_summary,
-            raw_results,
-            crosswalk,
-            results_transform=lambda frame: apply_party_taxonomy_frame(frame, infer_party_meta),
-        )
+    for results_path in results_paths:
+        for election_key, raw_results in iter_election_frames(results_path):
+            if election_key in processed:
+                raise ValueError(f"Elezione duplicata nelle fonti canoniche: {election_key}")
+            raw_summary = summary_by_key.get(election_key)
+            if raw_summary is None:
+                raise ValueError(f"Summary mancante per {election_key}")
+            harmonized_summary, harmonized_results = harmonize_public_frames(
+                raw_summary,
+                raw_results,
+                crosswalk,
+                results_transform=lambda frame: apply_party_taxonomy_frame(frame, infer_party_meta),
+            )
 
-        summary_filename = f"{slugify(election_key)}.csv"
-        summary_output = summary_shard_dir / summary_filename
-        harmonized_summary.to_csv(summary_output, index=False)
-        summary_shards[election_key] = str(summary_output.relative_to(root)).replace("\\", "/")
-        summary_row_counts[election_key] = int(len(harmonized_summary))
+            summary_filename = f"{slugify(election_key)}.csv"
+            summary_output = summary_shard_dir / summary_filename
+            harmonized_summary.to_csv(summary_output, index=False)
+            summary_shards[election_key] = str(summary_output.relative_to(root)).replace("\\", "/")
+            summary_row_counts[election_key] = int(len(harmonized_summary))
 
-        results_filename = f"{slugify(election_key)}.csv"
-        results_output = shard_dir / results_filename
-        harmonized_results.to_csv(results_output, index=False)
-        update_party_catalog(party_catalog, harmonized_results)
-        shards[election_key] = str(results_output.relative_to(root)).replace("\\", "/")
-        row_counts[election_key] = int(len(harmonized_results))
-        processed.add(election_key)
+            results_filename = f"{slugify(election_key)}.csv"
+            results_output = shard_dir / results_filename
+            harmonized_results.to_csv(results_output, index=False)
+            update_party_catalog(party_catalog, harmonized_results)
+            shards[election_key] = str(results_output.relative_to(root)).replace("\\", "/")
+            row_counts[election_key] = int(len(harmonized_results))
+            processed.add(election_key)
 
     missing_elections = sorted(set(summary_by_key) - processed)
     if missing_elections:
@@ -341,7 +362,7 @@ def main() -> None:
     summary_shard_index = {
         "generated_by": "build_result_shards.py",
         "dataset": "municipality_summary_harmonized_to_2021_geometry",
-        "source_dataset": "data/derived/municipality_summary.csv",
+        "source_dataset": [str(path.relative_to(root)).replace("\\", "/") for path in summary_paths],
         "territorial_mode": "harmonized",
         "target_geometry_date": "2021-12-31",
         "crosswalk": "data/derived/municipality_election_crosswalk.csv.gz",
@@ -355,7 +376,7 @@ def main() -> None:
     shard_index = {
         "generated_by": "build_result_shards.py",
         "dataset": "municipality_results_long_harmonized_to_2021_geometry",
-        "source_dataset": "data/derived/municipality_results_long.csv",
+        "source_dataset": [str(path.relative_to(root)).replace("\\", "/") for path in results_paths],
         "territorial_mode": "harmonized",
         "target_geometry_date": "2021-12-31",
         "crosswalk": "data/derived/municipality_election_crosswalk.csv.gz",
@@ -371,6 +392,31 @@ def main() -> None:
     if dataset_registry_path.exists():
         dataset_registry = json.loads(dataset_registry_path.read_text(encoding="utf-8"))
         dataset_registry_rows = list(dataset_registry.get("datasets") or [])
+        registry_by_key = {str(row.get("election_key") or row.get("dataset_key") or ""): row for row in dataset_registry_rows}
+        european_master_path = derived / "european_elections_master.csv"
+        if european_master_path.exists():
+            for election in pd.read_csv(european_master_path, dtype=str).fillna("").to_dict("records"):
+                key = str(election.get("election_key") or "")
+                row = registry_by_key.get(key)
+                if row is None:
+                    row = {"dataset_key": key, "election_key": key}
+                    dataset_registry_rows.append(row)
+                    registry_by_key[key] = row
+                row.update({
+                    "dataset_family": "european_parliament_municipality_historical",
+                    "election_year": int(election.get("election_year") or 0),
+                    "summary_rows": int(summary_row_counts.get(key) or 0),
+                    "result_rows": int(row_counts.get(key) or 0),
+                    "territorial_mode": "historical_source_and_harmonized_public",
+                    "boundary_basis": "2021_harmonized_public_map",
+                    "status": "usable",
+                    "coverage_label": "summary+results",
+                })
+            dataset_registry["datasets"] = sorted(
+                dataset_registry_rows,
+                key=lambda row: (int(row.get("election_year") or 0), str(row.get("election_key") or "")),
+            )
+            dataset_registry["project"] = "Electio Italia"
         for dataset in dataset_registry.get("datasets") or []:
             key = str(dataset.get("election_key") or "")
             if key and key in summary_shards:
@@ -388,6 +434,11 @@ def main() -> None:
                 "analisi storica comunale della Camera e dell'Assemblea Costituente in Italia",
                 "dashboard pubblica e download per anno o release",
                 "base primaria per confronto territoriale e profili comunali"
+            ],
+            "european_muni_historical": [
+                "analisi storica comunale delle elezioni europee in Italia dal 1979 al 2024",
+                "mappa pubblica di affluenza, liste, quote e blocchi per consultazione",
+                "download riproducibile delle fonti comunali e degli shard armonizzati"
             ],
             "geometry_pack_italy": [
                 "cartografia web ottimizzata con basi annuali dichiarate",
@@ -431,6 +482,25 @@ def main() -> None:
                 product["title"] = "Pacchetto geometrie Italia - full"
             if not (product.get("intended_use") or []):
                 product["intended_use"] = intended_use_defaults.get(str(product.get("product_key") or ""), [])
+        if not any(product.get("product_key") == "european_muni_historical" for product in data_products.get("products") or []):
+            data_products.setdefault("products", []).insert(1, {
+                "product_key": "european_muni_historical",
+                "title": "Elezioni europee 1979-2024 - fonte comunale e vista 2021",
+                "kind": "election_panel",
+                "territorial_mode": "source_gzip_and_harmonized_public_shards",
+                "granularity": "municipality-election-list",
+                "primary_dataset_key": "europeanMunicipalitySummarySource",
+                "companion_dataset_key": "europeanMunicipalityResultsSource",
+                "extra_dataset_keys": ["europeanElectionsMaster", "europeanSourceAudit", "europeanArchiveManifest", "territorialCrosswalk"],
+                "join_keys": ["municipality_id", "geometry_id", "election_key"],
+                "guardrails": [
+                    "Le etichette party_raw conservano le liste ufficiali osservate in ogni elezione.",
+                    "La dashboard usa shard per elezione proiettati implicitamente sulla geometria comunale 2021.",
+                    "Scissioni ambigue e comuni successivi al 2021 restano no-data senza allocazioni inventate."
+                ],
+                "delivery_strategy": "official_source_gzip_plus_2021_harmonized_election_shards",
+                "intended_use": intended_use_defaults["european_muni_historical"]
+            })
         if not any(product.get("product_key") == "territorial_history_2021" for product in data_products.get("products") or []):
             data_products.setdefault("products", []).append({
                 "product_key": "territorial_history_2021",
@@ -529,6 +599,24 @@ def main() -> None:
             if any(entry.get("dataset_key") == dataset_key for entry in entries):
                 continue
             entries.append({"dataset_key": dataset_key, "path": files[dataset_key], **spec})
+        european_entries = {
+            "europeanElectionsMaster": "Metadati delle dieci consultazioni europee 1979-2024.",
+            "europeanMunicipalitySummarySource": "Affluenza e sintesi comunale nella geografia osservata alla fonte.",
+            "europeanMunicipalityResultsSource": "Voti di lista comunali con etichetta ufficiale party_raw preservata.",
+            "europeanSourceAudit": "Audit per archivio, membro, hash, copertura e vincitore nazionale.",
+            "europeanArchiveManifest": "Inventario riproducibile degli archivi ufficiali Eligendo.",
+        }
+        for dataset_key, description in european_entries.items():
+            if dataset_key not in files or any(entry.get("dataset_key") == dataset_key for entry in entries):
+                continue
+            entries.append({
+                "dataset_key": dataset_key,
+                "path": files[dataset_key],
+                "produced_by": "build_european_election_sources.py",
+                "source_class": "official_eligendo_european_archive",
+                "transformation_steps": [description],
+                "limitations": ["Le geometrie pubbliche sono armonizzate separatamente alla base comunale 2021."]
+            })
         provenance["entries"] = entries
         provenance_path.write_text(json.dumps(provenance, ensure_ascii=False, indent=2), encoding="utf-8")
 
@@ -585,9 +673,13 @@ def main() -> None:
 
             inventory_kind = "flat"
             inventory_entries: List[Dict[str, object]] = []
-            if product_key == "camera_muni_historical":
+            if product_key in {"camera_muni_historical", "european_muni_historical"}:
                 inventory_kind = "election_datasets"
-                allowed_families = {"assemblea_costituente_municipality_historical", "camera_municipality_historical"}
+                allowed_families = (
+                    {"european_parliament_municipality_historical"}
+                    if product_key == "european_muni_historical"
+                    else {"assemblea_costituente_municipality_historical", "camera_municipality_historical"}
+                )
                 def registry_sort_key(item: Dict[str, object]) -> tuple[int, str]:
                     try:
                         year = int(item.get("election_year") or 0)

@@ -1,0 +1,1121 @@
+{
+  "generated_by": "scripts/build_european_election_sources.py",
+  "source_manifest": "data/reference/european_opendata_archives_manifest.json",
+  "archive_count": 10,
+  "election_count": 10,
+  "summary_asset": "data/derived/european_municipality_summary.csv.gz",
+  "results_asset": "data/derived/european_municipality_results_long.csv.gz",
+  "elections": [
+    {
+      "election_key": "europee_1979",
+      "election_year": 1979,
+      "election_date": "1979-06-10",
+      "archive_filename": "europee-19790610.zip",
+      "archive_sha256": "345629a713c899180e8a67eaa9c9bb5b3dc54a6d836b1c7ee9528fe0e5060822",
+      "primary_member": "europee-19790610.txt",
+      "source_rows": 98357,
+      "positive_party_rows": 94829,
+      "municipality_rows": 8073,
+      "result_rows": 94829,
+      "municipalities_with_geometry_id": 8063,
+      "municipalities_without_geometry_id": 10,
+      "national_valid_list_votes": 34858850,
+      "national_winner_raw": "DC",
+      "national_winner_std": "DC",
+      "national_winner_votes": 12721505,
+      "national_winner_share": 36.4943,
+      "resolution_methods": {
+        "lineage_master_name_province": 88842,
+        "lineage_master_name_region": 9269,
+        "lineage_master_unique_name": 121,
+        "unresolved": 125
+      },
+      "top_parties": [
+        {
+          "party_raw": "DC",
+          "party_std": "DC",
+          "votes": 12721505,
+          "share": 36.4943
+        },
+        {
+          "party_raw": "PCI",
+          "party_std": "PCI",
+          "votes": 10306698,
+          "share": 29.5669
+        },
+        {
+          "party_raw": "PSI",
+          "party_std": "PSI",
+          "votes": 3845756,
+          "share": 11.0324
+        },
+        {
+          "party_raw": "MSI-DN",
+          "party_std": "Destra naz.",
+          "votes": 1903848,
+          "share": 5.4616
+        },
+        {
+          "party_raw": "PSDI",
+          "party_std": "PSDI",
+          "votes": 1501130,
+          "share": 4.3063
+        },
+        {
+          "party_raw": "P.RAD",
+          "party_std": "Radicali",
+          "votes": 1279028,
+          "share": 3.6692
+        },
+        {
+          "party_raw": "PLI",
+          "party_std": "PLI",
+          "votes": 1266274,
+          "share": 3.6326
+        },
+        {
+          "party_raw": "PRI",
+          "party_std": "PRI",
+          "votes": 892864,
+          "share": 2.5614
+        },
+        {
+          "party_raw": "PDUP",
+          "party_std": "PDUP / DemProl",
+          "votes": 398783,
+          "share": 1.144
+        },
+        {
+          "party_raw": "DEM.PROL",
+          "party_std": "PDUP / DemProl",
+          "votes": 246350,
+          "share": 0.7067
+        },
+        {
+          "party_raw": "PPST",
+          "party_std": "Autonomisti",
+          "votes": 195251,
+          "share": 0.5601
+        },
+        {
+          "party_raw": "UV",
+          "party_std": "UV",
+          "votes": 163375,
+          "share": 0.4687
+        },
+        {
+          "party_raw": "DN-CD",
+          "party_std": "DN",
+          "votes": 137988,
+          "share": 0.3958
+        }
+      ]
+    },
+    {
+      "election_key": "europee_1984",
+      "election_year": 1984,
+      "election_date": "1984-06-17",
+      "archive_filename": "europee-19840617.zip",
+      "archive_sha256": "235259c74c52e3d2da551089c17f21b96725461c2c765e77678b649550a71146",
+      "primary_member": "europee-19840617.txt",
+      "source_rows": 82361,
+      "positive_party_rows": 78172,
+      "municipality_rows": 8088,
+      "result_rows": 78172,
+      "municipalities_with_geometry_id": 8078,
+      "municipalities_without_geometry_id": 10,
+      "national_valid_list_votes": 34910868,
+      "national_winner_raw": "PCI",
+      "national_winner_std": "PCI",
+      "national_winner_votes": 11625178,
+      "national_winner_share": 33.2996,
+      "resolution_methods": {
+        "lineage_master_name_province": 74411,
+        "lineage_master_name_region": 7755,
+        "lineage_master_unique_name": 91,
+        "unresolved": 104
+      },
+      "top_parties": [
+        {
+          "party_raw": "PCI",
+          "party_std": "PCI",
+          "votes": 11625178,
+          "share": 33.2996
+        },
+        {
+          "party_raw": "DC",
+          "party_std": "DC",
+          "votes": 11533514,
+          "share": 33.037
+        },
+        {
+          "party_raw": "PSI",
+          "party_std": "PSI",
+          "votes": 3909281,
+          "share": 11.1979
+        },
+        {
+          "party_raw": "MSI-DN",
+          "party_std": "Destra naz.",
+          "votes": 2266083,
+          "share": 6.4911
+        },
+        {
+          "party_raw": "PLI-PRI",
+          "party_std": "PLI",
+          "votes": 2131937,
+          "share": 6.1068
+        },
+        {
+          "party_raw": "PSDI",
+          "party_std": "PSDI",
+          "votes": 1207981,
+          "share": 3.4602
+        },
+        {
+          "party_raw": "P.RAD",
+          "party_std": "Radicali",
+          "votes": 1193336,
+          "share": 3.4182
+        },
+        {
+          "party_raw": "DEM.PROL",
+          "party_std": "PDUP / DemProl",
+          "votes": 495282,
+          "share": 1.4187
+        },
+        {
+          "party_raw": "PPST",
+          "party_std": "Autonomisti",
+          "votes": 197176,
+          "share": 0.5648
+        },
+        {
+          "party_raw": "UV-PS.D'AZ.",
+          "party_std": "UV - PSd'Az",
+          "votes": 190193,
+          "share": 0.5448
+        },
+        {
+          "party_raw": "LIGA VENETA",
+          "party_std": "Liga Veneta",
+          "votes": 160907,
+          "share": 0.4609
+        }
+      ]
+    },
+    {
+      "election_key": "europee_1989",
+      "election_year": 1989,
+      "election_date": "1989-06-18",
+      "archive_filename": "europee-19890618.zip",
+      "archive_sha256": "1e0f66da6316c16bc4936923dc547d8f88930cfaf166e6fcf3627326df5fd39a",
+      "primary_member": "europee-19890618.txt",
+      "source_rows": 101657,
+      "positive_party_rows": 97035,
+      "municipality_rows": 8093,
+      "result_rows": 97035,
+      "municipalities_with_geometry_id": 8085,
+      "municipalities_without_geometry_id": 8,
+      "national_valid_list_votes": 34626979,
+      "national_winner_raw": "DC",
+      "national_winner_std": "DC",
+      "national_winner_votes": 11411642,
+      "national_winner_share": 32.9559,
+      "resolution_methods": {
+        "lineage_master_name_province": 91792,
+        "lineage_master_name_region": 9655,
+        "lineage_master_unique_name": 109,
+        "unresolved": 101
+      },
+      "top_parties": [
+        {
+          "party_raw": "DC",
+          "party_std": "DC",
+          "votes": 11411642,
+          "share": 32.9559
+        },
+        {
+          "party_raw": "PCI",
+          "party_std": "PCI",
+          "votes": 9552857,
+          "share": 27.5879
+        },
+        {
+          "party_raw": "PSI",
+          "party_std": "PSI",
+          "votes": 5116143,
+          "share": 14.775
+        },
+        {
+          "party_raw": "MSI-DN",
+          "party_std": "Destra naz.",
+          "votes": 1915691,
+          "share": 5.5324
+        },
+        {
+          "party_raw": "PLI-PRI-FED",
+          "party_std": "PLI",
+          "votes": 1528284,
+          "share": 4.4136
+        },
+        {
+          "party_raw": "FED.LISTE VERDI",
+          "party_std": "Verdi",
+          "votes": 1307015,
+          "share": 3.7746
+        },
+        {
+          "party_raw": "PSDI",
+          "party_std": "PSDI",
+          "votes": 932873,
+          "share": 2.6941
+        },
+        {
+          "party_raw": "VERDI ARCOBALENO",
+          "party_std": "Verdi Arcobaleno",
+          "votes": 821737,
+          "share": 2.3731
+        },
+        {
+          "party_raw": "LEGA LOMBARDA-A.NORD",
+          "party_std": "Lega",
+          "votes": 634865,
+          "share": 1.8334
+        },
+        {
+          "party_raw": "DEM.PROL",
+          "party_std": "PDUP / DemProl",
+          "votes": 440464,
+          "share": 1.272
+        },
+        {
+          "party_raw": "L.ANTIPROIB.DROGA",
+          "party_std": "Lista Antiproibizionista",
+          "votes": 426625,
+          "share": 1.2321
+        },
+        {
+          "party_raw": "FEDERALISMO",
+          "party_std": "Federalismo",
+          "votes": 205537,
+          "share": 0.5936
+        },
+        {
+          "party_raw": "PPST",
+          "party_std": "Autonomisti",
+          "votes": 171102,
+          "share": 0.4941
+        },
+        {
+          "party_raw": "PARTITO PENSIONATI",
+          "party_std": "Pensionati",
+          "votes": 162144,
+          "share": 0.4683
+        }
+      ]
+    },
+    {
+      "election_key": "europee_1994",
+      "election_year": 1994,
+      "election_date": "1994-06-12",
+      "archive_filename": "europee-19940612.zip",
+      "archive_sha256": "0a41d519fcb3e1fa22f4775e84701ff652e14c3d65297f957414dd51b24f8fd9",
+      "primary_member": "europee-19940612.txt",
+      "source_rows": 135741,
+      "positive_party_rows": 127789,
+      "municipality_rows": 8104,
+      "result_rows": 127789,
+      "municipalities_with_geometry_id": 8094,
+      "municipalities_without_geometry_id": 10,
+      "national_valid_list_votes": 32922070,
+      "national_winner_raw": "FORZA ITALIA",
+      "national_winner_std": "Forza Italia",
+      "national_winner_votes": 10077899,
+      "national_winner_share": 30.6114,
+      "resolution_methods": {
+        "lineage_master_name_province": 122423,
+        "lineage_master_name_region": 12991,
+        "lineage_master_unique_name": 161,
+        "unresolved": 166
+      },
+      "top_parties": [
+        {
+          "party_raw": "FORZA ITALIA",
+          "party_std": "Forza Italia",
+          "votes": 10077899,
+          "share": 30.6114
+        },
+        {
+          "party_raw": "PDS",
+          "party_std": "PDS / DS",
+          "votes": 6286568,
+          "share": 19.0953
+        },
+        {
+          "party_raw": "ALLEANZA NAZIONALE",
+          "party_std": "AN",
+          "votes": 4125668,
+          "share": 12.5316
+        },
+        {
+          "party_raw": "P.POPOLARE ITALIANO",
+          "party_std": "PPI",
+          "votes": 3288628,
+          "share": 9.9891
+        },
+        {
+          "party_raw": "LEGA NORD",
+          "party_std": "Lega",
+          "votes": 2171924,
+          "share": 6.5972
+        },
+        {
+          "party_raw": "RIFONDAZIONE COMUNISTA",
+          "party_std": "Rifondazione Comunista",
+          "votes": 1994764,
+          "share": 6.059
+        },
+        {
+          "party_raw": "PATTO SEGNI",
+          "party_std": "Patto Segni",
+          "votes": 1073383,
+          "share": 3.2604
+        },
+        {
+          "party_raw": "FED.DEI VERDI",
+          "party_std": "Verdi",
+          "votes": 1047396,
+          "share": 3.1814
+        },
+        {
+          "party_raw": "PANNELLA-RIFORMATORI",
+          "party_std": "Radicali",
+          "votes": 703642,
+          "share": 2.1373
+        },
+        {
+          "party_raw": "PSI-AD",
+          "party_std": "PSI - AD",
+          "votes": 600090,
+          "share": 1.8228
+        },
+        {
+          "party_raw": "LA RETE-MOV.DEM.",
+          "party_std": "La Rete",
+          "votes": 365975,
+          "share": 1.1116
+        },
+        {
+          "party_raw": "PRI",
+          "party_std": "PRI",
+          "votes": 241495,
+          "share": 0.7335
+        },
+        {
+          "party_raw": "PSDI",
+          "party_std": "PSDI",
+          "votes": 222890,
+          "share": 0.677
+        },
+        {
+          "party_raw": "LEGA D'AZIONE MERID.",
+          "party_std": "Lega d'Azione Meridionale",
+          "votes": 221466,
+          "share": 0.6727
+        },
+        {
+          "party_raw": "SVP",
+          "party_std": "Autonomisti",
+          "votes": 197969,
+          "share": 0.6013
+        }
+      ]
+    },
+    {
+      "election_key": "europee_1999",
+      "election_year": 1999,
+      "election_date": "1999-06-13",
+      "archive_filename": "europee-19990613.zip",
+      "archive_sha256": "1850ef3edc072374ad6a8b9a7ee328a5a8e67e3ce7a23c297c48023d21560965",
+      "primary_member": "europee-19990613.txt",
+      "source_rows": 172829,
+      "positive_party_rows": 160274,
+      "municipality_rows": 8099,
+      "result_rows": 160274,
+      "municipalities_with_geometry_id": 8087,
+      "municipalities_without_geometry_id": 12,
+      "national_valid_list_votes": 30958240,
+      "national_winner_raw": "FORZA ITALIA",
+      "national_winner_std": "Forza Italia",
+      "national_winner_votes": 7799067,
+      "national_winner_share": 25.1922,
+      "resolution_methods": {
+        "lineage_master_name_province": 162502,
+        "lineage_master_name_region": 7482,
+        "lineage_master_unique_name": 286,
+        "official_1999_missing_p_repaired": 2304,
+        "unresolved": 255
+      },
+      "top_parties": [
+        {
+          "party_raw": "FORZA ITALIA",
+          "party_std": "Forza Italia",
+          "votes": 7799067,
+          "share": 25.1922
+        },
+        {
+          "party_raw": "DEMOCRATICI SINISTRA",
+          "party_std": "PDS / DS",
+          "votes": 5381003,
+          "share": 17.3815
+        },
+        {
+          "party_raw": "AN - P.SEGNI",
+          "party_std": "AN - Patto Segni",
+          "votes": 3194818,
+          "share": 10.3198
+        },
+        {
+          "party_raw": "LISTA EMMA BONINO",
+          "party_std": "Radicali",
+          "votes": 2621611,
+          "share": 8.4682
+        },
+        {
+          "party_raw": "I DEMOCRATICI",
+          "party_std": "I Democratici",
+          "votes": 2381045,
+          "share": 7.6912
+        },
+        {
+          "party_raw": "LEGA NORD",
+          "party_std": "Lega",
+          "votes": 1393513,
+          "share": 4.5013
+        },
+        {
+          "party_raw": "RIFONDAZIONE COMUNISTA",
+          "party_std": "Rifondazione Comunista",
+          "votes": 1322051,
+          "share": 4.2704
+        },
+        {
+          "party_raw": "PPI (POP)",
+          "party_std": "PPI",
+          "votes": 1316601,
+          "share": 4.2528
+        },
+        {
+          "party_raw": "CENTRO CRIST.DEM.",
+          "party_std": "CCD",
+          "votes": 803831,
+          "share": 2.5965
+        },
+        {
+          "party_raw": "SDI",
+          "party_std": "SDI",
+          "votes": 664091,
+          "share": 2.1451
+        },
+        {
+          "party_raw": "CDU",
+          "party_std": "UDC",
+          "votes": 663957,
+          "share": 2.1447
+        },
+        {
+          "party_raw": "COMUNISTI ITALIANI",
+          "party_std": "Comunisti Italiani",
+          "votes": 615984,
+          "share": 1.9897
+        },
+        {
+          "party_raw": "FED.DEI VERDI",
+          "party_std": "Verdi",
+          "votes": 540744,
+          "share": 1.7467
+        },
+        {
+          "party_raw": "U.D.EUR",
+          "party_std": "UDEUR",
+          "votes": 496889,
+          "share": 1.605
+        },
+        {
+          "party_raw": "MOV.SOC.TRICOLORE",
+          "party_std": "Destra naz.",
+          "votes": 492002,
+          "share": 1.5892
+        }
+      ]
+    },
+    {
+      "election_key": "europee_2004",
+      "election_year": 2004,
+      "election_date": "2004-06-12",
+      "archive_filename": "europee-20040612.zip",
+      "archive_sha256": "aee730b366d3b0232d59ddd1f784d257c5f03bda930c72212b7b5adf3b30d29c",
+      "primary_member": "europee-20040612.txt",
+      "source_rows": 180760,
+      "positive_party_rows": 166324,
+      "municipality_rows": 8100,
+      "result_rows": 166324,
+      "municipalities_with_geometry_id": 8088,
+      "municipalities_without_geometry_id": 12,
+      "national_valid_list_votes": 32472396,
+      "national_winner_raw": "UNITI NELL'ULIVO",
+      "national_winner_std": "L'Ulivo",
+      "national_winner_votes": 10095771,
+      "national_winner_share": 31.0903,
+      "resolution_methods": {
+        "lineage_master_name_province": 172487,
+        "lineage_master_name_region": 7797,
+        "lineage_master_unique_name": 211,
+        "unresolved": 265
+      },
+      "top_parties": [
+        {
+          "party_raw": "UNITI NELL'ULIVO",
+          "party_std": "L'Ulivo",
+          "votes": 10095771,
+          "share": 31.0903
+        },
+        {
+          "party_raw": "FORZA ITALIA",
+          "party_std": "Forza Italia",
+          "votes": 6802218,
+          "share": 20.9477
+        },
+        {
+          "party_raw": "ALLEANZA NAZIONALE",
+          "party_std": "AN",
+          "votes": 3753176,
+          "share": 11.5581
+        },
+        {
+          "party_raw": "RIFONDAZIONE COMUNISTA",
+          "party_std": "Rifondazione Comunista",
+          "votes": 1967081,
+          "share": 6.0577
+        },
+        {
+          "party_raw": "UNIONE DI CENTRO",
+          "party_std": "UDC",
+          "votes": 1914207,
+          "share": 5.8949
+        },
+        {
+          "party_raw": "LEGA NORD",
+          "party_std": "Lega",
+          "votes": 1614441,
+          "share": 4.9717
+        },
+        {
+          "party_raw": "FED.DEI VERDI",
+          "party_std": "Verdi",
+          "votes": 796774,
+          "share": 2.4537
+        },
+        {
+          "party_raw": "COMUNISTI ITALIANI",
+          "party_std": "Comunisti Italiani",
+          "votes": 781196,
+          "share": 2.4057
+        },
+        {
+          "party_raw": "LISTA EMMA BONINO",
+          "party_std": "Radicali",
+          "votes": 729458,
+          "share": 2.2464
+        },
+        {
+          "party_raw": "DIPIETRO OCCHETTO",
+          "party_std": "Di Pietro - Occhetto",
+          "votes": 691529,
+          "share": 2.1296
+        },
+        {
+          "party_raw": "SOCIALISTI UNITI",
+          "party_std": "Socialisti Uniti",
+          "votes": 660476,
+          "share": 2.034
+        },
+        {
+          "party_raw": "A.P. UDEUR",
+          "party_std": "UDEUR",
+          "votes": 419105,
+          "share": 1.2907
+        },
+        {
+          "party_raw": "ALTERNATIVA SOCIALE",
+          "party_std": "Destra naz.",
+          "votes": 396520,
+          "share": 1.2211
+        },
+        {
+          "party_raw": "PARTITO PENSIONATI",
+          "party_std": "Pensionati",
+          "votes": 370719,
+          "share": 1.1416
+        },
+        {
+          "party_raw": "FIAMMA TRICOLORE",
+          "party_std": "Destra naz.",
+          "votes": 234091,
+          "share": 0.7209
+        }
+      ]
+    },
+    {
+      "election_key": "europee_2009",
+      "election_year": 2009,
+      "election_date": "2009-06-07",
+      "archive_filename": "europee-20090607.zip",
+      "archive_sha256": "54c7befc2463d9a8e9e8e06b11a95883fac7a7015d4c4330782882efe8788df7",
+      "primary_member": "europee-20090607.txt",
+      "source_rows": 109577,
+      "positive_party_rows": 103129,
+      "municipality_rows": 8100,
+      "result_rows": 103129,
+      "municipalities_with_geometry_id": 8096,
+      "municipalities_without_geometry_id": 4,
+      "national_valid_list_votes": 30564083,
+      "national_winner_raw": "IL POPOLO DELLA LIBERTA'",
+      "national_winner_std": "PdL",
+      "national_winner_votes": 10778876,
+      "national_winner_share": 35.2665,
+      "resolution_methods": {
+        "lineage_master_name_province": 106483,
+        "lineage_master_name_region": 2925,
+        "lineage_master_unique_name": 118,
+        "unresolved": 51
+      },
+      "top_parties": [
+        {
+          "party_raw": "IL POPOLO DELLA LIBERTA'",
+          "party_std": "PdL",
+          "votes": 10778876,
+          "share": 35.2665
+        },
+        {
+          "party_raw": "PARTITO DEMOCRATICO",
+          "party_std": "PD",
+          "votes": 7989423,
+          "share": 26.1399
+        },
+        {
+          "party_raw": "LEGA NORD",
+          "party_std": "Lega",
+          "votes": 3124577,
+          "share": 10.223
+        },
+        {
+          "party_raw": "DI PIETRO ITALIA DEI VALORI",
+          "party_std": "IdV",
+          "votes": 2441533,
+          "share": 7.9882
+        },
+        {
+          "party_raw": "UNIONE DI CENTRO",
+          "party_std": "UDC",
+          "votes": 1993301,
+          "share": 6.5217
+        },
+        {
+          "party_raw": "RIFOND.COM. - SIN.EUROPEA - COM.ITALIANI",
+          "party_std": "PRC - PdCI",
+          "votes": 1035202,
+          "share": 3.387
+        },
+        {
+          "party_raw": "SINISTRA E LIBERTA'",
+          "party_std": "Sinistra e Liberta",
+          "votes": 952481,
+          "share": 3.1163
+        },
+        {
+          "party_raw": "LISTA MARCO PANNELLA - EMMA BONINO",
+          "party_std": "Radicali",
+          "votes": 740265,
+          "share": 2.422
+        },
+        {
+          "party_raw": "LA DESTRA-MPA- PENSIONATI -ALL.DI CENTRO",
+          "party_std": "La Destra - MpA",
+          "votes": 680727,
+          "share": 2.2272
+        },
+        {
+          "party_raw": "FIAMMA TRICOLORE",
+          "party_std": "Destra naz.",
+          "votes": 242900,
+          "share": 0.7947
+        },
+        {
+          "party_raw": "PARTITO COMUNISTA DEI LAVORATORI",
+          "party_std": "PC Lavoratori / Sin. Critica",
+          "votes": 165878,
+          "share": 0.5427
+        },
+        {
+          "party_raw": "FORZA NUOVA",
+          "party_std": "Destra naz.",
+          "votes": 145782,
+          "share": 0.477
+        },
+        {
+          "party_raw": "SVP",
+          "party_std": "Autonomisti",
+          "votes": 142482,
+          "share": 0.4662
+        },
+        {
+          "party_raw": "LIBERAL DEMOCRATICI - MAIE",
+          "party_std": "LIBERAL DEMOCRATICI - MAIE",
+          "votes": 70771,
+          "share": 0.2315
+        },
+        {
+          "party_raw": "VALLEE D'AOSTE",
+          "party_std": "VALLEE D'AOSTE",
+          "votes": 32855,
+          "share": 0.1075
+        }
+      ]
+    },
+    {
+      "election_key": "europee_2014",
+      "election_year": 2014,
+      "election_date": "2014-05-25",
+      "archive_filename": "europee-20140525.zip",
+      "archive_sha256": "a54aa5ae6f25af865162f494a45530d71580d5718f16aa62619703913388f974",
+      "primary_member": "europee-20140525.txt",
+      "source_rows": 90096,
+      "positive_party_rows": 85570,
+      "municipality_rows": 8057,
+      "result_rows": 85570,
+      "municipalities_with_geometry_id": 8054,
+      "municipalities_without_geometry_id": 3,
+      "national_valid_list_votes": 27371747,
+      "national_winner_raw": "PARTITO DEMOCRATICO",
+      "national_winner_std": "PD",
+      "national_winner_votes": 11172861,
+      "national_winner_share": 40.819,
+      "resolution_methods": {
+        "lineage_master_name_province": 87278,
+        "lineage_master_name_region": 2750,
+        "lineage_master_unique_name": 34,
+        "unresolved": 34
+      },
+      "top_parties": [
+        {
+          "party_raw": "PARTITO DEMOCRATICO",
+          "party_std": "PD",
+          "votes": 11172861,
+          "share": 40.819
+        },
+        {
+          "party_raw": "MOVIMENTO 5 STELLE BEPPEGRILLO.IT",
+          "party_std": "M5S",
+          "votes": 5792865,
+          "share": 21.1637
+        },
+        {
+          "party_raw": "FORZA ITALIA",
+          "party_std": "Forza Italia",
+          "votes": 4605331,
+          "share": 16.8251
+        },
+        {
+          "party_raw": "LEGA NORD-DIE FREIHEITLICHEN-BASTA EURO",
+          "party_std": "Lega",
+          "votes": 1686556,
+          "share": 6.1617
+        },
+        {
+          "party_raw": "NUOVO CENTRO DESTRA - UDC",
+          "party_std": "NCD - UDC",
+          "votes": 1199703,
+          "share": 4.383
+        },
+        {
+          "party_raw": "L'ALTRA EUROPA CON TSIPRAS",
+          "party_std": "L'Altra Europa con Tsipras",
+          "votes": 1103203,
+          "share": 4.0304
+        },
+        {
+          "party_raw": "FRATELLI D'ITALIA - ALLEANZA NAZIONALE",
+          "party_std": "AN",
+          "votes": 1004037,
+          "share": 3.6682
+        },
+        {
+          "party_raw": "VERDI EUROPEI-GREEN ITALIA",
+          "party_std": "Verdi Europei",
+          "votes": 245443,
+          "share": 0.8967
+        },
+        {
+          "party_raw": "SCELTA EUROPEA",
+          "party_std": "Scelta Europea",
+          "votes": 196157,
+          "share": 0.7166
+        },
+        {
+          "party_raw": "ITALIA DEI VALORI",
+          "party_std": "IdV",
+          "votes": 179693,
+          "share": 0.6565
+        },
+        {
+          "party_raw": "SVP",
+          "party_std": "Autonomisti",
+          "votes": 137448,
+          "share": 0.5022
+        },
+        {
+          "party_raw": "IO CAMBIO - MAIE",
+          "party_std": "IO CAMBIO - MAIE",
+          "votes": 48450,
+          "share": 0.177
+        }
+      ]
+    },
+    {
+      "election_key": "europee_2019",
+      "election_year": 2019,
+      "election_date": "2019-05-26",
+      "archive_filename": "europee-20190526.zip",
+      "archive_sha256": "81d21e26d5761ba81797a726316718ef82aa56894c0cdbd3ad236535148daa19",
+      "primary_member": "europee-20190526.txt",
+      "source_rows": 124515,
+      "positive_party_rows": 112272,
+      "municipality_rows": 7915,
+      "result_rows": 112272,
+      "municipalities_with_geometry_id": 7914,
+      "municipalities_without_geometry_id": 1,
+      "national_valid_list_votes": 26662962,
+      "national_winner_raw": "LEGA SALVINI PREMIER",
+      "national_winner_std": "Lega",
+      "national_winner_votes": 9153638,
+      "national_winner_share": 34.3309,
+      "resolution_methods": {
+        "lineage_master_name_province": 123015,
+        "lineage_master_name_region": 1455,
+        "lineage_master_unique_name": 30,
+        "unresolved": 15
+      },
+      "top_parties": [
+        {
+          "party_raw": "LEGA SALVINI PREMIER",
+          "party_std": "Lega",
+          "votes": 9153638,
+          "share": 34.3309
+        },
+        {
+          "party_raw": "PARTITO DEMOCRATICO",
+          "party_std": "PD",
+          "votes": 6050351,
+          "share": 22.692
+        },
+        {
+          "party_raw": "MOVIMENTO 5 STELLE",
+          "party_std": "M5S",
+          "votes": 4552527,
+          "share": 17.0743
+        },
+        {
+          "party_raw": "FORZA ITALIA",
+          "party_std": "Forza Italia",
+          "votes": 2344465,
+          "share": 8.793
+        },
+        {
+          "party_raw": "FRATELLI D'ITALIA",
+          "party_std": "FdI",
+          "votes": 1723232,
+          "share": 6.463
+        },
+        {
+          "party_raw": "+EUROPA - ITALIA IN COMUNE - PDE ITALIA",
+          "party_std": "+Europa",
+          "votes": 822764,
+          "share": 3.0858
+        },
+        {
+          "party_raw": "EUROPA VERDE",
+          "party_std": "Europa Verde",
+          "votes": 609678,
+          "share": 2.2866
+        },
+        {
+          "party_raw": "LA SINISTRA",
+          "party_std": "La Sinistra",
+          "votes": 465092,
+          "share": 1.7443
+        },
+        {
+          "party_raw": "PARTITO COMUNISTA",
+          "party_std": "PCI",
+          "votes": 234232,
+          "share": 0.8785
+        },
+        {
+          "party_raw": "PARTITO ANIMALISTA",
+          "party_std": "Partito Animalista",
+          "votes": 159344,
+          "share": 0.5976
+        },
+        {
+          "party_raw": "SVP",
+          "party_std": "Autonomisti",
+          "votes": 141353,
+          "share": 0.5301
+        },
+        {
+          "party_raw": "POPOLO DELLA FAMIGLIA - ALTERNATIVA POPOLARE",
+          "party_std": "Popolo della Famiglia",
+          "votes": 113875,
+          "share": 0.4271
+        },
+        {
+          "party_raw": "CASAPOUND ITALIA - DESTRE UNITE",
+          "party_std": "Destra naz.",
+          "votes": 88724,
+          "share": 0.3328
+        },
+        {
+          "party_raw": "POPOLARI PER L'ITALIA",
+          "party_std": "POPOLARI PER L'ITALIA",
+          "votes": 79951,
+          "share": 0.2999
+        },
+        {
+          "party_raw": "PARTITO PIRATA",
+          "party_std": "PARTITO PIRATA",
+          "votes": 60308,
+          "share": 0.2262
+        }
+      ]
+    },
+    {
+      "election_key": "europee_2024",
+      "election_year": 2024,
+      "election_date": "2024-06-09",
+      "archive_filename": "europee-20240609.zip",
+      "archive_sha256": "37d8d5ef583ff230144352f0f2b2d2da2913ed8869059a90ca29a8601fcd6854",
+      "primary_member": "EUROPEE_ITALIA_LivComune.csv",
+      "source_rows": 93984,
+      "positive_party_rows": 90109,
+      "municipality_rows": 7896,
+      "result_rows": 90109,
+      "municipalities_with_geometry_id": 7887,
+      "municipalities_without_geometry_id": 9,
+      "national_valid_list_votes": 23290624,
+      "national_winner_raw": "FRATELLI D'ITALIA",
+      "national_winner_std": "FdI",
+      "national_winner_votes": 6713364,
+      "national_winner_share": 28.8243,
+      "resolution_methods": {
+        "lineage_master_name_province": 92700,
+        "lineage_master_name_region": 1164,
+        "lineage_master_unique_name": 12,
+        "unresolved": 108
+      },
+      "top_parties": [
+        {
+          "party_raw": "FRATELLI D'ITALIA",
+          "party_std": "FdI",
+          "votes": 6713364,
+          "share": 28.8243
+        },
+        {
+          "party_raw": "PARTITO DEMOCRATICO",
+          "party_std": "PD",
+          "votes": 5609327,
+          "share": 24.0841
+        },
+        {
+          "party_raw": "MOVIMENTO 5 STELLE",
+          "party_std": "M5S",
+          "votes": 2326500,
+          "share": 9.989
+        },
+        {
+          "party_raw": "FORZA ITALIA - NOI MODERATI - PPE",
+          "party_std": "Forza Italia",
+          "votes": 2238962,
+          "share": 9.6131
+        },
+        {
+          "party_raw": "LEGA SALVINI PREMIER",
+          "party_std": "Lega",
+          "votes": 2096486,
+          "share": 9.0014
+        },
+        {
+          "party_raw": "ALLEANZA VERDI E SINISTRA",
+          "party_std": "AVS",
+          "votes": 1562606,
+          "share": 6.7092
+        },
+        {
+          "party_raw": "STATI UNITI D'EUROPA",
+          "party_std": "Stati Uniti d'Europa",
+          "votes": 875806,
+          "share": 3.7603
+        },
+        {
+          "party_raw": "AZIONE - SIAMO EUROPEI",
+          "party_std": "Azione",
+          "votes": 778628,
+          "share": 3.3431
+        },
+        {
+          "party_raw": "PACE TERRA DIGNITA'",
+          "party_std": "Pace Terra Dignita",
+          "votes": 513881,
+          "share": 2.2064
+        },
+        {
+          "party_raw": "LIBERTA'",
+          "party_std": "Liberta",
+          "votes": 284577,
+          "share": 1.2219
+        },
+        {
+          "party_raw": "SÜDTIROLER VOLKSPARTEI (SVP)",
+          "party_std": "SVP",
+          "votes": 120075,
+          "share": 0.5156
+        },
+        {
+          "party_raw": "ALTERNATIVA POPOLARE",
+          "party_std": "ALTERNATIVA POPOLARE",
+          "votes": 90631,
+          "share": 0.3891
+        },
+        {
+          "party_raw": "DEMOCRAZIA SOVRANA POPOLARE",
+          "party_std": "DEMOCRAZIA SOVRANA POPOLARE",
+          "votes": 36037,
+          "share": 0.1547
+        },
+        {
+          "party_raw": "PARTITO ANIMALISTA - ITALEXIT PER L'ITALIA",
+          "party_std": "Sovranisti",
+          "votes": 29326,
+          "share": 0.1259
+        },
+        {
+          "party_raw": "RASSEMBLEMENT VALDÔTAIN",
+          "party_std": "RASSEMBLEMENT VALDÔTAIN",
+          "votes": 14418,
+          "share": 0.0619
+        }
+      ]
+    }
+  ]
+}
