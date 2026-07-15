@@ -1,8 +1,8 @@
 {
-  "generated_by": "build_result_shards.py",
+  "generated_by": "refresh_release_manifest.py",
   "project": {
     "title": "Electio Italia",
-    "version": "0.23.0",
+    "version": "0.24.0",
     "ready_for_real_data": true,
     "notes": [
       "Vote shares are recomputed from votes whenever a plausible denominator is available.",
@@ -27,6 +27,63 @@
   },
   "bundle_root": ".",
   "file_entries": {
+    "archiveBundleGapReport": {
+      "path": "data/derived/archive_bundle_gap_report.json",
+      "kind": "json",
+      "size_bytes": 18091,
+      "sha256": "aa78f62582d45ddeb769b21ab113637076900de048df58314b6b7d19ddb1433a"
+    },
+    "codebook": {
+      "path": "data/derived/codebook.json",
+      "kind": "json",
+      "size_bytes": 19347,
+      "sha256": "33aeb3495cfdcc63afc577d23d5194a26e7bebb29b0001b8e053a4b396fc730f",
+      "dataset_count": 10
+    },
+    "customIndicators": {
+      "path": "data/derived/custom_indicators.csv",
+      "kind": "csv",
+      "size_bytes": 110,
+      "sha256": "69d5c837f9587e368dba01adea4e9bb63f255edf7e2c448a5f7c61d707404aab",
+      "columns": [
+        "indicator_key",
+        "indicator_label",
+        "municipality_id",
+        "election_key",
+        "election_year",
+        "value",
+        "source",
+        "notes",
+        "territorial_mode"
+      ],
+      "row_count": 0
+    },
+    "dataProducts": {
+      "path": "data/derived/data_products.json",
+      "kind": "json",
+      "size_bytes": 5158,
+      "sha256": "f19a0b76e80c71c180360bd0dc0bf77c0e445b7505fd2747b953a8b0939e1693",
+      "product_count": 5
+    },
+    "dataQualityReport": {
+      "path": "data/derived/data_quality_report.json",
+      "kind": "json",
+      "size_bytes": 9350,
+      "sha256": "f5e94be86d6d398e1c09e58843d7169647ee063eef6ac6761eb7f1848e8bf2d0"
+    },
+    "datasetContracts": {
+      "path": "data/derived/dataset_contracts.json",
+      "kind": "json",
+      "size_bytes": 5910,
+      "sha256": "9ac6a20405ab2360a794b2ac42c073f5a6ef1dda182319a7b4a33834de23fde6"
+    },
+    "datasetRegistry": {
+      "path": "data/derived/dataset_registry.json",
+      "kind": "json",
+      "size_bytes": 11346,
+      "sha256": "3f555edef2adc81f5512a1a10725f91534a8bcb1a0f3d279dc5b4bd4eb1cbf6d",
+      "dataset_count": 21
+    },
     "electionsMaster": {
       "path": "data/derived/elections_master.csv",
       "kind": "csv",
@@ -44,6 +101,37 @@
         "source_notes"
       ],
       "row_count": 20
+    },
+    "geometry": {
+      "path": "data/derived/geometries_web/municipalities_2021.topojson",
+      "kind": "topojson",
+      "size_bytes": 20986066,
+      "sha256": "ff4d56df9f4339b3783bf19e366389312df6ec814fd59dd1897936bd2195cca1",
+      "feature_count": 7904
+    },
+    "geometryFull": {
+      "path": "data/derived/geometries/municipalities_2021.geojson",
+      "kind": "geojson",
+      "size_bytes": 242685924,
+      "sha256": "60f2fa29c51ed430c390dcfaaa29ffe8e9dd3f056ceb917d42898772a5448c91"
+    },
+    "geometryGeojsonFallback": {
+      "path": "data/derived/geometries_web/municipalities_2021.geojson",
+      "kind": "geojson",
+      "size_bytes": 36730772,
+      "sha256": "7c5094156612c0bf641ce78b316999e88079a11180821cc4e210e05de20159ea"
+    },
+    "geometryPack": {
+      "path": "data/derived/geometry_pack_web.json",
+      "kind": "json",
+      "size_bytes": 982,
+      "sha256": "7b185e7939d738a8421f525d23b6426b4e97630f377e73e661593c61e0e12924"
+    },
+    "geometryPackFull": {
+      "path": "data/derived/geometry_pack_full.json",
+      "kind": "json",
+      "size_bytes": 226,
+      "sha256": "7593babafb263b6b25887235e2f420ed645a54d82a883ab0abb76910d9f6bf9a"
     },
     "municipalitiesMaster": {
       "path": "data/derived/municipalities_master.csv",
@@ -68,46 +156,71 @@
       ],
       "row_count": 7904
     },
-    "partiesMaster": {
-      "path": "data/derived/parties_master.csv",
+    "municipalityAliases": {
+      "path": "data/derived/municipality_aliases.csv",
       "kind": "csv",
-      "size_bytes": 78453,
-      "sha256": "8e223a9cea53d9298962990f26af5dd83cac84c84c09ce1463bb457b63ba6ac8",
+      "size_bytes": 866952,
+      "sha256": "cad1a04ddd9c4df0bf50cb92839f69738ba8c675bf4be014f6db95486ae4d0bc",
       "columns": [
-        "party_std",
-        "party_display_name",
-        "party_family",
-        "bloc",
-        "color",
-        "aliases",
+        "municipality_id",
+        "alias",
+        "alias_type",
         "valid_from",
         "valid_to",
-        "comparability_note"
-      ],
-      "row_count": 444
-    },
-    "territorialLineage": {
-      "path": "data/derived/territorial_lineage.csv",
-      "kind": "csv",
-      "size_bytes": 1729659,
-      "sha256": "d16a7fc0fb5b8c544f28497b0850d244d783469a8fd34d62559b45d1b08eb181",
-      "columns": [
-        "municipality_id_stable",
-        "name_current",
-        "name_historical",
-        "valid_from",
-        "valid_to",
-        "parent_ids",
-        "child_ids",
-        "event_type",
-        "merge_event",
-        "split_event",
-        "rename_event",
-        "province_history",
-        "geometry_strategy",
         "notes"
       ],
-      "row_count": 7904
+      "row_count": 12637
+    },
+    "municipalityProfileIndex": {
+      "path": "data/derived/municipality_profiles/index.json",
+      "kind": "json",
+      "size_bytes": 185708,
+      "sha256": "6dc429175ed2df1bc04f7f95485a74d8d0b4a24812c9e782f8d57376ad20902f"
+    },
+    "municipalityRegistryByElection": {
+      "path": "data/reference/municipality_registry_by_election.csv.gz",
+      "kind": "gz",
+      "size_bytes": 2085800,
+      "sha256": "527066eb2a789c913a0ce774f72949d1b51d97bd81cfb1235e024ac3547e8ac5"
+    },
+    "municipalityRegistryHistorical": {
+      "path": "data/reference/municipality_registry_historical_anpr.csv.gz",
+      "kind": "gz",
+      "size_bytes": 155600,
+      "sha256": "40d1356f2ccd2c8fe28fa72cd1aa4be1a697411c0b779c642557c3b8913989a9"
+    },
+    "municipalityResultsLong": {
+      "path": "data/derived/municipality_results_long.csv",
+      "kind": "csv",
+      "size_bytes": 545123130,
+      "sha256": "515ee5e22a646116bb7aedf07a0b7f0a02208eddea755b48fd40e9d5dc4e4cf7",
+      "columns": [
+        "election_key",
+        "election_year",
+        "election_date",
+        "municipality_id",
+        "municipality_name",
+        "province",
+        "region",
+        "party_raw",
+        "party_std",
+        "party_family",
+        "bloc",
+        "votes",
+        "vote_share",
+        "rank",
+        "territorial_mode",
+        "territorial_status",
+        "geometry_id",
+        "comparability_note"
+      ],
+      "row_count": 1953196
+    },
+    "municipalityResultsLongByElectionIndex": {
+      "path": "data/derived/municipality_results_long_by_election.json",
+      "kind": "json",
+      "size_bytes": 4151,
+      "sha256": "624bcf216e120fa3c00fb90b9576330e10af303f86c2f771feb2e88d272f1349"
     },
     "municipalitySummary": {
       "path": "data/derived/municipality_summary.csv",
@@ -141,344 +254,11 @@
       ],
       "row_count": 158485
     },
-    "municipalityResultsLong": {
-      "path": "data/derived/municipality_results_long.csv",
-      "kind": "csv",
-      "size_bytes": 545123130,
-      "sha256": "515ee5e22a646116bb7aedf07a0b7f0a02208eddea755b48fd40e9d5dc4e4cf7",
-      "columns": [
-        "election_key",
-        "election_year",
-        "election_date",
-        "municipality_id",
-        "municipality_name",
-        "province",
-        "region",
-        "party_raw",
-        "party_std",
-        "party_family",
-        "bloc",
-        "votes",
-        "vote_share",
-        "rank",
-        "territorial_mode",
-        "territorial_status",
-        "geometry_id",
-        "comparability_note"
-      ],
-      "row_count": 1953196
-    },
-    "municipalityResultsLongByElectionIndex": {
-      "path": "data/derived/municipality_results_long_by_election.json",
-      "kind": "json",
-      "size_bytes": 4151,
-      "sha256": "e2c7cdfa235e665c6ddea8175bad10c6f8b1965cd2da38ba3f619eb6a0f954b3"
-    },
-    "municipalityAliases": {
-      "path": "data/derived/municipality_aliases.csv",
-      "kind": "csv",
-      "size_bytes": 866952,
-      "sha256": "cad1a04ddd9c4df0bf50cb92839f69738ba8c675bf4be014f6db95486ae4d0bc",
-      "columns": [
-        "municipality_id",
-        "alias",
-        "alias_type",
-        "valid_from",
-        "valid_to",
-        "notes"
-      ],
-      "row_count": 12637
-    },
-    "geometry": {
-      "path": "data/derived/geometries_web/municipalities_2021.topojson",
-      "kind": "topojson",
-      "size_bytes": 20986066,
-      "sha256": "ff4d56df9f4339b3783bf19e366389312df6ec814fd59dd1897936bd2195cca1",
-      "feature_count": 7904
-    },
-    "geometryGeojsonFallback": {
-      "path": "data/derived/geometries_web/municipalities_2021.geojson",
-      "kind": "geojson",
-      "size_bytes": 36730772,
-      "sha256": "7c5094156612c0bf641ce78b316999e88079a11180821cc4e210e05de20159ea",
-      "feature_count": 7904
-    },
-    "dataQualityReport": {
-      "path": "data/derived/data_quality_report.json",
-      "kind": "json",
-      "size_bytes": 9350,
-      "sha256": "f5e94be86d6d398e1c09e58843d7169647ee063eef6ac6761eb7f1848e8bf2d0"
-    },
-    "customIndicators": {
-      "path": "data/derived/custom_indicators.csv",
-      "kind": "csv",
-      "size_bytes": 110,
-      "sha256": "69d5c837f9587e368dba01adea4e9bb63f255edf7e2c448a5f7c61d707404aab",
-      "columns": [
-        "indicator_key",
-        "indicator_label",
-        "municipality_id",
-        "election_key",
-        "election_year",
-        "value",
-        "source",
-        "notes",
-        "territorial_mode"
-      ],
-      "row_count": 0
-    },
-    "geometryPack": {
-      "path": "data/derived/geometry_pack_web.json",
-      "kind": "json",
-      "size_bytes": 982,
-      "sha256": "7b185e7939d738a8421f525d23b6426b4e97630f377e73e661593c61e0e12924"
-    },
-    "provinceGeometry": {
-      "path": "data/derived/geometries_web/provinces_2021.topojson",
-      "kind": "topojson",
-      "size_bytes": 3461428,
-      "sha256": "2d308630de82156e785b34d7762928cb5c4fb47e0184dd153cf5856c28ca7d93",
-      "feature_count": 107
-    },
-    "provinceGeometryGeojsonFallback": {
-      "path": "data/derived/geometries_web/provinces_2021.geojson",
-      "kind": "geojson",
-      "size_bytes": 5535310,
-      "sha256": "7bd9df64791f6e373da970405b741d3b7a9a6e00f52857917c3527473f4993f2",
-      "feature_count": 107
-    },
-    "datasetRegistry": {
-      "path": "data/derived/dataset_registry.json",
-      "kind": "json",
-      "size_bytes": 11346,
-      "sha256": "3f555edef2adc81f5512a1a10725f91534a8bcb1a0f3d279dc5b4bd4eb1cbf6d",
-      "dataset_count": 21
-    },
-    "codebook": {
-      "path": "data/derived/codebook.json",
-      "kind": "json",
-      "size_bytes": 17430,
-      "sha256": "22661d693cae225ba7b4f417db48943f74c7d6753b30ff2f8819b8dc6e65f379",
-      "dataset_count": 8
-    },
-    "usageNotes": {
-      "path": "data/derived/usage_notes.json",
-      "kind": "json",
-      "size_bytes": 4642,
-      "sha256": "ee4ac0d9b6a5ea799bd6e47540134d9333ee83d0c0585ac1194d50462aedb4a3"
-    },
-    "updateLog": {
-      "path": "data/derived/update_log.json",
-      "kind": "json",
-      "size_bytes": 18367,
-      "sha256": "bced32a35fba193e2d241d0b02208f6b2b27147d82d1fef58c2311e8fdc5310f",
-      "entry_count": 21
-    },
-    "dataProducts": {
-      "path": "data/derived/data_products.json",
-      "kind": "json",
-      "size_bytes": 5158,
-      "sha256": "f19a0b76e80c71c180360bd0dc0bf77c0e445b7505fd2747b953a8b0939e1693",
-      "product_count": 5
-    },
-    "datasetContracts": {
-      "path": "data/derived/dataset_contracts.json",
-      "kind": "json",
-      "size_bytes": 5910,
-      "sha256": "9ac6a20405ab2360a794b2ac42c073f5a6ef1dda182319a7b4a33834de23fde6"
-    },
-    "provenance": {
-      "path": "data/derived/provenance.json",
-      "kind": "json",
-      "size_bytes": 22085,
-      "sha256": "f2263f87091709bd5d31d17b11801c59b54beb8556bb42d547076965057c9faf",
-      "entry_count": 30
-    },
-    "researchRecipes": {
-      "path": "data/derived/research_recipes.json",
-      "kind": "json",
-      "size_bytes": 1652,
-      "sha256": "e93761f9c199bb0716a184819e8ce476da4bd0b40a669c9cda3da92c4f5d1e98"
-    },
-    "siteGuides": {
-      "path": "data/derived/site_guides.json",
-      "kind": "json",
-      "size_bytes": 5033,
-      "sha256": "50a22cadfb3552c5a77eecbd1a194a8d71f977e59784b5a8ace502067b380972"
-    },
-    "archiveBundleGapReport": {
-      "path": "data/derived/archive_bundle_gap_report.json",
-      "kind": "json",
-      "size_bytes": 18091,
-      "sha256": "aa78f62582d45ddeb769b21ab113637076900de048df58314b6b7d19ddb1433a"
-    },
-    "geometryPackFull": {
-      "path": "data/derived/geometry_pack_full.json",
-      "kind": "json",
-      "size_bytes": 226,
-      "sha256": "7593babafb263b6b25887235e2f420ed645a54d82a883ab0abb76910d9f6bf9a"
-    },
-    "geometryFull": {
-      "path": "data/derived/geometries/municipalities_2021.geojson",
-      "kind": "geojson",
-      "size_bytes": 242685924,
-      "sha256": "60f2fa29c51ed430c390dcfaaa29ffe8e9dd3f056ceb917d42898772a5448c91",
-      "feature_count": 7904
-    },
-    "provinceGeometryFull": {
-      "path": "data/derived/geometries/provinces_2021.geojson",
-      "kind": "geojson",
-      "size_bytes": 47202067,
-      "sha256": "2488e26c6ef0d0c683824301316977a606e97761e4a690cc4228bf5320f5d64b",
-      "feature_count": 107
-    },
-    "webGeometryReport": {
-      "path": "data/derived/web_geometry_report.json",
-      "kind": "json",
-      "size_bytes": 1156,
-      "sha256": "cbadf09d3d488b6a7be15e6a3bad644bbefd06744197d442b75de4b6be441a1b"
-    },
-    "webCompressionReport": {
-      "path": "data/derived/web_compression_report.json",
-      "kind": "json",
-      "size_bytes": 960,
-      "sha256": "4cb442edd949748e730e35d5d8b3b63e679685305c9fe2393789c08fd2e9e2de"
-    },
-    "productCatalog": {
-      "path": "data/products/product_catalog.json",
-      "kind": "json",
-      "size_bytes": 6421,
-      "sha256": "9cfd135d2e4d619076b077653f1caa3def56c71619d817e25a0408f0ae596c9d",
-      "product_count": 5
-    },
     "municipalitySummaryByElectionIndex": {
       "path": "data/derived/municipality_summary_by_election.json",
       "kind": "json",
       "size_bytes": 4112,
-      "sha256": "8cbab37fa7cde1be5f0bc2d57288e1b8b459f61fd2bcc777ba7fd0ab06a6ac51"
-    },
-    "municipalityProfileIndex": {
-      "path": "data/derived/municipality_profiles/index.json",
-      "kind": "json",
-      "size_bytes": 185708,
-      "sha256": "6dc429175ed2df1bc04f7f95485a74d8d0b4a24812c9e782f8d57376ad20902f"
-    },
-    "territorialCrosswalk": {
-      "path": "data/derived/municipality_election_crosswalk.csv.gz",
-      "kind": "gz",
-      "size_bytes": 3239310,
-      "sha256": "8c16af43ef1067e569c8d16e115540d01f766e16cd12ce8111c141ed8733d90d",
-      "columns": [
-        "election_key",
-        "election_date",
-        "source_municipality_id",
-        "source_name",
-        "source_province",
-        "source_region",
-        "historical_istat_code",
-        "target_geometry_id",
-        "target_name",
-        "target_province",
-        "target_region",
-        "resolution_method",
-        "confidence",
-        "status",
-        "lineage_path"
-      ],
-      "row_count": 158485
-    },
-    "territorialHistoryReport": {
-      "path": "data/derived/territorial_history_report.json",
-      "kind": "json",
-      "size_bytes": 85323,
-      "sha256": "4351168453c36f8b12bd2eff6b6505c94876bdc8f3915b4f1a06abe20a98d713"
-    },
-    "territorialSources": {
-      "path": "data/reference/territorial_sources.json",
-      "kind": "json",
-      "size_bytes": 1327,
-      "sha256": "b4c6ebf8d7f42c489f38f7df199f6972d33c3b5b94d10529dc887b77c54f9481"
-    },
-    "municipalityRegistryByElection": {
-      "path": "data/reference/municipality_registry_by_election.csv.gz",
-      "kind": "gz",
-      "size_bytes": 2085800,
-      "sha256": "527066eb2a789c913a0ce774f72949d1b51d97bd81cfb1235e024ac3547e8ac5",
-      "columns": [
-        "election_key",
-        "election_date",
-        "istat_code",
-        "name",
-        "province",
-        "province_sigla",
-        "region",
-        "cadastral_code",
-        "source"
-      ],
-      "row_count": 160079
-    },
-    "municipalityRegistryHistorical": {
-      "path": "data/reference/municipality_registry_historical_anpr.csv.gz",
-      "kind": "gz",
-      "size_bytes": 155600,
-      "sha256": "40d1356f2ccd2c8fe28fa72cd1aa4be1a697411c0b779c642557c3b8913989a9",
-      "columns": [
-        "valid_from",
-        "valid_to",
-        "istat_code",
-        "cadastral_code",
-        "name",
-        "alternate_name",
-        "province_sigla",
-        "status",
-        "source"
-      ],
-      "row_count": 11553
-    },
-    "territorialEvents": {
-      "path": "data/reference/situas_municipality_events_1861_2021.csv.gz",
-      "kind": "gz",
-      "size_bytes": 332846,
-      "sha256": "14a4d295ff25eeefc990ccb81d6ca965ba70cdafe1c2cff414d82ab4683e3510",
-      "columns": [
-        "report_id",
-        "event_date",
-        "event_code",
-        "event_label",
-        "source_code",
-        "source_name",
-        "source_province",
-        "related_code",
-        "related_name",
-        "related_province",
-        "legal_basis",
-        "source_url"
-      ],
-      "row_count": 20921
-    },
-    "partyTaxonomy": {
-      "path": "data/reference/party_taxonomy_overrides.csv",
-      "kind": "csv",
-      "size_bytes": 5610,
-      "sha256": "4ceb6aaa90c6756b6b00f56b6ada08e737b6b559b817805b460b9caf38765aad",
-      "columns": [
-        "election_key",
-        "party_raw",
-        "party_std",
-        "party_display_name",
-        "party_family",
-        "bloc",
-        "color",
-        "classification_status",
-        "notes"
-      ],
-      "row_count": 34
-    },
-    "partyTaxonomyAudit": {
-      "path": "data/derived/party_taxonomy_audit.json",
-      "kind": "json",
-      "size_bytes": 39842,
-      "sha256": "0802b400800eb3963879d2b739bf5cc86ef7f5d1a341ce388883bf8668f98592"
+      "sha256": "ed828374b3f067e019e74afe65cd04fd2e8785e8062564e0449748bebc278d4c"
     },
     "nationalElectionChecks": {
       "path": "data/reference/national_election_checks.csv",
@@ -494,39 +274,199 @@
       ],
       "row_count": 20
     },
+    "partiesMaster": {
+      "path": "data/derived/parties_master.csv",
+      "kind": "csv",
+      "size_bytes": 78943,
+      "sha256": "2638717205fad4608e521704360aa2f9294e96fb536d165199c0e70763625dff",
+      "columns": [
+        "party_std",
+        "party_display_name",
+        "party_family",
+        "bloc",
+        "color",
+        "aliases",
+        "valid_from",
+        "valid_to",
+        "comparability_note"
+      ],
+      "row_count": 444
+    },
+    "partyTaxonomy": {
+      "path": "data/reference/party_taxonomy_overrides.csv",
+      "kind": "csv",
+      "size_bytes": 12158,
+      "sha256": "545fd5485de928cefcf5b55ada1e1086f8ba19086be7a0552ace5fcadc1f7306",
+      "columns": [
+        "election_key",
+        "party_raw",
+        "party_std",
+        "party_display_name",
+        "party_family",
+        "bloc",
+        "color",
+        "classification_status",
+        "notes"
+      ],
+      "row_count": 78
+    },
+    "partyTaxonomyAudit": {
+      "path": "data/derived/party_taxonomy_audit.json",
+      "kind": "json",
+      "size_bytes": 89663,
+      "sha256": "7e476ed1554f879537ceddff8fbb2f7ce3110d6e9027af6e58b93340436949f0"
+    },
+    "productCatalog": {
+      "path": "data/products/product_catalog.json",
+      "kind": "json",
+      "size_bytes": 6421,
+      "sha256": "55b2dd4afcd5dc12d445e5286a37a1885b962c80907cf95174b641100c85bb52",
+      "product_count": 5
+    },
+    "provenance": {
+      "path": "data/derived/provenance.json",
+      "kind": "json",
+      "size_bytes": 23509,
+      "sha256": "39854b4603f46d32b0b42168720fe18c5f4392765236eadcb601dbdb49a4d339",
+      "entry_count": 32
+    },
+    "provinceGeometry": {
+      "path": "data/derived/geometries_web/provinces_2021.topojson",
+      "kind": "topojson",
+      "size_bytes": 3461428,
+      "sha256": "2d308630de82156e785b34d7762928cb5c4fb47e0184dd153cf5856c28ca7d93",
+      "feature_count": 107
+    },
+    "provinceGeometryFull": {
+      "path": "data/derived/geometries/provinces_2021.geojson",
+      "kind": "geojson",
+      "size_bytes": 47202067,
+      "sha256": "2488e26c6ef0d0c683824301316977a606e97761e4a690cc4228bf5320f5d64b"
+    },
+    "provinceGeometryGeojsonFallback": {
+      "path": "data/derived/geometries_web/provinces_2021.geojson",
+      "kind": "geojson",
+      "size_bytes": 5535310,
+      "sha256": "7bd9df64791f6e373da970405b741d3b7a9a6e00f52857917c3527473f4993f2",
+      "feature_count": 107
+    },
+    "researchRecipes": {
+      "path": "data/derived/research_recipes.json",
+      "kind": "json",
+      "size_bytes": 1652,
+      "sha256": "e93761f9c199bb0716a184819e8ce476da4bd0b40a669c9cda3da92c4f5d1e98"
+    },
+    "siteGuides": {
+      "path": "data/derived/site_guides.json",
+      "kind": "json",
+      "size_bytes": 5033,
+      "sha256": "50a22cadfb3552c5a77eecbd1a194a8d71f977e59784b5a8ace502067b380972"
+    },
+    "territorialCrosswalk": {
+      "path": "data/derived/municipality_election_crosswalk.csv.gz",
+      "kind": "gz",
+      "size_bytes": 3239310,
+      "sha256": "8c16af43ef1067e569c8d16e115540d01f766e16cd12ce8111c141ed8733d90d"
+    },
+    "territorialEvents": {
+      "path": "data/reference/situas_municipality_events_1861_2021.csv.gz",
+      "kind": "gz",
+      "size_bytes": 332846,
+      "sha256": "14a4d295ff25eeefc990ccb81d6ca965ba70cdafe1c2cff414d82ab4683e3510"
+    },
+    "territorialHistoryReport": {
+      "path": "data/derived/territorial_history_report.json",
+      "kind": "json",
+      "size_bytes": 85323,
+      "sha256": "4351168453c36f8b12bd2eff6b6505c94876bdc8f3915b4f1a06abe20a98d713"
+    },
+    "territorialLineage": {
+      "path": "data/derived/territorial_lineage.csv",
+      "kind": "csv",
+      "size_bytes": 1729659,
+      "sha256": "d16a7fc0fb5b8c544f28497b0850d244d783469a8fd34d62559b45d1b08eb181",
+      "columns": [
+        "municipality_id_stable",
+        "name_current",
+        "name_historical",
+        "valid_from",
+        "valid_to",
+        "parent_ids",
+        "child_ids",
+        "event_type",
+        "merge_event",
+        "split_event",
+        "rename_event",
+        "province_history",
+        "geometry_strategy",
+        "notes"
+      ],
+      "row_count": 7904
+    },
+    "territorialSources": {
+      "path": "data/reference/territorial_sources.json",
+      "kind": "json",
+      "size_bytes": 1327,
+      "sha256": "b4c6ebf8d7f42c489f38f7df199f6972d33c3b5b94d10529dc887b77c54f9481"
+    },
+    "updateLog": {
+      "path": "data/derived/update_log.json",
+      "kind": "json",
+      "size_bytes": 19084,
+      "sha256": "c41a7c39fe36d6755c223207d08f481e50f736de9e6d250cb2e9bd61766f29af",
+      "entry_count": 22
+    },
+    "usageNotes": {
+      "path": "data/derived/usage_notes.json",
+      "kind": "json",
+      "size_bytes": 4739,
+      "sha256": "ef6909f88d05661f74dde10f5ba78438ec31d2f1526bf033312d209436faabc6"
+    },
+    "webCompressionReport": {
+      "path": "data/derived/web_compression_report.json",
+      "kind": "json",
+      "size_bytes": 960,
+      "sha256": "6f48d78ba37886d6734bdff4651cb5c3023bce6ba92c1a5a416de72c1bfce518"
+    },
+    "webGeometryReport": {
+      "path": "data/derived/web_geometry_report.json",
+      "kind": "json",
+      "size_bytes": 1156,
+      "sha256": "cbadf09d3d488b6a7be15e6a3bad644bbefd06744197d442b75de4b6be441a1b"
+    },
     "productManifest:camera_muni_historical": {
       "path": "data/products/camera_muni_historical/manifest.json",
       "kind": "json",
       "size_bytes": 13620,
-      "sha256": "4d91d11657720f3514c091c3ad138762109febb534a632aef600629894ac9408",
+      "sha256": "40e78d4c4e228d69e8253846c540f492f435fe32dc330ec117d42299ae864fda",
       "dataset_count": 4
     },
     "productManifest:geometry_pack_italy": {
       "path": "data/products/geometry_pack_italy/manifest.json",
       "kind": "json",
       "size_bytes": 2472,
-      "sha256": "be4dd5cc5f8ebdc202d6c9e82029a3b58c84d5aadad8ee9e846c03e301728ce5",
+      "sha256": "7ead848f1804180cb8d814c671e8355115119ff66a87d73bf282c330004595d2",
       "dataset_count": 2
     },
     "productManifest:geometry_pack_italy_full": {
       "path": "data/products/geometry_pack_italy_full/manifest.json",
       "kind": "json",
       "size_bytes": 2595,
-      "sha256": "1be22d853962760447022a5eb0c0b0250c4b17e58f04936de0fa5f9e6de21114",
+      "sha256": "7042c411ddb963df64db30a3c27c35b5a4cec2dc0a4d94e34949f03a2a9e6d45",
       "dataset_count": 2
     },
     "productManifest:metadata_layer": {
       "path": "data/products/metadata_layer/manifest.json",
       "kind": "json",
       "size_bytes": 4806,
-      "sha256": "66b6ce31f08fff3d9ec1cfccfc85cffd39791f92cb15ae18c68be99acefe9835",
+      "sha256": "81886658eea5dc875984ebb634c33064f192c89f4d2042f8afc5dadfdd341037",
       "dataset_count": 6
     },
     "productManifest:territorial_history_2021": {
       "path": "data/products/territorial_history_2021/manifest.json",
       "kind": "json",
       "size_bytes": 4912,
-      "sha256": "525b574efbdfad6bd8a3f09fa13847e6d222b565ca913470d2d3eb9b58e5435a",
+      "sha256": "66d5ef1ca0133e16febded80f737ba819b56109801571a4d03602a197da383d9",
       "dataset_count": 5
     }
   },
@@ -580,6 +520,7 @@
       "webCompressionReport",
       "webGeometryReport"
     ],
-    "all_declared_files_present": true
+    "all_declared_files_present": true,
+    "missing_files": []
   }
 }

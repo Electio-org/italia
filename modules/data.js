@@ -126,25 +126,11 @@ function parseSummaryRows(rows) {
 // Apply the JS-side party taxonomy on top of whatever the Python
 // preprocessor wrote into the CSV.
 //
-// The Python preprocessor (scripts/preprocess.py) ships a short PARTY_FALLBACKS
-// list of ~11 regexes, so the CSV stamps `bloc=altro` / `party_family=altro`
-// on the vast majority of historically significant parties (L'Ulivo, AN, UDC,
-// RC, IdV, Pensionati, La Rosa nel Pugno, Verdi pre-AVS, Comunisti Italiani,
-// SEL, LeU, +Europa, Scelta Civica, FLI, …). That in turn breaks every
-// bloc-aware aggregation downstream and produces the visible "Olgiate Molgora
-// 2006 → altro 54%" regression Simone reported.
-//
-// We patch this at runtime: for every result row, re-run the JS regex list
-// (the authoritative taxonomy, kept in modules/shared.js) against `party_raw`
-// and, when it has an opinion, OVERWRITE the CSV's bloc/family/std. If the
-// JS list has no opinion (returns null) we keep the CSV's existing values so
-// we don't downgrade good data to `altro`.
-//
-// This is intentionally aggressive: we override even when the CSV value
-// already looks plausible, because the Python regex set is so small that any
-// match it produces is also produced (and is a strict subset of) the JS set.
-// The only difference is that JS sometimes refines a generic "altro" into
-// the correct bloc.
+// Published shards are classified by the matching Python rules at build time.
+// Re-applying the browser port here is a defensive compatibility layer for old
+// or externally supplied bundles. CI evaluates both rule sets against every
+// observed raw label, so a future edit cannot silently make map_ready and the
+// detailed results disagree.
 function applyRuntimeTaxonomy(row, taxonomyLookup = null) {
   const raw = String(row?.party_raw || row?.party_std || '').trim();
   if (!raw) return row;

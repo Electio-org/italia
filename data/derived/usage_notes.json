@@ -53,7 +53,7 @@
       "key": "party_identity",
       "title": "Identita dei partiti nel tempo",
       "severity": "info",
-      "text": "party_raw conserva la lista osservata nell'elezione. party_std, famiglia e blocco vengono assegnati con eccezioni datate prima delle regole generiche, senza rinominare soggetti storici con identita contemporanee."
+      "text": "party_raw conserva la lista osservata nell'elezione. party_std, famiglia e blocco vengono assegnati con eccezioni datate prima delle regole generiche, senza rinominare soggetti storici con identita contemporanee. L'audit 0.24 copre il 99,46% dei voti; le sigle ambigue residue restano esplicitamente in altro."
     },
     {
       "key": "party_coalition_distinction",

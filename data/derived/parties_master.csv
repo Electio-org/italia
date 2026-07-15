@@ -1,10 +1,10 @@
 party_std,party_display_name,party_family,bloc,color,aliases,valid_from,valid_to,comparability_note
 All.Monarc.Italiana,All.Monarc.Italiana,monarchico,destra,#7c2d12,All.Monarc.Italiana,1946,1946,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-All.Repub.It.,All.Repub.It.,altro,altro,#64748b,All.Repub.It.,1946,1946,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+All.Repub.It.,All.Repub.It.,laico-repubblicano,centro,#10b981,All.Repub.It.,1946,1946,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 All.Repubblicana,All.Repubblicana,laico-repubblicano,centro,#10b981,All.Repubblicana,1946,1946,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Altre Liste,Altre Liste,altro,altro,#64748b,Altre Liste,1946,1948,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Blocco Naz.Liberta',Blocco Naz.Liberta',liberale-conservatore,centro-destra,#3b82f6,Blocco Naz.Liberta',1946,1946,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-Cdr,Cdr,altro,altro,#64748b,Cdr,1946,1946,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+Cdr,Cdr,laico-repubblicano,centro,#10b981,Cdr,1946,1946,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Centro Politico It.,Centro Politico It.,altro,altro,#64748b,Centro Politico It.,1946,1953,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Comb.Reduc.Partig.,Comb.Reduc.Partig.,altro,altro,#64748b,Comb.Reduc.Partig.,1946,1946,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Conc.Naz.Combat.Red.,Conc.Naz.Combat.Red.,altro,altro,#64748b,Conc.Naz.Combat.Red.,1946,1946,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
@@ -17,24 +17,24 @@ Indipend.Sic.Sins.,Indipend.Sic.Sins.,altro,altro,#64748b,Indipend.Sic.Sins.,194
 Lega Sarda,Lega Sarda,regionalista,regionalista,#15803d,Lega Sarda,1946,1946,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Lg.Pacifista It.,Lg.Pacifista It.,altro,altro,#64748b,Lg.Pacifista It.,1946,1946,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Mov.Dem.Monarc.It.,Mov.Dem.Monarc.It.,monarchico,destra,#7c2d12,Mov.Dem.Monarc.It.,1946,1946,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-Mov.Indipend.Sic.,Mov.Indipend.Sic.,regionalista,centro-destra,#16a34a,Mov.Indipend.Sic.,1946,1946,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+Mov.Indipend.Sic.,Mov.Indipend.Sic.,regionalista,regionalista,#16a34a,Mov.Indipend.Sic.,1946,1946,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Mov.Lavoratori Ind.,Mov.Lavoratori Ind.,altro,altro,#64748b,Mov.Lavoratori Ind.,1946,1946,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Mov.Naz.Ricostruz.,Mov.Naz.Ricostruz.,altro,altro,#64748b,Mov.Naz.Ricostruz.,1946,1946,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Mov.Unionista It.,Mov.Unionista It.,altro,altro,#64748b,Mov.Unionista It.,1946,1946,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-P.Contadini d'Italia,P.Contadini d'Italia,altro,altro,#64748b,P.Contadini d'Italia,1946,1948,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+P.Contadini d'Italia,P.Contadini d'Italia,agrario,centro,#6b7f2a,P.Contadini d'Italia,1946,1948,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 P.Ind.Sicil.Lavoro,P.Ind.Sicil.Lavoro,altro,altro,#64748b,P.Ind.Sicil.Lavoro,1946,1946,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 P.Patr.Mon.Rinnovat.,P.Patr.Mon.Rinnovat.,altro,altro,#64748b,P.Patr.Mon.Rinnovat.,1946,1946,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 P.Unione Nazionale,P.Unione Nazionale,altro,altro,#64748b,P.Unione Nazionale,1946,1953,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-Part.Democr.Lavoro,Part.Democr.Lavoro,altro,altro,#64748b,Part.Democr.Lavoro,1946,1946,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+Part.Democr.Lavoro,Part.Democr.Lavoro,centro-sinistra,centro-sinistra,#ef5350,Part.Democr.Lavoro,1946,1946,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Part.Lab.It.,Part.Lab.It.,altro,altro,#64748b,Part.Lab.It.,1946,1963,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Part.Reduce It.,Part.Reduce It.,altro,altro,#64748b,Part.Reduce It.,1946,1946,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Partito Cristiano Sociale,Partito Cristiano Sociale,cattolico-popolare,centro-sinistra,#fde68a,Partito Cristiano Sociale,1946,1948,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Partito d'Azione,Partito d'Azione,azionista,centro-sinistra,#0f766e,Partito d'Azione,1946,1946,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-Pc.Internazionalista,Pc.Internazionalista,altro,altro,#64748b,Pc.Internazionalista,1946,1948,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+Pc.Internazionalista,Pc.Internazionalista,sinistra storica,sinistra,#7f1d1d,Pc.Internazionalista,1946,1948,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 PCI,PCI,sinistra storica,sinistra,#c62828,Pci,1946,1987,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Pli,Pli,liberale,centro-destra,#0284c7,Pli,1946,1992,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Pri,Pri,laico-repubblicano,centro,#10b981,Pri,1946,2013,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-Ps d'Az.,Ps d'Az.,regionalista,centro-destra,#22c55e,Ps d'Az.,1946,2013,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+Ps d'Az.,Ps d'Az.,regionalista,regionalista,#22c55e,Ps d'Az.,1946,2013,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Psiup,Psiup,sinistra socialista,centro-sinistra,#ec407a,Psiup,1946,1972,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Schieramento Naz.,Schieramento Naz.,altro,altro,#64748b,Schieramento Naz.,1946,1946,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 U.Comb.Red.Part.F.Pr,U.Comb.Red.Part.F.Pr,altro,altro,#64748b,U.Comb.Red.Part.F.Pr,1946,1946,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
@@ -66,7 +66,7 @@ P.Esistenzialista It,P.Esistenzialista It,altro,altro,#64748b,P.Esistenzialista 
 P.Indipendente Contadini,P.Indipendente Contadini,altro,altro,#64748b,P.Indipendente Contadini,1948,1948,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 P.Naz.Mon.All.D.Lav.,P.Naz.Mon.All.D.Lav.,monarchico,destra,#7c2d12,P.Naz.Mon.All.D.Lav.,1948,1948,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 P.Patria e Liberta',P.Patria e Liberta',altro,altro,#64748b,P.Patria e Liberta',1948,1948,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-Ppst-Pptt,Ppst-Pptt,regionalista,centro-destra,#16a34a,Ppst-Pptt,1948,1948,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+Ppst-Pptt,Ppst-Pptt,regionalista,regionalista,#16a34a,Ppst-Pptt,1948,1948,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 PSI,PSI,sinistra socialista,centro-sinistra,#ec407a,Autonomia Socialista|Partito Socialista|Psi|Rinascita Socialista|Socialista|Unita' Socialista,1948,2008,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Raggrup.Pop.Italiano,Raggrup.Pop.Italiano,altro,altro,#64748b,Raggrup.Pop.Italiano,1948,1948,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Un.Mov.Federalisti,Un.Mov.Federalisti,altro,altro,#64748b,Un.Mov.Federalisti,1948,1948,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
@@ -88,8 +88,8 @@ P.Nettista Italiano,P.Nettista Italiano,altro,altro,#64748b,P.Nettista Italiano,
 P.Radical Socialista,P.Radical Socialista,radicale,liberale,#8b5cf6,P.Radical Socialista,1953,1953,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 P.Un.Sociale It.,P.Un.Sociale It.,altro,altro,#64748b,P.Un.Sociale It.,1953,1953,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 P.Volonta'Nazionale,P.Volonta'Nazionale,altro,altro,#64748b,P.Volonta'Nazionale,1953,1953,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-Ppst,Ppst,regionalista,centro-destra,#16a34a,Ppst,1953,1992,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-Pptt,Pptt,altro,altro,#64748b,Pptt,1953,1983,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+Ppst,Ppst,regionalista,regionalista,#16a34a,Ppst,1953,1992,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+Pptt,Pptt,regionalista,regionalista,#15803d,Pptt,1953,1983,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Psdi,Psdi,socialdemocratico,centro-sinistra,#f472b6,Psdi,1953,1992,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Un.Naz.Dem.Imp.Pub.,Un.Naz.Dem.Imp.Pub.,altro,altro,#64748b,Un.Naz.Dem.Imp.Pub.,1953,1953,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Unita'Popolare,Unita'Popolare,sinistra socialista,centro-sinistra,#ec4899,Unita'Popolare,1953,1953,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
@@ -103,7 +103,7 @@ Mov.Azione-Rinnovam.,Mov.Azione-Rinnovam.,altro,altro,#64748b,Mov.Azione-Rinnova
 Mov.Economico It.Soc,Mov.Economico It.Soc,altro,altro,#64748b,Mov.Economico It.Soc,1958,1958,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Mov.Indip.Divorzisti,Mov.Indip.Divorzisti,altro,altro,#64748b,Mov.Indip.Divorzisti,1958,1958,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Mov.Pro Pensionati,Mov.Pro Pensionati,altro,altro,#64748b,Mov.Pro Pensionati,1958,1958,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-Movim.Aut.Reg.-M.A.R.P.,Movim.Aut.Reg.-M.A.R.P.,altro,altro,#64748b,Movim.Aut.Reg.-M.A.R.P.,1958,1958,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+Movim.Aut.Reg.-M.A.R.P.,Movim.Aut.Reg.-M.A.R.P.,regionalista,regionalista,#15803d,Movim.Aut.Reg.-M.A.R.P.,1958,1958,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 P.Cat.Ris.Naz.Cpi,P.Cat.Ris.Naz.Cpi,altro,altro,#64748b,P.Cat.Ris.Naz.Cpi,1958,1958,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 P.It.Mut.Inv.Guerra,P.It.Mut.Inv.Guerra,altro,altro,#64748b,P.It.Mut.Inv.Guerra,1958,1958,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 P.Monarchico Pop.,P.Monarchico Pop.,monarchico,destra,#7c2d12,P.Monarchico Pop.,1958,1958,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
@@ -111,9 +111,9 @@ P.Nazionale Lavoro,P.Nazionale Lavoro,altro,altro,#64748b,P.Nazionale Lavoro,195
 P.Soc.Siciliano,P.Soc.Siciliano,altro,altro,#64748b,P.Soc.Siciliano,1958,1958,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Pri-P.Rad.,Pri-P.Rad.,laico-repubblicano,centro,#10b981,Pri-P.Rad.,1958,1958,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Unione Triestina,Unione Triestina,altro,altro,#64748b,Unione Triestina,1958,1958,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-Uv,Uv,altro,altro,#64748b,Uv,1958,1968,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+Uv,Uv,regionalista,regionalista,#15803d,Uv,1958,1968,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Av.Naz.,Av.Naz.,altro,altro,#64748b,Av.Naz.,1963,1963,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-Conc.Unita'Rurale,Conc.Unita'Rurale,altro,altro,#64748b,Conc.Unita'Rurale,1963,1963,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+Conc.Unita'Rurale,Conc.Unita'Rurale,agrario,centro,#6b7f2a,Conc.Unita'Rurale,1963,1963,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 L.Unit.Slov.,L.Unit.Slov.,altro,altro,#64748b,L.Unit.Slov.,1963,1963,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 M.Comb.It-Fr.Rin.Naz,M.Comb.It-Fr.Rin.Naz,altro,altro,#64748b,M.Comb.It-Fr.Rin.Naz,1963,1963,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Mov.Colt.E Sal.,Mov.Colt.E Sal.,altro,altro,#64748b,Mov.Colt.E Sal.,1963,1963,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
@@ -148,7 +148,7 @@ Dc-Uv-Rv-Psdi,Dc-Uv-Rv-Psdi,cattolico-popolare,centro,#2e7d32,Dc-Uv-Rv-Psdi,1972
 Dem.Pop.,Dem.Pop.,altro,altro,#64748b,Dem.Pop.,1972,1972,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Fr.Naz.Sic.,Fr.Naz.Sic.,altro,altro,#64748b,Fr.Naz.Sic.,1972,1983,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Manifesto,Manifesto,sinistra storica,sinistra,#9f1239,Manifesto,1972,1972,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-Mov.Pol.Lav.,Mov.Pol.Lav.,altro,altro,#64748b,Mov.Pol.Lav.,1972,1972,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+Mov.Pol.Lav.,Mov.Pol.Lav.,centro-sinistra,centro-sinistra,#ef5350,Mov.Pol.Lav.,1972,1972,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Pc(Marx-Len)It,Pc(Marx-Len)It,sinistra storica,sinistra,#7f1d1d,Pc(Marx-Len)It,1972,1972,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Pcs (Marx.-Len.),Pcs (Marx.-Len.),altro,altro,#64748b,Pcs (Marx.-Len.),1972,1972,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Rinn.Dem.Naz.,Rinn.Dem.Naz.,altro,altro,#64748b,Rinn.Dem.Naz.,1972,1972,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
@@ -171,9 +171,9 @@ Dn-Cd,Dn-Cd,destra nazionale,destra,#1e40af,Dn-Cd,1979,1979,election_aware_taxon
 Fiore Margherita,Fiore Margherita,cattolico-popolare,centro-sinistra,#f97316,Fiore Margherita,1979,1979,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Fronte Giust.Sic.,Fronte Giust.Sic.,altro,altro,#64748b,Fronte Giust.Sic.,1979,1979,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Giust. e Lib.,Giust. e Lib.,altro,altro,#64748b,Giust. e Lib.,1979,1987,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-Lista Per Trieste,Lista Per Trieste,altro,altro,#64748b,Lista Per Trieste,1979,1983,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+Lista Per Trieste,Lista Per Trieste,regionalista,regionalista,#15803d,Lista Per Trieste,1979,1983,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Mov.Ecol.Sardo,Mov.Ecol.Sardo,altro,altro,#64748b,Mov.Ecol.Sardo,1979,1983,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-Mov.Friuli,Mov.Friuli,altro,altro,#64748b,Mov.Friuli,1979,1987,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+Mov.Friuli,Mov.Friuli,regionalista,regionalista,#15803d,Mov.Friuli,1979,1987,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Mov.Pop.Crist.,Mov.Pop.Crist.,altro,altro,#64748b,Mov.Pop.Crist.,1979,1994,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Nuova Sin.Unita,Nuova Sin.Unita,sinistra storica,sinistra,#7f1d1d,Nuova Sin.Unita,1979,1979,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Part.Crist.Az.Soc.,Part.Crist.Az.Soc.,altro,altro,#64748b,Part.Crist.Az.Soc.,1979,1983,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
@@ -182,7 +182,7 @@ Part.Pop.Calab.,Part.Pop.Calab.,altro,altro,#64748b,Part.Pop.Calab.,1979,1979,el
 Partito Popolare Italiano,Partito Popolare Italiano,cattolico-popolare,centro-sinistra,#fde68a,Partito Popolare Italiano,1979,1979,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Pdup,Pdup,sinistra storica,sinistra,#7f1d1d,Pdup,1979,1979,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Unione Valdostana-Demprol-Pli,Unione Valdostana-Demprol-Pli,liberale,centro-destra,#0284c7,Unione Valdostana-Demprol-Pli,1979,1979,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-Unita della Sinistra,Unita della Sinistra,altro,altro,#64748b,Unita della Sinistra,1979,1979,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+Unita della Sinistra,Unita della Sinistra,sinistra storica,sinistra,#7f1d1d,Unita della Sinistra,1979,1979,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Liga Veneta,Liga Veneta,regionalista,centro-destra,#2e7d32,Liga Veneta,1983,1983,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Lista di Lotta,Lista di Lotta,altro,altro,#64748b,Lista di Lotta,1983,1983,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Nuova Sinistra,Nuova Sinistra,altro,altro,#64748b,Nuova Sinistra,1983,1983,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
@@ -191,9 +191,9 @@ Part.Sud.Tirol,Part.Sud.Tirol,altro,altro,#64748b,Part.Sud.Tirol,1983,1987,elect
 Pli-Pri-Psdi,Pli-Pri-Psdi,liberale,centro-destra,#0284c7,Pli-Pri-Psdi,1983,1983,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Un.Dif.Pens.,Un.Dif.Pens.,altro,altro,#64748b,Un.Dif.Pens.,1983,1983,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Un.Pen.Pens.It.,Un.Pen.Pens.It.,altro,altro,#64748b,Un.Pen.Pens.It.,1983,1983,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-Uv-Uvp-D.Pop.,Uv-Uvp-D.Pop.,altro,altro,#64748b,Uv-Uvp-D.Pop.,1983,1983,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+Uv-Uvp-D.Pop.,Uv-Uvp-D.Pop.,regionalista,regionalista,#15803d,Uv-Uvp-D.Pop.,1983,1983,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Viv.Lib.,Viv.Lib.,altro,altro,#64748b,Viv.Lib.,1983,1983,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-All.Pens.,All.Pens.,altro,altro,#64748b,All.Pens.,1987,1987,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+All.Pens.,All.Pens.,pensionati,centro,#71717a,All.Pens.,1987,1987,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 All.Pop.,All.Pop.,altro,altro,#64748b,All.Pop.,1987,1994,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 All.Um.,All.Um.,altro,altro,#64748b,All.Um.,1987,1987,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Cpa,Cpa,altro,altro,#64748b,Cpa,1987,1992,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
@@ -201,28 +201,28 @@ Dc-Pci-Psi-Psdi,Dc-Pci-Psi-Psdi,cattolico-popolare,centro,#2e7d32,Dc-Pci-Psi-Psd
 Liga Veneta-Pu,Liga Veneta-Pu,regionalista,centro-destra,#2e7d32,Liga Veneta-Pu,1987,1987,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Mov.Lib.Fiscale,Mov.Lib.Fiscale,altro,altro,#64748b,Mov.Lib.Fiscale,1987,1987,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Mov.Naz.It.Cacc.,Mov.Naz.It.Cacc.,altro,altro,#64748b,Mov.Naz.It.Cacc.,1987,1987,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-Mov.Ven.Reg.Aut,Mov.Ven.Reg.Aut,altro,altro,#64748b,Mov.Ven.Reg.Aut,1987,1992,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-P.Verde I.Ver.E.,P.Verde I.Ver.E.,altro,altro,#64748b,P.Verde I.Ver.E.,1987,1987,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+Mov.Ven.Reg.Aut,Mov.Ven.Reg.Aut,regionalista,regionalista,#15803d,Mov.Ven.Reg.Aut,1987,1992,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+P.Verde I.Ver.E.,P.Verde I.Ver.E.,ecologista,sinistra,#2f855a,P.Verde I.Ver.E.,1987,1987,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Partidu Indip.,Partidu Indip.,altro,altro,#64748b,Partidu Indip.,1987,1994,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-Piemont,Piemont,regionalista,centro-destra,#22c55e,Piemont,1987,1987,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-Piemont-Aut.Reg.,Piemont-Aut.Reg.,regionalista,centro-destra,#22c55e,Piemont-Aut.Reg.,1987,1987,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+Piemont,Piemont,regionalista,regionalista,#22c55e,Piemont,1987,1987,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+Piemont-Aut.Reg.,Piemont-Aut.Reg.,regionalista,regionalista,#22c55e,Piemont-Aut.Reg.,1987,1987,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Pni-Caccia Pesca,Pni-Caccia Pesca,altro,altro,#64748b,Pni-Caccia Pesca,1987,1987,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Rinascita Sic.,Rinascita Sic.,altro,altro,#64748b,Rinascita Sic.,1987,1987,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-Uv-Adp-Pri,Uv-Adp-Pri,altro,altro,#64748b,Uv-Adp-Pri,1987,1987,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+Uv-Adp-Pri,Uv-Adp-Pri,regionalista,regionalista,#15803d,Uv-Adp-Pri,1987,1987,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Verdi,Verdi,ecologista,sinistra,#2f855a,Federazione dei Verdi|Lista Verde|Verdi It.-P.Ecol,1987,2006,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-Alleanza Lombarda Autonomia,Alleanza Lombarda Autonomia,altro,altro,#64748b,Alleanza Lombarda Autonomia,1992,2006,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+Alleanza Lombarda Autonomia,Alleanza Lombarda Autonomia,regionalista,regionalista,#15803d,Alleanza Lombarda Autonomia,1992,2006,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 C.S.T.,C.S.T.,altro,altro,#64748b,C.S.T.,1992,1992,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 E.Romagna-Lg Padana,E.Romagna-Lg Padana,altro,altro,#64748b,E.Romagna-Lg Padana,1992,1992,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-Federalismo-Pens.Uv.,Federalismo-Pens.Uv.,altro,altro,#64748b,Federalismo-Pens.Uv.,1992,1992,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-Gruppo Dolchi-Fosson,Gruppo Dolchi-Fosson,altro,altro,#64748b,Gruppo Dolchi-Fosson,1992,1992,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-L.Valle d'Aosta,L.Valle d'Aosta,regionalista,centro-destra,#16a34a,L.Valle d'Aosta,1992,1992,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+Federalismo-Pens.Uv.,Federalismo-Pens.Uv.,regionalista,regionalista,#15803d,Federalismo-Pens.Uv.,1992,1992,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+Gruppo Dolchi-Fosson,Gruppo Dolchi-Fosson,regionalista,regionalista,#15803d,Gruppo Dolchi-Fosson,1992,1992,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+L.Valle d'Aosta,L.Valle d'Aosta,regionalista,regionalista,#16a34a,L.Valle d'Aosta,1992,1992,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 La Rete-Mov.Dem.,La Rete-Mov.Dem.,centro-sinistra,centro-sinistra,#fb7185,La Rete-Mov.Dem.,1992,1994,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Lega d'Azione Meridionale,Lega d'Azione Meridionale,regionalista,regionalista,#15803d,Lega d'Azione Meridionale,1992,2001,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-Lg.Lomb.Eur.T.Lib.,Lg.Lomb.Eur.T.Lib.,altro,altro,#64748b,Lg.Lomb.Eur.T.Lib.,1992,1992,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+Lg.Lomb.Eur.T.Lib.,Lg.Lomb.Eur.T.Lib.,regionalista,regionalista,#15803d,Lg.Lomb.Eur.T.Lib.,1992,1992,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Lg.Merid.Un.Naz.,Lg.Merid.Un.Naz.,altro,altro,#64748b,Lg.Merid.Un.Naz.,1992,1992,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Lg.Naz.Protesta,Lg.Naz.Protesta,altro,altro,#64748b,Lg.Naz.Protesta,1992,1992,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Lista Pannella,Lista Pannella,radicale,liberale,#8b5cf6,Lista Pannella,1992,1994,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-Lista Referendum,Lista Referendum,altro,altro,#64748b,Lista Referendum,1992,1992,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+Lista Referendum,Lista Referendum,liberale-riformista,centro,#fbbf24,Lista Referendum,1992,1992,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Mov.Aut.Toscano,Mov.Aut.Toscano,altro,altro,#64748b,Mov.Aut.Toscano,1992,1996,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Mov.Eur.Automob.,Mov.Eur.Automob.,altro,altro,#64748b,Mov.Eur.Automob.,1992,1992,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Mov.Pol.Dif.Automob.,Mov.Pol.Dif.Automob.,altro,altro,#64748b,Mov.Pol.Dif.Automob.,1992,1992,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
@@ -233,10 +233,10 @@ Part.Europa 2000,Part.Europa 2000,altro,altro,#64748b,Part.Europa 2000,1992,1992
 Part.Giustizialista,Part.Giustizialista,altro,altro,#64748b,Part.Giustizialista,1992,1992,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Partito Pensionati,Partito Pensionati,pensionati,centro,#a1a1aa,Partito Pensionati,1992,2013,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Pds,Pds,centro-sinistra,centro-sinistra,#dc2626,Pds,1992,1996,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-Piemont Liber,Piemont Liber,regionalista,centro-destra,#22c55e,Piemont Liber,1992,1992,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+Piemont Liber,Piemont Liber,regionalista,regionalista,#22c55e,Piemont Liber,1992,1992,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Rifondazione Comunista,Rifondazione Comunista,sinistra storica,sinistra,#7f1d1d,Rifondazione Comunista,1992,2006,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Rinnovamento,Rinnovamento,altro,altro,#64748b,Rinnovamento,1992,1996,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-Union Veneto,Union Veneto,altro,altro,#64748b,Union Veneto,1992,1992,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+Union Veneto,Union Veneto,regionalista,regionalista,#15803d,Union Veneto,1992,1992,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Verdi Federalisti,Verdi Federalisti,ecologista,sinistra,#2f855a,Verdi Federalisti,1992,1992,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Verdi-Verdi,Verdi-Verdi,ecologista,sinistra,#2f855a,Verdi-Verdi,1992,2001,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Vivere Insieme,Vivere Insieme,altro,altro,#64748b,Vivere Insieme,1992,1992,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
@@ -252,7 +252,7 @@ Centro Democratico,Centro Democratico,centro-sinistra,centro-sinistra,#ef4444,Ce
 Dem.E Rinnovamento,Dem.E Rinnovamento,altro,altro,#64748b,Dem.E Rinnovamento,1994,1994,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Dem.E Solidarieta',Dem.E Solidarieta',altro,altro,#64748b,Dem.E Solidarieta',1994,1994,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Democrazia Siciliana,Democrazia Siciliana,altro,altro,#64748b,Democrazia Siciliana,1994,1994,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-Forza Italia,Forza Italia,liberal-conservatore,centro-destra,#1976d2,Forza Italia,1994,2022,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+Forza Italia,Forza Italia,liberale-conservatore,centro-destra,#1976d2,Forza Italia,1994,2022,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Idea Citta',Idea Citta',altro,altro,#64748b,Idea Citta',1994,1994,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Iniziativa Pop.Dem.,Iniziativa Pop.Dem.,altro,altro,#64748b,Iniziativa Pop.Dem.,1994,1994,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Insieme Per Cambiare,Insieme Per Cambiare,centro-sinistra,centro-sinistra,#f87171,Insieme Per Cambiare,1994,1994,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
@@ -280,7 +280,7 @@ Rin.Democratico,Rin.Democratico,altro,altro,#64748b,Rin.Democratico,1994,1994,el
 Rin.Salentina,Rin.Salentina,altro,altro,#64748b,Rin.Salentina,1994,1994,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Solid.Occupaz.Svilup,Solid.Occupaz.Svilup,altro,altro,#64748b,Solid.Occupaz.Svilup,1994,1994,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Solid.Progresso,Solid.Progresso,altro,altro,#64748b,Solid.Progresso,1994,1994,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-Svp,Svp,regionalista,centro-destra,#16a34a,Svp,1994,2013,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+Svp,Svp,regionalista,regionalista,#16a34a,Svp,1994,2013,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Un.Crist.Rif.,Un.Crist.Rif.,altro,altro,#64748b,Un.Crist.Rif.,1994,1994,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Un.Pop.,Un.Pop.,altro,altro,#64748b,Un.Pop.,1994,1994,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Unione Dem.Italiana,Unione Dem.Italiana,altro,altro,#64748b,Unione Dem.Italiana,1994,1994,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
@@ -295,7 +295,7 @@ Gr.Indip.Liberta',Gr.Indip.Liberta',altro,altro,#64748b,Gr.Indip.Liberta',1996,1
 Mani Pulite,Mani Pulite,altro,altro,#64748b,Mani Pulite,1996,1996,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Mov.Rin.It.,Mov.Rin.It.,altro,altro,#64748b,Mov.Rin.It.,1996,1996,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Mov.Soc.Tricolore,Mov.Soc.Tricolore,destra nazionale,destra,#0d47a1,Mov.Soc.Tricolore,1996,1996,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-Noi Siciliani-Fns,Noi Siciliani-Fns,altro,altro,#64748b,Noi Siciliani-Fns,1996,1996,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+Noi Siciliani-Fns,Noi Siciliani-Fns,regionalista,regionalista,#15803d,Noi Siciliani-Fns,1996,1996,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Nord Libero Aut.,Nord Libero Aut.,altro,altro,#64748b,Nord Libero Aut.,1996,1996,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Nuova Democrazia,Nuova Democrazia,altro,altro,#64748b,Nuova Democrazia,1996,1996,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Nuove Energie,Nuove Energie,altro,altro,#64748b,Nuove Energie,1996,1996,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
@@ -307,9 +307,9 @@ Per Le Marche,Per Le Marche,altro,altro,#64748b,Per Le Marche,1996,1996,election
 Pop-Svp-Pri-Ud-Prodi,Pop-Svp-Pri-Ud-Prodi,centro-sinistra,centro-sinistra,#ef4444,Pop-Svp-Pri-Ud-Prodi,1996,1996,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Rinnovamento It-Dini,Rinnovamento It-Dini,liberale-riformista,centro,#fdba74,Rinnovamento It-Dini,1996,1996,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Risorgimento del Sud,Risorgimento del Sud,altro,altro,#64748b,Risorgimento del Sud,1996,1996,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-Sardigna Natzione,Sardigna Natzione,altro,altro,#64748b,Sardigna Natzione,1996,2008,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-Union Fur Sud Tirol,Union Fur Sud Tirol,regionalista,centro-destra,#16a34a,Union Fur Sud Tirol,1996,2008,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-Unione Nord Est,Unione Nord Est,altro,altro,#64748b,Unione Nord Est,1996,1996,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+Sardigna Natzione,Sardigna Natzione,regionalista,regionalista,#15803d,Sardigna Natzione,1996,2008,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+Union Fur Sud Tirol,Union Fur Sud Tirol,regionalista,regionalista,#16a34a,Union Fur Sud Tirol,1996,2008,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+Unione Nord Est,Unione Nord Est,regionalista,regionalista,#15803d,Unione Nord Est,1996,1996,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Abolizione Scorporo,Abolizione Scorporo,altro,altro,#64748b,Abolizione Scorporo,2001,2001,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Comunismo,Comunismo,altro,altro,#64748b,Comunismo,2001,2001,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Comunisti Italiani,Comunisti Italiani,sinistra storica,sinistra,#991b1b,Comunisti Italiani,2001,2006,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
@@ -317,7 +317,7 @@ Democratici Sinistra,Democratici Sinistra,centro-sinistra,centro-sinistra,#dc262
 Democrazia Europea,Democrazia Europea,liberale-riformista,centro,#facc15,Democrazia Europea,2001,2001,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Fiamma Tricolore,Fiamma Tricolore,destra nazionale,destra,#0d47a1,Fiamma Tricolore,2001,2013,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Forza Nuova,Forza Nuova,destra nazionale,destra,#0d47a1,Forza Nuova,2001,2013,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-Fronte Nazionale,Fronte Nazionale,altro,altro,#64748b,Fronte Nazionale,2001,2001,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+Fronte Nazionale,Fronte Nazionale,destra nazionale,destra,#0d47a1,Fronte Nazionale,2001,2001,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Il Girasole,Il Girasole,centro-sinistra,centro-sinistra,#ef5350,Il Girasole,2001,2001,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 La Margherita,La Margherita,cattolico-popolare,centro-sinistra,#f97316,La Margherita,2001,2001,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Libdem.Basta,Libdem.Basta,altro,altro,#64748b,Libdem.Basta,2001,2001,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
@@ -329,7 +329,7 @@ Noi Siciliani,Noi Siciliani,altro,altro,#64748b,Noi Siciliani,2001,2001,election
 Nuovo Psi,Nuovo Psi,sinistra socialista,centro-sinistra,#ec407a,Nuovo Psi,2001,2001,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Paese Nuovo,Paese Nuovo,altro,altro,#64748b,Paese Nuovo,2001,2001,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Pannella-Bonino,Pannella-Bonino,radicale,liberale,#8b5cf6,Pannella-Bonino,2001,2001,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-Ps d'Az-Sard.Natz.,Ps d'Az-Sard.Natz.,regionalista,centro-destra,#22c55e,Ps d'Az-Sard.Natz.,2001,2001,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+Ps d'Az-Sard.Natz.,Ps d'Az-Sard.Natz.,regionalista,regionalista,#22c55e,Ps d'Az-Sard.Natz.,2001,2001,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Repubblicani Europei,Repubblicani Europei,laico-repubblicano,centro,#10b981,Repubblicani Europei,2001,2001,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Social.Auton.,Social.Auton.,altro,altro,#64748b,Social.Auton.,2001,2001,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Terzo Polo Autonomia,Terzo Polo Autonomia,altro,altro,#64748b,Terzo Polo Autonomia,2001,2001,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
@@ -338,7 +338,7 @@ Ambienta-Lista,Ambienta-Lista,altro,altro,#64748b,Ambienta-Lista,2006,2006,elect
 Dem.Crist.-Nuovo Psi,Dem.Crist.-Nuovo Psi,sinistra socialista,centro-sinistra,#ec407a,Dem.Crist.-Nuovo Psi,2006,2006,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Destra Nazionale,Destra Nazionale,destra nazionale,destra,#0d47a1,Destra Nazionale,2006,2006,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Di Pietro Italia dei Valori,Di Pietro Italia dei Valori,liberale-riformista,centro-sinistra,#fcd34d,Di Pietro Italia dei Valori,2006,2008,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-Die Freiheitlichen,Die Freiheitlichen,regionalista,centro-destra,#16a34a,Die Freiheitlichen,2006,2013,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+Die Freiheitlichen,Die Freiheitlichen,regionalista,regionalista,#16a34a,Die Freiheitlichen,2006,2013,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Dimensione Christiana,Dimensione Christiana,altro,altro,#64748b,Dimensione Christiana,2006,2006,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 I Socialisti,I Socialisti,sinistra socialista,centro-sinistra,#ec4899,I Socialisti,2006,2006,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Irs,Irs,altro,altro,#64748b,Irs,2006,2006,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
@@ -349,9 +349,9 @@ Mov.Dem.Sic-Noi Sic.,Mov.Dem.Sic-Noi Sic.,centro-sinistra,centro-sinistra,#fb718
 Movimento Triveneto,Movimento Triveneto,altro,altro,#64748b,Movimento Triveneto,2006,2006,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 No Euro,No Euro,destra nazionale,destra,#0c4a6e,No Euro,2006,2006,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 P.Liberale Italiano,P.Liberale Italiano,liberale,centro-destra,#0284c7,P.Liberale Italiano,2006,2008,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-Pensionati Uniti,Pensionati Uniti,altro,altro,#64748b,Pensionati Uniti,2006,2006,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+Pensionati Uniti,Pensionati Uniti,pensionati,centro,#71717a,Pensionati Uniti,2006,2006,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Per Il Sud,Per Il Sud,altro,altro,#64748b,Per Il Sud,2006,2006,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-Progetto Nordest,Progetto Nordest,altro,altro,#64748b,Progetto Nordest,2006,2006,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+Progetto Nordest,Progetto Nordest,regionalista,regionalista,#15803d,Progetto Nordest,2006,2006,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 S.O.S. Italia,S.O.S. Italia,altro,altro,#64748b,S.O.S. Italia,2006,2006,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Solidarieta',Solidarieta',altro,altro,#64748b,Solidarieta',2006,2006,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Terzo Polo,Terzo Polo,altro,altro,#64748b,Terzo Polo,2006,2006,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
@@ -359,15 +359,15 @@ U.D.Eur Popolari,U.D.Eur Popolari,cattolico-popolare,centro,#fbbf24,U.D.Eur Popo
 Unione di Centro,Unione di Centro,cattolico-popolare,centro,#fbbf24,Unione di Centro,2006,2013,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 "Ass.Difesa della Vita Aborto?No,Grazie","Ass.Difesa della Vita Aborto?No,Grazie",altro,altro,#64748b,"Ass.Difesa della Vita Aborto?No,Grazie",2008,2008,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Il Loto,Il Loto,altro,altro,#64748b,Il Loto,2008,2008,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-Il Popolo della Liberta',Il Popolo della Liberta',liberal-conservatore,centro-destra,#1d4ed8,Il Popolo della Liberta',2008,2013,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+Il Popolo della Liberta',Il Popolo della Liberta',liberale-conservatore,centro-destra,#1d4ed8,Il Popolo della Liberta',2008,2013,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 L'Intesa veneta,L'Intesa veneta,altro,altro,#64748b,L'Intesa veneta,2008,2008,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 La Destra - Fiamma Tricolore,La Destra - Fiamma Tricolore,destra nazionale,destra,#0d47a1,La Destra - Fiamma Tricolore,2008,2008,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 La Sinistra l'Arcobaleno,La Sinistra l'Arcobaleno,sinistra storica,sinistra,#dc2626,La Sinistra l'Arcobaleno,2008,2008,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-Lg.Veneta Repubblica,Lg.Veneta Repubblica,altro,altro,#64748b,Lg.Veneta Repubblica,2008,2013,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+Lg.Veneta Repubblica,Lg.Veneta Repubblica,regionalista,regionalista,#15803d,Lg.Veneta Repubblica,2008,2013,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Lista dei Grilli Parlanti,Lista dei Grilli Parlanti,altro,altro,#64748b,Lista dei Grilli Parlanti,2008,2008,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 M.E.D.A.,M.E.D.A.,altro,altro,#64748b,M.E.D.A.,2008,2008,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Movimento P.P.A.,Movimento P.P.A.,altro,altro,#64748b,Movimento P.P.A.,2008,2013,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-Movimento Per l'Autonomia All.Per Il Sud,Movimento Per l'Autonomia All.Per Il Sud,liberal-conservatore,centro-destra,#3b82f6,Movimento Per l'Autonomia All.Per Il Sud,2008,2008,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+Movimento Per l'Autonomia All.Per Il Sud,Movimento Per l'Autonomia All.Per Il Sud,liberale-conservatore,centro-destra,#3b82f6,Movimento Per l'Autonomia All.Per Il Sud,2008,2008,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Partito di Alternativa Comunista,Partito di Alternativa Comunista,sinistra storica,sinistra,#7f1d1d,Partito di Alternativa Comunista,2008,2013,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 PCL,PCL,sinistra storica,sinistra,#7f1d1d,Partito Comunista dei Lavoratori,2008,2013,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 PD,PD,centro-sinistra,centro-sinistra,#d32f2f,Partito Democratico|Partito Democratico - Italia Democratica e Progressista,2008,2022,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
@@ -379,19 +379,19 @@ Democrazia Atea,Democrazia Atea,altro,altro,#64748b,Democrazia Atea,2013,2013,el
 Fare Per Fermare Il Declino,Fare Per Fermare Il Declino,liberale-riformista,centro,#f59e0b,Fare Per Fermare Il Declino,2013,2013,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 FdI,FdI,destra nazionale,destra,#1e3a8a,Fratelli d'Italia|Fratelli d'Italia Con Giorgia Meloni,2013,2022,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Futuro e Liberta',Futuro e Liberta',liberale-riformista,centro-destra,#fdba74,Futuro e Liberta',2013,2013,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-Grande Sud - Mpa,Grande Sud - Mpa,liberal-conservatore,centro-destra,#3b82f6,Grande Sud - Mpa,2013,2013,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+Grande Sud - Mpa,Grande Sud - Mpa,liberale-conservatore,centro-destra,#3b82f6,Grande Sud - Mpa,2013,2013,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 I Pirati,I Pirati,altro,altro,#64748b,I Pirati,2013,2013,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Indipendenza Per La Sardegna,Indipendenza Per La Sardegna,altro,altro,#64748b,Indipendenza Per La Sardegna,2013,2013,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-Indipendenza Veneta,Indipendenza Veneta,altro,altro,#64748b,Indipendenza Veneta,2013,2013,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+Indipendenza Veneta,Indipendenza Veneta,regionalista,regionalista,#15803d,Indipendenza Veneta,2013,2013,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Intesa Popolare,Intesa Popolare,altro,altro,#64748b,Intesa Popolare,2013,2013,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-Io Amo l'Italia,Io Amo l'Italia,altro,altro,#64748b,Io Amo l'Italia,2013,2013,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+Io Amo l'Italia,Io Amo l'Italia,destra nazionale,destra,#0d47a1,Io Amo l'Italia,2013,2013,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 La Destra,La Destra,destra nazionale,destra,#0d47a1,La Destra,2013,2013,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Liberali Per l'Italia - Pli,Liberali Per l'Italia - Pli,liberale,centro-destra,#0284c7,Liberali Per l'Italia - Pli,2013,2013,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Liberi Per Una Italia Equa,Liberi Per Una Italia Equa,altro,altro,#64748b,Liberi Per Una Italia Equa,2013,2013,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-Lista Amnistia Giustizia Liberta',Lista Amnistia Giustizia Liberta',altro,altro,#64748b,Lista Amnistia Giustizia Liberta',2013,2013,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+Lista Amnistia Giustizia Liberta',Lista Amnistia Giustizia Liberta',radicale,liberale,#8b5cf6,Lista Amnistia Giustizia Liberta',2013,2013,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 M5S,M5S,populista,populista,#f59e0b,Movimento 5 Stelle|Movimento 5 Stelle Beppegrillo.It,2013,2022,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Meris,Meris,altro,altro,#64748b,Meris,2013,2013,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-Mir - Moderati in Rivoluzione,Mir - Moderati in Rivoluzione,altro,altro,#64748b,Mir - Moderati in Rivoluzione,2013,2013,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+Mir - Moderati in Rivoluzione,Mir - Moderati in Rivoluzione,liberale-conservatore,centro-destra,#3b82f6,Mir - Moderati in Rivoluzione,2013,2013,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Movimento Progetto Italia - Mid,Movimento Progetto Italia - Mid,altro,altro,#64748b,Movimento Progetto Italia - Mid,2013,2013,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Popolari Uniti,Popolari Uniti,cattolico-popolare,centro,#fbbf24,Popolari Uniti,2013,2013,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Progetto Nazionale,Progetto Nazionale,altro,altro,#64748b,Progetto Nazionale,2013,2013,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
@@ -406,17 +406,17 @@ Veneto Stato,Veneto Stato,altro,altro,#64748b,Veneto Stato,2013,2013,election_aw
 Voto di Protesta,Voto di Protesta,altro,altro,#64748b,Voto di Protesta,2013,2013,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 +Europa,+Europa,liberale-riformista,centro,#22d3ee,+Europa,2018,2022,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 10 Volte Meglio,10 Volte Meglio,altro,altro,#64748b,10 Volte Meglio,2018,2018,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-Autodeterminatzione,Autodeterminatzione,altro,altro,#64748b,Autodeterminatzione,2018,2018,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+Autodeterminatzione,Autodeterminatzione,regionalista,regionalista,#15803d,Autodeterminatzione,2018,2018,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Blocco Nazionale Per Le Liberta',Blocco Nazionale Per Le Liberta',liberale-conservatore,centro-destra,#3b82f6,Blocco Nazionale Per Le Liberta',2018,2018,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-Civica Popolare Lorenzin,Civica Popolare Lorenzin,liberal-conservatore,centro-destra,#3b82f6,Civica Popolare Lorenzin,2018,2018,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-Grande Nord,Grande Nord,altro,altro,#64748b,Grande Nord,2018,2018,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+Civica Popolare Lorenzin,Civica Popolare Lorenzin,liberale-conservatore,centro-destra,#3b82f6,Civica Popolare Lorenzin,2018,2018,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+Grande Nord,Grande Nord,regionalista,regionalista,#15803d,Grande Nord,2018,2018,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Il Popolo della Famiglia,Il Popolo della Famiglia,cattolico-popolare,centro-destra,#fcd34d,Il Popolo della Famiglia,2018,2018,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Italia Agli Italiani,Italia Agli Italiani,destra nazionale,destra,#0d47a1,Italia Agli Italiani,2018,2018,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Italia Europa Insieme,Italia Europa Insieme,centro-sinistra,centro-sinistra,#f87171,Italia Europa Insieme,2018,2018,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Italia Nel Cuore,Italia Nel Cuore,altro,altro,#64748b,Italia Nel Cuore,2018,2018,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Liberi e Uguali,Liberi e Uguali,centro-sinistra,sinistra,#dc2626,Liberi e Uguali,2018,2018,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Lista del Popolo Per La Costituzione,Lista del Popolo Per La Costituzione,altro,altro,#64748b,Lista del Popolo Per La Costituzione,2018,2018,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-Noi Con l'Italia - Udc,Noi Con l'Italia - Udc,liberal-conservatore,centro-destra,#3b82f6,Noi Con l'Italia - Udc,2018,2018,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+Noi Con l'Italia - Udc,Noi Con l'Italia - Udc,liberale-conservatore,centro-destra,#3b82f6,Noi Con l'Italia - Udc,2018,2018,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Partito Comunista,Partito Comunista,sinistra storica,sinistra,#991b1b,Partito Comunista,2018,2018,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Partito Repubblicano Italiano - Ala,Partito Repubblicano Italiano - Ala,laico-repubblicano,centro,#10b981,Partito Repubblicano Italiano - Ala,2018,2018,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Partito Valore Umano,Partito Valore Umano,altro,altro,#64748b,Partito Valore Umano,2018,2018,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
@@ -425,8 +425,8 @@ Per Una Sinistra Rivoluzionaria,Per Una Sinistra Rivoluzionaria,sinistra storica
 Potere al Popolo!,Potere al Popolo!,sinistra storica,sinistra,#7f1d1d,Potere al Popolo!,2018,2018,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Rinascimento Mir,Rinascimento Mir,altro,altro,#64748b,Rinascimento Mir,2018,2018,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Siamo,Siamo,altro,altro,#64748b,Siamo,2018,2018,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-Svp - Patt,Svp - Patt,regionalista,centro-destra,#16a34a,Svp - Patt,2018,2018,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-Alternativa Per l'Italia - No Green Pass,Alternativa Per l'Italia - No Green Pass,altro,altro,#64748b,Alternativa Per l'Italia - No Green Pass,2022,2022,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+Svp - Patt,Svp - Patt,regionalista,regionalista,#16a34a,Svp - Patt,2018,2018,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+Alternativa Per l'Italia - No Green Pass,Alternativa Per l'Italia - No Green Pass,destra nazionale,destra,#0c4a6e,Alternativa Per l'Italia - No Green Pass,2022,2022,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 AVS / Verdi,AVS / Verdi,ecologista,sinistra,#2f855a,Alleanza Verdi e Sinistra,2022,2022,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Azione / IV,Azione / IV,liberale-riformista,centro,#fb923c,Azione - Italia Viva - Calenda,2022,2022,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Forza del Popolo,Forza del Popolo,destra nazionale,destra,#0d47a1,Forza del Popolo,2022,2022,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
@@ -434,12 +434,12 @@ Free,Free,altro,altro,#64748b,Free,2022,2022,election_aware_taxonomy|observed_el
 Impegno Civico,Impegno Civico,centro-sinistra,centro-sinistra,#ef5350,Impegno Civico Luigi di Maio - Centro Democratico,2022,2022,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Italexit Per l'Italia,Italexit Per l'Italia,destra nazionale,destra,#0c4a6e,Italexit Per l'Italia,2022,2022,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Italia Sovrana e Popolare,Italia Sovrana e Popolare,destra nazionale,destra,#0c4a6e,Italia Sovrana e Popolare,2022,2022,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-Mastella Noi di Centro Europeisti,Mastella Noi di Centro Europeisti,liberal-conservatore,centro-destra,#3b82f6,Mastella Noi di Centro Europeisti,2022,2022,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-Noi Moderati/Lupi - Toti - Brugnaro - Udc,Noi Moderati/Lupi - Toti - Brugnaro - Udc,liberal-conservatore,centro-destra,#3b82f6,Noi Moderati/Lupi - Toti - Brugnaro - Udc,2022,2022,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+Mastella Noi di Centro Europeisti,Mastella Noi di Centro Europeisti,liberale-conservatore,centro-destra,#3b82f6,Mastella Noi di Centro Europeisti,2022,2022,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+Noi Moderati/Lupi - Toti - Brugnaro - Udc,Noi Moderati/Lupi - Toti - Brugnaro - Udc,liberale-conservatore,centro-destra,#3b82f6,Noi Moderati/Lupi - Toti - Brugnaro - Udc,2022,2022,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Partito Animalista - Ucdl - 10 Volte Meglio,Partito Animalista - Ucdl - 10 Volte Meglio,altro,altro,#64748b,Partito Animalista - Ucdl - 10 Volte Meglio,2022,2022,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Partito Comunista Italiano,Partito Comunista Italiano,sinistra storica,sinistra,#991b1b,Partito Comunista Italiano,2022,2022,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Partito della Follia Creativa,Partito della Follia Creativa,altro,altro,#64748b,Partito della Follia Creativa,2022,2022,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-Sud Chiama Nord,Sud Chiama Nord,regionalista,centro-destra,#16a34a,Sud Chiama Nord,2022,2022,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
-Sudtiroler Volkspartei (Svp) - Patt,Sudtiroler Volkspartei (Svp) - Patt,regionalista,centro-destra,#16a34a,Sudtiroler Volkspartei (Svp) - Patt,2022,2022,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+Sud Chiama Nord,Sud Chiama Nord,regionalista,regionalista,#16a34a,Sud Chiama Nord,2022,2022,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
+Sudtiroler Volkspartei (Svp) - Patt,Sudtiroler Volkspartei (Svp) - Patt,regionalista,regionalista,#16a34a,Sudtiroler Volkspartei (Svp) - Patt,2022,2022,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Unione Popolare,Unione Popolare,sinistra storica,sinistra,#b91c1c,Unione Popolare Con de Magistris,2022,2022,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved
 Vita,Vita,destra nazionale,destra,#0c4a6e,Vita,2022,2022,election_aware_taxonomy|observed_election_range_not_legal_lifetime|raw_aliases_preserved

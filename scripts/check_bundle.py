@@ -414,6 +414,10 @@ def main() -> int:
             issues.append('party_taxonomy:audit_failed')
         if int(taxonomy_audit.get('election_count') or 0) != len(elections_master):
             issues.append('party_taxonomy:election_count_mismatch')
+        if taxonomy_audit.get('warnings'):
+            issues.append('party_taxonomy:audit_warnings')
+        if float(taxonomy_audit.get('classification_coverage_share') or 0) < 99.0:
+            issues.append('party_taxonomy:classification_coverage_below_99pct')
 
     bad_share = 0
     for row in results:

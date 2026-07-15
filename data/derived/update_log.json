@@ -2,6 +2,18 @@
   "generated_by": "preprocess.py",
   "entries": [
     {
+      "version": "0.24.0",
+      "date": "2026-07-15",
+      "title": "Historical party taxonomy completeness",
+      "changes": [
+        "Raised classified national vote coverage above 99% while preserving every original ballot-list label.",
+        "Corrected regional and autonomist lists that were previously folded into the centre-right bloc.",
+        "Removed generic rules that could confuse Impegno Civico with M5S or Rifondazione Missina with the communist left.",
+        "Standardized the liberal-conservative family key across Python and JavaScript.",
+        "Added CI parity checks for all observed party labels and explicit reporting of unclassified residual lists."
+      ]
+    },
+    {
       "version": "0.23.0",
       "date": "2026-07-15",
       "title": "Election-aware party taxonomy and national audit",

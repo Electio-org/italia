@@ -75,7 +75,7 @@ CONTRACTS = {
 #     tradition.
 PARTY_FALLBACKS = [
     # --- Hard-left / extra-parliamentary ---
-    (re.compile(r"rifondazione (comunista|miss)|^prc$|^rc$", re.I), {"display": "Rifondazione Comunista", "family": "sinistra storica", "bloc": "sinistra", "color": "#7f1d1d"}),
+    (re.compile(r"rifondazione comunista|^prc$|^rc$", re.I), {"display": "Rifondazione Comunista", "family": "sinistra storica", "bloc": "sinistra", "color": "#7f1d1d"}),
     (re.compile(r"comunisti italiani|^pdci$|partito dei comunisti", re.I), {"display": "Comunisti Italiani", "family": "sinistra storica", "bloc": "sinistra", "color": "#991b1b"}),
     (re.compile(r"partito comunista dei lavoratori|alternativa comunista|^pcl$|sinistra critica|pc\(marx-len\)", re.I), {"display": "PC Lavoratori / Sin. Critica", "family": "sinistra storica", "bloc": "sinistra", "color": "#7f1d1d"}),
     (re.compile(r"^pdup\b|^p\.?\s?d\.?\s?u\.?\s?p\.?$|democrazia proletaria|^dem\.?\s?prol\b|nuova sin(istra)?\.?\s?unit", re.I), {"display": "PDUP / DemProl", "family": "sinistra storica", "bloc": "sinistra", "color": "#7f1d1d"}),
@@ -111,7 +111,7 @@ PARTY_FALLBACKS = [
     (re.compile(r"scelta civica|monti per l", re.I), {"display": "Scelta Civica", "family": "liberale-riformista", "bloc": "centro", "color": "#fb923c"}),
     (re.compile(r"futuro e liberta|^fli$", re.I), {"display": "FLI", "family": "liberale-riformista", "bloc": "centro-destra", "color": "#fdba74"}),
     (re.compile(r"fare per fermare", re.I), {"display": "Fare", "family": "liberale-riformista", "bloc": "centro", "color": "#f59e0b"}),
-    (re.compile(r"lega d.?azione|movimento per le autonomie|\bmpa\b|movimento per l.?autonomia|grande sud", re.I), {"display": "Lega d'Azione / MpA", "family": "liberal-conservatore", "bloc": "centro-destra", "color": "#3b82f6"}),
+    (re.compile(r"lega d.?azione|movimento per le autonomie|\bmpa\b|movimento per l.?autonomia|grande sud", re.I), {"display": "Lega d'Azione / MpA", "family": "liberale-conservatore", "bloc": "centro-destra", "color": "#3b82f6"}),
     (re.compile(r"\bazione\b|^az$|italia viva|^iv$|renew|^calenda$", re.I), {"display": "Azione / IV", "family": "liberale-riformista", "bloc": "centro", "color": "#fb923c"}),
     (re.compile(r"italia dei valori|di pietro|^idv$", re.I), {"display": "IdV", "family": "liberale-riformista", "bloc": "centro-sinistra", "color": "#fcd34d"}),
     (re.compile(r"\+europa|piu europa", re.I), {"display": "+Europa", "family": "liberale-riformista", "bloc": "centro", "color": "#22d3ee"}),
@@ -133,9 +133,9 @@ PARTY_FALLBACKS = [
     (re.compile(r"^dc\b|democrazia cristiana", re.I), {"display": "DC", "family": "cattolico-popolare", "bloc": "centro", "color": "#2e7d32"}),
 
     # --- Centro-destra liberal-conservatore ---
-    (re.compile(r"forza italia|^fi$|^f\.?\s?i\.?$", re.I), {"display": "Forza Italia", "family": "liberal-conservatore", "bloc": "centro-destra", "color": "#1976d2"}),
-    (re.compile(r"popolo della liberta|^pdl$|^p\.?\s?d\.?\s?l\.?$", re.I), {"display": "PdL", "family": "liberal-conservatore", "bloc": "centro-destra", "color": "#1d4ed8"}),
-    (re.compile(r"noi (con l|moderati)|civica popolare|toti.*brugnaro|noi di centro", re.I), {"display": "Noi Moderati", "family": "liberal-conservatore", "bloc": "centro-destra", "color": "#3b82f6"}),
+    (re.compile(r"forza italia|^fi$|^f\.?\s?i\.?$", re.I), {"display": "Forza Italia", "family": "liberale-conservatore", "bloc": "centro-destra", "color": "#1976d2"}),
+    (re.compile(r"popolo della liberta|^pdl$|^p\.?\s?d\.?\s?l\.?$", re.I), {"display": "PdL", "family": "liberale-conservatore", "bloc": "centro-destra", "color": "#1d4ed8"}),
+    (re.compile(r"noi (con l|moderati)|civica popolare|toti.*brugnaro|noi di centro", re.I), {"display": "Noi Moderati", "family": "liberale-conservatore", "bloc": "centro-destra", "color": "#3b82f6"}),
     # FIX (PR #16): was /lega|.../ which leaked into "Sviluppo-Legalit\u00e0". Now \blega\b
     # plus explicit liga regional variants. Lega d'Azione is matched earlier so unaffected.
     (re.compile(r"\blega\b|leganord|^ln$|\bliga\b", re.I), {"display": "Lega", "family": "regionalista", "bloc": "centro-destra", "color": "#2e7d32"}),
@@ -151,16 +151,16 @@ PARTY_FALLBACKS = [
     (re.compile(r"^pnm\b|partito nazionale monarchico|p\.?\s?naz\.?\s?monarchico|p\.?\s?naz\.?\s?mon\.|^pmp\b|p\.?\s?monarchico|pdium|partito democratico italiano di unit.?\s?monarchica|all\.?\s?monarc|mov\.?\s?dem\.?\s?monarc|alleanza monarchica|\bmonarchic", re.I), {"display": "Monarchici", "family": "monarchico", "bloc": "destra", "color": "#7c2d12"}),
 
     # --- Populista ---
-    (re.compile(r"movimento 5 stelle|^m5s$|beppegrillo|impegno civico|\bgrillo\b|\bconte\b", re.I), {"display": "M5S", "family": "populista", "bloc": "populista", "color": "#f59e0b"}),
+    (re.compile(r"movimento 5 stelle|^m5s$|beppegrillo|\bgrillo\b|\bconte\b", re.I), {"display": "M5S", "family": "populista", "bloc": "populista", "color": "#f59e0b"}),
     (re.compile(r"fronte (dell.?\s?)?uomo qualunque|fr\.?\s?uomo qualunque|qualunqui", re.I), {"display": "Uomo Qualunque", "family": "populista", "bloc": "populista", "color": "#fb923c"}),
 
     # --- Pensionati ---
     (re.compile(r"partito pensionat|part\.?\s?naz\.?\s?pens\b|^pens\b", re.I), {"display": "Pensionati", "family": "pensionati", "bloc": "centro", "color": "#a1a1aa"}),
 
     # --- Regional autonomista ---
-    (re.compile(r"^svp\b|sudtiroler|sud tirol|die freiheitlichen|union fur sud|valle d.aosta|union valdotaine|^ppst\b|partito popolare sudtirolese|svp\s*[\-\s\.]*\s*patt|^patt\b", re.I), {"display": "Autonomisti", "family": "regionalista", "bloc": "centro-destra", "color": "#16a34a"}),
-    (re.compile(r"mov\.?\s?indipend\.?\s?sic|movimento indipendentista siciliano|^mis\b|sud chiama nord|cateno de luca", re.I), {"display": "Sicilianisti", "family": "regionalista", "bloc": "centro-destra", "color": "#16a34a"}),
-    (re.compile(r"^ps\.?\s?d.?\s?az\b|partito sardo d.?azione|^psdaz\b|^piemont\b", re.I), {"display": "Autonomisti regionali", "family": "regionalista", "bloc": "centro-destra", "color": "#22c55e"}),
+    (re.compile(r"^svp\b|sudtiroler|sud tirol|die freiheitlichen|union fur sud|valle d.aosta|union valdotaine|^ppst\b|partito popolare sudtirolese|svp\s*[\-\s\.]*\s*patt|^patt\b", re.I), {"display": "Autonomisti", "family": "regionalista", "bloc": "regionalista", "color": "#16a34a"}),
+    (re.compile(r"mov\.?\s?indipend\.?\s?sic|movimento indipendentista siciliano|^mis\b|sud chiama nord|cateno de luca", re.I), {"display": "Sicilianisti", "family": "regionalista", "bloc": "regionalista", "color": "#16a34a"}),
+    (re.compile(r"^ps\.?\s?d.?\s?az\b|partito sardo d.?azione|^psdaz\b|^piemont\b", re.I), {"display": "Autonomisti regionali", "family": "regionalista", "bloc": "regionalista", "color": "#22c55e"}),
 ]
 
 RESULT_LABEL_STOPWORDS = {

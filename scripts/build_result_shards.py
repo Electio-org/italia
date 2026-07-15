@@ -26,7 +26,7 @@ WEB_GEOMETRY_NOTE = "The public app now reads a web-optimized geometry pack, whi
 LOCAL_ASSET_NOTE = "Critical browser libraries are now vendored locally and the public documentation pages load only the metadata they actually need."
 PROFILE_NOTE = "Municipality detail pages use province-sized compressed profile chunks instead of loading the national summary table."
 TERRITORIAL_HISTORY_NOTE = "Public election shards are projected implicitly to the 2021 municipality geometry through a date-aware ISTAT SITUAS lineage; ambiguous splits are never allocated."
-CURRENT_VERSION = "0.23.0"
+CURRENT_VERSION = "0.24.0"
 
 
 def iter_election_frames(path: Path, chunk_size: int = 250_000) -> Iterator[Tuple[str, pd.DataFrame]]:
@@ -184,13 +184,13 @@ def ensure_update_log_entry(entries: List[Dict[str, object]]) -> List[Dict[str, 
     current = {
         "version": CURRENT_VERSION,
         "date": "2026-07-15",
-        "title": "Election-aware party taxonomy and national audit",
+        "title": "Historical party taxonomy completeness",
         "changes": [
-            "Added election-specific exact mappings for historical party names that collided with modern identities.",
-            "Applied party taxonomy before territorial aggregation so winners, shares and dominant blocks use corrected identities.",
-            "Added national winner/share guardrails for every published election from 1946 to 2022.",
-            "Published a machine-readable taxonomy audit with unmatched-share and block-distribution diagnostics.",
-            "Kept raw list labels unchanged and marked exact editorial classifications separately from fallback rules."
+            "Raised classified national vote coverage above 99% while preserving every original ballot-list label.",
+            "Corrected regional and autonomist lists that were previously folded into the centre-right bloc.",
+            "Removed generic rules that could confuse Impegno Civico with M5S or Rifondazione Missina with the communist left.",
+            "Standardized the liberal-conservative family key across Python and JavaScript.",
+            "Added CI parity checks for all observed party labels and explicit reporting of unclassified residual lists."
         ]
     }
     return [current, *[entry for entry in entries if str(entry.get("version")) != CURRENT_VERSION]]

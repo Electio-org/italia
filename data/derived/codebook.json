@@ -519,6 +519,31 @@
         {"name": "status", "description": "resolved, ambiguous_split oppure unresolved.", "type_hint": "string"},
         {"name": "lineage_path", "description": "Sequenza datata dei codici e degli eventi amministrativi fino al target.", "type_hint": "string"}
       ]
+    },
+    {
+      "dataset": "party_taxonomy_overrides.csv",
+      "title": "Tassonomia storica dei partiti per elezione",
+      "columns": [
+        {"name": "election_key", "description": "Elezione nella quale vale la classificazione.", "type_hint": "string"},
+        {"name": "party_raw", "description": "Denominazione originale della lista nella fonte.", "type_hint": "string"},
+        {"name": "party_std", "description": "Identita standardizzata senza imporre continuita anacronistiche.", "type_hint": "string"},
+        {"name": "party_display_name", "description": "Etichetta leggibile mostrata nell'interfaccia.", "type_hint": "string"},
+        {"name": "party_family", "description": "Famiglia politica analitica.", "type_hint": "string"},
+        {"name": "bloc", "description": "Area politica ampia usata nelle aggregazioni.", "type_hint": "string"},
+        {"name": "classification_status", "description": "Stato editoriale della classificazione.", "type_hint": "string"},
+        {"name": "notes", "description": "Motivazione o limite della corrispondenza.", "type_hint": "string"}
+      ]
+    },
+    {
+      "dataset": "party_taxonomy_audit.json",
+      "title": "Audit nazionale della tassonomia politica",
+      "columns": [
+        {"name": "classification_coverage_share", "description": "Quota dei voti attribuita a un'area politica non residuale.", "type_hint": "number"},
+        {"name": "curated_exact_share", "description": "Quota dei voti coperta da eccezioni esatte election_key + party_raw.", "type_hint": "number"},
+        {"name": "unclassified_lists", "description": "Liste residue almeno allo 0,05% lasciate senza collocazione forzata.", "type_hint": "array"},
+        {"name": "errors", "description": "Errori bloccanti rilevati dall'audit.", "type_hint": "array"},
+        {"name": "warnings", "description": "Avvisi di copertura o classificazione.", "type_hint": "array"}
+      ]
     }
   ]
 }

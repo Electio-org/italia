@@ -27,6 +27,7 @@ jobs:
         run: |
           python3 -m py_compile scripts/*.py
           python3 scripts/smoke_reference_resolution.py
+          python3 scripts/smoke_party_taxonomy_parity.py
           python3 scripts/audit_party_taxonomy.py --root .
       - run: npm run test:selectors
       - run: npx playwright install --with-deps chromium

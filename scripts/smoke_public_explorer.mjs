@@ -212,6 +212,9 @@ try {
   await page.waitForFunction(() => document.querySelectorAll('#party-taxonomy-table-body tr').length === 20);
   assert.equal(await page.locator('#party-taxonomy-summary > *').count(), 3, 'party taxonomy summary must expose its national audit');
   assert.equal(await page.locator('#party-taxonomy-table-body tr').count(), 20, 'party taxonomy audit must cover every published election');
+  assert.match(await page.locator('#party-taxonomy-summary').innerText(), /99[,.]4\d%/, 'public data page must expose overall classified vote coverage');
+  const taxonomy1992 = await page.locator('#party-taxonomy-table-body tr').filter({ hasText: 'camera_1992' }).innerText();
+  assert.match(taxonomy1992, /99[,.]2\d%/, '1992 must retain high classification coverage without modern aliases');
 
   await page.goto(`${baseUrl}usage-notes.html`, { waitUntil: 'networkidle' });
   await page.waitForFunction(() => document.querySelectorAll('#party-taxonomy-method-grid .doc-card').length === 3);
