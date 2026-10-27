@@ -1,0 +1,16 @@
+{
+  "name": "Electio Italia",
+  "url": "https://electio-org.github.io/italia/",
+  "description": "Atlante elettorale italiano al livello comunale: Assemblea Costituente, Camera ed elezioni europee 1979-2024. Fonti Eligendo, confini storici, mappe e dataset verificabili.",
+  "published": "2026-10-27", "image": "social-preview.png", "languages": ["it"],
+  "pages": [
+    {"path": "index.html", "url": "", "title": "Electio Italia | Risultati elettorali comunali, 1946-2024", "description": "Mappe e dati delle elezioni italiane comune per comune: Camera, Costituente ed Europee. Confronti storici, affluenza, risultati di lista e fonti ufficiali Eligendo.", "dataset": {"temporalCoverage": "1946/2024", "spatialCoverage": {"@type": "Country", "name": "Italy"}, "variableMeasured": ["Votes by electoral list", "Electors and voters where available", "Municipal turnout"], "isBasedOn": "https://elezionistorico.interno.gov.it/", "distribution": [{"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://electio-org.github.io/italia/data/derived/elections_master.csv"}, {"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://electio-org.github.io/italia/data/derived/european_elections_master.csv"}]}},
+    {"path": "data-download.html", "url": "data-download.html", "title": "Dataset elettorali italiani e download | Electio Italia", "description": "Catalogo e download dei dataset comunali Electio: elezioni della Camera, Assemblea Costituente e Parlamento europeo, con fonti e metadati."},
+    {"path": "usage-notes.html", "url": "usage-notes.html", "title": "Metodo, fonti e limiti dei dati elettorali | Electio Italia", "description": "Come Electio riconcilia risultati comunali e confini storici: Eligendo, ISTAT, corrispondenze dei partiti, dati mancanti e regole di confronto."},
+    {"path": "products.html", "url": "products.html", "title": "Prodotti e copertura dei dati elettorali | Electio Italia", "description": "Manifest, inventari e famiglie di prodotti dati pubblicati da Electio Italia. Copertura delle elezioni comunali e accesso ai bundle."},
+    {"path": "programmatic-access.html", "url": "programmatic-access.html", "title": "Accesso programmatico e citazione dei dati | Electio Italia", "description": "Come usare i dataset Electio in Python, R e JavaScript: loader, esempi, manifest, versioni e indicazioni per citare dati e fonti."},
+    {"path": "update-log.html", "url": "update-log.html", "title": "Aggiornamenti e versioni dei dataset | Electio Italia", "description": "Cronologia delle release e stato di copertura dei dati elettorali comunali di Electio Italia."}
+  ],
+  "resources": [{"name": "Source code", "url": "https://github.com/Electio-org/italia", "description": "Source code and reproducible data pipeline."}],
+  "citation": "Electio Italia, by Simone Ghezzi Colombo. Cite the page, election, metric, territorial basis, bundle version and the original official source. Missing or ambiguous geographic data must not be treated as zero or allocated arbitrarily."
+}

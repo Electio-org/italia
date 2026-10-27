@@ -3,17 +3,15 @@ title: Electio Italia
 message: "Please cite this project using the metadata below and mention the bundle version used."
 type: software
 authors:
-  - family-names: OpenAI
-    given-names: ChatGPT
-  - family-names: Simone
-    given-names: ""
-repository-code: ./
-url: ./
+  - family-names: Ghezzi Colombo
+    given-names: Simone
+repository-code: https://github.com/Electio-org/italia
+url: https://electio-org.github.io/italia/
 abstract: >-
-  Boundary-aware static explorer and data bundle for municipality-level analysis of Camera election results in Italy,
+  Boundary-aware static explorer and data bundle for municipality-level analysis of Italian Chamber,
+  Constituent Assembly and European Parliament election results,
   designed to combine public-facing exploration, methodological transparency and programmatic access.
-version: 0.21.0
-license: "Proprietary / project-specified"
+version: 0.25.0
 keywords:
   - elections
   - italy

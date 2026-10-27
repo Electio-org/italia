@@ -1,0 +1,17 @@
+# Electio Italia
+
+> Atlante elettorale italiano al livello comunale: Assemblea Costituente, Camera ed elezioni europee 1979-2024. Fonti Eligendo, confini storici, mappe e dataset verificabili.
+
+## Public pages
+
+- [Electio Italia | Risultati elettorali comunali, 1946-2024](https://electio-org.github.io/italia/): Mappe e dati delle elezioni italiane comune per comune: Camera, Costituente ed Europee. Confronti storici, affluenza, risultati di lista e fonti ufficiali Eligendo.
+- [Dataset elettorali italiani e download | Electio Italia](https://electio-org.github.io/italia/data-download.html): Catalogo e download dei dataset comunali Electio: elezioni della Camera, Assemblea Costituente e Parlamento europeo, con fonti e metadati.
+- [Metodo, fonti e limiti dei dati elettorali | Electio Italia](https://electio-org.github.io/italia/usage-notes.html): Come Electio riconcilia risultati comunali e confini storici: Eligendo, ISTAT, corrispondenze dei partiti, dati mancanti e regole di confronto.
+- [Prodotti e copertura dei dati elettorali | Electio Italia](https://electio-org.github.io/italia/products.html): Manifest, inventari e famiglie di prodotti dati pubblicati da Electio Italia. Copertura delle elezioni comunali e accesso ai bundle.
+- [Accesso programmatico e citazione dei dati | Electio Italia](https://electio-org.github.io/italia/programmatic-access.html): Come usare i dataset Electio in Python, R e JavaScript: loader, esempi, manifest, versioni e indicazioni per citare dati e fonti.
+- [Aggiornamenti e versioni dei dataset | Electio Italia](https://electio-org.github.io/italia/update-log.html): Cronologia delle release e stato di copertura dei dati elettorali comunali di Electio Italia.
+- [Source code](https://github.com/Electio-org/italia): Source code and reproducible data pipeline.
+
+## Attribution and interpretation
+
+Electio Italia, by Simone Ghezzi Colombo. Cite the page, election, metric, territorial basis, bundle version and the original official source. Missing or ambiguous geographic data must not be treated as zero or allocated arbitrarily.

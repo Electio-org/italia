@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel>
+<title>Electio Italia</title><link>https://electio-org.github.io/italia/</link><description>Atlante elettorale italiano al livello comunale: Assemblea Costituente, Camera ed elezioni europee 1979-2024. Fonti Eligendo, confini storici, mappe e dataset verificabili.</description>
+<atom:link href="https://electio-org.github.io/italia/feed.xml" rel="self" type="application/rss+xml"/>
+<item><title>Electio Italia</title><link>https://electio-org.github.io/italia/</link><guid isPermaLink="true">https://electio-org.github.io/italia/</guid><description>Atlante elettorale italiano al livello comunale: Assemblea Costituente, Camera ed elezioni europee 1979-2024. Fonti Eligendo, confini storici, mappe e dataset verificabili.</description><pubDate>Tue, 27 Oct 2026 00:00:00 +0000</pubDate></item>
+</channel></rss>
