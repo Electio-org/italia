@@ -10,6 +10,12 @@
 - [Prodotti e copertura dei dati elettorali | Electio Italia](https://electio-org.github.io/italia/products.html): Manifest, inventari e famiglie di prodotti dati pubblicati da Electio Italia. Copertura delle elezioni comunali e accesso ai bundle.
 - [Accesso programmatico e citazione dei dati | Electio Italia](https://electio-org.github.io/italia/programmatic-access.html): Come usare i dataset Electio in Python, R e JavaScript: loader, esempi, manifest, versioni e indicazioni per citare dati e fonti.
 - [Aggiornamenti e versioni dei dataset | Electio Italia](https://electio-org.github.io/italia/update-log.html): Cronologia delle release e stato di copertura dei dati elettorali comunali di Electio Italia.
+- [Elezioni italiane: schede, risultati e affluenza | Electio Italia](https://electio-org.github.io/italia/elezioni/): Schede delle elezioni Camera 2013, 2018 e 2022 ed Europee 2019 e 2024: voti di lista, affluenza comunale, confronti, fonti e dati scaricabili.
+- [Elezioni politiche 2022: Camera — risultati e affluenza | Electio Italia](https://electio-org.github.io/italia/elezioni/camera-2022/): Elezioni politiche 2022: Camera: voti alle liste e affluenza 63,91% nel perimetro comunale Electio. Confronto con 2018, fonti e dati CSV.
+- [Elezioni politiche 2018: Camera — risultati e affluenza | Electio Italia](https://electio-org.github.io/italia/elezioni/camera-2018/): Elezioni politiche 2018: Camera: voti alle liste e affluenza 72,94% nel perimetro comunale Electio. Confronto con 2013, fonti e dati CSV.
+- [Elezioni politiche 2013: Camera — risultati e affluenza | Electio Italia](https://electio-org.github.io/italia/elezioni/camera-2013/): Elezioni politiche 2013: Camera: voti alle liste e affluenza 75,20% nel perimetro comunale Electio. Confronto con 2008, fonti e dati CSV.
+- [Elezioni europee 2024 — risultati e affluenza | Electio Italia](https://electio-org.github.io/italia/elezioni/europee-2024/): Elezioni europee 2024: voti alle liste e affluenza 49,67% nel perimetro comunale Electio. Confronto con 2019, fonti e dati CSV.
+- [Elezioni europee 2019 — risultati e affluenza | Electio Italia](https://electio-org.github.io/italia/elezioni/europee-2019/): Elezioni europee 2019: voti alle liste e affluenza 56,09% nel perimetro comunale Electio. Confronto con 2014, fonti e dati CSV.
 - [Source code](https://github.com/Electio-org/italia): Source code and reproducible data pipeline.
 
 ## Attribution and interpretation

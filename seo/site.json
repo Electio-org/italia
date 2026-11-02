@@ -3,6 +3,7 @@
   "url": "https://electio-org.github.io/italia/",
   "description": "Atlante elettorale italiano al livello comunale: Assemblea Costituente, Camera ed elezioni europee 1979-2024. Fonti Eligendo, confini storici, mappe e dataset verificabili.",
   "published": "2026-10-27", "image": "social-preview.png", "languages": ["it"],
+  "election_pages_manifest": "seo/election-pages.json",
   "pages": [
     {"path": "index.html", "url": "", "title": "Electio Italia | Risultati elettorali comunali, 1946-2024", "description": "Mappe e dati delle elezioni italiane comune per comune: Camera, Costituente ed Europee. Confronti storici, affluenza, risultati di lista e fonti ufficiali Eligendo.", "dataset": {"temporalCoverage": "1946/2024", "spatialCoverage": {"@type": "Country", "name": "Italy"}, "variableMeasured": ["Votes by electoral list", "Electors and voters where available", "Municipal turnout"], "isBasedOn": "https://elezionistorico.interno.gov.it/", "distribution": [{"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://electio-org.github.io/italia/data/derived/elections_master.csv"}, {"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://electio-org.github.io/italia/data/derived/european_elections_master.csv"}]}},
     {"path": "data-download.html", "url": "data-download.html", "title": "Dataset elettorali italiani e download | Electio Italia", "description": "Catalogo e download dei dataset comunali Electio: elezioni della Camera, Assemblea Costituente e Parlamento europeo, con fonti e metadati."},

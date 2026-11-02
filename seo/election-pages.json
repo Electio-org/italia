@@ -1,0 +1,210 @@
+[
+  {
+    "path": "elezioni/index.html",
+    "url": "elezioni/",
+    "title": "Elezioni italiane: schede, risultati e affluenza | Electio Italia",
+    "description": "Schede delle elezioni Camera 2013, 2018 e 2022 ed Europee 2019 e 2024: voti di lista, affluenza comunale, confronti, fonti e dati scaricabili.",
+    "type": "CollectionPage",
+    "network_in_footer": true
+  },
+  {
+    "path": "elezioni/camera-2022/index.html",
+    "url": "elezioni/camera-2022/",
+    "title": "Elezioni politiche 2022: Camera — risultati e affluenza | Electio Italia",
+    "description": "Elezioni politiche 2022: Camera: voti alle liste e affluenza 63,91% nel perimetro comunale Electio. Confronto con 2018, fonti e dati CSV.",
+    "network_in_footer": true,
+    "dataset": {
+      "temporalCoverage": "2022-09-25",
+      "dateModified": "2026-11-02",
+      "version": "0.25.0",
+      "measurementTechnique": "Aggregation of municipal election shards harmonized to the 2021 municipal geography; matched-unit turnout comparisons",
+      "isBasedOn": "https://elezionistorico.interno.gov.it/eligendo/opendata.php",
+      "spatialCoverage": {
+        "@type": "Place",
+        "name": "Italy, municipalities covered by Electio on the 2021 geographic basis"
+      },
+      "variableMeasured": [
+        "Observed list votes",
+        "Share of list votes in covered units",
+        "Weighted aggregate turnout"
+      ],
+      "distribution": [
+        {
+          "@type": "DataDownload",
+          "encodingFormat": "application/gzip",
+          "contentUrl": "https://electio-org.github.io/italia/data/derived/summary_by_election/camera_2022.csv.gz"
+        },
+        {
+          "@type": "DataDownload",
+          "encodingFormat": "application/gzip",
+          "contentUrl": "https://electio-org.github.io/italia/data/derived/results_by_election/camera_2022.csv.gz"
+        },
+        {
+          "@type": "DataDownload",
+          "encodingFormat": "application/gzip",
+          "contentUrl": "https://electio-org.github.io/italia/data/derived/summary_by_election/camera_2018.csv.gz"
+        }
+      ]
+    }
+  },
+  {
+    "path": "elezioni/camera-2018/index.html",
+    "url": "elezioni/camera-2018/",
+    "title": "Elezioni politiche 2018: Camera — risultati e affluenza | Electio Italia",
+    "description": "Elezioni politiche 2018: Camera: voti alle liste e affluenza 72,94% nel perimetro comunale Electio. Confronto con 2013, fonti e dati CSV.",
+    "network_in_footer": true,
+    "dataset": {
+      "temporalCoverage": "2018-03-04",
+      "dateModified": "2026-11-02",
+      "version": "0.25.0",
+      "measurementTechnique": "Aggregation of municipal election shards harmonized to the 2021 municipal geography; matched-unit turnout comparisons",
+      "isBasedOn": "https://elezionistorico.interno.gov.it/eligendo/opendata.php",
+      "spatialCoverage": {
+        "@type": "Place",
+        "name": "Italy, municipalities covered by Electio on the 2021 geographic basis"
+      },
+      "variableMeasured": [
+        "Observed list votes",
+        "Share of list votes in covered units",
+        "Weighted aggregate turnout"
+      ],
+      "distribution": [
+        {
+          "@type": "DataDownload",
+          "encodingFormat": "application/gzip",
+          "contentUrl": "https://electio-org.github.io/italia/data/derived/summary_by_election/camera_2018.csv.gz"
+        },
+        {
+          "@type": "DataDownload",
+          "encodingFormat": "application/gzip",
+          "contentUrl": "https://electio-org.github.io/italia/data/derived/results_by_election/camera_2018.csv.gz"
+        },
+        {
+          "@type": "DataDownload",
+          "encodingFormat": "application/gzip",
+          "contentUrl": "https://electio-org.github.io/italia/data/derived/summary_by_election/camera_2013.csv.gz"
+        }
+      ]
+    }
+  },
+  {
+    "path": "elezioni/camera-2013/index.html",
+    "url": "elezioni/camera-2013/",
+    "title": "Elezioni politiche 2013: Camera — risultati e affluenza | Electio Italia",
+    "description": "Elezioni politiche 2013: Camera: voti alle liste e affluenza 75,20% nel perimetro comunale Electio. Confronto con 2008, fonti e dati CSV.",
+    "network_in_footer": true,
+    "dataset": {
+      "temporalCoverage": "2013-02-24",
+      "dateModified": "2026-11-02",
+      "version": "0.25.0",
+      "measurementTechnique": "Aggregation of municipal election shards harmonized to the 2021 municipal geography; matched-unit turnout comparisons",
+      "isBasedOn": "https://elezionistorico.interno.gov.it/eligendo/opendata.php",
+      "spatialCoverage": {
+        "@type": "Place",
+        "name": "Italy, municipalities covered by Electio on the 2021 geographic basis"
+      },
+      "variableMeasured": [
+        "Observed list votes",
+        "Share of list votes in covered units",
+        "Weighted aggregate turnout"
+      ],
+      "distribution": [
+        {
+          "@type": "DataDownload",
+          "encodingFormat": "application/gzip",
+          "contentUrl": "https://electio-org.github.io/italia/data/derived/summary_by_election/camera_2013.csv.gz"
+        },
+        {
+          "@type": "DataDownload",
+          "encodingFormat": "application/gzip",
+          "contentUrl": "https://electio-org.github.io/italia/data/derived/results_by_election/camera_2013.csv.gz"
+        },
+        {
+          "@type": "DataDownload",
+          "encodingFormat": "application/gzip",
+          "contentUrl": "https://electio-org.github.io/italia/data/derived/summary_by_election/camera_2008.csv.gz"
+        }
+      ]
+    }
+  },
+  {
+    "path": "elezioni/europee-2024/index.html",
+    "url": "elezioni/europee-2024/",
+    "title": "Elezioni europee 2024 — risultati e affluenza | Electio Italia",
+    "description": "Elezioni europee 2024: voti alle liste e affluenza 49,67% nel perimetro comunale Electio. Confronto con 2019, fonti e dati CSV.",
+    "network_in_footer": true,
+    "dataset": {
+      "temporalCoverage": "2024-06-09",
+      "dateModified": "2026-11-02",
+      "version": "0.25.0",
+      "measurementTechnique": "Aggregation of municipal election shards harmonized to the 2021 municipal geography; matched-unit turnout comparisons",
+      "isBasedOn": "https://elezionistorico.interno.gov.it/eligendo/opendata.php",
+      "spatialCoverage": {
+        "@type": "Place",
+        "name": "Italy, municipalities covered by Electio on the 2021 geographic basis"
+      },
+      "variableMeasured": [
+        "Observed list votes",
+        "Share of list votes in covered units",
+        "Weighted aggregate turnout"
+      ],
+      "distribution": [
+        {
+          "@type": "DataDownload",
+          "encodingFormat": "application/gzip",
+          "contentUrl": "https://electio-org.github.io/italia/data/derived/summary_by_election/europee_2024.csv.gz"
+        },
+        {
+          "@type": "DataDownload",
+          "encodingFormat": "application/gzip",
+          "contentUrl": "https://electio-org.github.io/italia/data/derived/results_by_election/europee_2024.csv.gz"
+        },
+        {
+          "@type": "DataDownload",
+          "encodingFormat": "application/gzip",
+          "contentUrl": "https://electio-org.github.io/italia/data/derived/summary_by_election/europee_2019.csv.gz"
+        }
+      ]
+    }
+  },
+  {
+    "path": "elezioni/europee-2019/index.html",
+    "url": "elezioni/europee-2019/",
+    "title": "Elezioni europee 2019 — risultati e affluenza | Electio Italia",
+    "description": "Elezioni europee 2019: voti alle liste e affluenza 56,09% nel perimetro comunale Electio. Confronto con 2014, fonti e dati CSV.",
+    "network_in_footer": true,
+    "dataset": {
+      "temporalCoverage": "2019-05-26",
+      "dateModified": "2026-11-02",
+      "version": "0.25.0",
+      "measurementTechnique": "Aggregation of municipal election shards harmonized to the 2021 municipal geography; matched-unit turnout comparisons",
+      "isBasedOn": "https://elezionistorico.interno.gov.it/eligendo/opendata.php",
+      "spatialCoverage": {
+        "@type": "Place",
+        "name": "Italy, municipalities covered by Electio on the 2021 geographic basis"
+      },
+      "variableMeasured": [
+        "Observed list votes",
+        "Share of list votes in covered units",
+        "Weighted aggregate turnout"
+      ],
+      "distribution": [
+        {
+          "@type": "DataDownload",
+          "encodingFormat": "application/gzip",
+          "contentUrl": "https://electio-org.github.io/italia/data/derived/summary_by_election/europee_2019.csv.gz"
+        },
+        {
+          "@type": "DataDownload",
+          "encodingFormat": "application/gzip",
+          "contentUrl": "https://electio-org.github.io/italia/data/derived/results_by_election/europee_2019.csv.gz"
+        },
+        {
+          "@type": "DataDownload",
+          "encodingFormat": "application/gzip",
+          "contentUrl": "https://electio-org.github.io/italia/data/derived/summary_by_election/europee_2014.csv.gz"
+        }
+      ]
+    }
+  }
+]

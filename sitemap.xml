@@ -2,6 +2,12 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://electio-org.github.io/italia/</loc></url>
   <url><loc>https://electio-org.github.io/italia/data-download.html</loc></url>
+  <url><loc>https://electio-org.github.io/italia/elezioni/</loc></url>
+  <url><loc>https://electio-org.github.io/italia/elezioni/camera-2013/</loc></url>
+  <url><loc>https://electio-org.github.io/italia/elezioni/camera-2018/</loc></url>
+  <url><loc>https://electio-org.github.io/italia/elezioni/camera-2022/</loc></url>
+  <url><loc>https://electio-org.github.io/italia/elezioni/europee-2019/</loc></url>
+  <url><loc>https://electio-org.github.io/italia/elezioni/europee-2024/</loc></url>
   <url><loc>https://electio-org.github.io/italia/products.html</loc></url>
   <url><loc>https://electio-org.github.io/italia/programmatic-access.html</loc></url>
   <url><loc>https://electio-org.github.io/italia/update-log.html</loc></url>

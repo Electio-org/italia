@@ -7,7 +7,7 @@ This repository is the focused home for the national build: a web dashboard, a s
 **Current coverage (shipped):** `Camera dei Deputati` (1948–2022), `Assemblea Costituente` 1946, and every `European Parliament election` (1979–2024).
 **Roadmap:** `Senato`, `Regionali`, `Comunali`, `Referendum` — all at the municipal level.
 
-**Live site:** https://simoneghezzicolombo.github.io/electio/ (GitHub Pages; a custom domain can be added later by restoring the `CNAME` file).
+**Live site:** https://electio-org.github.io/italia/ (GitHub Pages).
 
 ## What is in this repository
 
@@ -35,6 +35,27 @@ This repository is the focused home for the national build: a web dashboard, a s
 - `update-log.html`: release-facing log for the current bundle
 
 ## Run locally
+
+### Election reading pages
+
+`elezioni/` contains a crawlable HTML archive and five election records (Camera
+2013/2018/2022; European Parliament 2019/2024). They use the same harmonized
+municipal shards as the map, with explicit coverage and matched-unit turnout
+comparisons. They are **not** official national result or seat-allocation tables.
+
+After updating their input shards or `seo/elections.json`, regenerate and test:
+
+```text
+python scripts/build_election_pages.py
+python scripts/build_discovery.py
+python -m unittest discover -s tests -p test_election_pages.py -v
+```
+
+Commit the generated `elezioni/`, `assets/election-pages-data.json` and
+`seo/election-pages.json` outputs with the discovery files. The generator makes
+no network requests and preserves the source data. Input hashes and aggregation
+denominators are included in the JSON audit output. All results remain readable
+without JavaScript; search and regional sorting are progressive enhancements.
 
 Requirements:
 

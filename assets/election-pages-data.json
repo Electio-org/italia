@@ -1,0 +1,1968 @@
+{
+  "generated_by": "scripts/build_election_pages.py",
+  "updated": "2026-11-02",
+  "bundle_version": "0.25.0",
+  "territorial_basis": "2021-12-31",
+  "elections": [
+    {
+      "key": "camera_2022",
+      "previous": "camera_2018",
+      "slug": "camera-2022",
+      "title": "Elezioni politiche 2022: Camera",
+      "family": "Camera dei deputati",
+      "date": "2022-09-25",
+      "previous_year": 2018,
+      "year": 2022,
+      "rows": 7829,
+      "result_units": 7829,
+      "turnout": {
+        "units": 7829,
+        "electors": 46021956.0,
+        "voters": 29413657.0,
+        "turnout": 63.91222702485744
+      },
+      "total_votes": 27069655,
+      "parties": [
+        {
+          "name": "FdI",
+          "votes": 7098555,
+          "aliases": [
+            "Fratelli d'Italia Con Giorgia Meloni"
+          ],
+          "share": 26.22329320414316
+        },
+        {
+          "name": "PD",
+          "votes": 5128861,
+          "aliases": [
+            "Partito Democratico - Italia Democratica e Progressista"
+          ],
+          "share": 18.94690198305076
+        },
+        {
+          "name": "M5S",
+          "votes": 4178360,
+          "aliases": [
+            "Movimento 5 Stelle"
+          ],
+          "share": 15.435586452801116
+        },
+        {
+          "name": "Lega",
+          "votes": 2392976,
+          "aliases": [
+            "Lega Per Salvini Premier"
+          ],
+          "share": 8.84006833481993
+        },
+        {
+          "name": "Forza Italia",
+          "votes": 2218466,
+          "aliases": [
+            "Forza Italia"
+          ],
+          "share": 8.195398131228492
+        },
+        {
+          "name": "Azione / IV",
+          "votes": 2065444,
+          "aliases": [
+            "Azione - Italia Viva - Calenda"
+          ],
+          "share": 7.630108326094293
+        },
+        {
+          "name": "AVS / Verdi",
+          "votes": 972919,
+          "aliases": [
+            "Alleanza Verdi e Sinistra"
+          ],
+          "share": 3.594131509987844
+        },
+        {
+          "name": "+Europa",
+          "votes": 759872,
+          "aliases": [
+            "+Europa"
+          ],
+          "share": 2.8070989452950177
+        },
+        {
+          "name": "Italexit Per l'Italia",
+          "votes": 516465,
+          "aliases": [
+            "Italexit Per l'Italia"
+          ],
+          "share": 1.907911275559293
+        },
+        {
+          "name": "Unione Popolare",
+          "votes": 378959,
+          "aliases": [
+            "Unione Popolare Con de Magistris"
+          ],
+          "share": 1.3999402652157924
+        },
+        {
+          "name": "Italia Sovrana e Popolare",
+          "votes": 336648,
+          "aliases": [
+            "Italia Sovrana e Popolare"
+          ],
+          "share": 1.24363609362587
+        },
+        {
+          "name": "Noi Moderati/Lupi - Toti - Brugnaro - Udc",
+          "votes": 247436,
+          "aliases": [
+            "Noi Moderati/Lupi - Toti - Brugnaro - Udc"
+          ],
+          "share": 0.9140714944464566
+        },
+        {
+          "name": "Sud Chiama Nord",
+          "votes": 208793,
+          "aliases": [
+            "Sud Chiama Nord"
+          ],
+          "share": 0.7713175509625076
+        },
+        {
+          "name": "Vita",
+          "votes": 192038,
+          "aliases": [
+            "Vita"
+          ],
+          "share": 0.709421675303952
+        },
+        {
+          "name": "Impegno Civico",
+          "votes": 161624,
+          "aliases": [
+            "Impegno Civico Luigi di Maio - Centro Democratico"
+          ],
+          "share": 0.5970670848963535
+        },
+        {
+          "name": "Sudtiroler Volkspartei (Svp) - Patt",
+          "votes": 106092,
+          "aliases": [
+            "Sudtiroler Volkspartei (Svp) - Patt"
+          ],
+          "share": 0.3919222465155171
+        },
+        {
+          "name": "Mastella Noi di Centro Europeisti",
+          "votes": 43712,
+          "aliases": [
+            "Mastella Noi di Centro Europeisti"
+          ],
+          "share": 0.16147970855188218
+        },
+        {
+          "name": "Partito Comunista Italiano",
+          "votes": 23736,
+          "aliases": [
+            "Partito Comunista Italiano"
+          ],
+          "share": 0.08768490030626545
+        },
+        {
+          "name": "Partito Animalista - Ucdl - 10 Volte Meglio",
+          "votes": 20082,
+          "aliases": [
+            "Partito Animalista - Ucdl - 10 Volte Meglio"
+          ],
+          "share": 0.07418639062817757
+        },
+        {
+          "name": "Alternativa Per l'Italia - No Green Pass",
+          "votes": 15814,
+          "aliases": [
+            "Alternativa Per l'Italia - No Green Pass"
+          ],
+          "share": 0.058419658469973115
+        },
+        {
+          "name": "Partito della Follia Creativa",
+          "votes": 1304,
+          "aliases": [
+            "Partito della Follia Creativa"
+          ],
+          "share": 0.0048172021401824295
+        },
+        {
+          "name": "Forza del Popolo",
+          "votes": 763,
+          "aliases": [
+            "Forza del Popolo"
+          ],
+          "share": 0.002818654319753983
+        },
+        {
+          "name": "Free",
+          "votes": 736,
+          "aliases": [
+            "Free"
+          ],
+          "share": 0.0027189116374035796
+        }
+      ],
+      "common": 7822,
+      "paired_current": {
+        "units": 7822,
+        "electors": 46008176.0,
+        "voters": 29404917.0,
+        "turnout": 63.9123728791161
+      },
+      "paired_previous": {
+        "units": 7822,
+        "electors": 46502875.0,
+        "voters": 33921313.0,
+        "turnout": 72.94455020254124
+      },
+      "delta": -9.032177323425138,
+      "regions": [
+        {
+          "name": "Emilia-Romagna",
+          "units": 330,
+          "current": 71.96901025650423,
+          "previous": 78.29305049216325,
+          "delta": -6.324040235659012
+        },
+        {
+          "name": "Veneto",
+          "units": 563,
+          "current": 70.17142112203501,
+          "previous": 78.72450930684221,
+          "delta": -8.553088184807194
+        },
+        {
+          "name": "Lombardia",
+          "units": 1506,
+          "current": 70.08779933772752,
+          "previous": 76.84188129218454,
+          "delta": -6.754081954457021
+        },
+        {
+          "name": "Toscana",
+          "units": 273,
+          "current": 69.7480007667269,
+          "previous": 77.46770564257685,
+          "delta": -7.719704875849942
+        },
+        {
+          "name": "Umbria",
+          "units": 92,
+          "current": 68.83312641407413,
+          "previous": 78.23409632120753,
+          "delta": -9.400969907133401
+        },
+        {
+          "name": "Marche",
+          "units": 225,
+          "current": 68.39334578688636,
+          "previous": 77.2856253553299,
+          "delta": -8.892279568443541
+        },
+        {
+          "name": "Piemonte",
+          "units": 1179,
+          "current": 66.34958984663307,
+          "previous": 75.18306214546472,
+          "delta": -8.833472298831651
+        },
+        {
+          "name": "Friuli Venezia Giulia",
+          "units": 214,
+          "current": 66.20973115421761,
+          "previous": 75.11937675430093,
+          "delta": -8.909645600083323
+        },
+        {
+          "name": "Trentino-Alto Adige",
+          "units": 280,
+          "current": 66.04549607139907,
+          "previous": 74.28923160925497,
+          "delta": -8.243735537855898
+        },
+        {
+          "name": "Lazio",
+          "units": 378,
+          "current": 64.34275281681305,
+          "previous": 72.60013559622438,
+          "delta": -8.25738277941133
+        },
+        {
+          "name": "Liguria",
+          "units": 233,
+          "current": 64.16074316257185,
+          "previous": 71.96475667362947,
+          "delta": -7.804013511057619
+        },
+        {
+          "name": "Abruzzo",
+          "units": 305,
+          "current": 63.98740377068942,
+          "previous": 75.25457751566023,
+          "delta": -11.267173744970812
+        },
+        {
+          "name": "Basilicata",
+          "units": 131,
+          "current": 58.770722097227356,
+          "previous": 71.11273899664626,
+          "delta": -12.342016899418901
+        },
+        {
+          "name": "Sicilia",
+          "units": 389,
+          "current": 57.31689152921092,
+          "previous": 62.75537548555027,
+          "delta": -5.438483956339347
+        },
+        {
+          "name": "Molise",
+          "units": 136,
+          "current": 56.6199504682554,
+          "previous": 71.62584412926788,
+          "delta": -15.005893661012479
+        },
+        {
+          "name": "Puglia",
+          "units": 257,
+          "current": 56.5554507188977,
+          "previous": 69.07939748433677,
+          "delta": -12.523946765439064
+        },
+        {
+          "name": "Campania",
+          "units": 550,
+          "current": 53.27579487274986,
+          "previous": 68.17957191867582,
+          "delta": -14.903777045925956
+        },
+        {
+          "name": "Sardegna",
+          "units": 377,
+          "current": 53.16662085835101,
+          "previous": 65.51070501311318,
+          "delta": -12.344084154762172
+        },
+        {
+          "name": "Calabria",
+          "units": 404,
+          "current": 50.79748322125233,
+          "previous": 63.71350110843769,
+          "delta": -12.916017887185362
+        }
+      ],
+      "files": [
+        "data/derived/summary_by_election/camera_2022.csv.gz",
+        "data/derived/results_by_election/camera_2022.csv.gz",
+        "data/derived/summary_by_election/camera_2018.csv.gz"
+      ],
+      "archive": "camera-20220925.zip",
+      "input_sha256": {
+        "data/derived/summary_by_election/camera_2022.csv.gz": "6c050898a9f1eef1841f2f731159190c4b9d755a9bdd3b45e0836f67bc6bd94c",
+        "data/derived/results_by_election/camera_2022.csv.gz": "ed8eb2e16ba087e2d7464c20b2e502f478718808191c83f845b75878ce097185",
+        "data/derived/summary_by_election/camera_2018.csv.gz": "25bece30c3e890d4624352b24c40c5803d626b383ba4c1a9032e61f7b2c8e364"
+      }
+    },
+    {
+      "key": "camera_2018",
+      "previous": "camera_2013",
+      "slug": "camera-2018",
+      "title": "Elezioni politiche 2018: Camera",
+      "family": "Camera dei deputati",
+      "date": "2018-03-04",
+      "previous_year": 2013,
+      "year": 2018,
+      "rows": 7898,
+      "result_units": 7824,
+      "turnout": {
+        "units": 7897,
+        "electors": 46603443.0,
+        "voters": 33993990.0,
+        "turnout": 72.94308705903983
+      },
+      "total_votes": 31582538,
+      "parties": [
+        {
+          "name": "M5S",
+          "votes": 10237523,
+          "aliases": [
+            "Movimento 5 Stelle"
+          ],
+          "share": 32.41513712419186
+        },
+        {
+          "name": "PD",
+          "votes": 5888232,
+          "aliases": [
+            "Partito Democratico"
+          ],
+          "share": 18.643948120952153
+        },
+        {
+          "name": "Lega",
+          "votes": 5576270,
+          "aliases": [
+            "Lega"
+          ],
+          "share": 17.65618076672622
+        },
+        {
+          "name": "Forza Italia",
+          "votes": 4498106,
+          "aliases": [
+            "Forza Italia"
+          ],
+          "share": 14.242382926919934
+        },
+        {
+          "name": "FdI",
+          "votes": 1398312,
+          "aliases": [
+            "Fratelli d'Italia Con Giorgia Meloni"
+          ],
+          "share": 4.427484580244944
+        },
+        {
+          "name": "Liberi e Uguali",
+          "votes": 1032713,
+          "aliases": [
+            "Liberi e Uguali"
+          ],
+          "share": 3.2698860363913758
+        },
+        {
+          "name": "+Europa",
+          "votes": 803621,
+          "aliases": [
+            "+Europa"
+          ],
+          "share": 2.544510514006189
+        },
+        {
+          "name": "Noi Con l'Italia - Udc",
+          "votes": 417702,
+          "aliases": [
+            "Noi Con l'Italia - Udc"
+          ],
+          "share": 1.3225726190846347
+        },
+        {
+          "name": "Potere al Popolo!",
+          "votes": 349508,
+          "aliases": [
+            "Potere al Popolo!"
+          ],
+          "share": 1.1066495035959427
+        },
+        {
+          "name": "Casapound Italia",
+          "votes": 294734,
+          "aliases": [
+            "Casapound Italia"
+          ],
+          "share": 0.9332182233106155
+        },
+        {
+          "name": "Il Popolo della Famiglia",
+          "votes": 206346,
+          "aliases": [
+            "Il Popolo della Famiglia"
+          ],
+          "share": 0.6533547113914658
+        },
+        {
+          "name": "Italia Europa Insieme",
+          "votes": 180980,
+          "aliases": [
+            "Italia Europa Insieme"
+          ],
+          "share": 0.5730381769824832
+        },
+        {
+          "name": "Civica Popolare Lorenzin",
+          "votes": 168269,
+          "aliases": [
+            "Civica Popolare Lorenzin"
+          ],
+          "share": 0.5327912531918746
+        },
+        {
+          "name": "Svp - Patt",
+          "votes": 126769,
+          "aliases": [
+            "Svp - Patt"
+          ],
+          "share": 0.4013895273394431
+        },
+        {
+          "name": "Italia Agli Italiani",
+          "votes": 119980,
+          "aliases": [
+            "Italia Agli Italiani"
+          ],
+          "share": 0.3798934715126441
+        },
+        {
+          "name": "Partito Comunista",
+          "votes": 102030,
+          "aliases": [
+            "Partito Comunista"
+          ],
+          "share": 0.32305826719815867
+        },
+        {
+          "name": "Partito Valore Umano",
+          "votes": 44610,
+          "aliases": [
+            "Partito Valore Umano"
+          ],
+          "share": 0.14124893952474624
+        },
+        {
+          "name": "10 Volte Meglio",
+          "votes": 33225,
+          "aliases": [
+            "10 Volte Meglio"
+          ],
+          "share": 0.10520053834812135
+        },
+        {
+          "name": "Per Una Sinistra Rivoluzionaria",
+          "votes": 27138,
+          "aliases": [
+            "Per Una Sinistra Rivoluzionaria"
+          ],
+          "share": 0.08592722978754906
+        },
+        {
+          "name": "Partito Repubblicano Italiano - Ala",
+          "votes": 18866,
+          "aliases": [
+            "Partito Repubblicano Italiano - Ala"
+          ],
+          "share": 0.059735541203180066
+        },
+        {
+          "name": "Grande Nord",
+          "votes": 18556,
+          "aliases": [
+            "Grande Nord"
+          ],
+          "share": 0.05875398614259564
+        },
+        {
+          "name": "Autodeterminatzione",
+          "votes": 18237,
+          "aliases": [
+            "Autodeterminatzione"
+          ],
+          "share": 0.05774393432218779
+        },
+        {
+          "name": "Lista del Popolo Per La Costituzione",
+          "votes": 9088,
+          "aliases": [
+            "Lista del Popolo Per La Costituzione"
+          ],
+          "share": 0.028775394808358973
+        },
+        {
+          "name": "Patto Per l'Autonomia",
+          "votes": 5871,
+          "aliases": [
+            "Patto Per l'Autonomia"
+          ],
+          "share": 0.018589386324810248
+        },
+        {
+          "name": "Blocco Nazionale Per Le Liberta'",
+          "votes": 3376,
+          "aliases": [
+            "Blocco Nazionale Per Le Liberta'"
+          ],
+          "share": 0.010689451240429127
+        },
+        {
+          "name": "Siamo",
+          "votes": 1298,
+          "aliases": [
+            "Siamo"
+          ],
+          "share": 0.004109866027866412
+        },
+        {
+          "name": "Rinascimento Mir",
+          "votes": 676,
+          "aliases": [
+            "Rinascimento Mir"
+          ],
+          "share": 0.0021404232934034624
+        },
+        {
+          "name": "Italia Nel Cuore",
+          "votes": 502,
+          "aliases": [
+            "Italia Nel Cuore"
+          ],
+          "share": 0.0015894859368173642
+        }
+      ],
+      "common": 7794,
+      "paired_current": {
+        "units": 7794,
+        "electors": 46326087.0,
+        "voters": 33793247.0,
+        "turnout": 72.94647398127971
+      },
+      "paired_previous": {
+        "units": 7794,
+        "electors": 46700296.0,
+        "voters": 35119773.0,
+        "turnout": 75.20246338481452
+      },
+      "delta": -2.2559894035348123,
+      "regions": [
+        {
+          "name": "Veneto",
+          "units": 562,
+          "current": 78.72486805333281,
+          "previous": 81.71531503351163,
+          "delta": -2.9904469801788167
+        },
+        {
+          "name": "Emilia-Romagna",
+          "units": 330,
+          "current": 78.29305049216325,
+          "previous": 82.10643472872202,
+          "delta": -3.8133842365587753
+        },
+        {
+          "name": "Umbria",
+          "units": 92,
+          "current": 78.23409632120753,
+          "previous": 79.53406820953623,
+          "delta": -1.2999718883286988
+        },
+        {
+          "name": "Toscana",
+          "units": 271,
+          "current": 77.56226754879701,
+          "previous": 79.2829336550334,
+          "delta": -1.7206661062363935
+        },
+        {
+          "name": "Marche",
+          "units": 222,
+          "current": 77.27725426454968,
+          "previous": 79.83327418087867,
+          "delta": -2.5560199163289923
+        },
+        {
+          "name": "Lombardia",
+          "units": 1498,
+          "current": 76.83018625665059,
+          "previous": 79.60705418480565,
+          "delta": -2.776867928155056
+        },
+        {
+          "name": "Abruzzo",
+          "units": 305,
+          "current": 75.25457751566023,
+          "previous": 75.94786085985358,
+          "delta": -0.6932833441933468
+        },
+        {
+          "name": "Piemonte",
+          "units": 1173,
+          "current": 75.17194747958773,
+          "previous": 77.27408115504443,
+          "delta": -2.102133675456699
+        },
+        {
+          "name": "Friuli Venezia Giulia",
+          "units": 214,
+          "current": 75.11937675430093,
+          "previous": 77.18105321573432,
+          "delta": -2.061676461433393
+        },
+        {
+          "name": "Trentino-Alto Adige",
+          "units": 278,
+          "current": 74.28244328946435,
+          "previous": 81.04604865385092,
+          "delta": -6.763605364386564
+        },
+        {
+          "name": "Lazio",
+          "units": 377,
+          "current": 72.67967465139591,
+          "previous": 77.502906016925,
+          "delta": -4.823231365529082
+        },
+        {
+          "name": "Liguria",
+          "units": 232,
+          "current": 71.96662953019914,
+          "previous": 75.10313122743327,
+          "delta": -3.1365016972341238
+        },
+        {
+          "name": "Molise",
+          "units": 136,
+          "current": 71.62584412926788,
+          "previous": 78.13196543616989,
+          "delta": -6.506121306902017
+        },
+        {
+          "name": "Basilicata",
+          "units": 131,
+          "current": 71.11273899664626,
+          "previous": 69.49539935296836,
+          "delta": 1.6173396436778944
+        },
+        {
+          "name": "Puglia",
+          "units": 257,
+          "current": 69.07939748433677,
+          "previous": 69.94489951309862,
+          "delta": -0.8655020287618527
+        },
+        {
+          "name": "Campania",
+          "units": 548,
+          "current": 68.15537088128897,
+          "previous": 67.86022705501125,
+          "delta": 0.29514382627772306
+        },
+        {
+          "name": "Sardegna",
+          "units": 377,
+          "current": 65.51070501311318,
+          "previous": 68.31733757810731,
+          "delta": -2.806632564994132
+        },
+        {
+          "name": "Calabria",
+          "units": 403,
+          "current": 63.73569374529252,
+          "previous": 63.27416387684327,
+          "delta": 0.46152986844925437
+        },
+        {
+          "name": "Sicilia",
+          "units": 388,
+          "current": 62.74387636491414,
+          "previous": 64.57572219733471,
+          "delta": -1.8318458324205693
+        }
+      ],
+      "files": [
+        "data/derived/summary_by_election/camera_2018.csv.gz",
+        "data/derived/results_by_election/camera_2018.csv.gz",
+        "data/derived/summary_by_election/camera_2013.csv.gz"
+      ],
+      "archive": "camera-20180304.zip",
+      "input_sha256": {
+        "data/derived/summary_by_election/camera_2018.csv.gz": "25bece30c3e890d4624352b24c40c5803d626b383ba4c1a9032e61f7b2c8e364",
+        "data/derived/results_by_election/camera_2018.csv.gz": "0a6be933d230d9427d562e9849f202f0f535c3bab76501ef8c551c76a75f270b",
+        "data/derived/summary_by_election/camera_2013.csv.gz": "531e1884af809f845759392b60c2cdc4844c12ceac1a809052c15c471dc35f78"
+      }
+    },
+    {
+      "key": "camera_2013",
+      "previous": "camera_2008",
+      "slug": "camera-2013",
+      "title": "Elezioni politiche 2013: Camera",
+      "family": "Camera dei deputati",
+      "date": "2013-02-24",
+      "previous_year": 2008,
+      "year": 2013,
+      "rows": 7819,
+      "result_units": 7819,
+      "turnout": {
+        "units": 7795,
+        "electors": 46700505.0,
+        "voters": 35119940.0,
+        "turnout": 75.2024844270956
+      },
+      "total_votes": 34002523,
+      "parties": [
+        {
+          "name": "M5S",
+          "votes": 8689584,
+          "aliases": [
+            "Movimento 5 Stelle Beppegrillo.It"
+          ],
+          "share": 25.555703616463994
+        },
+        {
+          "name": "PD",
+          "votes": 8644542,
+          "aliases": [
+            "Partito Democratico"
+          ],
+          "share": 25.423236975679714
+        },
+        {
+          "name": "Il Popolo della Liberta'",
+          "votes": 7332829,
+          "aliases": [
+            "Il Popolo della Liberta'"
+          ],
+          "share": 21.565543827438923
+        },
+        {
+          "name": "Scelta Civica Con Monti Per l'Italia",
+          "votes": 2824064,
+          "aliases": [
+            "Scelta Civica Con Monti Per l'Italia"
+          ],
+          "share": 8.305454274672499
+        },
+        {
+          "name": "Lega",
+          "votes": 1390153,
+          "aliases": [
+            "Lega Nord"
+          ],
+          "share": 4.088381912130461
+        },
+        {
+          "name": "Sinistra Ecologia Liberta'",
+          "votes": 1089562,
+          "aliases": [
+            "Sinistra Ecologia Liberta'"
+          ],
+          "share": 3.2043563355578057
+        },
+        {
+          "name": "Rivoluzione Civile",
+          "votes": 765194,
+          "aliases": [
+            "Rivoluzione Civile"
+          ],
+          "share": 2.2504035950508734
+        },
+        {
+          "name": "FdI",
+          "votes": 665835,
+          "aliases": [
+            "Fratelli d'Italia"
+          ],
+          "share": 1.958192925860237
+        },
+        {
+          "name": "Unione di Centro",
+          "votes": 608205,
+          "aliases": [
+            "Unione di Centro"
+          ],
+          "share": 1.788705502824011
+        },
+        {
+          "name": "Fare Per Fermare Il Declino",
+          "votes": 380488,
+          "aliases": [
+            "Fare Per Fermare Il Declino"
+          ],
+          "share": 1.118999316609535
+        },
+        {
+          "name": "La Destra",
+          "votes": 219671,
+          "aliases": [
+            "La Destra"
+          ],
+          "share": 0.6460432362622033
+        },
+        {
+          "name": "Centro Democratico",
+          "votes": 167071,
+          "aliases": [
+            "Centro Democratico"
+          ],
+          "share": 0.4913488331439405
+        },
+        {
+          "name": "Futuro e Liberta'",
+          "votes": 159415,
+          "aliases": [
+            "Futuro e Liberta'"
+          ],
+          "share": 0.468832856903001
+        },
+        {
+          "name": "Grande Sud - Mpa",
+          "votes": 148549,
+          "aliases": [
+            "Grande Sud - Mpa"
+          ],
+          "share": 0.4368764047303196
+        },
+        {
+          "name": "Svp",
+          "votes": 146804,
+          "aliases": [
+            "Svp"
+          ],
+          "share": 0.43174443261166234
+        },
+        {
+          "name": "PCL",
+          "votes": 89991,
+          "aliases": [
+            "Partito Comunista dei Lavoratori"
+          ],
+          "share": 0.2646597724527677
+        },
+        {
+          "name": "Forza Nuova",
+          "votes": 89802,
+          "aliases": [
+            "Forza Nuova"
+          ],
+          "share": 0.2641039313465062
+        },
+        {
+          "name": "Mir - Moderati in Rivoluzione",
+          "votes": 81978,
+          "aliases": [
+            "Mir - Moderati in Rivoluzione"
+          ],
+          "share": 0.24109387412222322
+        },
+        {
+          "name": "Lista Amnistia Giustizia Liberta'",
+          "votes": 64713,
+          "aliases": [
+            "Lista Amnistia Giustizia Liberta'"
+          ],
+          "share": 0.19031823020897598
+        },
+        {
+          "name": "Partito Pensionati",
+          "votes": 54857,
+          "aliases": [
+            "Partito Pensionati"
+          ],
+          "share": 0.16133214585282393
+        },
+        {
+          "name": "Die Freiheitlichen",
+          "votes": 48317,
+          "aliases": [
+            "Die Freiheitlichen"
+          ],
+          "share": 0.14209827900123764
+        },
+        {
+          "name": "Casapound Italia",
+          "votes": 47689,
+          "aliases": [
+            "Casapound Italia"
+          ],
+          "share": 0.14025135723016788
+        },
+        {
+          "name": "Fiamma Tricolore",
+          "votes": 44744,
+          "aliases": [
+            "Fiamma Tricolore"
+          ],
+          "share": 0.13159023523048569
+        },
+        {
+          "name": "Io Amo l'Italia",
+          "votes": 42527,
+          "aliases": [
+            "Io Amo l'Italia"
+          ],
+          "share": 0.12507013082529198
+        },
+        {
+          "name": "Indipendenza Veneta",
+          "votes": 33274,
+          "aliases": [
+            "Indipendenza Veneta"
+          ],
+          "share": 0.09785744428435501
+        },
+        {
+          "name": "Liberali Per l'Italia - Pli",
+          "votes": 28025,
+          "aliases": [
+            "Liberali Per l'Italia - Pli"
+          ],
+          "share": 0.08242035451310481
+        },
+        {
+          "name": "Intesa Popolare",
+          "votes": 25632,
+          "aliases": [
+            "Intesa Popolare"
+          ],
+          "share": 0.07538264145869411
+        },
+        {
+          "name": "Ps d'Az.",
+          "votes": 18585,
+          "aliases": [
+            "Ps d'Az."
+          ],
+          "share": 0.05465770878237476
+        },
+        {
+          "name": "Lg.Veneta Repubblica",
+          "votes": 15838,
+          "aliases": [
+            "Lg.Veneta Repubblica"
+          ],
+          "share": 0.04657889651306169
+        },
+        {
+          "name": "Voto di Protesta",
+          "votes": 12745,
+          "aliases": [
+            "Voto di Protesta"
+          ],
+          "share": 0.03748251269471974
+        },
+        {
+          "name": "Veneto Stato",
+          "votes": 11378,
+          "aliases": [
+            "Veneto Stato"
+          ],
+          "share": 0.033462222788585426
+        },
+        {
+          "name": "Riformisti Italiani",
+          "votes": 8223,
+          "aliases": [
+            "Riformisti Italiani"
+          ],
+          "share": 0.024183499559723848
+        },
+        {
+          "name": "Indipendenza Per La Sardegna",
+          "votes": 7598,
+          "aliases": [
+            "Indipendenza Per La Sardegna"
+          ],
+          "share": 0.022345400663356656
+        },
+        {
+          "name": "Pri",
+          "votes": 7143,
+          "aliases": [
+            "Pri"
+          ],
+          "share": 0.021007264666801344
+        },
+        {
+          "name": "Meris",
+          "votes": 5901,
+          "aliases": [
+            "Meris"
+          ],
+          "share": 0.01735459453994046
+        },
+        {
+          "name": "Partito di Alternativa Comunista",
+          "votes": 5159,
+          "aliases": [
+            "Partito di Alternativa Comunista"
+          ],
+          "share": 0.015172403530173335
+        },
+        {
+          "name": "I Pirati",
+          "votes": 4557,
+          "aliases": [
+            "I Pirati"
+          ],
+          "share": 0.013401946673192458
+        },
+        {
+          "name": "Movimento Progetto Italia - Mid",
+          "votes": 3967,
+          "aliases": [
+            "Movimento Progetto Italia - Mid"
+          ],
+          "share": 0.01166678131502183
+        },
+        {
+          "name": "Liberi Per Una Italia Equa",
+          "votes": 3243,
+          "aliases": [
+            "Liberi Per Una Italia Equa"
+          ],
+          "share": 0.009537527553470078
+        },
+        {
+          "name": "Rifondazione Missina Italiana",
+          "votes": 3180,
+          "aliases": [
+            "Rifondazione Missina Italiana"
+          ],
+          "share": 0.009352247184716264
+        },
+        {
+          "name": "Popolari Uniti",
+          "votes": 2992,
+          "aliases": [
+            "Popolari Uniti"
+          ],
+          "share": 0.008799347036689012
+        },
+        {
+          "name": "Progetto Nazionale",
+          "votes": 2865,
+          "aliases": [
+            "Progetto Nazionale"
+          ],
+          "share": 0.0084258453409472
+        },
+        {
+          "name": "Movimento P.P.A.",
+          "votes": 1526,
+          "aliases": [
+            "Movimento P.P.A."
+          ],
+          "share": 0.0044879022653701315
+        },
+        {
+          "name": "Unione Pop.",
+          "votes": 1515,
+          "aliases": [
+            "Unione Pop."
+          ],
+          "share": 0.004455551724794069
+        },
+        {
+          "name": "Tutti Insieme Per l'Italia",
+          "votes": 1452,
+          "aliases": [
+            "Tutti Insieme Per l'Italia"
+          ],
+          "share": 0.004270271356040256
+        },
+        {
+          "name": "Staminali d'Italia",
+          "votes": 585,
+          "aliases": [
+            "Staminali d'Italia"
+          ],
+          "share": 0.00172046056699969
+        },
+        {
+          "name": "Democrazia Atea",
+          "votes": 556,
+          "aliases": [
+            "Democrazia Atea"
+          ],
+          "share": 0.0016351727782082525
+        }
+      ],
+      "common": 7794,
+      "paired_current": {
+        "units": 7794,
+        "electors": 46689581.0,
+        "voters": 35110736.0,
+        "turnout": 75.20036643721433
+      },
+      "paired_previous": {
+        "units": 7794,
+        "electors": 46829499.0,
+        "voters": 37702954.0,
+        "turnout": 80.51111971110346
+      },
+      "delta": -5.310753273889134,
+      "regions": [
+        {
+          "name": "Emilia-Romagna",
+          "units": 330,
+          "current": 82.10643472872202,
+          "previous": 86.17797345790044,
+          "delta": -4.071538729178414
+        },
+        {
+          "name": "Veneto",
+          "units": 561,
+          "current": 81.70781213531014,
+          "previous": 84.71404504129082,
+          "delta": -3.0062329059806814
+        },
+        {
+          "name": "Trentino-Alto Adige",
+          "units": 278,
+          "current": 81.04604865385092,
+          "previous": 84.25586554298818,
+          "delta": -3.209816889137258
+        },
+        {
+          "name": "Marche",
+          "units": 222,
+          "current": 79.83327418087867,
+          "previous": 82.9163161090361,
+          "delta": -3.083041928157428
+        },
+        {
+          "name": "Lombardia",
+          "units": 1498,
+          "current": 79.60705418480565,
+          "previous": 84.6887107914409,
+          "delta": -5.081656606635249
+        },
+        {
+          "name": "Umbria",
+          "units": 92,
+          "current": 79.53406820953623,
+          "previous": 84.15259296179525,
+          "delta": -4.61852475225902
+        },
+        {
+          "name": "Toscana",
+          "units": 271,
+          "current": 79.2829336550334,
+          "previous": 83.68448424178072,
+          "delta": -4.4015505867473195
+        },
+        {
+          "name": "Molise",
+          "units": 136,
+          "current": 78.13196543616989,
+          "previous": 78.60019015655718,
+          "delta": -0.46822472038728336
+        },
+        {
+          "name": "Lazio",
+          "units": 377,
+          "current": 77.502906016925,
+          "previous": 81.27652876221192,
+          "delta": -3.7736227452869286
+        },
+        {
+          "name": "Piemonte",
+          "units": 1174,
+          "current": 77.27424135612702,
+          "previous": 80.74801372608601,
+          "delta": -3.4737723699589935
+        },
+        {
+          "name": "Friuli Venezia Giulia",
+          "units": 214,
+          "current": 77.18105321573432,
+          "previous": 80.76947453212465,
+          "delta": -3.588421316390324
+        },
+        {
+          "name": "Abruzzo",
+          "units": 305,
+          "current": 75.94786085985358,
+          "previous": 80.95366447385045,
+          "delta": -5.005803613996875
+        },
+        {
+          "name": "Liguria",
+          "units": 232,
+          "current": 75.10313122743327,
+          "previous": 77.97473197402928,
+          "delta": -2.871600746596016
+        },
+        {
+          "name": "Puglia",
+          "units": 257,
+          "current": 69.94489951309862,
+          "previous": 76.20864226015418,
+          "delta": -6.263742747055559
+        },
+        {
+          "name": "Basilicata",
+          "units": 131,
+          "current": 69.49539935296836,
+          "previous": 75.37693449446249,
+          "delta": -5.881535141494126
+        },
+        {
+          "name": "Sardegna",
+          "units": 377,
+          "current": 68.31733757810731,
+          "previous": 72.30062623269549,
+          "delta": -3.983288654588179
+        },
+        {
+          "name": "Campania",
+          "units": 548,
+          "current": 67.86022705501125,
+          "previous": 76.17818669733563,
+          "delta": -8.317959642324382
+        },
+        {
+          "name": "Sicilia",
+          "units": 388,
+          "current": 64.57572219733471,
+          "previous": 75.00757190099604,
+          "delta": -10.431849703661328
+        },
+        {
+          "name": "Calabria",
+          "units": 403,
+          "current": 63.27416387684327,
+          "previous": 71.62286851043433,
+          "delta": -8.348704633591062
+        }
+      ],
+      "files": [
+        "data/derived/summary_by_election/camera_2013.csv.gz",
+        "data/derived/results_by_election/camera_2013.csv.gz",
+        "data/derived/summary_by_election/camera_2008.csv.gz"
+      ],
+      "archive": "camera-20130224.zip",
+      "input_sha256": {
+        "data/derived/summary_by_election/camera_2013.csv.gz": "531e1884af809f845759392b60c2cdc4844c12ceac1a809052c15c471dc35f78",
+        "data/derived/results_by_election/camera_2013.csv.gz": "0f43477d75ae726b8fbb83b0f0d35dba5f936e64dfb770447c764e57d806c9ea",
+        "data/derived/summary_by_election/camera_2008.csv.gz": "7d3f8dcd1872467d3809c2ddd88aa4f397e429d22a2d8e0faec353ca3cad2dc7"
+      }
+    },
+    {
+      "key": "europee_2024",
+      "previous": "europee_2019",
+      "slug": "europee-2024",
+      "title": "Elezioni europee 2024",
+      "family": "Parlamento europeo",
+      "date": "2024-06-09",
+      "previous_year": 2019,
+      "year": 2024,
+      "rows": 7880,
+      "result_units": 7880,
+      "turnout": {
+        "units": 7880,
+        "electors": 49504959.0,
+        "voters": 24588165.0,
+        "turnout": 49.66808476702303
+      },
+      "total_votes": 23277606,
+      "parties": [
+        {
+          "name": "FdI",
+          "votes": 6709081,
+          "aliases": [
+            "FRATELLI D'ITALIA"
+          ],
+          "share": 28.82204037648889
+        },
+        {
+          "name": "PD",
+          "votes": 5607273,
+          "aliases": [
+            "PARTITO DEMOCRATICO"
+          ],
+          "share": 24.088701389653213
+        },
+        {
+          "name": "M5S",
+          "votes": 2325718,
+          "aliases": [
+            "MOVIMENTO 5 STELLE"
+          ],
+          "share": 9.99122504264399
+        },
+        {
+          "name": "Forza Italia",
+          "votes": 2237562,
+          "aliases": [
+            "FORZA ITALIA - NOI MODERATI - PPE"
+          ],
+          "share": 9.612509121427692
+        },
+        {
+          "name": "Lega",
+          "votes": 2094568,
+          "aliases": [
+            "LEGA SALVINI PREMIER"
+          ],
+          "share": 8.998210554813928
+        },
+        {
+          "name": "AVS",
+          "votes": 1561806,
+          "aliases": [
+            "ALLEANZA VERDI E SINISTRA"
+          ],
+          "share": 6.709478629374516
+        },
+        {
+          "name": "Stati Uniti d'Europa",
+          "votes": 875403,
+          "aliases": [
+            "STATI UNITI D'EUROPA"
+          ],
+          "share": 3.7607088976417935
+        },
+        {
+          "name": "Azione",
+          "votes": 778193,
+          "aliases": [
+            "AZIONE - SIAMO EUROPEI"
+          ],
+          "share": 3.343097224001472
+        },
+        {
+          "name": "Pace Terra Dignita",
+          "votes": 513640,
+          "aliases": [
+            "PACE TERRA DIGNITA'"
+          ],
+          "share": 2.206584302526643
+        },
+        {
+          "name": "Liberta",
+          "votes": 284449,
+          "aliases": [
+            "LIBERTA'"
+          ],
+          "share": 1.221985628590844
+        },
+        {
+          "name": "SVP",
+          "votes": 119596,
+          "aliases": [
+            "SÜDTIROLER VOLKSPARTEI (SVP)"
+          ],
+          "share": 0.5137813570691075
+        },
+        {
+          "name": "ALTERNATIVA POPOLARE",
+          "votes": 90569,
+          "aliases": [
+            "ALTERNATIVA POPOLARE"
+          ],
+          "share": 0.3890821074985117
+        },
+        {
+          "name": "DEMOCRAZIA SOVRANA POPOLARE",
+          "votes": 36037,
+          "aliases": [
+            "DEMOCRAZIA SOVRANA POPOLARE"
+          ],
+          "share": 0.15481403027441912
+        },
+        {
+          "name": "Sovranisti",
+          "votes": 29317,
+          "aliases": [
+            "PARTITO ANIMALISTA - ITALEXIT PER L'ITALIA"
+          ],
+          "share": 0.12594508215320768
+        },
+        {
+          "name": "RASSEMBLEMENT VALDÔTAIN",
+          "votes": 14394,
+          "aliases": [
+            "RASSEMBLEMENT VALDÔTAIN"
+          ],
+          "share": 0.061836255841773415
+        }
+      ],
+      "common": 7879,
+      "paired_current": {
+        "units": 7879,
+        "electors": 49498154.0,
+        "voters": 24586323.0,
+        "turnout": 49.67119177818227
+      },
+      "paired_previous": {
+        "units": 7879,
+        "electors": 49273762.0,
+        "voters": 27636042.0,
+        "turnout": 56.086730296744946
+      },
+      "delta": -6.415538518562677,
+      "regions": [
+        {
+          "name": "Umbria",
+          "units": 92,
+          "current": 60.81339467928696,
+          "previous": 67.69243530192436,
+          "delta": -6.879040622637405
+        },
+        {
+          "name": "Toscana",
+          "units": 273,
+          "current": 59.06193583541229,
+          "previous": 65.75488654235004,
+          "delta": -6.692950706937744
+        },
+        {
+          "name": "Emilia-Romagna",
+          "units": 330,
+          "current": 59.017247689018795,
+          "previous": 67.30418159623092,
+          "delta": -8.286933907212124
+        },
+        {
+          "name": "Piemonte",
+          "units": 1176,
+          "current": 56.61975246805506,
+          "previous": 64.6709720002877,
+          "delta": -8.051219532232643
+        },
+        {
+          "name": "Lombardia",
+          "units": 1497,
+          "current": 55.291375426627184,
+          "previous": 64.10013788820307,
+          "delta": -8.808762461575881
+        },
+        {
+          "name": "Marche",
+          "units": 225,
+          "current": 54.55757046100066,
+          "previous": 62.13726523391922,
+          "delta": -7.579694772918565
+        },
+        {
+          "name": "Veneto",
+          "units": 557,
+          "current": 52.591100589228155,
+          "previous": 63.72815411893414,
+          "delta": -11.137053529705987
+        },
+        {
+          "name": "Liguria",
+          "units": 234,
+          "current": 50.605982830677995,
+          "previous": 58.50051253129489,
+          "delta": -7.894529700616893
+        },
+        {
+          "name": "Friuli Venezia Giulia",
+          "units": 215,
+          "current": 48.29027130888075,
+          "previous": 57.03953477007282,
+          "delta": -8.749263461192072
+        },
+        {
+          "name": "Molise",
+          "units": 136,
+          "current": 47.98634610844417,
+          "previous": 53.2662561455662,
+          "delta": -5.279910037122036
+        },
+        {
+          "name": "Abruzzo",
+          "units": 304,
+          "current": 47.13333838709931,
+          "previous": 52.62079467883317,
+          "delta": -5.487456291733864
+        },
+        {
+          "name": "Trentino-Alto Adige",
+          "units": 281,
+          "current": 46.95610296365053,
+          "previous": 59.86966423357665,
+          "delta": -12.91356126992612
+        },
+        {
+          "name": "Lazio",
+          "units": 378,
+          "current": 46.640677211907786,
+          "previous": 53.317927054376625,
+          "delta": -6.677249842468839
+        },
+        {
+          "name": "Campania",
+          "units": 550,
+          "current": 43.99769404554779,
+          "previous": 47.61054272700586,
+          "delta": -3.6128486814580683
+        },
+        {
+          "name": "Puglia",
+          "units": 257,
+          "current": 43.58557998485955,
+          "previous": 49.79124283526606,
+          "delta": -6.205662850406512
+        },
+        {
+          "name": "Basilicata",
+          "units": 130,
+          "current": 42.97679623374446,
+          "previous": 47.446081034498825,
+          "delta": -4.469284800754366
+        },
+        {
+          "name": "Valle d'Aosta",
+          "units": 74,
+          "current": 42.54440719952029,
+          "previous": 51.91228018785944,
+          "delta": -9.367872988339144
+        },
+        {
+          "name": "Calabria",
+          "units": 404,
+          "current": 40.290315930025834,
+          "previous": 43.99217256490775,
+          "delta": -3.7018566348819135
+        },
+        {
+          "name": "Sicilia",
+          "units": 389,
+          "current": 38.00151655973891,
+          "previous": 37.4967488842922,
+          "delta": 0.5047676754467076
+        },
+        {
+          "name": "Sardegna",
+          "units": 377,
+          "current": 36.899713592658614,
+          "previous": 36.25413630493936,
+          "delta": 0.6455772877192558
+        }
+      ],
+      "files": [
+        "data/derived/summary_by_election/europee_2024.csv.gz",
+        "data/derived/results_by_election/europee_2024.csv.gz",
+        "data/derived/summary_by_election/europee_2019.csv.gz"
+      ],
+      "archive": "europee-20240609.zip",
+      "input_sha256": {
+        "data/derived/summary_by_election/europee_2024.csv.gz": "37aaf5888aef1a8cfc3ec0452142453a6877fb5221e353f79f44da3fa5533b9f",
+        "data/derived/results_by_election/europee_2024.csv.gz": "77f9e55de25ef96c02844724955bb97a699f50ae0c4dbdc0404d427c1b600e7d",
+        "data/derived/summary_by_election/europee_2019.csv.gz": "03c83428a599dd06354eaf92baa7d15de45525a1d5eceb61814657bd890e1205"
+      }
+    },
+    {
+      "key": "europee_2019",
+      "previous": "europee_2014",
+      "slug": "europee-2019",
+      "title": "Elezioni europee 2019",
+      "family": "Parlamento europeo",
+      "date": "2019-05-26",
+      "previous_year": 2014,
+      "year": 2019,
+      "rows": 7898,
+      "result_units": 7898,
+      "turnout": {
+        "units": 7898,
+        "electors": 49301157.0,
+        "voters": 27652929.0,
+        "turnout": 56.08981752700043
+      },
+      "total_votes": 26662962,
+      "parties": [
+        {
+          "name": "Lega",
+          "votes": 9153638,
+          "aliases": [
+            "LEGA SALVINI PREMIER"
+          ],
+          "share": 34.33091192193876
+        },
+        {
+          "name": "PD",
+          "votes": 6050351,
+          "aliases": [
+            "PARTITO DEMOCRATICO"
+          ],
+          "share": 22.69196873175606
+        },
+        {
+          "name": "M5S",
+          "votes": 4552527,
+          "aliases": [
+            "MOVIMENTO 5 STELLE"
+          ],
+          "share": 17.07434830383811
+        },
+        {
+          "name": "Forza Italia",
+          "votes": 2344465,
+          "aliases": [
+            "FORZA ITALIA"
+          ],
+          "share": 8.792965312706068
+        },
+        {
+          "name": "FdI",
+          "votes": 1723232,
+          "aliases": [
+            "FRATELLI D'ITALIA"
+          ],
+          "share": 6.4630178747582505
+        },
+        {
+          "name": "+Europa",
+          "votes": 822764,
+          "aliases": [
+            "+EUROPA - ITALIA IN COMUNE - PDE ITALIA"
+          ],
+          "share": 3.0857936938889234
+        },
+        {
+          "name": "Europa Verde",
+          "votes": 609678,
+          "aliases": [
+            "EUROPA VERDE"
+          ],
+          "share": 2.2866101673174946
+        },
+        {
+          "name": "La Sinistra",
+          "votes": 465092,
+          "aliases": [
+            "LA SINISTRA"
+          ],
+          "share": 1.7443373320638569
+        },
+        {
+          "name": "PCI",
+          "votes": 234232,
+          "aliases": [
+            "PARTITO COMUNISTA"
+          ],
+          "share": 0.8784920445072831
+        },
+        {
+          "name": "Partito Animalista",
+          "votes": 159344,
+          "aliases": [
+            "PARTITO ANIMALISTA"
+          ],
+          "share": 0.5976230247787173
+        },
+        {
+          "name": "Autonomisti",
+          "votes": 141353,
+          "aliases": [
+            "SVP"
+          ],
+          "share": 0.5301474007276461
+        },
+        {
+          "name": "Destra naz.",
+          "votes": 129506,
+          "aliases": [
+            "CASAPOUND ITALIA - DESTRE UNITE",
+            "FORZA NUOVA"
+          ],
+          "share": 0.4857149779533122
+        },
+        {
+          "name": "Popolo della Famiglia",
+          "votes": 113875,
+          "aliases": [
+            "POPOLO DELLA FAMIGLIA - ALTERNATIVA POPOLARE"
+          ],
+          "share": 0.42709058355932095
+        },
+        {
+          "name": "POPOLARI PER L'ITALIA",
+          "votes": 79951,
+          "aliases": [
+            "POPOLARI PER L'ITALIA"
+          ],
+          "share": 0.2998579077598355
+        },
+        {
+          "name": "PARTITO PIRATA",
+          "votes": 60308,
+          "aliases": [
+            "PARTITO PIRATA"
+          ],
+          "share": 0.22618642294880814
+        },
+        {
+          "name": "AUTONOMIE PER L'EUROPA",
+          "votes": 17629,
+          "aliases": [
+            "AUTONOMIE PER L'EUROPA"
+          ],
+          "share": 0.0661179354341802
+        },
+        {
+          "name": "PPA Pensiero Azione",
+          "votes": 5017,
+          "aliases": [
+            "PPA MOVIMENTO POLITICO PENSIERO AZIONE"
+          ],
+          "share": 0.018816364063377503
+        }
+      ],
+      "common": 7896,
+      "paired_current": {
+        "units": 7896,
+        "electors": 49294892.0,
+        "voters": 27648843.0,
+        "turnout": 56.088657218277305
+      },
+      "paired_previous": {
+        "units": 7896,
+        "electors": 49253724.0,
+        "voters": 28906418.0,
+        "turnout": 58.68879681057213
+      },
+      "delta": -2.6001395922948234,
+      "regions": [
+        {
+          "name": "Umbria",
+          "units": 92,
+          "current": 67.69243530192436,
+          "previous": 70.50101638168121,
+          "delta": -2.8085810797568485
+        },
+        {
+          "name": "Emilia-Romagna",
+          "units": 330,
+          "current": 67.30418159623092,
+          "previous": 69.98865015228223,
+          "delta": -2.684468556051314
+        },
+        {
+          "name": "Toscana",
+          "units": 273,
+          "current": 65.75488654235004,
+          "previous": 66.71738218620195,
+          "delta": -0.9624956438519092
+        },
+        {
+          "name": "Piemonte",
+          "units": 1180,
+          "current": 64.67142603910393,
+          "previous": 67.44058583774081,
+          "delta": -2.7691597986368777
+        },
+        {
+          "name": "Lombardia",
+          "units": 1503,
+          "current": 64.09841200294287,
+          "previous": 66.44001621165859,
+          "delta": -2.3416042087157223
+        },
+        {
+          "name": "Veneto",
+          "units": 562,
+          "current": 63.72784570242395,
+          "previous": 63.98499299024775,
+          "delta": -0.25714728782379837
+        },
+        {
+          "name": "Marche",
+          "units": 225,
+          "current": 62.13726523391922,
+          "previous": 65.60409963841026,
+          "delta": -3.4668344044910384
+        },
+        {
+          "name": "Trentino-Alto Adige",
+          "units": 282,
+          "current": 59.885562897845,
+          "previous": 52.711941909169056,
+          "delta": 7.1736209886759426
+        },
+        {
+          "name": "Liguria",
+          "units": 234,
+          "current": 58.50051253129489,
+          "previous": 60.703126227877625,
+          "delta": -2.2026136965827376
+        },
+        {
+          "name": "Friuli Venezia Giulia",
+          "units": 215,
+          "current": 57.03953477007282,
+          "previous": 57.65913537357219,
+          "delta": -0.6196006034993715
+        },
+        {
+          "name": "Lazio",
+          "units": 378,
+          "current": 53.317927054376625,
+          "previous": 56.38315514395765,
+          "delta": -3.0652280895810264
+        },
+        {
+          "name": "Molise",
+          "units": 136,
+          "current": 53.2662561455662,
+          "previous": 54.75263495436201,
+          "delta": -1.4863788087958056
+        },
+        {
+          "name": "Abruzzo",
+          "units": 305,
+          "current": 52.6108724274132,
+          "previous": 64.13126776245477,
+          "delta": -11.52039533504157
+        },
+        {
+          "name": "Valle d'Aosta",
+          "units": 74,
+          "current": 51.91228018785944,
+          "previous": 49.5801749271137,
+          "delta": 2.3321052607457347
+        },
+        {
+          "name": "Puglia",
+          "units": 257,
+          "current": 49.79124283526606,
+          "previous": 51.50472656430106,
+          "delta": -1.7134837290349978
+        },
+        {
+          "name": "Campania",
+          "units": 550,
+          "current": 47.61054272700586,
+          "previous": 51.087700249099264,
+          "delta": -3.477157522093407
+        },
+        {
+          "name": "Basilicata",
+          "units": 130,
+          "current": 47.446081034498825,
+          "previous": 49.61245889296115,
+          "delta": -2.166377858462326
+        },
+        {
+          "name": "Calabria",
+          "units": 404,
+          "current": 43.99217256490775,
+          "previous": 45.76969745814696,
+          "delta": -1.7775248932392103
+        },
+        {
+          "name": "Sicilia",
+          "units": 389,
+          "current": 37.4967488842922,
+          "previous": 42.87000077902711,
+          "delta": -5.373251894734906
+        },
+        {
+          "name": "Sardegna",
+          "units": 377,
+          "current": 36.25413630493936,
+          "previous": 42.0136195278175,
+          "delta": -5.7594832228781385
+        }
+      ],
+      "files": [
+        "data/derived/summary_by_election/europee_2019.csv.gz",
+        "data/derived/results_by_election/europee_2019.csv.gz",
+        "data/derived/summary_by_election/europee_2014.csv.gz"
+      ],
+      "archive": "europee-20190526.zip",
+      "input_sha256": {
+        "data/derived/summary_by_election/europee_2019.csv.gz": "03c83428a599dd06354eaf92baa7d15de45525a1d5eceb61814657bd890e1205",
+        "data/derived/results_by_election/europee_2019.csv.gz": "488589d1fa5426a867e1d66daf6e415d96727b13350175cd8e3a64169d9d5d82",
+        "data/derived/summary_by_election/europee_2014.csv.gz": "f874819f2e2c275394b5ad9e2aa4b3a3f672d91772a650c78540dd72cb93a47c"
+      }
+    }
+  ]
+}

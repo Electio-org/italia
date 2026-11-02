@@ -1,0 +1,10 @@
+{
+  "updated": "2026-11-02",
+  "elections": [
+    {"key": "camera_2022", "previous": "camera_2018", "slug": "camera-2022", "title": "Elezioni politiche 2022: Camera", "family": "Camera dei deputati"},
+    {"key": "camera_2018", "previous": "camera_2013", "slug": "camera-2018", "title": "Elezioni politiche 2018: Camera", "family": "Camera dei deputati"},
+    {"key": "camera_2013", "previous": "camera_2008", "slug": "camera-2013", "title": "Elezioni politiche 2013: Camera", "family": "Camera dei deputati"},
+    {"key": "europee_2024", "previous": "europee_2019", "slug": "europee-2024", "title": "Elezioni europee 2024", "family": "Parlamento europeo"},
+    {"key": "europee_2019", "previous": "europee_2014", "slug": "europee-2019", "title": "Elezioni europee 2019", "family": "Parlamento europeo"}
+  ]
+}

@@ -96,7 +96,7 @@ def head_metadata(source, page, language="it"):
     url = urljoin(BASE, page.get("url", ""))
     title = page.get(f"title_{language}", page["title"])
     description = page.get(f"description_{language}", page["description"])
-    source = re.sub(r'<!-- search-discovery:start -->[\s\S]*?<!-- search-discovery:end -->\s*', '', source)
+    source = re.sub(r'\s*<!-- search-discovery:start -->[\s\S]*?<!-- search-discovery:end -->\s*', '\n', source)
     source = re.sub(r'<html\b[^>]*>', f'<html lang="{language}">', source, count=1, flags=re.I)
     def language_link(match):
         tag = re.sub(r'\saria-current="[^"]*"', '', match.group(0))
@@ -135,7 +135,7 @@ def head_metadata(source, page, language="it"):
         block.append('<script id="search-locale-metadata" type="application/json">' + json.dumps(locale_metadata, ensure_ascii=False).replace('</', '<\\/') + '</script>')
     block.extend([f'<link rel="alternate" type="application/rss+xml" title="{html.escape(CONFIG["name"], quote=True)}" href="{BASE}feed.xml">', f'<link rel="sitemap" type="application/xml" href="{BASE}sitemap.xml">', '<script type="application/ld+json">' + json.dumps({"@context": "https://schema.org", "@graph": graph}, ensure_ascii=False).replace("</", "<\\/") + '</script>', '<!-- search-discovery:end -->'])
     source = source.replace("</head>", "\n" + "\n".join(block) + "\n</head>", 1)
-    if CONFIG.get("author", True) and BASE != PERSON["url"]:
+    if CONFIG.get("author", True) and BASE != PERSON["url"] and not page.get("network_in_footer"):
         source = re.sub(r'<nav\b[^>]*data-research-network[^>]*>[\s\S]*?</nav>\s*', '', source)
         label = "Research projects and datasets" if language == "en" else "Progetti di ricerca e dataset"
         navigation = f'<nav data-research-network aria-label="{label}" style="max-width:1100px;margin:24px auto;padding:20px;display:flex;flex-wrap:wrap;gap:16px;font:15px/1.5 system-ui,sans-serif"><a href="https://simoneghezzicolombo.github.io/">Simone Ghezzi Colombo</a><a href="https://simoneghezzicolombo.github.io/progetti/">{label}</a></nav>'
@@ -156,7 +156,10 @@ def sitemap(urls):
 def build():
     localized = translations()
     urls = []
-    for page in CONFIG["pages"]:
+    pages = list(CONFIG["pages"])
+    if CONFIG.get("election_pages_manifest"):
+        pages.extend(json.loads((ROOT / CONFIG["election_pages_manifest"]).read_text(encoding="utf-8")))
+    for page in pages:
         source = (ROOT / page["path"]).read_text(encoding="utf-8")
         languages = CONFIG.get("languages", ["it"]) if page.get("localized") else [page.get("language", "it")]
         for language in languages:
@@ -177,13 +180,16 @@ def build():
         maps = [BASE + "sitemap-main.xml", *CONFIG["sitemap_index"]]
         write("sitemap.xml", '<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'  <sitemap><loc>{xml_escape(url)}</loc></sitemap>\n' for url in maps) + '</sitemapindex>\n')
     links = [f"# {CONFIG['name']}", "", f"> {CONFIG['description']}", "", "## Public pages", ""]
-    for page in CONFIG["pages"]:
+    for page in pages:
         links.append(f"- [{page['title']}]({urljoin(BASE, page.get('url', ''))}): {page['description']}")
     for link in CONFIG.get("resources", []):
         links.append(f"- [{link['name']}]({urljoin(BASE, link['url'])}): {link['description']}")
     links.extend(["", "## Attribution and interpretation", "", CONFIG.get("citation", "Author: Simone Ghezzi Colombo. Cite the relevant page and the original data sources. These are independent research projects, not official institutional services."), ""])
     write("llms.txt", '\n'.join(links))
     items = CONFIG.get("feed_items", [{"title": CONFIG["name"], "url": BASE, "description": CONFIG["description"], "date": CONFIG["published"]}])
+    if CONFIG.get("election_pages_manifest"):
+        updated = json.loads((ROOT / 'seo/elections.json').read_text(encoding='utf-8'))['updated']
+        items.extend({"title": page['title'], "url": urljoin(BASE, page['url']), "description": page['description'], "date": updated} for page in pages if page.get('dataset') and page['path'].startswith('elezioni/'))
     if (ROOT / 'seo/projects.json').is_file():
         items = [{"title": item['name'], "url": item['url'], "description": item['description'], "date": CONFIG['published']} for item in json.loads((ROOT / 'seo/projects.json').read_text(encoding='utf-8'))]
     rss = ['<?xml version="1.0" encoding="UTF-8"?>', '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel>', f'<title>{xml_escape(CONFIG["name"])}</title><link>{xml_escape(BASE)}</link><description>{xml_escape(CONFIG["description"])}</description>', f'<atom:link href="{BASE}feed.xml" rel="self" type="application/rss+xml"/>']
