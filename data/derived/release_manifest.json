@@ -37,8 +37,8 @@
     "codebook": {
       "path": "data/derived/codebook.json",
       "kind": "json",
-      "size_bytes": 19378,
-      "sha256": "c25f1c9cd3269fc9a39cd8586a0b08c5d3097a9a7502bb82e5608a59af74e432",
+      "size_bytes": 19347,
+      "sha256": "33aeb3495cfdcc63afc577d23d5194a26e7bebb29b0001b8e053a4b396fc730f",
       "dataset_count": 10
     },
     "customIndicators": {
@@ -88,8 +88,8 @@
     "electionsMaster": {
       "path": "data/derived/elections_master.csv",
       "kind": "csv",
-      "size_bytes": 13171,
-      "sha256": "802007a12cb979f62e820b6605cc8a89d013fbeb9df2d1d8fd0dbb2356fad8df",
+      "size_bytes": 13140,
+      "sha256": "f7bfd39bb784a5aa397035b438b51d3cda4806263f1d542ab3e96e5285dce89a",
       "columns": [
         "election_key",
         "election_year",
@@ -113,8 +113,8 @@
     "europeanElectionsMaster": {
       "path": "data/derived/european_elections_master.csv",
       "kind": "csv",
-      "size_bytes": 4343,
-      "sha256": "593f5ccb4b5555ccf119e04cd3bfe26b15595c4cd52de127d85ba4ea7a496ac3",
+      "size_bytes": 4332,
+      "sha256": "893acd0b103500d5ed2d8b0d8931a5b28c5556e7d96342d0c538482c26b3c351",
       "columns": [
         "election_key",
         "election_year",
@@ -180,8 +180,8 @@
     "municipalitiesMaster": {
       "path": "data/derived/municipalities_master.csv",
       "kind": "csv",
-      "size_bytes": 1629079,
-      "sha256": "eb57fc5bfb01d36f78b4a716ba51dff0d21ca8fb42455cea9e871443dacaccb5",
+      "size_bytes": 1621174,
+      "sha256": "b25e7f7b870e91b16b35940eae6fc7cd4839735f3ab7f5f57e4ab85b970ad6e7",
       "columns": [
         "municipality_id",
         "name_current",
@@ -203,8 +203,8 @@
     "municipalityAliases": {
       "path": "data/derived/municipality_aliases.csv",
       "kind": "csv",
-      "size_bytes": 881816,
-      "sha256": "076efdf23d5ac6179ff6aadd98a922c517b83792cc2384fde83d7f8dfc825df1",
+      "size_bytes": 869027,
+      "sha256": "df41ecd99955d3af935608b316d42e063c5134702323328dd21c3f9263c3291f",
       "columns": [
         "municipality_id",
         "alias",
@@ -307,8 +307,8 @@
     "nationalElectionChecks": {
       "path": "data/reference/national_election_checks.csv",
       "kind": "csv",
-      "size_bytes": 2415,
-      "sha256": "1d018907d1f9ea65bd3b6ff737f46ab204b26b45f38669fb75f9648dd44c7152",
+      "size_bytes": 2384,
+      "sha256": "fff30898fb77c9072ecf13a518962686c0d5b81b6b7a0ee2e280456be4a632d1",
       "columns": [
         "election_key",
         "expected_winner_raw",
@@ -321,8 +321,8 @@
     "partiesMaster": {
       "path": "data/derived/parties_master.csv",
       "kind": "csv",
-      "size_bytes": 92867,
-      "sha256": "b4e122150b6dc3db91f30b92bf3eb1af5d75a305ea2684ee582d7ef1a8c40f0e",
+      "size_bytes": 92351,
+      "sha256": "4cdbbab561530b8627afb6230cc0c7e604bed0d5ae8a0aa577212abd8e733365",
       "columns": [
         "party_std",
         "party_display_name",
@@ -339,8 +339,8 @@
     "partyTaxonomy": {
       "path": "data/reference/party_taxonomy_overrides.csv",
       "kind": "csv",
-      "size_bytes": 18384,
-      "sha256": "d2d8e0a6a68a65f3130738f7f3517a6444f6eb935067098a4d7bb9004bd1698a",
+      "size_bytes": 18262,
+      "sha256": "16894d6a7176aad691af4f82feb36ade55b609576bef2fc80feb528a133ae7ad",
       "columns": [
         "election_key",
         "party_raw",
@@ -427,8 +427,8 @@
     "territorialLineage": {
       "path": "data/derived/territorial_lineage.csv",
       "kind": "csv",
-      "size_bytes": 1732076,
-      "sha256": "13a8b919052ae1aead62e3a7ee7caaef5b57a28b76fe57733669f70200c274a8",
+      "size_bytes": 1724171,
+      "sha256": "f53475e75680017dea20aef65ae5991bdf1a57ca1c04cef28ae0e912925a2635",
       "columns": [
         "municipality_id_stable",
         "name_current",
@@ -456,15 +456,15 @@
     "updateLog": {
       "path": "data/derived/update_log.json",
       "kind": "json",
-      "size_bytes": 20653,
-      "sha256": "207f96589ef492c2df4447e3d6daea940888bd59c62c23ec6611be2203a9df54",
+      "size_bytes": 20338,
+      "sha256": "ad6c360f9a91cebfef9a21c2fb1999daa22119f061c7129465563ad18312d042",
       "entry_count": 24
     },
     "usageNotes": {
       "path": "data/derived/usage_notes.json",
       "kind": "json",
-      "size_bytes": 4755,
-      "sha256": "62eea5ed9627d857652b82e68fbdb6e21c153e5a87f06f38b87c8d6e47ba0e2c"
+      "size_bytes": 4739,
+      "sha256": "ef6909f88d05661f74dde10f5ba78438ec31d2f1526bf033312d209436faabc6"
     },
     "webCompressionReport": {
       "path": "data/derived/web_compression_report.json",
