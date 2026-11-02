@@ -33,6 +33,7 @@ jobs:
       - name: Verify election records, denominators and published file metadata
         run: python -m unittest discover -s tests -p 'test_*.py' -v
       - run: npm run test:selectors
+      - run: npm run test:alignments
       - run: npx playwright install --with-deps chromium
       - name: Start static server
         run: |
@@ -53,5 +54,8 @@ jobs:
         env:
           BASE_URL: http://127.0.0.1:4173/
       - run: npm run test:interactions
+        env:
+          BASE_URL: http://127.0.0.1:4173/
+      - run: npm run test:politics
         env:
           BASE_URL: http://127.0.0.1:4173/

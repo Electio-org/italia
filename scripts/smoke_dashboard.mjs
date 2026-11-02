@@ -30,7 +30,7 @@ try {
   ));
 
   const metrics = await page.locator('#metric-select option').evaluateAll(options => options.map(option => option.value));
-  assert.deepEqual(metrics, ['first_party', 'party_share', 'turnout', 'dominant_block', 'margin']);
+  assert.deepEqual(metrics, ['first_party', 'party_share', 'political_balance', 'dominant_coalition', 'turnout', 'margin', 'dominant_block']);
   assert.equal(await page.locator('#sidebar-quick-stats').count(), 0);
   assert.ok(await page.locator('#sidebar-legend .legend-item').count() <= 7, 'winner legend must stay compact');
 

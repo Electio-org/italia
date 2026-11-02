@@ -14,7 +14,7 @@
  * `cache.addAll()` that would reject the whole install on any 404.
  */
 
-const SW_VERSION = 'electio-v67-2026-11-02-geometry-boot-recovery';
+const SW_VERSION = 'electio-v68-2026-11-02-historical-alignments';
 const SHELL_CACHE = `shell::${SW_VERSION}`;
 const DATA_CACHE = `data::${SW_VERSION}`;
 const NAV_FALLBACK = './index.html';
@@ -45,6 +45,7 @@ const SHELL_PATHS = [
   './modules/selectors.js',
   './modules/shared.js',
   './modules/municipality-search.js',
+  './modules/political-alignments.js',
   './vendor/d3/d3-slim.min.js',
   './vendor/papaparse/papaparse.min.js',
   './vendor/topojson-client/topojson-client.min.js',

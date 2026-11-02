@@ -143,13 +143,16 @@
             <select id="metric-select">
               <option value="first_party">Partito vincente</option>
               <option value="party_share">Quota del partito</option>
+              <option value="political_balance">Equilibrio tra schieramenti</option>
+              <option value="dominant_coalition">Schieramento più votato</option>
               <option value="turnout">Affluenza</option>
-              <option value="dominant_block">Area politica prevalente</option>
               <option value="margin">Margine del vincente</option>
+              <option value="dominant_block" hidden>Famiglia politica prevalente</option>
             </select>
           </label>
         </div>
         <p id="metric-help" class="metric-help" aria-live="polite"></p>
+        <div id="political-context" class="political-context hidden" aria-live="polite"></div>
 
         <div class="two-col two-col-main single-control-row">
           <label class="hidden" aria-hidden="true">
@@ -211,6 +214,15 @@
         <details class="advanced-sidebar-details">
           <summary>Strumenti avanzati</summary>
           <div class="advanced-sidebar-grid">
+            <section class="political-scenario-tools" aria-labelledby="political-scenario-title">
+              <h3 id="political-scenario-title">Componi due gruppi</h3>
+              <p id="political-scenario-note">Uno scenario personale sui voti dell'elezione selezionata.</p>
+              <label>Nome del gruppo rosso<input id="political-left-label" maxlength="80" value="Gruppo rosso" /></label>
+              <label>Nome del gruppo blu<input id="political-right-label" maxlength="80" value="Gruppo blu" /></label>
+              <div id="political-scenario-parties" class="political-scenario-parties"></div>
+              <button type="button" id="political-scenario-apply">Applica scenario alla mappa</button>
+              <button type="button" id="political-scenario-reset" class="ghost-btn">Ripristina il confronto storico</button>
+            </section>
             <label>
               Livello mappa
               <select id="map-aggregation-level-select">

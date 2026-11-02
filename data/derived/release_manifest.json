@@ -103,6 +103,12 @@
       ],
       "row_count": 30
     },
+    "electoralCoalitions": {
+      "path": "data/derived/electoral_coalitions.json",
+      "kind": "json",
+      "size_bytes": 11666,
+      "sha256": "05b3d07f5d476cc3440906421236118929a957b45a330c1219616ad6aaccf491"
+    },
     "europeanArchiveManifest": {
       "path": "data/reference/european_opendata_archives_manifest.json",
       "kind": "json",
@@ -456,9 +462,9 @@
     "updateLog": {
       "path": "data/derived/update_log.json",
       "kind": "json",
-      "size_bytes": 20338,
-      "sha256": "ad6c360f9a91cebfef9a21c2fb1999daa22119f061c7129465563ad18312d042",
-      "entry_count": 24
+      "size_bytes": 21265,
+      "sha256": "bf26f1a2a3e7d1178c9386d8753748e73cda6dc41759083e02a47dacca97715d",
+      "entry_count": 25
     },
     "usageNotes": {
       "path": "data/derived/usage_notes.json",
@@ -531,6 +537,7 @@
       "datasetContracts",
       "datasetRegistry",
       "electionsMaster",
+      "electoralCoalitions",
       "europeanArchiveManifest",
       "europeanElectionsMaster",
       "europeanMunicipalityResultsSource",
