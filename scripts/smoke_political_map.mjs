@@ -97,6 +97,12 @@ try {
   await ready();
   assert.equal(await page.locator('#political-context').getAttribute('data-mode'), 'historical');
   assert.ok(Math.abs(await otherShare() - originalOthers) < 0.1);
+  await page.goto(new URL('index.html#selectedElection=camera_1996&selectedMetric=turnout', baseUrl).href);
+  await page.reload();
+  await ready();
+  await page.locator('.advanced-sidebar-details').evaluate(node => { node.open = true; });
+  await page.waitForFunction(() => document.querySelectorAll('[data-political-party]').length > 5);
+  assert.equal(await page.locator('#metric-select').inputValue(), 'turnout', 'opening the scenario editor must load its lists without changing the map metric');
   assert.deepEqual(errors, []);
   console.log('political map smoke: ok (historical groups, continuous scale, standalone votes, advanced scenario, permalink, mobile and profile)');
 } catch (error) {

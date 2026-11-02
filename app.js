@@ -623,6 +623,7 @@ function electionLabelByKey(key) {
 }
 
 function metricNeedsPartyResults() {
+  if (document.querySelector('.advanced-sidebar-details')?.open) return true;
   if (['first_party', 'party_share', 'swing_compare', 'dominant_block', 'dominant_coalition', 'political_balance'].includes(state.selectedMetric)) return true;
   if (state.selectedMetric === 'concentration') return true;
   return Boolean(state.selectedParty)
@@ -5808,7 +5809,10 @@ function resetFilters() {
 }
 
 function bindEvents() {
-  document.querySelector('.advanced-sidebar-details')?.addEventListener('toggle', syncPoliticalControls);
+  document.querySelector('.advanced-sidebar-details')?.addEventListener('toggle', event => {
+    syncPoliticalControls();
+    if (event.currentTarget.open) requestRender();
+  });
   q('political-scenario-apply')?.addEventListener('click', () => applyPoliticalScenario());
   q('political-scenario-reset')?.addEventListener('click', () => applyPoliticalScenario(true));
   const invalidateMapRects = () => {
