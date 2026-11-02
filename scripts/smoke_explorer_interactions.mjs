@@ -28,6 +28,7 @@ page.on('console', message => { if (message.type() === 'error') errors.push(mess
 const waitForMap = () => page.waitForFunction(() => (
   document.querySelector('#loading-overlay')?.classList.contains('hidden')
   && document.querySelector('#map-loading')?.classList.contains('hidden')
+  && document.querySelector('#map-canvas')?.__zoom
 ));
 async function findMunicipality(value) {
   await page.fill('#municipality-search', value);
@@ -103,7 +104,7 @@ try {
   const cy = bounds.y + bounds.height / 2;
   await page.mouse.move(cx, cy);
   await page.mouse.wheel(0, -1800);
-  await page.waitForFunction(() => document.querySelector('#map-canvas').__zoom.k >= 4);
+  await page.waitForFunction(() => document.querySelector('#map-canvas')?.__zoom?.k >= 4);
   await page.waitForTimeout(250);
   await page.evaluate(() => {
     window.__fillPathAdds = 0;
