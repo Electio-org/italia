@@ -6,7 +6,8 @@ on:
 
 jobs:
   smoke:
-    runs-on: ubuntu-latest
+    # Playwright 1.59.1 does not support the ubuntu-26.04 image behind latest.
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
