@@ -380,9 +380,17 @@ export async function ensureGeometry(state, kind, year, registerIssue = () => {}
   if (!year || !state.geometryPack?.[kind]?.[String(year)]) return null;
   state.geometryCache[kind] = state.geometryCache[kind] || {};
   if (!state.geometryCache[kind][year]) {
-    state.geometryCache[kind][year] = state.geometryResolver(state.geometryPack[kind][String(year)]).catch(err => {
-      registerIssue(`geometry-${kind}-${year}`, err);
-      return { type: 'FeatureCollection', features: [] };
+    const path = state.geometryPack[kind][String(year)];
+    state.geometryCache[kind][year] = state.geometryResolver(path).catch(async () => {
+      await new Promise(resolve => setTimeout(resolve, 150));
+      try {
+        return await state.geometryResolver(path);
+      } catch (err) {
+        // A failed request must not poison the session's geometry cache.
+        delete state.geometryCache[kind][year];
+        registerIssue(`geometry-${kind}-${year}`, err);
+        return { type: 'FeatureCollection', features: [] };
+      }
     });
   }
   return state.geometryCache[kind][year];

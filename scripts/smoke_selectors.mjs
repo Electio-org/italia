@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { ensureGeometry } from '../modules/data.js';
 
 globalThis.d3 = {
   mean: values => values.length ? values.reduce((sum, value) => sum + value, 0) / values.length : undefined
@@ -59,4 +60,27 @@ state.selectedPartyMode = 'bloc';
 assert.equal(aggregateShareFor(state, 'e1', 'm1', 'destra'), 70);
 assert.equal(aggregateShareFor(state, 'e1', 'm2', 'sinistra'), 40);
 
-console.log('selector smoke: ok');
+const featureCollection = { type: 'FeatureCollection', features: [{ type: 'Feature', geometry: null }] };
+let attempts = 0;
+const geometryIssues = [];
+const geometryState = {
+  geometryPack: { municipalities: { '2021': 'municipalities.topojson.gz' } },
+  geometryCache: {},
+  geometryResolver: async () => {
+    attempts += 1;
+    if (attempts === 1) throw new TypeError('Transient fetch failure');
+    return featureCollection;
+  }
+};
+assert.equal(await ensureGeometry(geometryState, 'municipalities', 2021, (...args) => geometryIssues.push(args)), featureCollection);
+assert.equal(attempts, 2, 'initial geometry failure must recover with one retry');
+assert.equal(await ensureGeometry(geometryState, 'municipalities', 2021), featureCollection);
+assert.equal(attempts, 2, 'successful geometry must stay cached');
+assert.equal(geometryIssues.length, 0, 'a recovered error must not leave a persistent issue');
+delete geometryState.geometryCache.municipalities[2021];
+geometryState.geometryResolver = async () => { throw new TypeError('Offline'); };
+await ensureGeometry(geometryState, 'municipalities', 2021, (...args) => geometryIssues.push(args));
+assert.equal(geometryState.geometryCache.municipalities[2021], undefined, 'failed geometry must not stay cached');
+geometryState.geometryResolver = async () => featureCollection;
+assert.equal(await ensureGeometry(geometryState, 'municipalities', 2021), featureCollection, 'a later retry must recover the same session');
+console.log('selector smoke: ok (including geometry retry and cache recovery)');
