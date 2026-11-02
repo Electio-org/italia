@@ -14,7 +14,7 @@
  * `cache.addAll()` that would reject the whole install on any 404.
  */
 
-const SW_VERSION = 'electio-v65-2026-07-15-european-elections';
+const SW_VERSION = 'electio-v66-2026-11-02-explorer-responsiveness';
 const SHELL_CACHE = `shell::${SW_VERSION}`;
 const DATA_CACHE = `data::${SW_VERSION}`;
 const NAV_FALLBACK = './index.html';
@@ -44,6 +44,7 @@ const SHELL_PATHS = [
   './modules/quality.js',
   './modules/selectors.js',
   './modules/shared.js',
+  './modules/municipality-search.js',
   './vendor/d3/d3-slim.min.js',
   './vendor/papaparse/papaparse.min.js',
   './vendor/topojson-client/topojson-client.min.js',

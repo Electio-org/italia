@@ -11,7 +11,7 @@
 
   <!-- Preconnect + preload the critical-path data so fetches start in parallel with JS parsing. -->
   <link rel="preload" as="fetch" href="data/derived/manifest.json" crossorigin="anonymous" />
-  <link rel="preload" as="fetch" href="data/derived/geometries_web/municipalities_2021.topojson" crossorigin="anonymous" type="application/json" />
+  <link rel="preload" as="fetch" href="data/derived/geometries_web/municipalities_2021.topojson.gz" crossorigin="anonymous" />
   <link rel="preload" as="fetch" href="data/derived/elections_master.csv" crossorigin="anonymous" />
   <link rel="preload" as="fetch" href="data/derived/municipalities_master.csv" crossorigin="anonymous" />
   <link rel="preload" as="fetch" href="data/derived/parties_master.csv" crossorigin="anonymous" />
@@ -125,9 +125,11 @@
 
         <label>
           Cerca comune
-          <input id="municipality-search" list="municipality-list" placeholder="Digita il nome di un comune" />
+          <input id="municipality-search" type="search" list="municipality-list" placeholder="Nome del comune o codice ISTAT" autocomplete="off" aria-describedby="municipality-search-status" />
           <datalist id="municipality-list"></datalist>
         </label>
+        <p id="municipality-search-status" class="search-status" role="status" aria-live="polite"></p>
+        <button type="button" id="clear-municipality-btn" class="clear-municipality-btn hidden">Deseleziona il comune</button>
 
         <div class="two-col two-col-main single-control-row">
           <label>

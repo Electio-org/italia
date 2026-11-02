@@ -52,3 +52,6 @@ jobs:
       - run: npm run test:europe
         env:
           BASE_URL: http://127.0.0.1:4173/
+      - run: npm run test:interactions
+        env:
+          BASE_URL: http://127.0.0.1:4173/

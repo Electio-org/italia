@@ -60,6 +60,7 @@ import {
 } from './modules/selectors.js';
 import { AUDIENCE_MODES, GLOSSARY_ENTRIES, GUIDED_QUESTION_BANK, DEFAULT_SITE_LAYERS, DEFAULT_METHOD_EXPLAINERS, DEFAULT_FAQ_ITEMS, DEFAULT_SITE_MANIFESTO, DEFAULT_SIGNATURE_PILLARS } from './modules/guidance.js';
 import { createAnalysisModes, DEFAULT_NEXT_ACTIONS, DEFAULT_COLLAPSED_PANELS } from './modules/app-shell.js';
+import { createMunicipalitySearch } from './modules/municipality-search.js';
 
 const LOCAL_STORAGE_KEY = 'electio_italia_state_v1';
 
@@ -806,6 +807,8 @@ function rememberMunicipality(id) {
 function selectMunicipality(id, options = {}) {
   if (!id) return;
   state.selectedMunicipalityId = id;
+  els.clearMunicipalityBtn?.classList.remove('hidden');
+  if (els.municipalitySearchStatus) els.municipalitySearchStatus.textContent = '';
   rememberMunicipality(id);
   if (options.updateSearch !== false && els.municipalitySearch) els.municipalitySearch.value = municipalityLabelById(id);
   updateMunicipalityNoteUI();
@@ -833,6 +836,8 @@ function clearMunicipalitySelection() {
   state.compareMunicipalityIds = [];
   state.lastAutoZoomMunicipality = null;
   if (els.municipalitySearch) els.municipalitySearch.value = '';
+  els.clearMunicipalityBtn?.classList.add('hidden');
+  if (els.municipalitySearchStatus) els.municipalitySearchStatus.textContent = '';
   hideTooltip();
   updateMunicipalityNoteUI();
   syncURLState();
@@ -1150,7 +1155,8 @@ function setupControls() {
   }
   refreshPartySelector();
   syncMetricScopedControls();
-  if (els.municipalityList) els.municipalityList.innerHTML = state.municipalities.map(m => `<option value="${escapeHtml(m.name_current || m.municipality_name)}"></option>`).join('');
+  const search = municipalitySearchIndex();
+  if (els.municipalityList) els.municipalityList.innerHTML = search.entries.map(entry => `<option value="${escapeHtml(entry.label)}"></option>`).join('');
 }
 
 function readControls() {
@@ -2904,6 +2910,7 @@ function currentMapRenderKey() {
     selectedElection: state.selectedElection,
     compareElection: metricUsesCompare(metric) ? state.compareElection : null,
     selectedMetric: metric,
+    mapAggregationLevel: state.mapAggregationLevel || 'comune',
     selectedPartyMode: metricUsesPartyMode(metric) ? state.selectedPartyMode : null,
     selectedParty: metricUsesPartySelection(metric) ? state.selectedParty : null,
     selectedCustomIndicator: metric === 'custom_indicator' ? state.selectedCustomIndicator : null,
@@ -3154,7 +3161,7 @@ function renderMap() {
     applyMapAggregationToRows(rows, state.mapAggregationLevel);
   }
   renderHeaderBadges(rows);
-  renderOverviewCards(rows);
+  if (isRenderTargetVisible(els.overviewCards)) renderOverviewCards(rows);
   renderWarnings(rows);
 
   if (!state.geometry || !Array.isArray(state.geometry.features) || !state.geometry.features.length) {
@@ -3459,7 +3466,8 @@ function setupCanvasMapHandlers() {
     resetMapHover();
     const hit = hitTestCanvasMap(event);
     const row = hit?.row;
-    if (!row?.municipality_id) {
+    const municipalityId = row?.municipality_id || hit?.item?.feature?.properties?.municipality_id;
+    if (!municipalityId) {
       // Clicked outside any comune (sea, padding, gap) → clear selection so
       // the map stops being faded and the user can read it again.
       if (state.selectedMunicipalityId || state.compareMunicipalityIds.length) {
@@ -3469,17 +3477,17 @@ function setupCanvasMapHandlers() {
       return;
     }
     if (event.shiftKey) {
-      toggleCompareMunicipality(row.municipality_id);
+      toggleCompareMunicipality(municipalityId);
       return;
     }
     // Clicking the already-selected comune toggles it off. Low-friction
     // way out of a selection without hunting for an X button.
-    if (row.municipality_id === state.selectedMunicipalityId) {
+    if (municipalityId === state.selectedMunicipalityId) {
       clearMunicipalitySelection();
       requestMapInteractionRender();
       return;
     }
-    selectMunicipality(row.municipality_id, { updateSearch: true });
+    selectMunicipality(municipalityId, { updateSearch: true });
     requestMapInteractionRender();
   });
 }
@@ -3506,11 +3514,17 @@ function createCanvasRenderPayload(rows, projection, anySelection, scaleInfo = c
   const cache = buildCanvasMapCache(projection);
   const rowByJoinKey = new Map(rows.map(row => [rowJoinKey(row), row]));
   const rowByMunicipalityId = new Map(rows.map(row => [String(row.municipality_id || ''), row]).filter(([key]) => key));
+  const colorByKey = new Map(cache.items.map(item => {
+    const row = rowByJoinKey.get(item.key);
+    return [item.key, row ? scaleInfo.colorFor(row.__metric_value) : '#e2e8f0'];
+  }));
   return {
     cache,
     rowByJoinKey,
     rowByMunicipalityId,
     scaleInfo,
+    colorByKey,
+    viewportPlans: new Map(),
     anySelection,
     renderSignature: mapRenderSignatureForRows(rows)
   };
@@ -3555,8 +3569,7 @@ function buildBakedChoropleth(render) {
   // jank.
   const buckets = new Map();
   render.cache.items.forEach(item => {
-    const row = render.rowByJoinKey.get(item.key);
-    const color = row ? render.scaleInfo.colorFor(row.__metric_value) : '#e2e8f0';
+    const color = render.colorByKey.get(item.key);
     let bucket = buckets.get(color);
     if (!bucket) { bucket = new Path2D(); buckets.set(color, bucket); }
     bucket.addPath(item.path);
@@ -3664,6 +3677,32 @@ function canvasHighlightedEntries(render) {
   return entries;
 }
 
+function canvasViewportFillPlan(render, transform) {
+  const { hitGrid, hitGridCellSize: cellSize } = render.cache;
+  const left = Math.max(0, Math.floor((-transform.x / transform.k) / cellSize));
+  const top = Math.max(0, Math.floor((-transform.y / transform.k) / cellSize));
+  const right = Math.min(Math.floor(CANVAS_LOGICAL_WIDTH / cellSize), Math.floor(((CANVAS_LOGICAL_WIDTH - transform.x) / transform.k) / cellSize));
+  const bottom = Math.min(Math.floor(CANVAS_LOGICAL_HEIGHT / cellSize), Math.floor(((CANVAS_LOGICAL_HEIGHT - transform.y) / transform.k) / cellSize));
+  const key = `${left}:${top}:${right}:${bottom}`;
+  if (render.viewportPlans.has(key)) return render.viewportPlans.get(key);
+  const indexes = new Set();
+  for (let row = top; row <= bottom; row += 1) {
+    for (let col = left; col <= right; col += 1) {
+      (hitGrid.get(`${col}:${row}`) || []).forEach(index => indexes.add(index));
+    }
+  }
+  const buckets = new Map();
+  indexes.forEach(index => {
+    const item = render.cache.items[index];
+    const color = render.colorByKey.get(item.key);
+    if (!buckets.has(color)) buckets.set(color, new Path2D());
+    buckets.get(color).addPath(item.path);
+  });
+  render.viewportPlans.set(key, buckets);
+  while (render.viewportPlans.size > 8) render.viewportPlans.delete(render.viewportPlans.keys().next().value);
+  return buckets;
+}
+
 function drawCanvasMap(transform = state.mapCanvasTransform || d3.zoomIdentity) {
   const canvas = els.mapCanvas;
   const ctx = resizeCanvasBackingStore(canvas);
@@ -3684,8 +3723,6 @@ function drawCanvasMap(transform = state.mapCanvasTransform || d3.zoomIdentity) 
   ctx.miterLimit = 2;
   const strokeScale = 1 / Math.max(1, transform.k);
   const anySelection = render.anySelection;
-  const selectedId = state.selectedMunicipalityId;
-  const comparedIds = new Set(state.compareMunicipalityIds);
   const highlightedEntries = anySelection ? canvasHighlightedEntries(render) : [];
 
   // Two rendering strategies for the fill layer:
@@ -3702,61 +3739,20 @@ function drawCanvasMap(transform = state.mapCanvasTransform || d3.zoomIdentity) 
     ctx.globalAlpha = anySelection ? CANVAS_SELECTION_FADE_ALPHA : 1;
     ctx.drawImage(baked, 0, 0, CANVAS_LOGICAL_WIDTH, CANVAS_LOGICAL_HEIGHT);
     ctx.globalAlpha = 1;
-    if (highlightedEntries.length) {
-      highlightedEntries.forEach(({ item, row }) => {
-        ctx.fillStyle = row ? render.scaleInfo.colorFor(row.__metric_value) : '#e2e8f0';
-        ctx.fill(item.path);
-      });
-    }
   } else {
-    // Viewport-cull: compute visible bounds in projected (pre-transform) coords
-    // and skip items whose bbox is fully off-screen. Cuts fills from ~8 000
-    // to ~50-500 at k ≥ 10.
-    const vx0 = -transform.x / transform.k;
-    const vy0 = -transform.y / transform.k;
-    const vx1 = vx0 + CANVAS_LOGICAL_WIDTH / transform.k;
-    const vy1 = vy0 + CANVAS_LOGICAL_HEIGHT / transform.k;
-    // Batch by alpha to avoid changing globalAlpha thousands of times per frame.
-    const visible = [];
-    const faded = [];
-    render.cache.items.forEach(item => {
-      const b = item.bounds;
-      if (!b) return;
-      if (b[1][0] < vx0 || b[0][0] > vx1 || b[1][1] < vy0 || b[0][1] > vy1) return;
-      const row = render.rowByJoinKey.get(item.key);
-      const mid = row?.municipality_id;
-      const selected = mid && mid === selectedId;
-      const compared = mid && comparedIds.has(mid);
-      const isFaded = anySelection && mid && !selected && !compared;
-      (isFaded ? faded : visible).push({ item, row });
+    // Reuse exact vector paths within each spatial-grid viewport. Panning
+    // inside the same cells only changes the transform, never the geometry.
+    ctx.globalAlpha = anySelection ? CANVAS_SELECTION_FADE_ALPHA : 1;
+    canvasViewportFillPlan(render, transform).forEach((path, color) => {
+      ctx.fillStyle = color;
+      ctx.fill(path);
     });
-    // Color-bucketed fills inside each alpha pass: at k≥4 we typically
-    // have 50-500 features in view, with ~5-30 distinct colours. Bundling
-    // them into one Path2D per colour cuts ~500 fills/frame down to ~30
-    // and lets the GPU coalesce raster work per material — the same trick
-    // we use for the baked layer.
-    const fillBucketed = (entries) => {
-      const buckets = new Map();
-      for (let i = 0; i < entries.length; i += 1) {
-        const { item, row } = entries[i];
-        const color = row ? render.scaleInfo.colorFor(row.__metric_value) : '#e2e8f0';
-        let bucket = buckets.get(color);
-        if (!bucket) { bucket = new Path2D(); buckets.set(color, bucket); }
-        bucket.addPath(item.path);
-      }
-      buckets.forEach((path, color) => {
-        ctx.fillStyle = color;
-        ctx.fill(path);
-      });
-    };
     ctx.globalAlpha = 1;
-    fillBucketed(visible);
-    if (faded.length) {
-      ctx.globalAlpha = CANVAS_SELECTION_FADE_ALPHA;
-      fillBucketed(faded);
-      ctx.globalAlpha = 1;
-    }
   }
+  highlightedEntries.forEach(({ item }) => {
+    ctx.fillStyle = render.colorByKey.get(item.key);
+    ctx.fill(item.path);
+  });
 
   const meshes = render.cache.meshes;
   const layers = state.layerVisibility || { comuni: true, province: true, regioni: true };
@@ -4276,6 +4272,7 @@ function setMapLoading(isLoading, message = '') {
 function renderDetail() {
   updateMapDetailCta();
   const container = els.municipalityProfile;
+  if (state.uiLevel === 'basic' && document.body.dataset.dashboardView !== 'profile' && !isRenderTargetVisible(container)) return;
   const selected = selectedMunicipalityRecord();
   if (!selected) {
     els.selectedMunicipalityBadge.textContent = 'Nessun comune selezionato';
@@ -4301,7 +4298,7 @@ function renderDetail() {
   }
 
   const profileRows = (state.indices.summaryByMunicipality.get(state.selectedMunicipalityId) || []).slice().sort((a, b) => (a.election_year || 0) - (b.election_year || 0));
-  const currentRow = getSummaryRow(state, state.selectedElection, state.selectedMunicipalityId) || profileRows.at(-1) || {};
+  const currentRow = getSummaryRow(state, state.selectedElection, state.selectedMunicipalityId) || { election_key: state.selectedElection, municipality_id: state.selectedMunicipalityId };
   const compareRow = state.compareElection ? getSummaryRow(state, state.compareElection, state.selectedMunicipalityId) : null;
   const lineage = lineageRecord();
   const currentPartyShare = currentRow ? aggregateShareFor(state, currentRow.election_key, state.selectedMunicipalityId, state.selectedParty) : null;
@@ -5594,28 +5591,35 @@ async function copyPermalink() {
   }
 }
 
+let cachedMunicipalitySearch = null;
+let searchMunicipalities = null;
+let searchAliases = null;
+
+function municipalitySearchIndex() {
+  if (!cachedMunicipalitySearch || searchMunicipalities !== state.municipalities || searchAliases !== state.aliases) {
+    searchMunicipalities = state.municipalities;
+    searchAliases = state.aliases;
+    cachedMunicipalitySearch = createMunicipalitySearch(state.municipalities, state.aliases);
+  }
+  return cachedMunicipalitySearch;
+}
+
 function handleMunicipalitySearch() {
-  const query = normalizeTextToken(els.municipalitySearch.value || '');
-  if (!query) return;
-  const municipalityNames = municipality => [
-    municipality.name_current,
-    municipality.name_historical,
-    ...String(municipality.alias_names || '').split('|')
-  ].map(normalizeTextToken).filter(Boolean);
-  const findMunicipality = predicate => state.municipalities.find(municipality => municipalityNames(municipality).some(predicate));
-  const foundMunicipality = findMunicipality(name => name === query)
-    || findMunicipality(name => name.startsWith(query))
-    || findMunicipality(name => name.includes(query));
-  const foundAlias = state.aliases.find(d => normalizeTextToken(d.alias || '') === query)
-    || state.aliases.find(d => normalizeTextToken(d.alias || '').startsWith(query))
-    || state.aliases.find(d => normalizeTextToken(d.alias || '').includes(query));
-  const foundSummary = state.summary.find(d => normalizeTextToken(d.municipality_name || '') === query)
-    || state.summary.find(d => normalizeTextToken(d.municipality_name || '').startsWith(query))
-    || state.summary.find(d => normalizeTextToken(d.municipality_name || '').includes(query));
-  const selectedId = foundMunicipality?.municipality_id || foundAlias?.municipality_id || foundSummary?.municipality_id;
-  if (selectedId) {
-    selectMunicipality(selectedId, { updateSearch: false });
+  const query = els.municipalitySearch.value.trim();
+  if (!query) {
+    if (els.municipalitySearchStatus) els.municipalitySearchStatus.textContent = '';
+    clearMunicipalitySelection();
     requestMapInteractionRender();
+    return;
+  }
+  const matches = municipalitySearchIndex().find(query);
+  if (matches.length === 1) {
+    selectMunicipality(matches[0].id, { updateSearch: false });
+    requestMapInteractionRender();
+  } else if (els.municipalitySearchStatus) {
+    els.municipalitySearchStatus.textContent = matches.length
+      ? `${matches.length} comuni: scegli il nome con la provincia nei suggerimenti.`
+      : 'Nessun comune trovato. Prova con il nome completo o il codice ISTAT.';
   }
 }
 
@@ -5833,6 +5837,7 @@ function bindEvents() {
   });
   els.selectionDockCompareBtn?.addEventListener('click', () => q('comparison-panel-content')?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
   els.selectionDockClearBtn?.addEventListener('click', () => { clearMunicipalitySelection(); requestMapInteractionRender(); });
+  els.clearMunicipalityBtn?.addEventListener('click', () => { clearMunicipalitySelection(); requestMapInteractionRender(); });
   const debouncedMunicipalitySearch = debounce(() => handleMunicipalitySearch(), 140);
   const debouncedTableFilter = debounce(() => { state.tablePage = 1; renderTable(); }, 120);
   els.municipalitySearch.addEventListener('change', handleMunicipalitySearch);
@@ -6663,6 +6668,15 @@ function selectionResultRowHtml(row, { active = false } = {}) {
 }
 
 function selectionMetricHeadline(currentRow, partyBreakdown) {
+  if (!currentRow) {
+    return {
+      metricLabel: metricLabel(),
+      label: 'Nessun risultato disponibile per questa elezione',
+      value: 'n.d.',
+      mark: '—',
+      color: '#64748b'
+    };
+  }
   const electionKey = currentRow?.election_key || state.selectedElection;
   const mid = currentRow?.municipality_id || state.selectedMunicipalityId;
   const resultLeader = partyBreakdown?.rows?.[0] || null;
@@ -6724,6 +6738,7 @@ function renderSelectionDock() {
   if (!els.selectionDock || !els.selectionDockTitle || !els.selectionDockMeta) return;
   const mid = state.selectedMunicipalityId;
   const visible = Boolean(mid);
+  els.clearMunicipalityBtn?.classList.toggle('hidden', !visible);
   els.selectionDock.classList.toggle('hidden', !visible);
   if (!visible) {
     if (els.selectionDockStats) els.selectionDockStats.innerHTML = '';
@@ -6733,7 +6748,7 @@ function renderSelectionDock() {
   const currentRow = getSummaryRow(state, state.selectedElection, mid) || null;
   const leaderLabel = currentRow ? leadingPartyLabelFor(currentRow) : null;
   const inferredBlock = leaderLabel ? inferPartyMeta(leaderLabel).bloc : null;
-  const topBlock = inferredBlock && inferredBlock !== 'altro' ? inferredBlock : (currentRow?.dominant_block || null);
+  const topBlock = currentRow?.dominant_block || (inferredBlock !== 'altro' ? inferredBlock : null);
   const breakdown = municipalityPartyBreakdown(state.selectedElection, mid, currentRow);
   const headline = selectionMetricHeadline(currentRow, breakdown);
   const selectedPartyIndex = state.selectedParty
@@ -6742,7 +6757,7 @@ function renderSelectionDock() {
   const stats = [
     ['Voti validi', Number.isFinite(breakdown.validVotes) ? fmtInt(breakdown.validVotes) : 'n.d.'],
     ['Affluenza', Number.isFinite(currentRow?.turnout_pct) ? `${fmtPct(currentRow.turnout_pct)}%` : 'n.d.'],
-    ['Area', blockDisplayLabel(topBlock)]
+    ['Area', currentRow ? blockDisplayLabel(topBlock) : 'n.d.']
   ];
   if (state.selectedMetric === 'party_share' && state.selectedParty) {
     stats[2] = ['Posizione', selectedPartyIndex >= 0 ? `#${selectedPartyIndex + 1} su ${breakdown.rows.length}` : 'n.d.'];
@@ -6780,7 +6795,7 @@ function renderSelectionDock() {
   }
   if (els.selectionDockPartyResults) {
     if (!breakdown.rows.length) {
-      els.selectionDockPartyResults.innerHTML = `<div class="selection-results-empty">${state.partyResultsLoading ? 'Caricamento risultati per partito…' : 'Risultati per partito non disponibili per questa elezione.'}</div>`;
+      els.selectionDockPartyResults.innerHTML = `<div class="selection-results-empty">${state.partyResultsLoading ? 'Caricamento risultati per partito…' : 'Nessun risultato disponibile per questo comune nell’elezione selezionata.'}</div>`;
     } else {
       const leadingRows = breakdown.rows.slice(0, 5);
       const selectedRow = selectedPartyIndex >= 0 ? breakdown.rows[selectedPartyIndex] : null;
@@ -6879,6 +6894,8 @@ function renderAll() {
 async function init() {
   Object.assign(els, {
     municipalitySearch: q('municipality-search'),
+    municipalitySearchStatus: q('municipality-search-status'),
+    clearMunicipalityBtn: q('clear-municipality-btn'),
     municipalityList: q('municipality-list'),
     electionSelect: q('election-select'),
     compareElectionSelect: q('compare-election-select'),
@@ -7111,6 +7128,7 @@ async function init() {
     if (!bootParams.has('audienceMode')) state.audienceMode = 'public';
     relocateAdvancedDashboardControls();
     setupControls();
+    els.clearMunicipalityBtn?.classList.toggle('hidden', !state.selectedMunicipalityId);
     invalidateDerivedCaches();
     renderStatusPanel();
     readControls();

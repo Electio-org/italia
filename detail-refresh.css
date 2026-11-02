@@ -665,3 +665,42 @@ body[data-site-page="municipality-detail"] .site-footer-copy {
     padding: 13px !important;
   }
 }
+body[data-site-page="municipality-detail"] .detail-history-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 24px 0 8px;
+}
+
+body[data-site-page="municipality-detail"] .detail-history-families {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+body[data-site-page="municipality-detail"] .detail-history-families button,
+body[data-site-page="municipality-detail"] .detail-load-composition {
+  width: auto !important;
+  border: 1px solid #bdcdc5 !important;
+  border-radius: 6px !important;
+  padding: 9px 14px;
+  background: #fff !important;
+  color: #234b3b !important;
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+body[data-site-page="municipality-detail"] .detail-history-families button[aria-pressed="true"] {
+  border-color: #17654f !important;
+  background: #17654f !important;
+  color: #fff !important;
+}
+
+body[data-site-page="municipality-detail"] #detail-history-scope {
+  margin: 0;
+  color: #617069;
+  font-size: 0.8rem;
+}

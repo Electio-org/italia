@@ -3,10 +3,16 @@
 // already shipped with the bundle, and renders anagrafica + storico + 3
 // SVG charts (turnout over time, winner margin, leader timeline).
 
-import { inferPartyMeta, inferredPartyMetaOrNull } from './modules/shared.js';
+import { safeNumber, inferPartyMeta, inferredPartyMetaOrNull, buildPartyTaxonomyLookup, resolvePartyMeta } from './modules/shared.js';
+import { parseCsvTextAsync } from './modules/data.js';
 
 const DERIVED = 'data/derived';
 const SVG_NS = 'http://www.w3.org/2000/svg';
+let partyTaxonomyLookup = new Map();
+
+function partyMetaFor(party, electionKey) {
+  return resolvePartyMeta(partyTaxonomyLookup, electionKey, party) || inferPartyMeta(party);
+}
 
 const els = {
   name: document.getElementById('detail-name'),
@@ -112,12 +118,15 @@ function electionDisplayLabel(row) {
   const year = row.election_year || row.year || '';
   return String(row.election_key || '').includes('assemblea_costituente')
     ? `Assemblea Costituente ${year}`
+    : String(row.election_key || '').startsWith('europee_') ? `Europee ${year}`
     : `Camera ${year}`;
 }
 
 function publicPartyLabel(party, electionKey = '') {
   const raw = String(party || '').trim();
   if (!raw) return 'n.d.';
+  const exact = resolvePartyMeta(partyTaxonomyLookup, electionKey, raw);
+  if (exact) return exact.display || exact.party_std || raw;
   const year = Number(String(electionKey || '').match(/(?:19|20)\d{2}/)?.[0] || 0);
   const token = raw.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
   if (year && year < 2022) {
@@ -155,8 +164,9 @@ function renderCurrentElection(row, municipalityId, exactResult = null, viewCont
   }
   const winner = exactResult?.winner || null;
   const party = winner?.party || row.first_party_raw || row.first_party_std || '';
-  const share = winner?.share ?? Number(row.first_party_share);
-  const block = winner?.bloc || reinferBlockForSummaryRow(row);
+  const share = winner?.share ?? safeNumber(row.first_party_share);
+  const margin = safeNumber(row.first_second_margin);
+  const block = exactResult?.dominantBlock || reinferBlockForSummaryRow(row);
   const selectedParty = String(viewContext.party || '').trim();
   const selectedPartyResult = selectedParty
     ? exactResult?.parties?.find(result => normalizedPartyKey(result.party) === normalizedPartyKey(selectedParty)) || null
@@ -167,22 +177,23 @@ function renderCurrentElection(row, municipalityId, exactResult = null, viewCont
   let headline = {
     caption: 'Partito vincente',
     label: publicPartyLabel(party, row.election_key),
-    value: Number.isFinite(Number(share)) ? fmtPct(share) : '—',
+    value: Number.isFinite(share) ? fmtPct(share) : '—',
     mark: publicPartyMark(party, row.election_key),
-    color: inferPartyMeta(party).color || '#64748b'
+    color: partyMetaFor(party, row.election_key).color || '#64748b'
   };
   if (metric === 'party_share' && selectedParty) {
     headline = {
       caption: 'Quota del partito',
       label: publicPartyLabel(selectedParty, row.election_key),
-      value: selectedPartyResult ? fmtPct(selectedPartyResult.share) : 'Caricamento…',
+      value: selectedPartyResult ? fmtPct(selectedPartyResult.share)
+        : viewContext.resultsUnavailable ? 'n.d.' : exactResult ? 'Non presente' : 'Caricamento…',
       mark: publicPartyMark(selectedParty, row.election_key),
-      color: inferPartyMeta(selectedParty).color || '#64748b'
+      color: partyMetaFor(selectedParty, row.election_key).color || '#64748b'
     };
   } else if (metric === 'turnout') {
     headline = {
       caption: 'Affluenza',
-      label: Number.isFinite(Number(row.voters)) ? `${fmtInt(row.voters)} votanti` : 'Partecipazione al voto',
+      label: Number.isFinite(safeNumber(row.voters)) ? `${fmtInt(row.voters)} votanti` : 'Partecipazione al voto',
       value: fmtPct(row.turnout_pct),
       mark: 'AFF',
       color: '#167d75'
@@ -191,14 +202,14 @@ function renderCurrentElection(row, municipalityId, exactResult = null, viewCont
     headline = {
       ...headline,
       caption: 'Margine del vincente',
-      value: Number.isFinite(Number(row.first_second_margin)) ? `${Number(row.first_second_margin).toFixed(1)} pt` : '—'
+      value: Number.isFinite(margin) ? `${margin.toFixed(1)} pt` : '—'
     };
   } else if (metric === 'dominant_block') {
     const blockLabel = BLOCK_LABEL[block] || block || 'n.d.';
     headline = {
       caption: 'Area politica prevalente',
       label: blockLabel,
-      value: '—',
+      value: exactResult?.blocks?.[0] ? fmtPct(exactResult.blocks[0].share) : '—',
       mark: blockLabel.split(/\s+|-/).filter(Boolean).slice(0, 3).map(word => word[0]).join('').toUpperCase(),
       color: BLOCK_COLORS[block] || BLOCK_COLORS.altro
     };
@@ -217,7 +228,7 @@ function renderCurrentElection(row, municipalityId, exactResult = null, viewCont
     : null;
   let statRows = [
     ['Affluenza', fmtPct(row.turnout_pct)],
-    ['Margine', Number.isFinite(Number(row.first_second_margin)) ? `${Number(row.first_second_margin).toFixed(1)} pt` : '—'],
+    ['Margine', Number.isFinite(margin) ? `${margin.toFixed(1)} pt` : '—'],
     ['Area', BLOCK_LABEL[block] || block || 'n.d.']
   ];
   if (metric === 'party_share') {
@@ -235,7 +246,7 @@ function renderCurrentElection(row, municipalityId, exactResult = null, viewCont
   } else if (metric === 'margin') {
     statRows = [
       ['Affluenza', fmtPct(row.turnout_pct)],
-      ['Quota vincente', Number.isFinite(Number(share)) ? fmtPct(share) : '—'],
+      ['Quota vincente', Number.isFinite(share) ? fmtPct(share) : '—'],
       ['Voti validi', fmtInt(exactResult?.totalVotes || row.valid_votes)]
     ];
   }
@@ -269,13 +280,13 @@ async function loadExactElectionResult(municipalityId, electionKey) {
   const index = await indexResponse.json();
   const shardPath = index.shards?.[electionKey];
   if (!shardPath) return null;
-  const rows = parseCsvStream(await fetchAndDecompress(shardPath));
+  const rows = await parseCsvTextAsync(await fetchAndDecompress(shardPath));
   const totals = new Map();
   rows.forEach(result => {
     if (String(result.municipality_id || '').trim() !== municipalityId) return;
     const party = String(result.party_raw || result.party_std || '').trim();
     if (!party) return;
-    const current = totals.get(party) || { party, votes: 0, declaredShare: 0 };
+    const current = totals.get(party) || { party, votes: 0, declaredShare: 0, bloc: result.bloc || inferredPartyMetaOrNull(party)?.bloc || '' };
     current.votes += Number(result.votes) || 0;
     current.declaredShare += Number(result.vote_share) || 0;
     totals.set(party, current);
@@ -286,12 +297,18 @@ async function loadExactElectionResult(municipalityId, electionKey) {
       party: result.party,
       votes: result.votes,
       share: totalVotes > 0 ? (result.votes / totalVotes) * 100 : result.declaredShare,
-      bloc: inferredPartyMetaOrNull(result.party)?.bloc || ''
+      bloc: result.bloc
     }))
     .filter(result => result.votes > 0 || result.share > 0)
     .sort((a, b) => (b.votes - a.votes) || (b.share - a.share));
   const winner = parties[0] || null;
-  return winner ? { winner, parties, totalVotes } : null;
+  const blockShares = new Map();
+  parties.forEach(result => {
+    const bloc = result.bloc || 'altro';
+    blockShares.set(bloc, (blockShares.get(bloc) || 0) + result.share);
+  });
+  const blocks = [...blockShares].map(([bloc, share]) => ({ bloc, share })).sort((a, b) => b.share - a.share);
+  return winner ? { winner, parties, totalVotes, blocks, dominantBlock: blocks[0]?.bloc } : null;
 }
 
 function renderElectionResults(result, electionKey, selectedParty = '') {
@@ -303,7 +320,7 @@ function renderElectionResults(result, electionKey, selectedParty = '') {
   }
   els.electionResultTotal.textContent = `${fmtInt(result.totalVotes)} voti validi · ${result.parties.length} partiti`;
   els.electionResults.innerHTML = result.parties.map(item => {
-    const meta = inferPartyMeta(item.party);
+    const meta = partyMetaFor(item.party, electionKey);
     const active = selectedParty && normalizedPartyKey(item.party) === normalizedPartyKey(selectedParty);
     const width = Math.max(0, Math.min(100, Number(item.share) || 0));
     return `
@@ -324,26 +341,11 @@ function showError(message) {
   els.error.classList.remove('hidden');
 }
 
-// Re-derives `dominant_block` for a summary row by re-inferring the bloc
-// of `first_party_std` (or `first_party_raw`, when present) via the JS
-// PARTY_FALLBACKS list in modules/shared.js.
-//
-// The summary CSV's `dominant_block` field is generated by
-// scripts/preprocess.py, whose PARTY_FALLBACKS list is much shorter than
-// the JS one — so a lot of well-known parties (L'Ulivo, AN, UDC, RC,
-// IdV, Pensionati, La Rosa nel Pugno, Verdi pre-AVS, ...) end up
-// stamped `bloc=altro` even when the leading party clearly belongs to
-// a recognisable bloc. This page only loads `municipality_summary.csv`
-// (not the per-party results-long shards), so the cleanest patch we
-// can apply at runtime is to look at the leader-party label and let
-// the JS taxonomy reclassify it. If the JS list also can't recognise
-// the leader we leave the CSV value alone — better to keep an explicit
-// `altro` than to fabricate a bloc.
-//
-// Returns the (possibly overridden) bloc string. Never returns
-// undefined; falls back to '' to match the CSV's "no data" sentinel.
+// Published aggregates use the election-specific taxonomy. Only older
+// profiles without an area value need a label-based fallback.
 function reinferBlockForSummaryRow(row) {
   const fromCsv = (row?.dominant_block || '').trim();
+  if (fromCsv) return fromCsv;
   const leader = String(row?.first_party_std || row?.first_party_raw || row?.first_party || '').trim();
   if (!leader) return fromCsv;
   const meta = inferredPartyMetaOrNull(leader);
@@ -462,15 +464,10 @@ function buildAggregatesByElection(summaryRows, comuneId, municipalities = [], n
     const blockCountsNation = {};
     const blockCountsProv = {};
     for (const r of rows) {
-      const electors = Number(r.electors);
-      const voters = Number(r.voters);
-      const valid = Number(r.valid_votes);
-      const firstShare = Number(r.first_party_share);
-      // Use the runtime-reinferred bloc instead of the CSV's
-      // `dominant_block` so the modal-block aggregation reflects the
-      // JS taxonomy (otherwise huge swathes of comuni in 2006-2008
-      // collapse to "altro" because the Python preprocessor's regex
-      // list doesn't recognise L'Ulivo / AN / UDC / RC / IdV / etc.).
+      const electors = safeNumber(r.electors);
+      const voters = safeNumber(r.voters);
+      const valid = safeNumber(r.valid_votes);
+      const firstShare = safeNumber(r.first_party_share);
       const block = reinferBlockForSummaryRow(r);
       if (Number.isFinite(electors) && Number.isFinite(voters)) {
         nationElectors += electors;
@@ -594,7 +591,7 @@ function renderTurnoutChart(rows, aggregates) {
   const points = sortRowsByYear(rows)
     .map(row => {
       const year = Number(row.election_year || row.year);
-      const turnout = Number(row.turnout_pct);
+      const turnout = safeNumber(row.turnout_pct);
       if (!Number.isFinite(year) || !Number.isFinite(turnout)) return null;
       const agg = aggregates?.get(row.election_key) || null;
       return {
@@ -741,7 +738,7 @@ function renderMarginChart(rows) {
   const items = sortRowsByYear(rows)
     .map(row => {
       const year = Number(row.election_year || row.year);
-      const margin = Number(row.first_second_margin);
+      const margin = safeNumber(row.first_second_margin);
       if (!Number.isFinite(year) || !Number.isFinite(margin)) return null;
       return {
         year,
@@ -860,7 +857,7 @@ function renderLeaderChart(rows) {
       const year = Number(row.election_year || row.year);
       const leader = row.first_party_raw || row.first_party_std;
       if (!Number.isFinite(year) || !leader) return null;
-      const share = Number(row.first_party_share);
+      const share = safeNumber(row.first_party_share);
       return {
         year,
         leader: publicPartyLabel(leader, row.election_key),
@@ -1071,8 +1068,8 @@ function renderKpiStrip(rows, aggregates) {
   }
 
   // Comune-side averages (mean over the elections we have).
-  const comuneTurnouts = rows.map(r => Number(r.turnout_pct)).filter(Number.isFinite);
-  const comuneFirstShares = rows.map(r => Number(r.first_party_share)).filter(Number.isFinite);
+  const comuneTurnouts = rows.map(r => safeNumber(r.turnout_pct)).filter(Number.isFinite);
+  const comuneFirstShares = rows.map(r => safeNumber(r.first_party_share)).filter(Number.isFinite);
   const comuneTurnoutAvg = comuneTurnouts.length
     ? comuneTurnouts.reduce((a, b) => a + b, 0) / comuneTurnouts.length : null;
   const comuneFirstAvg = comuneFirstShares.length
@@ -1205,9 +1202,9 @@ function renderWinnersTimeline(rows) {
   for (const row of asc) {
     const leaderRaw = String(row.first_party_raw || row.first_party_std || '').trim();
     const leader = publicPartyLabel(leaderRaw, row.election_key);
-    const share = Number(row.first_party_share);
-    const margin = Number(row.first_second_margin);
-    const turnout = Number(row.turnout_pct);
+    const share = safeNumber(row.first_party_share);
+    const margin = safeNumber(row.first_second_margin);
+    const turnout = safeNumber(row.turnout_pct);
     const block = reinferBlockForSummaryRow(row);
 
     const shareDelta = prevShare != null && Number.isFinite(share) ? share - prevShare : null;
@@ -1311,16 +1308,6 @@ async function fetchAndDecompress(path) {
   return new Response(stream).text();
 }
 
-function parseCsvStream(text) {
-  if (typeof window.Papa === 'undefined') return [];
-  const result = window.Papa.parse(text, {
-    header: true,
-    skipEmptyLines: true,
-    dynamicTyping: false,
-  });
-  return result.data || [];
-}
-
 // Computes bloc shares for `comuneId` inside a parsed results-long
 // shard. Returns { blocs: [{bloc, share, votes}], totalShare,
 // totalVotes } or null if the comune isn't in the shard.
@@ -1335,7 +1322,7 @@ function blocSharesForShard(rows, comuneId) {
     found = true;
     const raw = String(row.party_raw || row.party_std || '').trim();
     const meta = raw ? inferredPartyMetaOrNull(raw) : null;
-    let bloc = (meta?.bloc || row.bloc || '').trim();
+    let bloc = (row.bloc || meta?.bloc || '').trim();
     if (!bloc) bloc = 'altro';
     const share = Number(row.vote_share);
     const votes = Number(row.votes);
@@ -1408,7 +1395,7 @@ function loadingRowHtml(electionKey, electionLabel, year) {
     </li>`;
 }
 
-async function renderBlocComposition(comuneId, summaryRows, aggregates = null) {
+async function renderBlocComposition(comuneId, summaryRows, aggregates = null, { isCurrent = () => true } = {}) {
   const container = els.chartBlocComposition;
   if (!container) return;
   // Use the elections that the summary already lists for this comune as
@@ -1429,11 +1416,13 @@ async function renderBlocComposition(comuneId, summaryRows, aggregates = null) {
     if (!shardRes.ok) throw new Error(`shard index → ${shardRes.status}`);
     manifest = await shardRes.json();
   } catch (err) {
+    if (!isCurrent()) return;
     console.error('Errore caricamento manifest blocchi', err);
     chartEmpty(container, 'Impossibile caricare la composizione storica del voto.');
     return;
   }
   const shards = manifest.shards || {};
+  if (!isCurrent()) return;
   // 2. Build placeholder rows in election order.
   const ordered = sorted.map(r => ({
     electionKey: (r.election_key || '').trim(),
@@ -1446,6 +1435,7 @@ async function renderBlocComposition(comuneId, summaryRows, aggregates = null) {
   const rendered = new Map();
   let nextEntry = 0;
   const loadEntry = async (entry) => {
+    if (!isCurrent()) return;
     const path = shards[entry.electionKey];
     if (!path) {
       const li = container.querySelector(`li[data-election="${cssEscape(entry.electionKey)}"]`);
@@ -1454,12 +1444,15 @@ async function renderBlocComposition(comuneId, summaryRows, aggregates = null) {
     }
     try {
       const text = await fetchAndDecompress(path);
-      const rows = parseCsvStream(text);
+      if (!isCurrent()) return;
+      const rows = await parseCsvTextAsync(text);
+      if (!isCurrent()) return;
       const result = blocSharesForShard(rows, comuneId);
       rendered.set(entry.electionKey, result);
       const li = container.querySelector(`li[data-election="${cssEscape(entry.electionKey)}"]`);
       if (li) li.outerHTML = blocCompositionRowHtml(entry.electionKey, entry.electionLabel, entry.year, result);
     } catch (err) {
+      if (!isCurrent()) return;
       console.error('Errore caricamento shard blocco', entry.electionKey, err);
       const li = container.querySelector(`li[data-election="${cssEscape(entry.electionKey)}"]`);
       if (li) {
@@ -1471,23 +1464,25 @@ async function renderBlocComposition(comuneId, summaryRows, aggregates = null) {
     }
   };
   const workers = Array.from({ length: Math.min(3, ordered.length) }, async () => {
-    while (nextEntry < ordered.length) {
+    while (isCurrent() && nextEntry < ordered.length) {
       const entry = ordered[nextEntry];
       nextEntry += 1;
       await loadEntry(entry);
     }
   });
   await Promise.all(workers);
+  if (!isCurrent()) return;
 
   const refinedRows = summaryRows.map(row => {
-    const winner = rendered.get(String(row.election_key || '').trim())?.winner;
+    const result = rendered.get(String(row.election_key || '').trim());
+    const winner = result?.winner;
     if (!winner) return row;
     return {
       ...row,
       first_party_raw: winner.party,
       first_party_std: winner.party,
       first_party_share: winner.share,
-      dominant_block: winner.bloc || row.dominant_block
+      dominant_block: result.blocs.reduce((best, block) => !best || block.share > best.share ? block : best, null)?.bloc || row.dominant_block
     };
   });
   renderWinnersTimeline(refinedRows);
@@ -1504,9 +1499,55 @@ function cssEscape(value) {
   return String(value).replace(/[^a-zA-Z0-9_-]/g, '\\$&');
 }
 
+function setupHistoryFamilies(municipalityId, rows, aggregates, activeElection) {
+  const familyOf = row => String(row.election_key || '').startsWith('europee_') ? 'europee' : 'camera';
+  const buttons = [...document.querySelectorAll('[data-history-family]')];
+  const scope = document.getElementById('detail-history-scope');
+  let revision = 0;
+  const showFamily = family => {
+    const token = ++revision;
+    const historyRows = rows.filter(row => familyOf(row) === family);
+    buttons.forEach(button => {
+      button.setAttribute('aria-pressed', String(button.dataset.historyFamily === family));
+      button.disabled = !rows.some(row => familyOf(row) === button.dataset.historyFamily);
+    });
+    const years = historyRows.map(row => Number(row.election_year || row.year)).filter(Number.isFinite);
+    if (scope) scope.textContent = years.length
+      ? `${family === 'europee' ? 'Europee' : 'Camera e Costituente'} · ${Math.min(...years)}–${Math.max(...years)} · ${historyRows.length} elezioni`
+      : 'Nessuna elezione disponibile.';
+    renderHistory(historyRows);
+    renderKpiStrip(historyRows, aggregates);
+    renderWinnersTimeline(historyRows);
+    renderCharts(historyRows, aggregates);
+    // This analysis needs national results shards. Fetch them only on an
+    // explicit request, and stop scheduling work after a family change.
+    if (els.chartBlocComposition) {
+      els.chartBlocComposition.innerHTML = '<button type="button" class="detail-load-composition">Carica la composizione storica per aree</button>';
+      els.chartBlocComposition.querySelector('button').addEventListener('click', () => {
+        renderBlocComposition(municipalityId, historyRows, aggregates, { isCurrent: () => token === revision })
+          .catch(error => {
+            if (token !== revision) return;
+            console.warn('Composizione storica non disponibile', error);
+            chartEmpty(els.chartBlocComposition, 'Composizione non disponibile. Riprova tra poco.');
+          });
+      }, { once: true });
+    }
+  };
+  buttons.forEach(button => button.addEventListener('click', () => showFamily(button.dataset.historyFamily)));
+  showFamily(familyOf({ election_key: activeElection }));
+}
+
 async function main() {
   arrangeDetailSections();
   const { id, election, metric, party } = getParams();
+  const backLink = document.querySelector('.detail-breadcrumb-link');
+  if (backLink && id) {
+    const mapState = new URLSearchParams({ selectedMunicipalityId: id });
+    if (election) mapState.set('selectedElection', election);
+    if (metric) mapState.set('selectedMetric', metric);
+    if (party) mapState.set('selectedParty', party);
+    backLink.href = `index.html#${mapState}`;
+  }
   if (!id) {
     showError('Parametro "id" mancante. Apri il dettaglio da un comune selezionato sulla dashboard.');
     if (els.name) els.name.textContent = 'Dettaglio comune';
@@ -1514,7 +1555,15 @@ async function main() {
   }
 
   try {
-    const { municipalities, summary, nationalByElection } = await loadMunicipalityProfileBundle(id);
+    const [profile, taxonomy] = await Promise.all([
+      loadMunicipalityProfileBundle(id),
+      fetchCsv('data/reference/party_taxonomy_overrides.csv').catch(error => {
+        console.warn('Tassonomia specifica non disponibile', error);
+        return [];
+      })
+    ]);
+    partyTaxonomyLookup = buildPartyTaxonomyLookup(taxonomy);
+    const { municipalities, summary, nationalByElection } = profile;
 
     const record = municipalities.find(row => (row.municipality_id || '').trim() === id) || null;
     const rows = summary.filter(row => (row.municipality_id || '').trim() === id);
@@ -1533,14 +1582,11 @@ async function main() {
 
     const aggregates = buildAggregatesByElection(summary, id, municipalities, nationalByElection);
     const sortedRows = sortRowsByYear(rows);
-    const activeRow = rows.find(row => row.election_key === election) || sortedRows.at(-1) || null;
+    const activeRow = election ? rows.find(row => row.election_key === election) || null : sortedRows.at(-1) || null;
 
     renderCurrentElection(activeRow, id, null, { metric, party });
     renderAnagrafica(record);
-    renderHistory(rows);
-    renderKpiStrip(rows, aggregates);
-    renderWinnersTimeline(rows);
-    renderCharts(rows, aggregates);
+    setupHistoryFamilies(id, rows, aggregates, election || activeRow?.election_key);
 
     if (activeRow?.election_key) {
       loadExactElectionResult(id, activeRow.election_key)
@@ -1549,39 +1595,19 @@ async function main() {
             renderCurrentElection(activeRow, id, result, { metric, party });
             renderElectionResults(result, activeRow.election_key, party);
           } else {
+            renderCurrentElection(activeRow, id, null, { metric, party, resultsUnavailable: true });
             renderElectionResults(null, activeRow.election_key, party);
           }
         })
         .catch(error => {
           console.warn('Risultato completo non disponibile', error);
+          renderCurrentElection(activeRow, id, null, { metric, party, resultsUnavailable: true });
           renderElectionResults(null, activeRow.election_key, party);
         });
     } else {
       renderElectionResults(null, '', party);
     }
 
-    // Bloc-composition chart needs the per-election results-long shards
-    // (~30 MB gzipped total). Defer until the section scrolls into view
-    // so the rest of the detail page stays snappy. Only triggers once.
-    if (els.chartBlocComposition && typeof IntersectionObserver === 'function') {
-      const io = new IntersectionObserver((entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            io.disconnect();
-            renderBlocComposition(id, rows, aggregates).catch(err => {
-              console.error('renderBlocComposition failed', err);
-            });
-            return;
-          }
-        }
-      }, { rootMargin: '300px 0px' });
-      io.observe(els.chartBlocComposition);
-    } else if (els.chartBlocComposition) {
-      // Fallback for browsers without IntersectionObserver: just load eagerly.
-      renderBlocComposition(id, rows, aggregates).catch(err => {
-        console.error('renderBlocComposition failed', err);
-      });
-    }
   } catch (err) {
     console.error(err);
     showError('Errore nel caricamento dei dati del comune. Riprova aggiornando la pagina.');
