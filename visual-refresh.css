@@ -1,6 +1,29 @@
 /* Electio dashboard visual system. Kept separate from the legacy stylesheet so
    the public explorer can evolve without changing the data and map runtime. */
 
+body[data-site-page="dashboard"] .search-status {
+  margin: 0;
+  color: var(--electio-muted);
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+
+body[data-site-page="dashboard"] .search-status:empty {
+  display: none;
+}
+
+body[data-site-page="dashboard"] .clear-municipality-btn {
+  width: 100%;
+  margin: 0 0 12px;
+  padding: 8px 10px;
+  border: 1px solid var(--electio-line-strong) !important;
+  border-radius: 6px !important;
+  background: var(--electio-soft) !important;
+  color: var(--electio-green-dark) !important;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
 body[data-site-page="dashboard"] {
   --electio-ink: #18231f;
   --electio-muted: #617069;
@@ -1245,5 +1268,29 @@ body[data-site-page="dashboard"] .site-footer-copy p {
 
   body[data-site-page="dashboard"] .selection-dock-stat strong {
     font-size: 0.78rem !important;
+  }
+}
+
+@media (max-width: 860px) {
+  body[data-site-page="dashboard"] #map-wrapper {
+    aspect-ratio: auto;
+    height: auto !important;
+  }
+
+  body[data-site-page="dashboard"] #map-canvas {
+    height: auto !important;
+    min-height: 0 !important;
+    aspect-ratio: 960 / 680;
+  }
+
+  body[data-site-page="dashboard"] .selection-dock {
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    max-height: none;
+    overflow: visible;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    backdrop-filter: none;
   }
 }

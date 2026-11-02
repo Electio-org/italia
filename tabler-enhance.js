@@ -1,5 +1,11 @@
+function within(root, selector) {
+  const descendants = [...root.querySelectorAll(selector)];
+  if (root.matches?.(selector)) descendants.unshift(root);
+  return descendants;
+}
+
 function enhanceButtons(root) {
-  root.querySelectorAll('button').forEach((button) => {
+  within(root, 'button').forEach((button) => {
     if (button.dataset.tablerifiedButton === '1') return;
     button.classList.add('btn');
     if (button.classList.contains('small-btn')) {
@@ -19,36 +25,35 @@ function enhanceButtons(root) {
 }
 
 function enhanceControls(root) {
-  root.querySelectorAll('select').forEach((select) => {
+  within(root, 'select').forEach((select) => {
     select.classList.add('form-select');
   });
-  root.querySelectorAll('textarea').forEach((textarea) => {
+  within(root, 'textarea').forEach((textarea) => {
     textarea.classList.add('form-control');
   });
-  root
-    .querySelectorAll('input:not([type]), input[type="text"], input[type="search"], input[type="number"], input[type="email"], input[type="url"]')
+  within(root, 'input:not([type]), input[type="text"], input[type="search"], input[type="number"], input[type="email"], input[type="url"]')
     .forEach((input) => {
       input.classList.add('form-control');
     });
-  root.querySelectorAll('input[type="range"]').forEach((input) => {
+  within(root, 'input[type="range"]').forEach((input) => {
     input.classList.add('form-range');
   });
-  root.querySelectorAll('input[type="checkbox"], input[type="radio"]').forEach((input) => {
+  within(root, 'input[type="checkbox"], input[type="radio"]').forEach((input) => {
     input.classList.add('form-check-input');
   });
 }
 
 function enhanceTables(root) {
-  root.querySelectorAll('table').forEach((table) => {
+  within(root, 'table').forEach((table) => {
     table.classList.add('table', 'table-vcenter');
   });
-  root.querySelectorAll('.table-wrap, .doc-table-wrap').forEach((wrapper) => {
+  within(root, '.table-wrap, .doc-table-wrap').forEach((wrapper) => {
     wrapper.classList.add('table-responsive');
   });
 }
 
 function enhanceBadges(root) {
-  root.querySelectorAll('.pill, .meta-pill, .doc-pill, .severity-pill').forEach((badge) => {
+  within(root, '.pill, .meta-pill, .doc-pill, .severity-pill').forEach((badge) => {
     badge.classList.add('badge', 'rounded-pill');
     if (badge.classList.contains('muted')) {
       badge.classList.add('text-bg-light');
@@ -57,8 +62,7 @@ function enhanceBadges(root) {
 }
 
 function enhanceSurfaces(root) {
-  root
-    .querySelectorAll(
+  within(root,
       '.panel, .brand, .overview-card, .doc-card, .stat-card, .site-doc-hero, .doc-section, .selection-dock-main, .onboarding-dialog, .command-dialog, .helper-card, .detail-meta-block, .hero-stat-card'
     )
     .forEach((surface) => {
@@ -67,7 +71,7 @@ function enhanceSurfaces(root) {
 }
 
 function enhanceNavigation(root) {
-  root.querySelectorAll('.site-nav a').forEach((link) => {
+  within(root, '.site-nav a').forEach((link) => {
     link.classList.add('nav-link');
     const icon = link.querySelector('i');
     if (icon) {
@@ -93,12 +97,25 @@ document.addEventListener('DOMContentLoaded', () => {
   enhanceDom(document);
 
   let scheduled = false;
-  const observer = new MutationObserver(() => {
+  const pending = new Set();
+  const observer = new MutationObserver(records => {
+    records.forEach(record => record.addedNodes.forEach(node => {
+      if (node.nodeType === Node.ELEMENT_NODE) pending.add(node);
+    }));
+    if (!pending.size) return;
     if (scheduled) return;
     scheduled = true;
     requestAnimationFrame(() => {
       scheduled = false;
-      enhanceDom(document);
+      const added = new Set(pending);
+      pending.clear();
+      added.forEach(root => {
+        if (!root.isConnected) return;
+        for (let parent = root.parentElement; parent; parent = parent.parentElement) {
+          if (added.has(parent)) return;
+        }
+        enhanceDom(root);
+      });
     });
   });
 

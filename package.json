@@ -6,7 +6,8 @@
     "test:selectors": "node scripts/smoke_selectors.mjs",
     "test:browser": "node scripts/smoke_dashboard.mjs",
     "test:public": "node scripts/smoke_public_explorer.mjs",
-    "test:europe": "node scripts/smoke_european_elections.mjs"
+    "test:europe": "node scripts/smoke_european_elections.mjs",
+    "test:interactions": "node scripts/smoke_explorer_interactions.mjs"
   },
   "devDependencies": {
     "playwright": "1.59.1"

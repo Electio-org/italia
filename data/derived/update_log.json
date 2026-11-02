@@ -3,6 +3,18 @@
   "entries": [
     {
       "version": "0.25.0",
+      "date": "2026-11-02",
+      "title": "Explorer piu reattivo e storico per tipo di elezione",
+      "changes": [
+        "Eliminato il download duplicato della geometria nazionale e riutilizzati i tracciati visibili durante pan e zoom.",
+        "Ricerca comunale con provincia, codice ISTAT e nomi storici; i comuni omonimi richiedono una scelta esplicita.",
+        "Deselezione accessibile anche dalla ricerca e risultati mobili sotto la mappa, senza coprirla.",
+        "Storico comunale separato tra Camera/Costituente ed Europee; nessun risultato di un altro anno quando mancano i dati richiesti.",
+        "Etichette e colori della scheda comunale allineati alla tassonomia specifica per elezione; composizione storica caricata su richiesta."
+      ]
+    },
+    {
+      "version": "0.25.0",
       "date": "2026-07-15",
       "title": "Elezioni europee 1979-2024 al livello comunale",
       "changes": [
