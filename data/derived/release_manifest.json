@@ -31,21 +31,21 @@
     "archiveBundleGapReport": {
       "path": "data/derived/archive_bundle_gap_report.json",
       "kind": "json",
-      "size_bytes": 18091,
-      "sha256": "aa78f62582d45ddeb769b21ab113637076900de048df58314b6b7d19ddb1433a"
+      "size_bytes": 17621,
+      "sha256": "ffb1a1685a65ba6b0ef9c7fcb1b3e03fcbdedd1eed29a08c2fc4a282283ece9c"
     },
     "codebook": {
       "path": "data/derived/codebook.json",
       "kind": "json",
-      "size_bytes": 19347,
-      "sha256": "33aeb3495cfdcc63afc577d23d5194a26e7bebb29b0001b8e053a4b396fc730f",
+      "size_bytes": 18829,
+      "sha256": "282c029d4782394eadcb8a7376d0007667e78644f774ca37e8c32b12593547aa",
       "dataset_count": 10
     },
     "customIndicators": {
       "path": "data/derived/custom_indicators.csv",
       "kind": "csv",
-      "size_bytes": 110,
-      "sha256": "69d5c837f9587e368dba01adea4e9bb63f255edf7e2c448a5f7c61d707404aab",
+      "size_bytes": 109,
+      "sha256": "4398558da204b945ee8790d00cc958f458bd6237d4b18f512356d8f861665611",
       "columns": [
         "indicator_key",
         "indicator_label",
@@ -62,27 +62,27 @@
     "dataProducts": {
       "path": "data/derived/data_products.json",
       "kind": "json",
-      "size_bytes": 6582,
-      "sha256": "8a7e975f7fee67c982ce1821416bce47451329fdbaf3bc6072413919eef4cd03",
+      "size_bytes": 6419,
+      "sha256": "dba8d6561a1d43fe78dfcac0a3e011815241aaef8a82ea3968789321262aaeff",
       "product_count": 6
     },
     "dataQualityReport": {
       "path": "data/derived/data_quality_report.json",
       "kind": "json",
-      "size_bytes": 9350,
-      "sha256": "f5e94be86d6d398e1c09e58843d7169647ee063eef6ac6761eb7f1848e8bf2d0"
+      "size_bytes": 9057,
+      "sha256": "e45483e7b7094c5bcf7f76cd980cf62f4c963ffd8fc2d33fdd9c9a1da11ef62b"
     },
     "datasetContracts": {
       "path": "data/derived/dataset_contracts.json",
       "kind": "json",
-      "size_bytes": 5910,
-      "sha256": "9ac6a20405ab2360a794b2ac42c073f5a6ef1dda182319a7b4a33834de23fde6"
+      "size_bytes": 5690,
+      "sha256": "c5cd5e77bf0cf448b94f9cd189355cf951e3612ed74664e7eef1b2e5410b85e3"
     },
     "datasetRegistry": {
       "path": "data/derived/dataset_registry.json",
       "kind": "json",
-      "size_bytes": 17413,
-      "sha256": "97f1c6b9c5fa5cfe1a428fca4aa4a4c159521bcc6e18e3c95a7aa24e10c13d02",
+      "size_bytes": 16976,
+      "sha256": "700214a697e196f468ec98ca6a6e1ad0841585abb6e51729feb5d32fc7df178c",
       "dataset_count": 31
     },
     "electionsMaster": {
@@ -106,8 +106,8 @@
     "europeanArchiveManifest": {
       "path": "data/reference/european_opendata_archives_manifest.json",
       "kind": "json",
-      "size_bytes": 7583,
-      "sha256": "d234e5de7eef6c95d5c3fcd760051188ead82271c59425fdd9fd9320a3e0e48f",
+      "size_bytes": 7401,
+      "sha256": "4e045213281081b5f8d1aa8f48286b0b6f5826c201316864d217b67fc95504f9",
       "entry_count": 10
     },
     "europeanElectionsMaster": {
@@ -143,8 +143,8 @@
     "europeanSourceAudit": {
       "path": "data/derived/european_source_audit.json",
       "kind": "json",
-      "size_bytes": 32598,
-      "sha256": "5c487874c8ca7c5cc7e4b985bbe7194dc68575eea31e40796c3f6c0a42d9f572"
+      "size_bytes": 31478,
+      "sha256": "633953d854a506cd878227cfd87cdaa891c89e54a717b4ad50e15b4720d68b3e"
     },
     "geometry": {
       "path": "data/derived/geometries_web/municipalities_2021.topojson",
@@ -168,14 +168,14 @@
     "geometryPack": {
       "path": "data/derived/geometry_pack_web.json",
       "kind": "json",
-      "size_bytes": 982,
-      "sha256": "7b185e7939d738a8421f525d23b6426b4e97630f377e73e661593c61e0e12924"
+      "size_bytes": 949,
+      "sha256": "7df4586d927ceeb3d745f93d0fafd1e0a5cbf3d9745783b1e9bf6424b50d9a12"
     },
     "geometryPackFull": {
       "path": "data/derived/geometry_pack_full.json",
       "kind": "json",
-      "size_bytes": 226,
-      "sha256": "7593babafb263b6b25887235e2f420ed645a54d82a883ab0abb76910d9f6bf9a"
+      "size_bytes": 216,
+      "sha256": "1c4a2d681121f86f87f409be340997e3f78aa7110fc5dadd4a809d78ab557a6d"
     },
     "municipalitiesMaster": {
       "path": "data/derived/municipalities_master.csv",
@@ -218,8 +218,8 @@
     "municipalityProfileIndex": {
       "path": "data/derived/municipality_profiles/index.json",
       "kind": "json",
-      "size_bytes": 187808,
-      "sha256": "5e8ec71d0e2059fa8b5555ac291a586154439e93a767a789b183596aa180d29e"
+      "size_bytes": 179576,
+      "sha256": "fffb0c6a7426c9419cb89f816d40282c149df2c3bf4ee1d74b7adda5bf8e5cfb"
     },
     "municipalityRegistryByElection": {
       "path": "data/reference/municipality_registry_by_election.csv.gz",
@@ -263,14 +263,14 @@
     "municipalityResultsLongByElectionIndex": {
       "path": "data/derived/municipality_results_long_by_election.json",
       "kind": "json",
-      "size_bytes": 6021,
-      "sha256": "cd67d8d834f032bf9b49ab2ef98da24854b909269c8b39fb4c1b495c6c82b78f"
+      "size_bytes": 5908,
+      "sha256": "873a1b691d44ed81bc5f93d394aee5de01503dd4b897610f08ead3d8c87c0bd8"
     },
     "municipalitySummary": {
       "path": "data/derived/municipality_summary.csv",
       "kind": "csv",
-      "size_bytes": 51059499,
-      "sha256": "7317fa000ac86aa832067386b72475fe8856add6aae52da438f85a1a07423128",
+      "size_bytes": 50901013,
+      "sha256": "dea5003c19392f8a9c13849996eb2df81fa6b50e386d9d066b26268a90770ac3",
       "columns": [
         "election_key",
         "election_year",
@@ -301,8 +301,8 @@
     "municipalitySummaryByElectionIndex": {
       "path": "data/derived/municipality_summary_by_election.json",
       "kind": "json",
-      "size_bytes": 5962,
-      "sha256": "a413ec128ce1108bfb116df767acfae6a32e5a8b6a033f4358c3f3f6e07a7c0f"
+      "size_bytes": 5849,
+      "sha256": "1358b2d53e68e4c94e7f51c2477e8cd830a607c01570cdade4639f0315e8db9e"
     },
     "nationalElectionChecks": {
       "path": "data/reference/national_election_checks.csv",
@@ -357,21 +357,21 @@
     "partyTaxonomyAudit": {
       "path": "data/derived/party_taxonomy_audit.json",
       "kind": "json",
-      "size_bytes": 133606,
-      "sha256": "7cf20d17e412e3c13ed56dcf21a00dcaba8b6886fa441faf42011706f31d79d3"
+      "size_bytes": 129245,
+      "sha256": "efb7e24c9117954ff909936e4838007e05e3e6a42936b527b405e0ad2bc6b306"
     },
     "productCatalog": {
       "path": "data/products/product_catalog.json",
       "kind": "json",
-      "size_bytes": 8167,
-      "sha256": "bf688257a88d63a57f730329e8781036433d22c1970416e02d06f32c71561c8a",
+      "size_bytes": 7952,
+      "sha256": "eb407fca8c043ef7583432a3e3c1e1d522fafc9a3fc3746ff2df826556940106",
       "product_count": 6
     },
     "provenance": {
       "path": "data/derived/provenance.json",
       "kind": "json",
-      "size_bytes": 26017,
-      "sha256": "16a76636e25cfc848c3733f2548b06a00cfef0a5b984fb07fe1e7d1fd7d5ddb9",
+      "size_bytes": 25466,
+      "sha256": "89b754516cbe4ed7a4e17fa374d2f0d64ba543a4e3ef034313cca4effcf683ad",
       "entry_count": 37
     },
     "provinceGeometry": {
@@ -397,14 +397,14 @@
     "researchRecipes": {
       "path": "data/derived/research_recipes.json",
       "kind": "json",
-      "size_bytes": 1652,
-      "sha256": "e93761f9c199bb0716a184819e8ce476da4bd0b40a669c9cda3da92c4f5d1e98"
+      "size_bytes": 1598,
+      "sha256": "77656d6af0164d9115f3c723e7ce6eae5844cbcb76bbad09b29fe6900d26ebb9"
     },
     "siteGuides": {
       "path": "data/derived/site_guides.json",
       "kind": "json",
-      "size_bytes": 5033,
-      "sha256": "50a22cadfb3552c5a77eecbd1a194a8d71f977e59784b5a8ace502067b380972"
+      "size_bytes": 4917,
+      "sha256": "b6b1b41fe1bed78bb7804c94a7196f2aef6acda8e03dc371bc23eb1c2cd059e8"
     },
     "territorialCrosswalk": {
       "path": "data/derived/municipality_election_crosswalk.csv.gz",
@@ -421,8 +421,8 @@
     "territorialHistoryReport": {
       "path": "data/derived/territorial_history_report.json",
       "kind": "json",
-      "size_bytes": 128573,
-      "sha256": "233b95f64337bd1f3db3c674574e75b8c2179f16399aaf4fcbb724d343d85e84"
+      "size_bytes": 125194,
+      "sha256": "daa0733bf57b497b572b43866d820abefa35cb41231481242bfd2805d45f6b3d"
     },
     "territorialLineage": {
       "path": "data/derived/territorial_lineage.csv",
@@ -450,8 +450,8 @@
     "territorialSources": {
       "path": "data/reference/territorial_sources.json",
       "kind": "json",
-      "size_bytes": 1325,
-      "sha256": "b30f8053061cca658aa24b17989ce692917a0a6d41f7453f3ab36ede4bad80bd"
+      "size_bytes": 1293,
+      "sha256": "261ef599888bba851944f10d00423f1bbb9c80702738e26375ca160fef201d2d"
     },
     "updateLog": {
       "path": "data/derived/update_log.json",
@@ -463,61 +463,61 @@
     "usageNotes": {
       "path": "data/derived/usage_notes.json",
       "kind": "json",
-      "size_bytes": 4739,
-      "sha256": "ef6909f88d05661f74dde10f5ba78438ec31d2f1526bf033312d209436faabc6"
+      "size_bytes": 4672,
+      "sha256": "060f75120afa68d459b62749a52804ad338344cf9d0fc4b85a097035134e4e8e"
     },
     "webCompressionReport": {
       "path": "data/derived/web_compression_report.json",
       "kind": "json",
-      "size_bytes": 960,
-      "sha256": "b3cf8f9ba5f5aa436d220c13dcd51687876582e6b0b17d1648dc2849b5d7b2c4"
+      "size_bytes": 928,
+      "sha256": "62d23ccc88393b4bc34081c43db99ff31eb7d97a8e3012d09340da259c384019"
     },
     "webGeometryReport": {
       "path": "data/derived/web_geometry_report.json",
       "kind": "json",
-      "size_bytes": 1156,
-      "sha256": "cbadf09d3d488b6a7be15e6a3bad644bbefd06744197d442b75de4b6be441a1b"
+      "size_bytes": 1118,
+      "sha256": "519c9a0916df7d4dc41448727f87f5965d42986d38f6cfe78fcaf078d9728689"
     },
     "productManifest:camera_muni_historical": {
       "path": "data/products/camera_muni_historical/manifest.json",
       "kind": "json",
-      "size_bytes": 13621,
-      "sha256": "d12f68c5cd6ba87bf08a3291427601e735fdeac8e96a3e047b3366505c7912c2",
+      "size_bytes": 13281,
+      "sha256": "f58647ac9918f3d53c838c64a7b38db276590512b2aabbc58feb774542f0c6d3",
       "dataset_count": 4
     },
     "productManifest:european_muni_historical": {
       "path": "data/products/european_muni_historical/manifest.json",
       "kind": "json",
-      "size_bytes": 9393,
-      "sha256": "2675fee24bb9c8ed1b2690e1b94721c9e307d781319323d7ac063a82a3857cfa",
+      "size_bytes": 9155,
+      "sha256": "66ed92674d6cc7ade8068399cf51e26b690fdecfc4aeb0eddaf79b66f3292e4b",
       "dataset_count": 6
     },
     "productManifest:geometry_pack_italy": {
       "path": "data/products/geometry_pack_italy/manifest.json",
       "kind": "json",
-      "size_bytes": 2472,
-      "sha256": "c7c664ec884146c30245033e5f073d78d0ebd0ca1f75085d2f014f6d9e39221d",
+      "size_bytes": 2399,
+      "sha256": "88ce958da0cac9a844e6103cf4bb453a72b4eba512604f2f686f375bf671cf2b",
       "dataset_count": 2
     },
     "productManifest:geometry_pack_italy_full": {
       "path": "data/products/geometry_pack_italy_full/manifest.json",
       "kind": "json",
-      "size_bytes": 2595,
-      "sha256": "9d7f1ce9c024ab5c410f3f3b14f98e42f84e2437623306fe8e9e8e0c4076260c",
+      "size_bytes": 2520,
+      "sha256": "ea9f62d288720731116b39fed8b97a92ab0702b12f99c1a381200f3031128376",
       "dataset_count": 2
     },
     "productManifest:metadata_layer": {
       "path": "data/products/metadata_layer/manifest.json",
       "kind": "json",
-      "size_bytes": 4806,
-      "sha256": "e0f24225b69ab7da7b70a0bd1650310e4f0de68b70198b8978d5b285c3098313",
+      "size_bytes": 4649,
+      "sha256": "79d3af47542b1e600c9e61271cd8cd8d2304e4aaabaf44ebda45577f729948b2",
       "dataset_count": 6
     },
     "productManifest:territorial_history_2021": {
       "path": "data/products/territorial_history_2021/manifest.json",
       "kind": "json",
-      "size_bytes": 4914,
-      "sha256": "00425341d092dd26d6428d0cf61452541da039eb559cdecce7041a78bf12f4a7",
+      "size_bytes": 4768,
+      "sha256": "4f1f41f47ac4226a5ced95272f186c8153de445c0c80272d5e352765a424657c",
       "dataset_count": 5
     }
   },

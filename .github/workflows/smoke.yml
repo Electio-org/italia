@@ -30,8 +30,8 @@ jobs:
           python3 scripts/smoke_reference_resolution.py
           python3 scripts/smoke_party_taxonomy_parity.py
           python3 scripts/audit_party_taxonomy.py --root .
-      - name: Verify crawlable election records and source denominators
-        run: python -m unittest discover -s tests -p test_election_pages.py -v
+      - name: Verify election records, denominators and published file metadata
+        run: python -m unittest discover -s tests -p 'test_*.py' -v
       - run: npm run test:selectors
       - run: npx playwright install --with-deps chromium
       - name: Start static server

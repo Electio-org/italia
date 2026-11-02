@@ -4,7 +4,9 @@ from __future__ import annotations
 import argparse
 import csv
 import hashlib
+import io
 import json
+import subprocess
 from pathlib import Path
 from typing import Dict
 
@@ -17,18 +19,19 @@ def sha256_file(path: Path) -> str:
     return digest.hexdigest()
 
 
-def summarize_csv(path: Path, info: Dict[str, object]) -> None:
-    with path.open(encoding="utf-8", newline="") as handle:
+def summarize_csv(path: Path, info: Dict[str, object], content: bytes | None = None) -> None:
+    source = io.StringIO(content.decode("utf-8"), newline="") if content is not None else path.open(encoding="utf-8", newline="")
+    with source as handle:
         reader = csv.reader(handle)
         headers = next(reader, [])
         info["columns"] = headers
         info["row_count"] = sum(1 for _ in reader)
 
 
-def summarize_json(path: Path, info: Dict[str, object]) -> None:
-    if path.stat().st_size > 25 * 1024 * 1024:
+def summarize_json(path: Path, info: Dict[str, object], content: bytes | None = None) -> None:
+    if (len(content) if content is not None else path.stat().st_size) > 25 * 1024 * 1024:
         return
-    payload = json.loads(path.read_text(encoding="utf-8"))
+    payload = json.loads(content if content is not None else path.read_text(encoding="utf-8"))
     if not isinstance(payload, dict):
         return
     if isinstance(payload.get("features"), list):
@@ -42,23 +45,33 @@ def summarize_json(path: Path, info: Dict[str, object]) -> None:
             info[label] = len(payload[key])
 
 
-def summarize_file(path: Path, root: Path) -> Dict[str, object]:
+def summarize_file(path: Path, root: Path, git_ref: str | None = None) -> Dict[str, object]:
     relative = str(path.relative_to(root)).replace("\\", "/")
+    content = None
+    if git_ref:
+        content = subprocess.run(
+            ["git", "show", f"{git_ref}:{relative}"], cwd=root,
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True,
+        ).stdout
+        # LFS commits contain pointers; distribution hashes describe the
+        # hydrated object instead. Text blobs use their published Git bytes.
+        if content.startswith(b"version https://git-lfs.github.com/spec/v1\n"):
+            content = None
     info: Dict[str, object] = {
         "path": relative,
         "kind": path.suffix.lower().lstrip(".") or "file",
-        "size_bytes": path.stat().st_size,
-        "sha256": sha256_file(path),
+        "size_bytes": len(content) if content is not None else path.stat().st_size,
+        "sha256": hashlib.sha256(content).hexdigest() if content is not None else sha256_file(path),
     }
     suffix = path.suffix.lower()
     if suffix == ".csv":
-        summarize_csv(path, info)
+        summarize_csv(path, info, content)
     elif suffix in {".json", ".geojson", ".topojson"}:
-        summarize_json(path, info)
+        summarize_json(path, info, content)
     return info
 
 
-def refresh_release_manifest(root: Path) -> Path:
+def refresh_release_manifest(root: Path, git_ref: str | None = None) -> Path:
     derived = root / "data" / "derived"
     manifest = json.loads((derived / "manifest.json").read_text(encoding="utf-8"))
     entries = {}
@@ -70,7 +83,7 @@ def refresh_release_manifest(root: Path) -> Path:
         if not path.exists():
             missing.append(str(relative))
             continue
-        entries[key] = summarize_file(path, root)
+        entries[key] = summarize_file(path, root, git_ref)
 
     catalog_path = root / str((manifest.get("files") or {}).get("productCatalog") or "data/products/product_catalog.json")
     if catalog_path.exists():
@@ -83,7 +96,7 @@ def refresh_release_manifest(root: Path) -> Path:
                 if relative:
                     missing.append(relative)
                 continue
-            entries[f"productManifest:{product_key}"] = summarize_file(path, root)
+            entries[f"productManifest:{product_key}"] = summarize_file(path, root, git_ref)
 
     payload = {
         "generated_by": "refresh_release_manifest.py",
@@ -104,8 +117,9 @@ def refresh_release_manifest(root: Path) -> Path:
 def main() -> None:
     parser = argparse.ArgumentParser(description="Refresh release hashes and file metadata.")
     parser.add_argument("--root", default=".", help="Project root")
+    parser.add_argument("--git-ref", help="Hash published Git blobs at this ref; LFS objects must be hydrated locally")
     args = parser.parse_args()
-    output = refresh_release_manifest(Path(args.root).resolve())
+    output = refresh_release_manifest(Path(args.root).resolve(), args.git_ref)
     print(output)
 
 
