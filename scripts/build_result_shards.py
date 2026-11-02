@@ -269,6 +269,7 @@ def main() -> None:
     files["partyTaxonomy"] = "data/reference/party_taxonomy_overrides.csv"
     files["partyTaxonomyAudit"] = "data/derived/party_taxonomy_audit.json"
     files["nationalElectionChecks"] = "data/reference/national_election_checks.csv"
+    files["electoralCoalitions"] = "data/derived/electoral_coalitions.json"
     files["municipalitySummaryByElectionIndex"] = "data/derived/municipality_summary_by_election.json"
     files["municipalityResultsLongByElectionIndex"] = "data/derived/municipality_results_long_by_election.json"
     european_files = {

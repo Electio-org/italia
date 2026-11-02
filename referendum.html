@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Il referendum costituzionale del 2016, comune per comune. Risultati ufficiali, affluenza e mappa dettagliata.">
+  <title>Referendum 2016 | Electio Italia</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="referendum.css">
+  <script defer src="vendor/d3/d3-slim.min.js"></script>
+  <script defer src="vendor/topojson-client/topojson-client.min.js"></script>
+  <script type="module" src="referendum.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#map">Vai alla mappa</a>
+  <header class="site-top">
+    <a class="brand" href="index.html">Electio <span>Italia</span></a>
+    <nav aria-label="Navigazione principale"><a href="index.html">Elezioni</a><a href="referendum.html" aria-current="page">Referendum</a><a href="data-download.html">Dati</a></nav>
+  </header>
+  <main>
+    <aside class="controls" aria-label="Esplora il referendum">
+      <p class="eyebrow">4 dicembre 2016</p>
+      <h1>La riforma <br>costituzionale</h1>
+      <label>Consultazione<select id="consultation" disabled><option>Caricamento...</option></select></label>
+      <label>Mostra in mappa<select id="metric" disabled><option value="yes_share">Percentuale S&igrave;</option><option value="turnout">Affluenza</option><option value="balance">Vantaggio S&igrave; / No</option></select></label>
+      <label>Cerca un comune<input id="search" type="search" list="municipalities" placeholder="Nome o codice ISTAT" autocomplete="off" disabled></label>
+      <datalist id="municipalities"></datalist>
+      <p id="search-message" class="muted" role="status"></p>
+      <section class="legend-section" aria-label="Legenda"><h2 id="legend-title">Percentuale S&igrave;</h2><div id="legend" class="legend"></div><div id="legend-labels" class="legend-labels"></div><p class="muted">Grigio: dati non disponibili.</p></section>
+      <section id="national" class="national" aria-label="Risultato in Italia"></section>
+      <div class="actions"><button id="reset" disabled>Torna all'Italia</button><button id="download" disabled>Scarica PNG</button></div>
+      <details class="method"><summary>Fonti e metodo</summary><p>Risultati del Ministero dell'Interno. Solo voto in Italia: l'estero non &egrave; incluso nei totali.</p><p>Le fusioni comunali sommano i conteggi originari. Le percentuali sono ricalcolate sui totali, non mediate. Le divisioni ambigue non vengono ripartite.</p><p>Confini della mappa: 2021. Le aree coinvolte nella nascita di Mappano e Misiliscemi restano senza attribuzione: i cinque comuni originari sono comunque inclusi nel totale nazionale. Le rettifiche minori dei confini non sono ricostruite a livello di sezione.</p><p>Referendum costituzionale: non &egrave; previsto un quorum di partecipazione.</p><a id="source" href="https://elezionistorico.interno.gov.it/">Archivio ufficiale</a> &middot; <a id="audit" href="data/derived/referendums/referendum_2016_12_04_q1_audit.json">Verifica dei dati</a></details>
+    </aside>
+    <section class="map-column" aria-label="Mappa comunale">
+      <div class="map-heading"><div><p class="eyebrow">Referendum costituzionale 2016</p><h2 id="map-title">Percentuale S&igrave;</h2></div><span id="inline-status" role="status"></span></div>
+      <div id="map" class="map-viewport" tabindex="0" aria-label="Mappa interattiva. Usa la ricerca per selezionare un comune, Esc per deselezionarlo.">
+        <canvas id="map-canvas" aria-hidden="true"></canvas>
+        <div class="zoom-controls"><button id="zoom-in" aria-label="Ingrandisci" disabled>+</button><button id="zoom-out" aria-label="Riduci" disabled>&minus;</button></div>
+        <div id="tooltip" class="tooltip" hidden></div>
+      </div>
+      <section id="selection" class="selection" aria-label="Risultati del comune selezionato" hidden></section>
+    </section>
+  </main>
+  <footer>&copy; 2026 Simone Ghezzi Colombo &middot; Electio Italia <span>Referendum &middot; versione pilota</span></footer>
+  <div id="loading" class="loading" role="status" aria-live="polite"><div class="loading-content"><span class="spinner" aria-hidden="true"></span><strong id="loading-title">Caricamento del referendum</strong><p id="loading-message">Dati ufficiali e confini dettagliati...</p><button id="retry" hidden>Riprova</button></div></div>
+</body>
+</html>

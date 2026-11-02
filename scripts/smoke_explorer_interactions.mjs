@@ -67,6 +67,26 @@ try {
   assert.equal(enhancement.enhanced, true, 'new roots and nested controls must still receive their styles');
   assert.equal(enhancement.fullScans, 0, 'tooltip/DOM changes must never rescan the whole dashboard');
 
+  const electionYears = await page.locator('#election-select option:not(:disabled)').evaluateAll(options =>
+    options.map(option => Number(option.value.match(/\d{4}/)?.[0])));
+  assert.deepEqual(electionYears, electionYears.slice().sort((a, b) => b - a), 'elections must be chronological, not separated by category');
+  await page.selectOption('#election-select', 'europee_2024');
+  await waitForMap();
+  await page.selectOption('#metric-select', 'party_share');
+  await waitForMap();
+  const pdValue = await page.locator('#party-select option').evaluateAll(options =>
+    options.find(option => option.textContent.trim() === 'PD')?.value);
+  assert.ok(pdValue, 'PD must be selectable in Europee 2024');
+  await page.selectOption('#party-select', pdValue);
+  await waitForMap();
+  for (const election of ['europee_2019', 'camera_2022', 'europee_2024']) {
+    await page.selectOption('#election-select', election);
+    await waitForMap();
+    assert.match((await page.locator('#party-select option:checked').textContent()).trim(), /^(PD|PARTITO DEMOCRATICO(?: - ITALIA DEMOCRATICA E PROGRESSISTA)?)$/i, `retain PD across ${election}, including lazy loading and changed list names`);
+    assert.equal(await page.locator('#metric-select').inputValue(), 'party_share');
+    assert.equal(await page.locator('#party-select optgroup').count(), 0, 'party ranking must remain a flat vote-ordered list');
+  }
+
   await findMunicipality('Castro');
   await page.waitForFunction(() => document.querySelector('#municipality-search-status').textContent.includes('provincia'));
   assert.equal(await page.locator('#selection-dock').isVisible(), false);

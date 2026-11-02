@@ -1294,3 +1294,31 @@ body[data-site-page="dashboard"] .site-footer-copy p {
     backdrop-filter: none;
   }
 }
+body[data-site-page="dashboard"] .political-context {
+  border-left: 3px solid #aab5ba;
+  padding: 2px 0 2px 10px;
+  margin: 2px 0 14px;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+body[data-site-page="dashboard"] .political-context > strong,
+body[data-site-page="dashboard"] .political-context > span { display: block; }
+body[data-site-page="dashboard"] .political-gradient-bar { display: block; width: 100%; height: 14px; border-radius: 3px; border: 1px solid #c9cfd1; }
+body[data-site-page="dashboard"] .political-scale-ticks { display: flex; justify-content: space-between; font-size: 0.68rem; margin-top: 4px; }
+body[data-site-page="dashboard"] .political-scale-labels { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; font-size: 0.72rem; margin: 5px 0 10px; overflow-wrap: anywhere; }
+body[data-site-page="dashboard"] .political-scale-labels span:last-child { text-align: right; }
+body[data-site-page="dashboard"] .political-context p { margin: 7px 0; }
+body[data-site-page="dashboard"] .political-context summary { cursor: pointer; color: #17654f; }
+body[data-site-page="dashboard"] .political-context[data-mode="scenario"] { border-color: #b63546; }
+body[data-site-page="dashboard"] .political-scenario-tools { grid-column: 1 / -1; border-top: 1px solid #ccd7d0; padding-top: 12px; min-width: 0; }
+body[data-site-page="dashboard"] .political-scenario-tools h3 { font-size: 1rem; }
+body[data-site-page="dashboard"] .political-scenario-tools p { font-size: 0.75rem; }
+body[data-site-page="dashboard"] .political-scenario-tools button { width: 100%; border-radius: 6px !important; margin-top: 8px; background: #17654f !important; color: white !important; }
+body[data-site-page="dashboard"] .political-scenario-tools button.ghost-btn { background: white !important; color: #17654f !important; }
+body[data-site-page="dashboard"] .political-scenario-parties { max-height: 350px; overflow: auto; }
+body[data-site-page="dashboard"] .political-scenario-parties label { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; gap: 8px; text-transform: none !important; }
+body[data-site-page="dashboard"] .political-scenario-parties span { overflow-wrap: anywhere; }
+body[data-site-page="dashboard"] .political-scenario-parties select { min-width: 0; font-size: 0.7rem !important; }
+body[data-site-page="dashboard"] .selection-dock.is-political .selection-dock-stat:nth-child(2) { display: block !important; }
+body[data-site-page="dashboard"] .selection-dock.is-political .selection-dock-stat span { white-space: normal; overflow-wrap: anywhere; }

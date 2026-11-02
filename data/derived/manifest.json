@@ -69,6 +69,7 @@
     "partyTaxonomy": "data/reference/party_taxonomy_overrides.csv",
     "partyTaxonomyAudit": "data/derived/party_taxonomy_audit.json",
     "nationalElectionChecks": "data/reference/national_election_checks.csv",
+    "electoralCoalitions": "data/derived/electoral_coalitions.json",
     "europeanElectionsMaster": "data/derived/european_elections_master.csv",
     "europeanMunicipalitySummarySource": "data/derived/european_municipality_summary.csv.gz",
     "europeanMunicipalityResultsSource": "data/derived/european_municipality_results_long.csv.gz",

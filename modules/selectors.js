@@ -1,5 +1,6 @@
 import { safeNumber, mean } from './shared.js';
 import { currentGeometryJoinSet, rowJoinKey } from './data.js';
+import { politicalContext, politicalBalance, politicalWinner } from './political-alignments.js';
 
 const GROUP_MODES = ['party_raw', 'party_std', 'party_family', 'bloc'];
 
@@ -309,6 +310,20 @@ export function getPartyOptionsForElection(state, electionKey, mode = 'party_raw
     .map(([value]) => value);
 }
 
+export function matchingPartyOption(state, options, preferred, mode = 'party_raw') {
+  if (!preferred) return null;
+  const normalize = value => String(value || '').trim().replace(/\s+/g, ' ').toLocaleLowerCase('it');
+  const token = normalize(preferred);
+  const exact = options.find(value => normalize(value) === token);
+  if (exact || mode !== 'party_raw') return exact || null;
+  const aliasesFor = party => [party.party_std, party.party_display_name, ...(party.aliases || '').split('|')].map(normalize);
+  const identities = (state.parties || []).filter(party => aliasesFor(party).includes(token));
+  if (identities.length !== 1) return null;
+  const aliases = new Set(aliasesFor(identities[0]));
+  const matches = options.filter(value => aliases.has(normalize(value)));
+  return matches.length === 1 ? matches[0] : null;
+}
+
 export function getNationalPartyResultsForElection(state, electionKey, mode = 'party_raw') {
   const normalizedMode = GROUP_MODES.includes(mode) ? mode : 'party_raw';
   const totals = state.indices.partyTotalsByElectionMode?.[normalizedMode]?.get(electionKey);
@@ -415,7 +430,8 @@ export function getMetricValue(state, row) {
     case 'turnout': return safeNumber(row.turnout_pct);
     case 'margin': return safeNumber(row.first_second_margin);
     case 'dominant_block': return row.dominant_block || null;
-    case 'dominant_coalition': return row.dominant_coalition || null;
+    case 'dominant_coalition': return politicalWinner(politicalContext(state, row.election_key), [row.municipality_id]);
+    case 'political_balance': return politicalBalance(politicalContext(state, row.election_key), [row.municipality_id])?.value ?? null;
     case 'swing_compare': {
       const current = aggregateShareFor(state, row.election_key, row.municipality_id);
       const compare = state.compareElection ? aggregateShareFor(state, state.compareElection, row.municipality_id) : null;
@@ -467,7 +483,7 @@ export function getSelectedRows(state, { matchesCompleteness = () => true, match
 export function filteredRowsWithMetric(state, { matchesCompleteness = () => true, matchesTerritorialStatus = () => true } = {}) {
   const provincesKey = [...state.selectedProvinceSet].sort().join('|');
   const geometryKey = state.geometry?.features?.length ? `${state.geometry.features.length}` : 'nogeom';
-  const cacheKey = ['rowsWithMetric', state.selectedElection || '', state.compareElection || '', state.selectedMetric || '', state.selectedPartyMode || '', state.selectedParty || '', state.selectedCustomIndicator || '', state.territorialMode || '', provincesKey, state.selectedCompleteness || '', state.selectedTerritorialStatus || '', state.minSharePct || 0, state.summary.length, state.resultsLong.length, geometryKey].join('__');
+  const cacheKey = ['rowsWithMetric', state.selectedElection || '', state.compareElection || '', state.selectedMetric || '', state.selectedPartyMode || '', state.selectedParty || '', state.selectedCustomIndicator || '', state.territorialMode || '', provincesKey, state.selectedCompleteness || '', state.selectedTerritorialStatus || '', state.minSharePct || 0, state.summary.length, state.resultsLong.length, geometryKey, JSON.stringify(state.politicalScenario || null)].join('__');
   if (cacheKey in state.selectorCaches) return state.selectorCaches[cacheKey];
   const geometryKeys = currentGeometryJoinSet(state.geometry);
   const needsPartyShare = Boolean(state.selectedParty) && (state.selectedMetric === 'party_share' || state.minSharePct > 0 || ['party_desc', 'swing_desc'].includes(state.tableSort || ''));

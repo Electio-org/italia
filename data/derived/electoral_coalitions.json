@@ -1,10 +1,36 @@
 {
-  "version": "1.0",
-  "generated_at": "2026-05-11",
-  "doc": "Per ogni elezione Camera dal 1994 in poi, mappa party_raw → coalizione (electoral coalition declared BEFORE the vote). Pre-1994 le coalizioni si formavano dopo il voto durante la formazione del governo, quindi non sono qui. I valori di party_raw sono presi letterali dal CSV municipality_results_long.csv per evitare ambiguità nei match.",
+  "version": "2.0",
+  "generated_at": "2026-11-02",
+  "comparisons": {
+    "camera_1994": {"left": "alleanza_progressisti", "right": "polo_liberta"},
+    "camera_1996": {"left": "ulivo", "right": "polo_liberta_1996"},
+    "camera_2001": {"left": "ulivo_2001", "right": "casa_liberta"},
+    "camera_2006": {"left": "unione", "right": "casa_liberta_2006"},
+    "camera_2008": {"left": "csx_2008", "right": "cdx_2008"},
+    "camera_2013": {"left": "italia_bene_comune", "right": "cdx_2013"},
+    "camera_2018": {"left": "csx_2018", "right": "cdx_2018"},
+    "camera_2022": {"left": "csx_2022", "right": "cdx_2022"}
+  },
+  "sources": [
+    {"label": "Camera dei deputati: sistemi e risultati elettorali 1994-2018", "url": "https://www.camera.it/temiap/2022/08/02/OCD177-5660.pdf"},
+    {"label": "Gazzetta Ufficiale n. 64 del 17 marzo 2006: collegamenti ammessi, atto 06A02900", "url": "https://www.gazzettaufficiale.it/eli/gu/2006/03/17/64/sg/pdf"},
+    {"label": "Comune di Firenze: liste e candidati delle elezioni 2001", "url": "https://wwwext.comune.fi.it/elettorale/elez2001/liste.htm"},
+    {"label": "Ministero dell'Interno: dossier elezioni politiche 2022", "url": "https://dait.interno.gov.it/documenti/dossier-elezioni-politiche-2022.pdf"},
+    {"label": "Gazzetta Ufficiale n. 26 del 31 gennaio 2013: collegamenti ammessi alla Camera", "url": "https://www.gazzettaufficiale.it/eli/gu/2013/01/31/26/sg/pdf"},
+    {"label": "Camera dei deputati: riepilogo voti e coalizioni, incluso SVP-PATT nel 2018", "url": "https://documenti.camera.it/Leg18/Dossier/Pdf/AC0125.Pdf"}
+  ],
+  "notes": {
+    "camera_1994": "I due Poli di centrodestra sono aggregati: gli accordi erano diversi territorialmente. I voti qui sono voti di lista, non voti uninominali.",
+    "camera_1996": "Rifondazione Comunista, legata da accordi di desistenza, e Lega Nord sono mantenute separate dai due poli del confronto.",
+    "camera_2001": "Lista Di Pietro correva separata dall'Ulivo; non viene sommata alla coalizione.",
+    "camera_2013": "M5S e il raggruppamento di Monti restano separati dai due schieramenti del confronto.",
+    "camera_2018": "M5S e Liberi e Uguali restano separati dalle coalizioni di centrodestra e centrosinistra.",
+    "camera_2022": "M5S e Azione-Italia Viva correvano separatamente. Non sono sommati al centrosinistra."
+  },
+  "doc": "Raggruppamenti documentati per specifica elezione della Camera dal 1994: coalizioni, accordi elettorali e liste autonome sono distinti dalle famiglie ideologiche. I nomi delle liste coincidono con party_raw dei risultati. Le consultazioni senza catalogo usano liste autonome; non ereditano alleanze di altri anni.",
   "coalitions": {
     "camera_1994": [
-      {"key": "polo_liberta", "label": "Polo delle Libertà / del Buon Governo", "bloc": "centro-destra", "color": "#1d4ed8",
+      {"key": "polo_liberta", "label": "Poli di centrodestra (aggregati)", "bloc": "centro-destra", "color": "#1d4ed8",
        "parties": ["Forza Italia", "Alleanza Nazionale", "Lega Nord", "Ccd"]},
       {"key": "alleanza_progressisti", "label": "Alleanza dei Progressisti", "bloc": "centro-sinistra", "color": "#ef5350",
        "parties": ["Pds", "Rifondazione Comunista", "Federazione dei Verdi", "La Rete-Mov.Dem.", "Alleanza Democratica", "Socialdemocrazia", "Psi", "Cristiano Sociali"]},
@@ -31,7 +57,7 @@
       {"key": "casa_liberta", "label": "Casa delle Libertà", "bloc": "centro-destra", "color": "#1d4ed8",
        "parties": ["Forza Italia", "Alleanza Nazionale", "Ccd-Cdu", "Lega Nord", "Nuovo Psi"]},
       {"key": "ulivo_2001", "label": "L'Ulivo", "bloc": "centro-sinistra", "color": "#ef5350",
-       "parties": ["La Margherita", "Democratici Sinistra", "Il Girasole", "Comunisti Italiani", "Lista di Pietro"]},
+       "parties": ["La Margherita", "Democratici Sinistra", "Il Girasole", "Comunisti Italiani"]},
       {"key": "rc_2001", "label": "Rifondazione Comunista", "bloc": "sinistra", "color": "#c62828",
        "parties": ["Rifondazione Comunista"]},
       {"key": "democrazia_europea_2001", "label": "Democrazia Europea", "bloc": "centro", "color": "#64748b",
@@ -43,15 +69,9 @@
     ],
     "camera_2006": [
       {"key": "unione", "label": "L'Unione", "bloc": "centro-sinistra", "color": "#ef5350",
-       "parties": ["L'Ulivo", "Rifondazione Comunista", "Di Pietro Italia dei Valori", "Comunisti Italiani", "La Rosa Nel Pugno", "Federazione dei Verdi", "U.D.Eur Popolari", "Partito Pensionati", "I Socialisti"]},
+       "parties": ["L'Ulivo", "Rifondazione Comunista", "Di Pietro Italia dei Valori", "Comunisti Italiani", "La Rosa Nel Pugno", "Federazione dei Verdi", "U.D.Eur Popolari", "Partito Pensionati", "I Socialisti", "Svp", "Lista Consumatori", "Liga Fronte Veneto", "Alleanza Lombarda Autonomia"]},
       {"key": "casa_liberta_2006", "label": "Casa delle Libertà", "bloc": "centro-destra", "color": "#1d4ed8",
-       "parties": ["Forza Italia", "Alleanza Nazionale", "Unione di Centro", "Lega Nord", "Dem.Crist.-Nuovo Psi"]},
-      {"key": "alt_sociale_2006", "label": "Alternativa Sociale - Mussolini", "bloc": "destra", "color": "#0f172a",
-       "parties": ["Alternativa Sociale Mussolini"]},
-      {"key": "fiamma_2006", "label": "Fiamma Tricolore", "bloc": "destra", "color": "#0f172a",
-       "parties": ["Fiamma Tricolore"]},
-      {"key": "no_euro_2006", "label": "No Euro", "bloc": "populista", "color": "#f59e0b",
-       "parties": ["No Euro"]}
+       "parties": ["Forza Italia", "Alleanza Nazionale", "Unione di Centro", "Lega Nord", "Dem.Crist.-Nuovo Psi", "Alternativa Sociale Mussolini", "Fiamma Tricolore", "No Euro", "Pensionati Uniti", "Ambienta-Lista", "P.Liberale Italiano", "S.O.S. Italia"]}
     ],
     "camera_2008": [
       {"key": "cdx_2008", "label": "Centro-destra (PdL + Lega + MpA)", "bloc": "centro-destra", "color": "#1d4ed8",
@@ -69,9 +89,9 @@
     ],
     "camera_2013": [
       {"key": "italia_bene_comune", "label": "Italia. Bene Comune (centro-sinistra)", "bloc": "centro-sinistra", "color": "#ef5350",
-       "parties": ["Partito Democratico", "Sinistra Ecologia Liberta'", "Centro Democratico"]},
+       "parties": ["Partito Democratico", "Sinistra Ecologia Liberta'", "Centro Democratico", "Svp"]},
       {"key": "cdx_2013", "label": "Centro-destra (PdL + Lega + FdI + La Destra)", "bloc": "centro-destra", "color": "#1d4ed8",
-       "parties": ["Il Popolo della Liberta'", "Lega Nord", "Fratelli d'Italia", "La Destra", "Grande Sud - Mpa"]},
+       "parties": ["Il Popolo della Liberta'", "Lega Nord", "Fratelli d'Italia", "La Destra", "Grande Sud - Mpa", "Mir - Moderati in Rivoluzione", "Partito Pensionati", "Intesa Popolare", "Liberi Per Una Italia Equa"]},
       {"key": "scelta_civica_monti", "label": "Con Monti per l'Italia", "bloc": "centro", "color": "#64748b",
        "parties": ["Scelta Civica Con Monti Per l'Italia", "Unione di Centro", "Futuro e Liberta'"]},
       {"key": "m5s_2013", "label": "Movimento 5 Stelle", "bloc": "populista", "color": "#f59e0b",
@@ -84,8 +104,8 @@
     "camera_2018": [
       {"key": "cdx_2018", "label": "Centro-destra (Lega + FI + FdI + NcI-UDC)", "bloc": "centro-destra", "color": "#1d4ed8",
        "parties": ["Lega", "Forza Italia", "Fratelli d'Italia Con Giorgia Meloni", "Noi Con l'Italia - Udc"]},
-      {"key": "csx_2018", "label": "Centro-sinistra (PD + +Europa + IEI + CP)", "bloc": "centro-sinistra", "color": "#ef5350",
-       "parties": ["Partito Democratico", "+Europa", "Italia Europa Insieme", "Civica Popolare Lorenzin"]},
+      {"key": "csx_2018", "label": "Centro-sinistra (PD + +Europa + IEI + CP + SVP-PATT)", "bloc": "centro-sinistra", "color": "#ef5350",
+       "parties": ["Partito Democratico", "+Europa", "Italia Europa Insieme", "Civica Popolare Lorenzin", "Svp - Patt"]},
       {"key": "m5s_2018", "label": "Movimento 5 Stelle", "bloc": "populista", "color": "#f59e0b",
        "parties": ["Movimento 5 Stelle"]},
       {"key": "leu_2018", "label": "Liberi e Uguali", "bloc": "sinistra", "color": "#c62828",
@@ -114,5 +134,5 @@
        "parties": ["Unione Popolare Con de Magistris"]}
     ]
   },
-  "no_coalition_note": "Prima del 1994, in Italia non esistevano coalizioni elettorali pre-voto: i partiti correvano da soli con il sistema proporzionale e le alleanze di governo si formavano in Parlamento dopo il voto. Per le elezioni Camera dal 1948 al 1992 non viene mostrata l'aggregazione per coalizione."
+  "no_coalition_note": "Per le elezioni precedenti al 1994 e per le Europee il confronto predefinito usa due liste effettivamente presenti, senza ricostruire coalizioni moderne. Le liste congiunte storiche restano indivise. Le liste non incluse in uno schieramento documentato restano autonome. Le somme si riferiscono ai voti di lista nel dataset, non ai voti uninominali."
 }
