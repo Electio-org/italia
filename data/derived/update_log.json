@@ -4,6 +4,18 @@
     {
       "version": "0.25.0",
       "date": "2026-11-02",
+      "title": "Schieramenti storici e confronto continuo dei voti",
+      "changes": [
+        "Distinte le coalizioni della singola elezione dalle famiglie politiche; corretti collegamenti del 2001, 2006 e 2013 con fonti istituzionali.",
+        "Aggiunto l'equilibrio tra due schieramenti con scala continua e distacco sui voti totali: liste autonome e terzi poli non vengono assegnati implicitamente.",
+        "Per le consultazioni prive di catalogo delle coalizioni il confronto usa due liste effettivamente presenti, senza ereditare alleanze di altri anni.",
+        "Scenari personali disponibili solo negli strumenti avanzati, conservati nei collegamenti condivisi e distinti dal confronto storico.",
+        "Riepilogo comunale e scheda di dettaglio riportano le quote dei due gruppi e delle altre liste; nessuna modifica a confini o zoom."
+      ]
+    },
+    {
+      "version": "0.25.0",
+      "date": "2026-11-02",
       "title": "Explorer piu reattivo e storico per tipo di elezione",
       "changes": [
         "Eliminato il download duplicato della geometria nazionale e riutilizzati i tracciati visibili durante pan e zoom.",

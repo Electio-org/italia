@@ -61,6 +61,7 @@ import {
 import { AUDIENCE_MODES, GLOSSARY_ENTRIES, GUIDED_QUESTION_BANK, DEFAULT_SITE_LAYERS, DEFAULT_METHOD_EXPLAINERS, DEFAULT_FAQ_ITEMS, DEFAULT_SITE_MANIFESTO, DEFAULT_SIGNATURE_PILLARS } from './modules/guidance.js';
 import { createAnalysisModes, DEFAULT_NEXT_ACTIONS, DEFAULT_COLLAPSED_PANELS } from './modules/app-shell.js';
 import { createMunicipalitySearch } from './modules/municipality-search.js';
+import { politicalContext, politicalBalance, politicalWinner, politicalLabel } from './modules/political-alignments.js';
 
 const LOCAL_STORAGE_KEY = 'electio_italia_state_v1';
 
@@ -341,6 +342,8 @@ const PUBLIC_METRICS = new Set([
   'party_share',
   'margin',
   'dominant_block',
+  'dominant_coalition',
+  'political_balance',
   'swing_compare',
   'delta_turnout',
   'volatility',
@@ -353,13 +356,11 @@ const PUBLIC_METRICS = new Set([
 ]);
 
 function sanitizeSelectedMetric(metric) {
-  const normalized = metric === 'dominant_coalition'
-      ? 'dominant_block'
-      : metric;
-  return PUBLIC_METRICS.has(normalized) ? normalized : 'turnout';
+  return PUBLIC_METRICS.has(metric) ? metric : 'turnout';
 }
 
 function normalizeGroupModeForMetric(metric = state.selectedMetric) {
+  if (metric === 'political_balance') return 'party_raw';
   if (metric === 'first_party' || metric === 'party_share' || metric === 'swing_compare') return 'party_raw';
   if (metric === 'dominant_block') return 'bloc';
   if (metric === 'dominant_coalition') return 'party_raw';
@@ -367,6 +368,10 @@ function normalizeGroupModeForMetric(metric = state.selectedMetric) {
 }
 
 function normalizeMetricState() {
+  if (typeof state.politicalScenario === 'string') {
+    try { state.politicalScenario = JSON.parse(state.politicalScenario.slice(0, 16000)); }
+    catch { state.politicalScenario = null; }
+  }
   state.selectedMetric = sanitizeSelectedMetric(state.selectedMetric);
   state.selectedPartyMode = normalizeGroupModeForMetric(state.selectedMetric);
 }
@@ -376,8 +381,9 @@ function metricReadableExplanation() {
     case 'turnout': return "La mappa mostra quanta partecipazione elettorale c'è stata, non quale partito ha vinto.";
     case 'first_party': return 'La mappa mostra chi arriva primo in ogni comune, non il margine della vittoria.';
     case 'party_share': return `La mappa mostra la quota del partito selezionato (${state.selectedParty || 'partito'}) dove il dato è disponibile.`;
-    case 'dominant_block': return "La mappa riunisce i partiti in grandi aree politiche e mostra quella prevalente in ogni comune.";
-    case 'dominant_coalition': return 'La mappa mostra la coalizione elettorale pre-voto vincente (Camera 1994 e successive). Pre-1994 le coalizioni si formavano dopo il voto, quindi questa metrica non si applica.';
+    case 'dominant_block': return 'Famiglie della tassonomia: non sono coalizioni elettorali e non descrivono le alleanze attuali.';
+    case 'dominant_coalition': return 'Somma dei voti delle liste collegate in quella elezione. Le liste autonome restano separate.';
+    case 'political_balance': return 'Rosso e blu indicano chi è avanti tra i due gruppi. La sfumatura misura il distacco sui voti totali, non la posizione ideologica del comune.';
     case 'margin': return 'La mappa mostra il distacco tra primo e secondo: più è alto, più il comune è sbilanciato.';
     case 'swing_compare': return 'La mappa mostra una differenza tra due elezioni: serve un anno di confronto attivo.';
     case 'delta_turnout': return "La mappa mostra come cambia l'affluenza rispetto all'elezione di confronto.";
@@ -617,7 +623,7 @@ function electionLabelByKey(key) {
 }
 
 function metricNeedsPartyResults() {
-  if (['first_party', 'party_share', 'swing_compare', 'dominant_block'].includes(state.selectedMetric)) return true;
+  if (['first_party', 'party_share', 'swing_compare', 'dominant_block', 'dominant_coalition', 'political_balance'].includes(state.selectedMetric)) return true;
   if (state.selectedMetric === 'concentration') return true;
   return Boolean(state.selectedParty)
     && ['over_performance_province', 'over_performance_region'].includes(state.selectedMetric);
@@ -1046,6 +1052,79 @@ function syncMetricScopedControls() {
   setControlVisibility(els.partySelect, partyScoped);
   if (els.metricHelp) els.metricHelp.textContent = metricReadableExplanation();
   syncPrimaryControlRows();
+  syncPoliticalControls();
+}
+
+function syncPoliticalControls() {
+  const advancedOpen = document.querySelector('.advanced-sidebar-details')?.open;
+  const familyOption = els.metricSelect?.querySelector('[value="dominant_block"]');
+  if (familyOption) familyOption.hidden = !advancedOpen && state.selectedMetric !== 'dominant_block';
+  const historical = Boolean(state.electoralCoalitions?.coalitions?.[state.selectedElection]?.length);
+  const coalitionOption = els.metricSelect?.querySelector('[value="dominant_coalition"]');
+  if (coalitionOption) coalitionOption.hidden = !historical;
+  if (state.selectedMetric === 'dominant_coalition' && !historical) {
+    state.selectedMetric = 'political_balance';
+    if (els.metricSelect) els.metricSelect.value = state.selectedMetric;
+  }
+  const visible = ['political_balance', 'dominant_coalition'].includes(state.selectedMetric);
+  const host = q('political-context');
+  host?.classList.toggle('hidden', !visible);
+  if (!visible && !advancedOpen) return;
+  const context = politicalContext(state);
+  if (visible && host) {
+    const result = politicalBalance(context);
+    const custom = context.custom && state.selectedMetric === 'political_balance';
+    const note = state.electoralCoalitions?.notes?.[state.selectedElection]
+      || (context.historical ? 'Le altre liste restano autonome.' : 'Confronto fra due liste del periodo: nessuna coalizione viene ricostruita per questa consultazione.');
+    const members = side => side ? [...side.parties].map(party => partyDisplayLabel(party)).join(', ') : 'Caricamento…';
+    const composition = state.selectedMetric === 'dominant_coalition' ? context.ranked : [context.left, context.right].filter(Boolean);
+    host.dataset.mode = custom ? 'scenario' : context.historical ? 'historical' : 'lists';
+    host.innerHTML = `<strong>${custom ? 'Scenario personale' : context.historical ? 'Schieramenti di quella elezione' : 'Due liste di quella elezione'}</strong>
+      <span>${escapeHtml(electionLabelByKey(state.selectedElection))}${custom ? ' · non è una previsione né una coalizione ufficiale' : ''}</span>
+      ${result && state.selectedMetric === 'political_balance' ? `<p>Altre liste: <b id="political-other-share">${fmtPct(result.otherShare)}%</b> dei voti. Restano fuori dai due gruppi, ma nel denominatore.</p>` : ''}
+      <details><summary>Composizione e criteri</summary>
+        ${composition.map(side => `<p><b>${escapeHtml(side.label)}</b>: ${escapeHtml(members(side))}</p>`).join('')}
+        <p>${escapeHtml(custom ? 'Raggruppamento scelto negli strumenti avanzati, applicato ai voti storici selezionati.' : note)}</p>
+        <p>Somma dei voti di lista disponibili. Non comprende voti uninominali, sondaggi o proiezioni del voto attuale.</p>
+        <a href="usage-notes.html#schieramenti">Metodo e fonti</a>
+      </details>`;
+  }
+  if (!advancedOpen) return;
+  const key = `${state.selectedElection}|${context.rowCount}|${context.signature}`;
+  if (state.politicalEditorKey === key) return;
+  state.politicalEditorKey = key;
+  const editor = q('political-scenario-parties');
+  if (!editor) return;
+  q('political-left-label').value = politicalLabel(context.left) || 'Gruppo rosso';
+  q('political-right-label').value = politicalLabel(context.right) || 'Gruppo blu';
+  q('political-scenario-note').textContent = `Scenario sui voti di ${electionLabelByKey(state.selectedElection)}. Non cambia le coalizioni storiche e non stima il voto attuale.`;
+  editor.innerHTML = [...context.partyVotes].sort((a, b) => b[1] - a[1]).map(([party]) => {
+    const side = context.left?.parties.has(party) ? 'left' : context.right?.parties.has(party) ? 'right' : '';
+    return `<label><span>${escapeHtml(partyDisplayLabel(party))}</span><select data-political-party="${escapeHtml(party)}" aria-label="Gruppo per ${escapeHtml(partyDisplayLabel(party))}">
+      <option value=""${side === '' ? ' selected' : ''}>Fuori confronto</option>
+      <option value="left"${side === 'left' ? ' selected' : ''}>Gruppo rosso</option>
+      <option value="right"${side === 'right' ? ' selected' : ''}>Gruppo blu</option>
+    </select></label>`;
+  }).join('');
+  q('political-scenario-apply').disabled = !context.partyVotes.size;
+}
+
+function applyPoliticalScenario(reset = false) {
+  const selects = [...document.querySelectorAll('[data-political-party]')];
+  const leftParties = selects.filter(select => select.value === 'left').map(select => select.dataset.politicalParty);
+  const rightParties = selects.filter(select => select.value === 'right').map(select => select.dataset.politicalParty);
+  if (!reset && (!leftParties.length || !rightParties.length)) {
+    showToast('Scegli almeno una lista per ciascun gruppo.', 'warning');
+    return;
+  }
+  state.politicalScenario = reset ? null : {
+    electionKey: state.selectedElection,
+    leftLabel: q('political-left-label').value.trim().slice(0, 80) || 'Gruppo rosso',
+    rightLabel: q('political-right-label').value.trim().slice(0, 80) || 'Gruppo blu',
+    leftParties, rightParties
+  };
+  els.metricSelect.value = 'political_balance';
+  els.metricSelect.dispatchEvent(new Event('change'));
 }
 
 function relocateAdvancedDashboardControls() {
@@ -2508,8 +2587,9 @@ function metricLabel() {
     party_share: 'Quota partito',
     turnout: 'Affluenza',
     margin: 'Margine 1°-2°',
-    dominant_block: 'Area politica prevalente',
-    dominant_coalition: 'Coalizione vincente',
+    dominant_block: 'Famiglia politica prevalente',
+    dominant_coalition: 'Schieramento più votato',
+    political_balance: 'Equilibrio tra schieramenti',
     swing_compare: 'Swing vs confronto',
     delta_turnout: 'Δ affluenza',
     volatility: 'Volatilità storica',
@@ -2544,6 +2624,7 @@ function hideMapMessage() {
 }
 
 function getScaleDomainRows(rows) {
+  if (['political_balance', 'dominant_coalition'].includes(state.selectedMetric)) return rows;
   if (!state.sameScaleAcrossYears) return rows;
   return state.summary
     .filter(row => !state.selectedProvinceSet.size || state.selectedProvinceSet.has(row.province))
@@ -2606,6 +2687,25 @@ function colorScaleForRows(rows) {
   if (!values.length) return { type: 'empty', colorFor: () => '#d4d9d7', legend: [] };
 
   const preferred = state.selectedPalette;
+  if (state.selectedMetric === 'political_balance') {
+    const context = politicalContext(state);
+    const left = politicalLabel(context.left) || 'Gruppo rosso';
+    const right = politicalLabel(context.right) || 'Gruppo blu';
+    const red = '#b63546', neutral = '#f2f2f0', blue = '#285aa8';
+    const colors = Array.from({ length: 65 }, (_, index) => {
+      const value = (index - 32) / 32;
+      return d3.interpolateRgb(neutral, value < 0 ? red : blue)(Math.abs(value));
+    });
+    return {
+      type: 'balance',
+      leftLabel: left, rightLabel: right,
+      colorFor: value => Number.isFinite(value)
+        ? colors[Math.round((Math.max(-40, Math.min(40, value)) + 40) / 80 * 64)]
+        : '#d4d9d7',
+      legend: [{ gradient: `linear-gradient(to right, ${red}, ${neutral}, ${blue})`, label: `${left} ↔ ${right}` },
+        { color: red, label: 'Vantaggio del gruppo rosso' }, { color: neutral, label: 'Parità tra i due gruppi' }, { color: blue, label: 'Vantaggio del gruppo blu' }]
+    };
+  }
 
   if (state.selectedMetric === 'first_party' || state.selectedMetric === 'dominant_block' || state.selectedMetric === 'dominant_coalition') {
     // dominant_block: ordina i blocchi sul continuum politico (destra →
@@ -2659,7 +2759,7 @@ function colorScaleForRows(rows) {
     const colorForCategory = v => {
       if (!v) return '#d4d9d7';
       if (state.selectedMetric === 'dominant_block') return getBlockColor(v);
-      if (state.selectedMetric === 'dominant_coalition') return getCoalitionColor(v);
+      if (state.selectedMetric === 'dominant_coalition') return politicalContext(state).groups.get(v)?.color || '#777f84';
       if (state.selectedMetric === 'first_party' && (v === '__other_parties__' || !firstPartyTopSet?.has(v))) return '#89958f';
       if (state.selectedMetric === 'first_party') return firstPartyColorMap?.get(v) || getPartyColor(v);
       return getPartyColor(v);
@@ -2674,7 +2774,7 @@ function colorScaleForRows(rows) {
             ? partyDisplayLabel(c)
             : state.selectedMetric === 'dominant_block'
               ? blockDisplayLabel(c)
-              : c,
+              : state.selectedMetric === 'dominant_coalition' ? politicalContext(state).groups.get(c)?.label || 'Parità' : c,
         color: colorForCategory(c)
       }))
     };
@@ -2753,14 +2853,18 @@ function renderLegend(scaleInfo) {
     if (els.sidebarLegend) els.sidebarLegend.innerHTML = emptyHtml;
     return;
   }
-  const explainer = scaleInfo.type === 'categorical'
+  const explainer = scaleInfo.type === 'balance'
+    ? 'Scala fissa: da −40 a +40 punti; sfumatura continua'
+    : scaleInfo.type === 'categorical'
     ? 'Un colore per ogni categoria'
     : scaleInfo.type === 'diverging'
       ? 'Scarto negativo, equilibrio e scarto positivo'
       : scaleInfo.type === 'threshold'
         ? 'Cinque fasce, dai valori più bassi ai più alti'
         : 'Metrica non numerica';
-  const rows = scaleInfo.legend.map(item => {
+  const rows = scaleInfo.type === 'balance'
+    ? `<div class="political-gradient-bar" style="background:${scaleInfo.legend[0].gradient}" aria-hidden="true"></div><div class="political-scale-ticks"><span>−40 pt</span><span>0</span><span>+40 pt</span></div><div class="political-scale-labels"><span>${escapeHtml(scaleInfo.leftLabel)}</span><span>${escapeHtml(scaleInfo.rightLabel)}</span></div>`
+    : scaleInfo.legend.map(item => {
     if (item.gradient) {
       return `<span class="legend-item legend-item-block"><span class="legend-gradient" style="background:${item.gradient}"></span><span>${escapeHtml(item.label)}</span></span>`;
     }
@@ -2782,6 +2886,21 @@ function renderLegend(scaleInfo) {
 }
 
 function renderPartyResults() {
+  if (['political_balance', 'dominant_coalition'].includes(state.selectedMetric)) {
+    const context = politicalContext(state);
+    const balance = politicalBalance(context);
+    const items = state.selectedMetric === 'political_balance'
+      ? balance ? [
+        { label: politicalLabel(context.left), share: balance.leftShare, color: '#b63546' },
+        { label: politicalLabel(context.right), share: balance.rightShare, color: '#285aa8' },
+        { label: 'Altre liste', share: balance.otherShare, color: '#7a8487' }
+      ] : []
+      : context.ranked.slice(0, 3).map(group => ({ label: politicalLabel(group), share: group.votes / context.totalVotes * 100, color: group.color }));
+    if (els.sidebarPartyResults) els.sidebarPartyResults.innerHTML = items.length ? `
+      <div class="party-results-header"><div class="eyebrow">Quote sui voti totali</div><div class="party-results-scope">${escapeHtml(electionLabelByKey(state.selectedElection))}</div></div>
+      <ol class="party-results-list">${items.map(item => `<li class="party-results-row"><span class="party-results-swatch" style="background:${item.color}"></span><span class="party-results-label">${escapeHtml(item.label)}</span><span class="party-results-bar"><span class="party-results-bar-fill" style="width:${item.share}%;background:${item.color}"></span></span><span class="party-results-pct">${fmtPct(item.share)}%</span></li>`).join('')}</ol>` : '';
+    return;
+  }
   const host = els.sidebarPartyResults;
   if (!host) return;
   if (!['first_party', 'party_share', 'dominant_block'].includes(state.selectedMetric)) {
@@ -2910,6 +3029,7 @@ function currentMapRenderKey() {
     selectedElection: state.selectedElection,
     compareElection: metricUsesCompare(metric) ? state.compareElection : null,
     selectedMetric: metric,
+    politicalScenario: state.politicalScenario || null,
     mapAggregationLevel: state.mapAggregationLevel || 'comune',
     selectedPartyMode: metricUsesPartyMode(metric) ? state.selectedPartyMode : null,
     selectedParty: metricUsesPartySelection(metric) ? state.selectedParty : null,
@@ -3003,7 +3123,7 @@ function buildMapAggregationCache(level) {
           || { votes: 0, label: partyLabel, color: meta.color, bloc: meta.bloc };
         pacc.votes += votes;
         g.partyTally.set(partyLabel, pacc);
-        const blocKey = (meta.bloc || rr.bloc || 'altro').trim() || 'altro';
+        const blocKey = (rr.bloc || meta.bloc || 'altro').trim() || 'altro';
         g.blocTally.set(blocKey, (g.blocTally.get(blocKey) || 0) + votes);
         const coalition = coalitionForParty(state, electionKey, partyLabel);
         if (coalition) {
@@ -3103,7 +3223,8 @@ function aggregatedMetricValueForGroup(group, metric, party) {
     case 'turnout': return group.turnoutPct;
     case 'margin': return group.marginPct;
     case 'dominant_block': return group.dominantBlock || null;
-    case 'dominant_coalition': return group.dominantCoalition || null;
+    case 'dominant_coalition': return politicalWinner(politicalContext(state), group.rows.map(row => row.municipality_id));
+    case 'political_balance': return politicalBalance(politicalContext(state), group.rows.map(row => row.municipality_id))?.value ?? null;
     default: {
       // For niche metrics (volatility, swing_compare, delta_turnout,
       // over_performance_*, concentration, stability_index, custom_
@@ -3136,11 +3257,15 @@ function applyMapAggregationToRows(rows, level) {
   const keyFor = level === 'province'
     ? row => (row.province || 'Senza provincia')
     : row => (row.region || 'Senza regione');
+  const groupValues = new Map();
   for (const row of rows) {
     const g = groups.get(keyFor(row));
     row.__aggregation_group = g || null;
     row.__aggregation_level = level;
-    if (g) row.__metric_value = aggregatedMetricValueForGroup(g, metric, party);
+    if (g) {
+      if (!groupValues.has(g.key)) groupValues.set(g.key, aggregatedMetricValueForGroup(g, metric, party));
+      row.__metric_value = groupValues.get(g.key);
+    }
   }
   return cache;
 }
@@ -3223,6 +3348,7 @@ function mapRenderSignatureForRows(rows) {
   const metric = state.selectedMetric;
   return [
     state.selectedElection,
+    JSON.stringify(state.politicalScenario || null),
     metricUsesCompare(metric) ? state.compareElection : '',
     metric,
     metricUsesPartySelection(metric) ? state.selectedParty : '',
@@ -3909,6 +4035,12 @@ function hitTestCanvasMap(event) {
 
 function getProvinceMetricAverage(row) {
   if (!row) return null;
+  if (state.selectedMetric === 'political_balance') {
+    const context = politicalContext(state, row.election_key);
+    if (!context.provinceBalances.has(row.province)) context.provinceBalances.set(row.province, politicalBalance(context, context.provinceMunicipalities.get(row.province) || [])?.value ?? null);
+    return context.provinceBalances.get(row.province);
+  }
+  if (state.selectedMetric === 'dominant_coalition') return null;
   if (state.selectedMetric === 'party_share' || state.selectedMetric === 'swing_compare') {
     const current = state.indices.provinceGroupMaps[state.selectedPartyMode]?.get(`${row.election_key}__${row.province}__${state.selectedParty}`);
     if (state.selectedMetric === 'party_share') return current ?? null;
@@ -3939,6 +4071,8 @@ function getProvinceMetricAverage(row) {
 
 function getRegionMetricAverage(row) {
   if (!row) return null;
+  if (state.selectedMetric === 'political_balance') return politicalBalance(politicalContext(state, row.election_key))?.value ?? null;
+  if (state.selectedMetric === 'dominant_coalition') return null;
   if (state.selectedMetric === 'party_share' || state.selectedMetric === 'swing_compare') {
     const current = state.indices.regionGroupMaps[state.selectedPartyMode]?.get(`${row.election_key}__${state.selectedParty}`);
     if (state.selectedMetric === 'party_share') return current ?? null;
@@ -3969,6 +4103,8 @@ function getRegionMetricAverage(row) {
 
 function metricDisplay(value, signed = false) {
   if (value == null) return '—';
+  if (state.selectedMetric === 'dominant_coalition') return politicalContext(state).groups.get(value)?.label || 'Parità';
+  if (state.selectedMetric === 'political_balance') return `${fmtPctSigned(value)} pt`;
   if (state.selectedMetric === 'first_party') return partyDisplayLabel(value);
   if (state.selectedMetric === 'dominant_block') return blockDisplayLabel(value);
   if (typeof value === 'string') return value;
@@ -3989,7 +4125,8 @@ function tooltipKeyFor(mode, feature, row) {
     state.selectedMetric || '',
     state.selectedPartyMode || '',
     state.selectedParty || '',
-    state.mapAggregationLevel || 'comune'
+    state.mapAggregationLevel || 'comune',
+    state.selectedMetric === 'political_balance' ? politicalContext(state).signature : ''
   ].join('|');
 }
 
@@ -4064,6 +4201,27 @@ function showTooltip(event, feature, row) {
   const province = row?.province || p.province || '—';
   const aggregationLevel = row?.__aggregation_level || state.mapAggregationLevel || 'comune';
   const group = (aggregationLevel !== 'comune') ? (row?.__aggregation_group || null) : null;
+
+  if (['political_balance', 'dominant_coalition'].includes(state.selectedMetric)) {
+    const context = politicalContext(state);
+    const ids = group ? group.rows.map(item => item.municipality_id) : [row?.municipality_id];
+    const isBalance = state.selectedMetric === 'political_balance';
+    const result = isBalance ? politicalBalance(context, ids) : null;
+    const winner = politicalWinner(context, ids);
+    const winningGroup = context.groups.get(winner);
+    const title = isBalance
+      ? result ? `${fmtPctSigned(result.value)} punti` : 'Nessun dato'
+      : winningGroup?.label || (winner === '__tie__' ? 'Parità' : 'Nessun dato');
+    const total = ids.reduce((sum, id) => sum + (context.byMunicipality.get(id)?.totalVotes || 0), 0);
+    const winnerVotes = ids.reduce((sum, id) => sum + (context.byMunicipality.get(id)?.groups.get(winner) || 0), 0);
+    const stats = isBalance
+      ? result ? `<p>${escapeHtml(politicalLabel(context.left))}: ${fmtPct(result.leftShare)}%<br>${escapeHtml(politicalLabel(context.right))}: ${fmtPct(result.rightShare)}%<br>Altre liste: ${fmtPct(result.otherShare)}%</p>` : ''
+      : total && winningGroup ? `<p>${fmtPct(winnerVotes / total * 100)}% dei voti di lista</p>` : '';
+    setTooltipContent(`<div class="tooltip-card"><div class="tooltip-header"><strong>${escapeHtml(label)}</strong><span>${escapeHtml(province)}</span></div>
+      <strong>${escapeHtml(title)}</strong>${stats}
+      <span>${escapeHtml(electionLabelByKey(state.selectedElection))}${context.custom && isBalance ? ' · scenario personale' : ''}</span></div>`, event, contentKey);
+    return;
+  }
 
   // In comune mode (default) the tooltip shows the hovered comune's own
   // numbers. In province/region mode it surfaces the GROUP's aggregate
@@ -4234,6 +4392,7 @@ function updateMapDetailCta() {
     if (state.selectedElection) params.set('election', state.selectedElection);
     if (state.selectedMetric) params.set('metric', state.selectedMetric);
     if (state.selectedMetric === 'party_share' && state.selectedParty) params.set('party', state.selectedParty);
+    if (state.selectedMetric === 'political_balance' && state.politicalScenario) params.set('scenario', JSON.stringify(state.politicalScenario));
     els.mapDetailCtaLink.href = `municipality-detail.html?${params.toString()}`;
   }
   els.mapDetailCta.classList.remove('hidden');
@@ -5501,6 +5660,7 @@ function currentViewState() {
     selectedElection: state.selectedElection,
     compareElection: state.compareElection,
     selectedMetric: state.selectedMetric,
+    politicalScenario: state.politicalScenario ? JSON.stringify(state.politicalScenario) : '',
     selectedPartyMode: state.selectedPartyMode,
     selectedParty: state.selectedParty,
     selectedCustomIndicator: state.selectedCustomIndicator,
@@ -5547,6 +5707,7 @@ function restoreURLState() {
   state.selectedElection = params.get('selectedElection') || state.selectedElection;
   state.compareElection = params.get('compareElection') || state.compareElection;
   state.selectedMetric = params.get('selectedMetric') || state.selectedMetric;
+  state.politicalScenario = params.get('politicalScenario') || null;
   state.selectedPartyMode = params.get('selectedPartyMode') || state.selectedPartyMode;
   state.selectedParty = params.get('selectedParty') || state.selectedParty;
   state.selectedCustomIndicator = params.get('selectedCustomIndicator') || state.selectedCustomIndicator;
@@ -5624,6 +5785,7 @@ function handleMunicipalitySearch() {
 }
 
 function resetFilters() {
+  state.politicalScenario = null;
   state.selectedMetric = 'turnout';
   state.selectedPartyMode = 'party_raw';
   state.selectedProvinceSet = new Set();
@@ -5646,6 +5808,9 @@ function resetFilters() {
 }
 
 function bindEvents() {
+  document.querySelector('.advanced-sidebar-details')?.addEventListener('toggle', syncPoliticalControls);
+  q('political-scenario-apply')?.addEventListener('click', () => applyPoliticalScenario());
+  q('political-scenario-reset')?.addEventListener('click', () => applyPoliticalScenario(true));
   const invalidateMapRects = () => {
     state.mapCanvasClientRect = null;
     tooltipLayoutCache.wrapperRect = null;
@@ -5833,6 +5998,7 @@ function bindEvents() {
       metric: state.selectedMetric || 'first_party'
     });
     if (state.selectedMetric === 'party_share' && state.selectedParty) params.set('party', state.selectedParty);
+    if (state.selectedMetric === 'political_balance' && state.politicalScenario) params.set('scenario', JSON.stringify(state.politicalScenario));
     window.location.href = `municipality-detail.html?${params.toString()}`;
   });
   els.selectionDockCompareBtn?.addEventListener('click', () => q('comparison-panel-content')?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
@@ -6679,6 +6845,17 @@ function selectionMetricHeadline(currentRow, partyBreakdown) {
   }
   const electionKey = currentRow?.election_key || state.selectedElection;
   const mid = currentRow?.municipality_id || state.selectedMunicipalityId;
+  if (['political_balance', 'dominant_coalition'].includes(state.selectedMetric)) {
+    const context = politicalContext(state, electionKey);
+    const result = politicalBalance(context, [mid]);
+    const winnerKey = politicalWinner(context, [mid]);
+    const winner = context.groups.get(winnerKey);
+    const total = context.byMunicipality.get(mid)?.totalVotes || 0;
+    const votes = context.byMunicipality.get(mid)?.groups.get(winnerKey) || 0;
+    return state.selectedMetric === 'political_balance'
+      ? { metricLabel: context.custom ? 'Equilibrio · scenario personale' : 'Equilibrio tra schieramenti', label: result ? result.value < 0 ? politicalLabel(context.left) : result.value > 0 ? politicalLabel(context.right) : 'Parità' : 'Nessun dato', value: result ? `${fmtPct(Math.abs(result.value))} pt` : 'n.d.', mark: '↔', color: result?.value < 0 ? '#b63546' : '#285aa8' }
+      : { metricLabel: 'Schieramento più votato', label: winner?.label || (winnerKey === '__tie__' ? 'Parità' : 'Nessun dato'), value: total && winner ? `${fmtPct(votes / total * 100)}%` : 'n.d.', mark: 'V', color: winner?.color || '#777' };
+  }
   const resultLeader = partyBreakdown?.rows?.[0] || null;
   const leaderLabel = currentRow ? leadingPartyLabelFor(currentRow) : resultLeader?.label;
   const leaderShareValue = currentRow?.first_party_runtime_share
@@ -6759,6 +6936,12 @@ function renderSelectionDock() {
     ['Affluenza', Number.isFinite(currentRow?.turnout_pct) ? `${fmtPct(currentRow.turnout_pct)}%` : 'n.d.'],
     ['Area', currentRow ? blockDisplayLabel(topBlock) : 'n.d.']
   ];
+  els.selectionDock.classList.toggle('is-political', state.selectedMetric === 'political_balance');
+  if (state.selectedMetric === 'political_balance') {
+    const context = politicalContext(state);
+    const result = politicalBalance(context, [mid]);
+    stats.splice(0, 3, [politicalLabel(context.left) || 'Gruppo rosso', result ? `${fmtPct(result.leftShare)}%` : 'n.d.'], [politicalLabel(context.right) || 'Gruppo blu', result ? `${fmtPct(result.rightShare)}%` : 'n.d.'], ['Altre liste', result ? `${fmtPct(result.otherShare)}%` : 'n.d.']);
+  }
   if (state.selectedMetric === 'party_share' && state.selectedParty) {
     stats[2] = ['Posizione', selectedPartyIndex >= 0 ? `#${selectedPartyIndex + 1} su ${breakdown.rows.length}` : 'n.d.'];
   } else if (state.selectedMetric === 'turnout') {

@@ -4,11 +4,14 @@
 // SVG charts (turnout over time, winner margin, leader timeline).
 
 import { safeNumber, inferPartyMeta, inferredPartyMetaOrNull, buildPartyTaxonomyLookup, resolvePartyMeta } from './modules/shared.js';
-import { parseCsvTextAsync } from './modules/data.js';
+import { parseCsvTextAsync, fetchJsonFile } from './modules/data.js';
+import { politicalContext, politicalBalance, politicalWinner, politicalLabel } from './modules/political-alignments.js';
 
 const DERIVED = 'data/derived';
 const SVG_NS = 'http://www.w3.org/2000/svg';
 let partyTaxonomyLookup = new Map();
+let electoralCoalitions = null;
+let politicalScenario = null;
 
 function partyMetaFor(party, electionKey) {
   return resolvePartyMeta(partyTaxonomyLookup, electionKey, party) || inferPartyMeta(party);
@@ -171,7 +174,7 @@ function renderCurrentElection(row, municipalityId, exactResult = null, viewCont
   const selectedPartyResult = selectedParty
     ? exactResult?.parties?.find(result => normalizedPartyKey(result.party) === normalizedPartyKey(selectedParty)) || null
     : null;
-  const metric = ['party_share', 'turnout', 'margin', 'dominant_block', 'first_party'].includes(viewContext.metric)
+  const metric = ['party_share', 'turnout', 'margin', 'dominant_block', 'first_party', 'political_balance', 'dominant_coalition'].includes(viewContext.metric)
     ? viewContext.metric
     : 'first_party';
   let headline = {
@@ -207,12 +210,24 @@ function renderCurrentElection(row, municipalityId, exactResult = null, viewCont
   } else if (metric === 'dominant_block') {
     const blockLabel = BLOCK_LABEL[block] || block || 'n.d.';
     headline = {
-      caption: 'Area politica prevalente',
+      caption: 'Famiglia politica prevalente',
       label: blockLabel,
       value: exactResult?.blocks?.[0] ? fmtPct(exactResult.blocks[0].share) : '—',
       mark: blockLabel.split(/\s+|-/).filter(Boolean).slice(0, 3).map(word => word[0]).join('').toUpperCase(),
       color: BLOCK_COLORS[block] || BLOCK_COLORS.altro
     };
+  }
+  const alignment = exactResult?.alignment;
+  if (metric === 'political_balance') {
+    const balance = alignment?.balance;
+    headline = {
+      caption: alignment?.custom ? 'Equilibrio · scenario personale' : 'Equilibrio tra schieramenti',
+      label: balance ? balance.value < 0 ? alignment.left : balance.value > 0 ? alignment.right : 'Parità' : 'Confronto tra due gruppi',
+      value: balance ? `${Math.abs(balance.value).toFixed(1)} pt` : viewContext.resultsUnavailable ? 'n.d.' : 'Caricamento…',
+      mark: '↔', color: balance?.value < 0 ? '#b63546' : '#285aa8'
+    };
+  } else if (metric === 'dominant_coalition') {
+    headline = { caption: 'Schieramento più votato', label: alignment?.winner || 'Caricamento…', value: alignment?.winnerShare != null ? fmtPct(alignment.winnerShare) : '—', mark: 'V', color: alignment?.winnerColor || '#777' };
   }
   const mapHash = new URLSearchParams({
     selectedElection: row.election_key || '',
@@ -223,13 +238,14 @@ function renderCurrentElection(row, municipalityId, exactResult = null, viewCont
     audienceMode: 'public'
   });
   if (metric === 'party_share' && selectedParty) mapHash.set('selectedParty', selectedParty);
+  if (metric === 'political_balance' && politicalScenario) mapHash.set('politicalScenario', JSON.stringify(politicalScenario));
   const selectedRank = selectedPartyResult
     ? (exactResult.parties.findIndex(result => normalizedPartyKey(result.party) === normalizedPartyKey(selectedParty)) + 1)
     : null;
   let statRows = [
     ['Affluenza', fmtPct(row.turnout_pct)],
     ['Margine', Number.isFinite(margin) ? `${margin.toFixed(1)} pt` : '—'],
-    ['Area', BLOCK_LABEL[block] || block || 'n.d.']
+    ['Famiglia politica', BLOCK_LABEL[block] || block || 'n.d.']
   ];
   if (metric === 'party_share') {
     statRows = [
@@ -241,7 +257,7 @@ function renderCurrentElection(row, municipalityId, exactResult = null, viewCont
     statRows = [
       ['Votanti', fmtInt(row.voters)],
       ['Voti validi', fmtInt(exactResult?.totalVotes || row.valid_votes)],
-      ['Area', BLOCK_LABEL[block] || block || 'n.d.']
+      ['Famiglia politica', BLOCK_LABEL[block] || block || 'n.d.']
     ];
   } else if (metric === 'margin') {
     statRows = [
@@ -249,6 +265,11 @@ function renderCurrentElection(row, municipalityId, exactResult = null, viewCont
       ['Quota vincente', Number.isFinite(share) ? fmtPct(share) : '—'],
       ['Voti validi', fmtInt(exactResult?.totalVotes || row.valid_votes)]
     ];
+  }
+  if (metric === 'political_balance' && alignment?.balance) {
+    statRows = [[alignment.left, fmtPct(alignment.balance.leftShare)], [alignment.right, fmtPct(alignment.balance.rightShare)], ['Altre liste', fmtPct(alignment.balance.otherShare)]];
+  } else if (metric === 'dominant_coalition') {
+    statRows = [['Affluenza', fmtPct(row.turnout_pct)], ['Voti di lista', fmtInt(exactResult?.totalVotes)], ['Criterio', 'Collegamenti di quella elezione']];
   }
   els.currentElection.innerHTML = `
     <div class="detail-current-head">
@@ -269,7 +290,7 @@ function renderCurrentElection(row, municipalityId, exactResult = null, viewCont
     <a class="detail-current-map-link" href="index.html#${mapHash.toString()}">Riapri sulla mappa</a>`;
 }
 
-async function loadExactElectionResult(municipalityId, electionKey) {
+async function loadExactElectionResult(municipalityId, electionKey, includeAlignment = false) {
   if (!municipalityId || !electionKey) return null;
   const manifestResponse = await fetch(`${DERIVED}/manifest.json`);
   if (!manifestResponse.ok) return null;
@@ -302,13 +323,23 @@ async function loadExactElectionResult(municipalityId, electionKey) {
     .filter(result => result.votes > 0 || result.share > 0)
     .sort((a, b) => (b.votes - a.votes) || (b.share - a.share));
   const winner = parties[0] || null;
+  let alignment = null;
+  if (includeAlignment) {
+    const context = politicalContext({ selectedElection: electionKey, electoralCoalitions, partyTaxonomyLookup, politicalScenario, indices: { resultsByElectionRows: new Map([[electionKey, rows]]) } });
+    const winningKey = politicalWinner(context, [municipalityId]);
+    const winningGroup = context.groups.get(winningKey);
+    const municipal = context.byMunicipality.get(municipalityId);
+    alignment = { left: politicalLabel(context.left), right: politicalLabel(context.right), balance: politicalBalance(context, [municipalityId]), custom: context.custom,
+      winner: winningGroup?.label || (winningKey === '__tie__' ? 'Parità' : null), winnerColor: winningGroup?.color,
+      winnerShare: winningGroup && municipal?.totalVotes ? (municipal.groups.get(winningKey) || 0) / municipal.totalVotes * 100 : null };
+  }
   const blockShares = new Map();
   parties.forEach(result => {
     const bloc = result.bloc || 'altro';
     blockShares.set(bloc, (blockShares.get(bloc) || 0) + result.share);
   });
   const blocks = [...blockShares].map(([bloc, share]) => ({ bloc, share })).sort((a, b) => b.share - a.share);
-  return winner ? { winner, parties, totalVotes, blocks, dominantBlock: blocks[0]?.bloc } : null;
+  return winner ? { winner, parties, totalVotes, blocks, dominantBlock: blocks[0]?.bloc, alignment } : null;
 }
 
 function renderElectionResults(result, electionKey, selectedParty = '') {
@@ -1540,12 +1571,14 @@ function setupHistoryFamilies(municipalityId, rows, aggregates, activeElection) 
 async function main() {
   arrangeDetailSections();
   const { id, election, metric, party } = getParams();
+  try { politicalScenario = JSON.parse(new URLSearchParams(location.search).get('scenario')?.slice(0, 16000) || 'null'); } catch {}
   const backLink = document.querySelector('.detail-breadcrumb-link');
   if (backLink && id) {
     const mapState = new URLSearchParams({ selectedMunicipalityId: id });
     if (election) mapState.set('selectedElection', election);
     if (metric) mapState.set('selectedMetric', metric);
     if (party) mapState.set('selectedParty', party);
+    if (politicalScenario) mapState.set('politicalScenario', JSON.stringify(politicalScenario));
     backLink.href = `index.html#${mapState}`;
   }
   if (!id) {
@@ -1555,13 +1588,15 @@ async function main() {
   }
 
   try {
-    const [profile, taxonomy] = await Promise.all([
+    const [profile, taxonomy, coalitions] = await Promise.all([
       loadMunicipalityProfileBundle(id),
       fetchCsv('data/reference/party_taxonomy_overrides.csv').catch(error => {
         console.warn('Tassonomia specifica non disponibile', error);
         return [];
-      })
+      }),
+      fetchJsonFile('data/derived/electoral_coalitions.json').catch(() => null)
     ]);
+    electoralCoalitions = coalitions;
     partyTaxonomyLookup = buildPartyTaxonomyLookup(taxonomy);
     const { municipalities, summary, nationalByElection } = profile;
 
@@ -1589,7 +1624,7 @@ async function main() {
     setupHistoryFamilies(id, rows, aggregates, election || activeRow?.election_key);
 
     if (activeRow?.election_key) {
-      loadExactElectionResult(id, activeRow.election_key)
+      loadExactElectionResult(id, activeRow.election_key, ['political_balance', 'dominant_coalition'].includes(metric))
         .then(result => {
           if (result) {
             renderCurrentElection(activeRow, id, result, { metric, party });
