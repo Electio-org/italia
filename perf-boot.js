@@ -8,7 +8,7 @@
  *   4. Warms sibling pages during idle time after first paint.
  *
  * All three layers are additive; any browser picks the best one it supports.
- * View Transitions are handled purely in CSS (@view-transition { navigation: auto }).
+ * Map pages navigate without canvas snapshots; document prefetch stays lightweight.
  */
 
 (function () {
@@ -60,6 +60,9 @@
                 { not: { href_matches: '/*.json*' } },
                 { not: { href_matches: '/*.topojson*' } },
                 { not: { href_matches: '/*.zip*' } },
+                { not: { href_matches: '*index.html*' } },
+                { not: { href_matches: '*referendum.html*' } },
+                { not: { href_matches: '*municipality-detail.html*' } },
                 { not: { href_matches: '*#*' } },
               ],
             },

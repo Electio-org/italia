@@ -270,6 +270,14 @@ def main() -> None:
     files["partyTaxonomyAudit"] = "data/derived/party_taxonomy_audit.json"
     files["nationalElectionChecks"] = "data/reference/national_election_checks.csv"
     files["electoralCoalitions"] = "data/derived/electoral_coalitions.json"
+    for key, relative in {
+        "referendumCatalog": "data/derived/referendums/index.json",
+        "referendum2016": "data/derived/referendums/referendum_2016_12_04_q1.json.gz",
+        "referendum2016Audit": "data/derived/referendums/referendum_2016_12_04_q1_audit.json",
+        "referendum2016Crosswalk": "data/derived/referendums/referendum_2016_12_04_q1_crosswalk.json.gz",
+    }.items():
+        if (root / relative).exists():
+            files[key] = relative
     files["municipalitySummaryByElectionIndex"] = "data/derived/municipality_summary_by_election.json"
     files["municipalityResultsLongByElectionIndex"] = "data/derived/municipality_results_long_by_election.json"
     european_files = {

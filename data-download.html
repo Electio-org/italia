@@ -51,7 +51,8 @@
         <div class="collapse navbar-collapse" id="site-nav-menu">
           <nav class="navbar-nav ms-auto site-nav" aria-label="Navigazione principale">
             <a class="nav-link" href="elezioni/"><span>Elezioni</span></a>
-            <a class="nav-link" href="index.html"><svg class="site-nav-icon" aria-hidden="true" focusable="false"><use href="icons.svg#icon-chart-grid-dots"/></svg><span>Dashboard</span></a>
+            <a class="nav-link" href="index.html"><svg class="site-nav-icon" aria-hidden="true" focusable="false"><use href="icons.svg#icon-chart-grid-dots"/></svg><span>Mappa</span></a>
+            <a class="nav-link" href="referendum.html"><span>Referendum</span></a>
             <a class="nav-link is-active active" href="data-download.html"><svg class="site-nav-icon" aria-hidden="true" focusable="false"><use href="icons.svg#icon-database-export"/></svg><span>Dati</span></a>
             <a class="nav-link" href="usage-notes.html"><svg class="site-nav-icon" aria-hidden="true" focusable="false"><use href="icons.svg#icon-book-2"/></svg><span>Metodo</span></a>
             <a class="nav-link" href="update-log.html"><svg class="site-nav-icon" aria-hidden="true" focusable="false"><use href="icons.svg#icon-history"/></svg><span>Aggiornamenti</span></a>
@@ -71,6 +72,18 @@
           <a class="ghost-btn" href="products.html">Apri i prodotti dati</a>
           <a class="ghost-btn" href="programmatic-access.html">Apri l'accesso da codice</a>
         </div>
+      </section>
+
+      <section class="doc-section" id="referendum">
+        <div class="doc-section-head"><div><div class="doc-eyebrow">Referendum</div><h2>Referendum costituzionale del 4 dicembre 2016</h2></div><p class="doc-section-copy">Voto in Italia, estero escluso. Risultati comunali su confini 2021, con fusioni sommate e divisioni ambigue non attribuite.</p></div>
+        <div class="doc-quicklinks">
+          <a class="ghost-btn" href="referendum.html">Apri la mappa</a>
+          <a class="ghost-btn" href="data/derived/referendums/referendum_2016_12_04_q1.json.gz" download>Dati comunali JSON.gz</a>
+          <a class="ghost-btn" href="data/derived/referendums/index.json">Catalogo e totali Italia</a>
+          <a class="ghost-btn" href="data/derived/referendums/referendum_2016_12_04_q1_audit.json">Provenienza e verifiche</a>
+          <a class="ghost-btn" href="data/derived/referendums/referendum_2016_12_04_q1_crosswalk.json.gz" download>Corrispondenze territoriali</a>
+        </div>
+        <p>I totali Italia comprendono anche i comuni originari esclusi dalla mappa per divisioni non ricostruibili. S&igrave; e No non sono partiti e non entrano nelle coalizioni elettorali.</p>
       </section>
 
       <section class="doc-section">
@@ -237,12 +250,12 @@
       <div class="site-footer-inner">
         <div class="footer-section">
           <h3>Progetto</h3>
-          <p>Electio Italia è un atlante elettorale pubblico al livello comunale. Copertura attuale: Assemblea Costituente, Camera dei Deputati ed elezioni europee 1979-2024. In arrivo: Senato, Regionali, Comunali e Referendum.</p>
+          <p>Electio Italia è un atlante elettorale pubblico al livello comunale. Copertura attuale: Assemblea Costituente, Camera dei Deputati ed elezioni europee 1979-2024. Disponibile anche il referendum costituzionale 2016 (pilota). In arrivo: Senato, Regionali, Comunali e altri referendum.</p>
         </div>
         <div class="footer-section">
           <h3>Risorse</h3>
           <ul>
-            <li><a href="index.html">Dashboard</a></li>
+            <li><a href="index.html">Mappa</a></li>
             <li><a href="data-download.html">Dati</a></li>
             <li><a href="usage-notes.html">Metodo</a></li>
             <li><a href="update-log.html">Aggiornamenti</a></li>

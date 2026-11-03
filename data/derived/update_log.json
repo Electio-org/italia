@@ -3,6 +3,18 @@
   "entries": [
     {
       "version": "0.25.0",
+      "date": "2026-11-03",
+      "title": "Atlante unificato: interfaccia, identita dei partiti e referendum 2016",
+      "changes": [
+        "Integrata l'impaginazione essenziale con risultati nazionali e spiegazioni richiudibili; mantenute le coalizioni storiche e gli scenari avanzati pubblicati.",
+        "La selezione di un partito segue le identita esplicite tra elezioni, senza confondere partiti della stessa famiglia o inventare liste assenti.",
+        "Pubblicato il pilota del referendum costituzionale 2016 con accesso dalla navigazione comune, risultati Si/No, affluenza, ricerca e mappa dettagliata.",
+        "Dati referendum separati dai risultati dei partiti, con provenienza, corrispondenze territoriali, esclusioni e totali Italia verificabili nella sezione Dati.",
+        "Aggiunti test di impaginazione, referendum e integrazione fra le viste; nessun caricamento dei dati referendum all'avvio dell'atlante elettorale."
+      ]
+    },
+    {
+      "version": "0.25.0",
       "date": "2026-11-02",
       "title": "Schieramenti storici e confronto continuo dei voti",
       "changes": [

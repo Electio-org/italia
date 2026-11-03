@@ -9,7 +9,11 @@
     "test:europe": "node scripts/smoke_european_elections.mjs",
     "test:interactions": "node scripts/smoke_explorer_interactions.mjs",
     "test:alignments": "node scripts/smoke_political_alignments.mjs",
-    "test:politics": "node scripts/smoke_political_map.mjs"
+    "test:politics": "node scripts/smoke_political_map.mjs",
+    "test:presentation": "node scripts/smoke_atlas_presentation.mjs",
+    "test:referendum": "node scripts/smoke_referendum.mjs",
+    "test:referendum-browser": "node scripts/smoke_referendum.mjs --browser",
+    "test:integration": "node scripts/smoke_unified_atlas.mjs"
   },
   "devDependencies": {
     "playwright": "1.59.1"

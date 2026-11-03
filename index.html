@@ -21,6 +21,7 @@
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="tabler-theme.css" />
   <link rel="stylesheet" href="visual-refresh.css" />
+  <link rel="stylesheet" href="atlas-interface.css" />
   <link rel="stylesheet" href="vendor/tabler/core/tabler.min.css" media="print" onload="this.media='all'" />
   <noscript><link rel="stylesheet" href="vendor/tabler/core/tabler.min.css" /></noscript>
 
@@ -51,12 +52,12 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "WebSite", "@id": "https://electio-org.github.io/italia/#website", "url": "https://electio-org.github.io/italia/", "name": "Electio Italia", "description": "Atlante elettorale italiano al livello comunale: Assemblea Costituente, Camera ed elezioni europee 1979-2024. Fonti Eligendo, confini storici, mappe e dataset verificabili.", "inLanguage": ["it"], "creator": {"@id": "https://simoneghezzicolombo.github.io/#person"}}, {"@type": "WebPage", "@id": "https://electio-org.github.io/italia/#webpage", "url": "https://electio-org.github.io/italia/", "name": "Electio Italia | Risultati elettorali comunali, 1946-2024", "description": "Mappe e dati delle elezioni italiane comune per comune: Camera, Costituente ed Europee. Confronti storici, affluenza, risultati di lista e fonti ufficiali Eligendo.", "inLanguage": "it", "isPartOf": {"@id": "https://electio-org.github.io/italia/#website"}, "author": {"@id": "https://simoneghezzicolombo.github.io/#person"}, "mainEntity": {"@id": "https://electio-org.github.io/italia/#dataset"}}, {"@type": "Person", "@id": "https://simoneghezzicolombo.github.io/#person", "name": "Simone Ghezzi Colombo", "url": "https://simoneghezzicolombo.github.io/"}, {"@type": "Dataset", "@id": "https://electio-org.github.io/italia/#dataset", "url": "https://electio-org.github.io/italia/", "name": "Electio Italia | Risultati elettorali comunali, 1946-2024", "description": "Mappe e dati delle elezioni italiane comune per comune: Camera, Costituente ed Europee. Confronti storici, affluenza, risultati di lista e fonti ufficiali Eligendo.", "creator": {"@id": "https://simoneghezzicolombo.github.io/#person"}, "temporalCoverage": "1946/2024", "spatialCoverage": {"@type": "Country", "name": "Italy"}, "variableMeasured": ["Votes by electoral list", "Electors and voters where available", "Municipal turnout"], "isBasedOn": "https://elezionistorico.interno.gov.it/", "distribution": [{"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://electio-org.github.io/italia/data/derived/elections_master.csv"}, {"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://electio-org.github.io/italia/data/derived/european_elections_master.csv"}]}]}</script>
 <!-- search-discovery:end -->
 </head>
-<body data-site-page="dashboard">
+<body data-site-page="dashboard" class="atlas-ui">
   <a href="#main-content" class="skip-link">Salta al contenuto</a>
     <div class="page page-dashboard">
     <header class="site-header navbar navbar-expand-lg navbar-light d-print-none" role="banner">
       <div class="container-xl site-header-inner">
-        <a class="navbar-brand site-brand" href="#dashboard-intro">
+        <a class="navbar-brand site-brand" href="index.html" aria-label="Electio Italia, mappa elettorale">
           <span class="site-brand-monogram">EI</span>
           <span class="site-brand-copy">
         <span class="site-brand-mark">Electio Italia</span>
@@ -69,7 +70,8 @@
         <div class="collapse navbar-collapse" id="site-nav-menu">
           <nav class="navbar-nav ms-auto site-nav" aria-label="Navigazione principale">
             <a class="nav-link" href="elezioni/"><span>Elezioni</span></a>
-            <a class="nav-link is-active active" href="index.html"><svg class="site-nav-icon" aria-hidden="true" focusable="false"><use href="icons.svg#icon-chart-grid-dots"/></svg><span>Dashboard</span></a>
+            <a class="nav-link is-active active" href="index.html" aria-current="page"><svg class="site-nav-icon" aria-hidden="true" focusable="false"><use href="icons.svg#icon-chart-grid-dots"/></svg><span>Mappa</span></a>
+            <a class="nav-link" href="referendum.html"><span>Referendum</span></a>
             <a class="nav-link" href="data-download.html"><svg class="site-nav-icon" aria-hidden="true" focusable="false"><use href="icons.svg#icon-database-export"/></svg><span>Dati</span></a>
             <a class="nav-link" href="usage-notes.html"><svg class="site-nav-icon" aria-hidden="true" focusable="false"><use href="icons.svg#icon-book-2"/></svg><span>Metodo</span></a>
             <a class="nav-link" href="update-log.html"><svg class="site-nav-icon" aria-hidden="true" focusable="false"><use href="icons.svg#icon-history"/></svg><span>Aggiornamenti</span></a>
@@ -82,14 +84,11 @@
         <div class="app-shell">
     <section class="explorer-heading" aria-labelledby="explorer-heading-title">
       <div class="explorer-heading-copy">
-        <div class="explorer-kicker">Atlante elettorale d'Italia</div>
-        <h1 id="explorer-heading-title">Esplora il voto, comune per comune.</h1>
-        <p>Scegli un'elezione e una lettura della mappa. Cerca un comune solo quando vuoi entrare nel dettaglio.</p>
+        <h1 id="explorer-heading-title">Atlante elettorale</h1>
       </div>
       <div class="explorer-heading-meta" aria-label="Copertura corrente">
-        <span>Camera + Europee</span>
+        <span>Camera, Costituente ed Europee</span>
         <span>1946-2024</span>
-        <span>Livello comunale</span>
       </div>
     </section>
     <aside class="sidebar">
@@ -119,12 +118,12 @@
             <h2>Esplora il voto</h2>
             <p class="panel-subtitle">Comune, elezione, metrica e partito: il flusso base resta tutto qui.</p>
           </div>
-          <button type="button" id="reset-btn" class="ghost-btn small-btn">Reset</button>
+          <button type="button" id="reset-btn" class="ghost-btn small-btn">Ricomincia</button>
         </div>
 
-        <label>
+        <label class="municipality-search-field">
           Cerca comune
-          <input id="municipality-search" type="search" list="municipality-list" placeholder="Nome del comune o codice ISTAT" autocomplete="off" aria-describedby="municipality-search-status" />
+          <input id="municipality-search" type="search" list="municipality-list" placeholder="Nome del comune" autocomplete="off" aria-describedby="municipality-search-status" />
           <datalist id="municipality-list"></datalist>
         </label>
         <p id="municipality-search-status" class="search-status" role="status" aria-live="polite"></p>
@@ -151,7 +150,6 @@
             </select>
           </label>
         </div>
-        <p id="metric-help" class="metric-help" aria-live="polite"></p>
         <div id="political-context" class="political-context hidden" aria-live="polite"></div>
 
         <div class="two-col two-col-main single-control-row">
@@ -317,9 +315,16 @@
 
       <section class="panel map-companion" aria-label="Contesto mappa">
         <div id="sidebar-legend" class="sidebar-legend" aria-live="polite"></div>
-        <div id="sidebar-party-results" class="sidebar-party-results" aria-live="polite"></div>
+        <details class="atlas-disclosure national-results">
+          <summary>Risultati nazionali</summary>
+          <div id="sidebar-party-results" class="sidebar-party-results" aria-live="polite"></div>
+        </details>
+        <details class="atlas-disclosure metric-explainer">
+          <summary>Come leggere la mappa</summary>
+          <p id="metric-help" class="metric-help" aria-live="polite"></p>
+        </details>
         <details class="sidebar-map-options">
-          <summary>Opzioni mappa</summary>
+          <summary>Confini e livelli</summary>
           <fieldset class="sidebar-layers" aria-label="Livelli mappa">
             <legend>Mostra confini</legend>
             <label class="sidebar-layer-toggle">
@@ -337,7 +342,7 @@
           </fieldset>
         </details>
         <div class="sidebar-download-row">
-          <button type="button" id="sidebar-download-png-btn" class="ghost-btn small-btn sidebar-download-btn" aria-label="Scarica la mappa corrente come PNG">Scarica mappa (PNG)</button>
+          <button type="button" id="sidebar-download-png-btn" class="ghost-btn small-btn sidebar-download-btn" aria-label="Scarica la mappa corrente come PNG">Scarica la mappa <span aria-hidden="true">&darr;</span></button>
         </div>
       </section>
 
@@ -842,13 +847,14 @@
       <section class="map-and-detail section-view section-view-dashboard section-view-profile">
         <section class="map-panel panel">
           <div class="panel-header">
-            <div>
-              <h2>Mappa comunale</h2>
-              <p class="panel-subtitle">Colorazione comune per comune su geografia reale quando disponibile.</p>
+            <div class="map-context-badge" aria-live="polite">
+              <h2 class="visually-hidden">Mappa comunale</h2>
+              <strong id="map-context-title">Italia</strong>
+              <span id="map-context-subtitle">Mappa comunale</span>
             </div>
             <div class="map-header-actions">
               <div class="map-toolbar-buttons">
-                <button type="button" id="map-fullscreen-btn" class="ghost-btn small-btn" aria-label="Apri la mappa a schermo intero">Intero</button>
+                <button type="button" id="map-fullscreen-btn" class="ghost-btn small-btn" aria-label="Apri la mappa a schermo intero">Schermo intero</button>
                 <button type="button" id="map-reset-btn" class="ghost-btn small-btn" aria-label="Reimposta posizione e zoom della mappa">Reimposta</button>
               </div>
               <div id="legend"></div>
@@ -856,10 +862,6 @@
           </div>
           <div id="map-wrapper">
             <canvas id="map-canvas" width="960" height="680" role="img" aria-label="Mappa comunale interattiva dell'Italia"></canvas>
-            <div class="map-context-badge" aria-live="polite">
-              <strong id="map-context-title">Italia</strong>
-              <span id="map-context-subtitle">Mappa comunale</span>
-            </div>
             <div id="map-loading" class="map-loading hidden" aria-hidden="true">
               <div class="map-loading-card">
                 <div class="map-loading-spinner" aria-hidden="true"></div>
@@ -874,7 +876,6 @@
             <aside id="selection-dock" class="selection-dock map-selection-card hidden" aria-live="polite" aria-label="Comune selezionato">
               <div class="selection-dock-head">
                 <div class="selection-dock-copy">
-                  <div class="eyebrow">Comune selezionato</div>
                   <strong id="selection-dock-title">Nessun comune selezionato</strong>
                   <div id="selection-dock-meta" class="helper-text">Clicca un comune nella mappa per vedere il riepilogo essenziale.</div>
                 </div>
@@ -897,13 +898,13 @@
                 <div id="selection-dock-party-results" class="selection-dock-party-results"></div>
               </section>
               <div class="selection-dock-actions">
-                <button type="button" id="selection-dock-open-btn">Apri la scheda completa</button>
+                <button type="button" id="selection-dock-open-btn">Storia e risultati del comune &rarr;</button>
               </div>
             </aside>
           </div>
           <div class="map-use-hint" aria-label="Istruzioni mappa">
-            <span>Passa su un comune per leggerne il nome. Clicca per fissare il riepilogo.</span>
-            <span>Scorri per zoomare &middot; trascina per spostarti</span>
+            <span>Clicca un comune per i risultati</span>
+            <span>Scorri per lo zoom &middot; trascina per spostarti &middot; Esc per deselezionare</span>
           </div>
           <div id="map-detail-cta" class="map-detail-cta hidden" aria-hidden="true">
             <span class="map-detail-cta-label">Comune selezionato</span>
@@ -1225,7 +1226,7 @@
       <div class="footer-section">
         <h3>Risorse</h3>
           <ul>
-            <li><a href="index.html">Dashboard</a></li>
+            <li><a href="index.html">Mappa</a></li>
             <li><a href="data-download.html">Dati</a></li>
             <li><a href="usage-notes.html">Metodo</a></li>
             <li><a href="update-log.html">Aggiornamenti</a></li>

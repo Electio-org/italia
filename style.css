@@ -1,6 +1,5 @@
-/* View Transitions API: native crossfade between MPA navigations in supporting
-   browsers (Chrome 111+). No-op elsewhere — prefetch + SW keep things instant. */
-@view-transition { navigation: auto; }
+/* Avoid costly canvas snapshots and interrupted transitions between atlas pages. */
+@view-transition { navigation: none; }
 ::view-transition-old(root),
 ::view-transition-new(root) {
   animation-duration: 180ms;
