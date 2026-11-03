@@ -34,6 +34,7 @@ jobs:
         run: python -m unittest discover -s tests -p 'test_*.py' -v
       - run: npm run test:selectors
       - run: npm run test:alignments
+      - run: npm run test:referendum
       - run: npx playwright install --with-deps chromium
       - name: Start static server
         run: |
@@ -57,5 +58,14 @@ jobs:
         env:
           BASE_URL: http://127.0.0.1:4173/
       - run: npm run test:politics
+        env:
+          BASE_URL: http://127.0.0.1:4173/
+      - run: npm run test:presentation
+        env:
+          BASE_URL: http://127.0.0.1:4173/
+      - run: npm run test:referendum-browser
+        env:
+          BASE_URL: http://127.0.0.1:4173/
+      - run: npm run test:integration
         env:
           BASE_URL: http://127.0.0.1:4173/

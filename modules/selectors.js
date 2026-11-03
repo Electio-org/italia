@@ -310,6 +310,20 @@ export function getPartyOptionsForElection(state, electionKey, mode = 'party_raw
     .map(([value]) => value);
 }
 
+export function matchingPartyOption(state, options, preferred, mode = 'party_raw') {
+  if (!preferred) return null;
+  const normalize = value => String(value || '').trim().replace(/\s+/g, ' ').toLocaleLowerCase('it');
+  const token = normalize(preferred);
+  const exact = options.find(value => normalize(value) === token);
+  if (exact || mode !== 'party_raw') return exact || null;
+  const aliasesFor = party => [party.party_std, party.party_display_name, ...(party.aliases || '').split('|')].map(normalize);
+  const identities = (state.parties || []).filter(party => aliasesFor(party).includes(token));
+  if (identities.length !== 1) return null;
+  const aliases = new Set(aliasesFor(identities[0]));
+  const matches = options.filter(value => aliases.has(normalize(value)));
+  return matches.length === 1 ? matches[0] : null;
+}
+
 export function getNationalPartyResultsForElection(state, electionKey, mode = 'party_raw') {
   const normalizedMode = GROUP_MODES.includes(mode) ? mode : 'party_raw';
   const totals = state.indices.partyTotalsByElectionMode?.[normalizedMode]?.get(electionKey);

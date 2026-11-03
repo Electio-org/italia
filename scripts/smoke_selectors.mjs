@@ -10,6 +10,7 @@ const {
   aggregateShareFor,
   getNationalPartyResultsForElection,
   getPartyOptionsForElection,
+  matchingPartyOption,
   getResultsForElection
 } = await import('../modules/selectors.js');
 
@@ -44,6 +45,16 @@ appendRowsToIndices(state, { resultRows: rows.slice(2) });
 assert.equal(getResultsForElection(state, 'e1').length, 4);
 assert.equal(getResultsForElection(state, 'e2').length, 1);
 assert.deepEqual(getPartyOptionsForElection(state, 'e1'), ['B', 'A']);
+const partyIdentityState = { parties: [
+  { party_std: 'PD', party_display_name: 'PD', aliases: 'PARTITO DEMOCRATICO|Partito Democratico - Italia Democratica e Progressista' },
+  { party_std: 'PDS', aliases: 'Partito Democratico della Sinistra' }
+] };
+assert.equal(matchingPartyOption(partyIdentityState, ['FdI', 'PARTITO DEMOCRATICO'], 'Partito Democratico - Italia Democratica e Progressista'), 'PARTITO DEMOCRATICO');
+assert.equal(matchingPartyOption(partyIdentityState, ['FdI', 'Partito Democratico - Italia Democratica e Progressista'], 'PARTITO DEMOCRATICO'), 'Partito Democratico - Italia Democratica e Progressista');
+assert.equal(matchingPartyOption(partyIdentityState, ['Pd'], 'PD'), 'Pd');
+assert.equal(matchingPartyOption(partyIdentityState, ['Partito Democratico della Sinistra'], 'PD'), null, 'a political family is not the same party');
+assert.equal(matchingPartyOption(partyIdentityState, ['PARTITO DEMOCRATICO', 'Partito Democratico - Italia Democratica e Progressista'], 'PD'), null, 'ambiguous list identities must not be picked arbitrarily');
+assert.equal(matchingPartyOption(partyIdentityState, ['DC', 'PCI'], 'PD'), null, 'absent parties must not be invented');
 assert.equal(aggregateShareFor(state, 'e1', 'm1', 'A'), 30);
 assert.equal(aggregateShareFor(state, 'e1', 'm2', 'B'), 60);
 assert.equal(aggregateShareFor(state, 'e1', 'm2', 'missing'), null);

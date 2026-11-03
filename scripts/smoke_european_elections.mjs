@@ -44,10 +44,10 @@ try {
   ));
   assert.equal(options.length, 30, 'the public selector must expose all 30 elections');
   assert.equal(options.filter(option => option.value.startsWith('europee_')).length, 10);
-  assert.deepEqual(
-    await page.locator('#election-select optgroup').evaluateAll(nodes => nodes.map(node => node.label)),
-    ['Elezioni europee', 'Camera e Assemblea Costituente']
-  );
+  const years = options.map(option => Number(option.value.match(/\d{4}/)[0]));
+  assert.deepEqual(years, years.slice().sort((a, b) => b - a), 'all consultation families share a chronological selector');
+  assert.ok(options.some(option => /Camera/.test(option.label)));
+  assert.ok(options.some(option => /Costituente/.test(option.label)));
 
   const targets = [
     { key: 'europee_1979', winner: 'DC', forbidden: /\b(?:FdI|AVS|M5S)\b|Azione/i },

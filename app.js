@@ -40,6 +40,7 @@ import {
   getSummaryRow,
   getResultsRows,
   getPartyOptionsForElection,
+  matchingPartyOption,
   getNationalPartyResultsForElection,
   aggregateShareFor,
   computeConcentration,
@@ -977,7 +978,11 @@ function refreshPartySelector() {
   // most authoritative signal of intent and must be preserved through the
   // re-render. Without this, readControls() → refreshPartySelector() would
   // overwrite the user's fresh pick with the old `state.selectedParty`.
-  const currentDropdownValue = els.partySelect.value || '';
+  const currentDropdownValue = els.partySelect.dataset.electionKey === state.selectedElection
+    ? els.partySelect.value || ''
+    : '';
+  const preferredParty = currentDropdownValue || state.selectedParty;
+  els.partySelect.dataset.electionKey = state.selectedElection || '';
   if (!values.length) {
     let placeholder;
     if (state.selectedMetric === 'party_share') {
@@ -1011,23 +1016,13 @@ function refreshPartySelector() {
       placeholder = 'Nessuna selezione';
     }
     els.partySelect.innerHTML = `<option value="">${escapeHtml(placeholder)}</option>`;
-    state.selectedParty = null;
+    // Keep the preferred party until the new election's shard is available.
     els.partySelect.value = '';
     return;
   }
   const optionHtml = value => `<option value="${escapeHtml(value)}">${escapeHtml(partyDisplayLabel(value))}</option>`;
-  const featured = values.slice(0, 10);
-  const others = values.slice(10);
-  els.partySelect.innerHTML = `
-    <optgroup label="Principali nell'elezione">
-      ${featured.map(optionHtml).join('')}
-    </optgroup>
-    ${others.length ? `<optgroup label="Altri partiti presenti (${others.length})">${others.map(optionHtml).join('')}</optgroup>` : ''}`;
-  if (currentDropdownValue && values.includes(currentDropdownValue)) {
-    state.selectedParty = currentDropdownValue;
-  } else if (!values.includes(state.selectedParty)) {
-    state.selectedParty = values[0] || FALLBACK_PARTY_OPTIONS[0];
-  }
+  els.partySelect.innerHTML = values.map(optionHtml).join('');
+  state.selectedParty = matchingPartyOption(state, values, preferredParty, mode) || values[0];
   els.partySelect.value = state.selectedParty || '';
 }
 
@@ -1167,21 +1162,15 @@ function setupControls() {
       const suffix = hasData ? '' : ' · non ancora pubblicato';
       return `<option value="${escapeHtml(d.election_key)}"${hasData ? '' : ' disabled'}>${escapeHtml(d.election_label || d.election_key)}${escapeHtml(suffix)}</option>`;
     };
-    const renderElectionGroups = rows => {
-      const families = [
-        ['Elezioni europee', rows.filter(d => String(d.election_key || '').startsWith('europee_'))],
-        ['Camera e Assemblea Costituente', rows.filter(d => !String(d.election_key || '').startsWith('europee_'))]
-      ];
-      return families
-        .filter(([, items]) => items.length)
-        .map(([label, items]) => `<optgroup label="${label}">${items.slice().sort((a, b) => (b.election_year || 0) - (a.election_year || 0)).map(renderOption).join('')}</optgroup>`)
-        .join('');
+    const renderElections = rows => {
+      return rows.slice().sort((a, b) => String(b.election_date || b.election_year || '').localeCompare(String(a.election_date || a.election_year || '')))
+        .map(renderOption).join('');
     };
     const unpublished = withoutData.length
       ? `<optgroup label="Non ancora pubblicate">${withoutData.slice().sort((a, b) => (b.election_year || 0) - (a.election_year || 0)).map(renderOption).join('')}</optgroup>`
       : '';
-    els.electionSelect.innerHTML = `${renderElectionGroups(withData)}${unpublished}`;
-    els.compareElectionSelect.innerHTML = `<option value="">Nessun confronto</option>${renderElectionGroups(withData)}${unpublished}`;
+    els.electionSelect.innerHTML = `${renderElections(withData)}${unpublished}`;
+    els.compareElectionSelect.innerHTML = `<option value="">Nessun confronto</option>${renderElections(withData)}${unpublished}`;
     state.electionLabels = (withData.length ? withData : state.elections).map(d => ({ value: d.election_key, label: d.election_label || String(d.election_year || d.election_key) }));
     els.electionSelect.value = state.selectedElection || (withData.at(-1)?.election_key || state.elections.at(-1)?.election_key || '');
     els.compareElectionSelect.value = state.compareElection || '';

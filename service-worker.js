@@ -14,7 +14,7 @@
  * `cache.addAll()` that would reject the whole install on any 404.
  */
 
-const SW_VERSION = 'electio-v68-2026-11-02-historical-alignments';
+const SW_VERSION = 'electio-v69-2026-11-03-unified-atlas';
 const SHELL_CACHE = `shell::${SW_VERSION}`;
 const DATA_CACHE = `data::${SW_VERSION}`;
 const NAV_FALLBACK = './index.html';
@@ -33,6 +33,7 @@ const SHELL_PATHS = [
   './style.css',
   './tabler-theme.css',
   './visual-refresh.css',
+  './atlas-interface.css',
   './icons.svg',
   './app.js',
   './site-pages.js',
