@@ -400,6 +400,30 @@
       "sha256": "7bd9df64791f6e373da970405b741d3b7a9a6e00f52857917c3527473f4993f2",
       "feature_count": 107
     },
+    "referendum2016": {
+      "path": "data/derived/referendums/referendum_2016_12_04_q1.json.gz",
+      "kind": "gz",
+      "size_bytes": 684682,
+      "sha256": "1fa05b5f5ed30098b28f590d63e5483367a7143a8cf7365c1fd282f55afad84a"
+    },
+    "referendum2016Audit": {
+      "path": "data/derived/referendums/referendum_2016_12_04_q1_audit.json",
+      "kind": "json",
+      "size_bytes": 2978,
+      "sha256": "e27be3e30807b03ddc5a815183a3ea8b94a9ba361c0cda14cdd6c5e08c82ab13"
+    },
+    "referendum2016Crosswalk": {
+      "path": "data/derived/referendums/referendum_2016_12_04_q1_crosswalk.json.gz",
+      "kind": "gz",
+      "size_bytes": 104677,
+      "sha256": "7c33f2cb294a062346d2e174d1d29e13245f9674fee93d4cbfcd2cbf61fd2652"
+    },
+    "referendumCatalog": {
+      "path": "data/derived/referendums/index.json",
+      "kind": "json",
+      "size_bytes": 938,
+      "sha256": "be561e2b6b018ef6d990775157895d413c0a29b92241d56d66e95496f873e4ba"
+    },
     "researchRecipes": {
       "path": "data/derived/research_recipes.json",
       "kind": "json",
@@ -462,9 +486,9 @@
     "updateLog": {
       "path": "data/derived/update_log.json",
       "kind": "json",
-      "size_bytes": 21265,
-      "sha256": "bf26f1a2a3e7d1178c9386d8753748e73cda6dc41759083e02a47dacca97715d",
-      "entry_count": 25
+      "size_bytes": 22258,
+      "sha256": "81cf1f7b1d57b225a138754f1725b06d4e29368b2a13d3301b5c579792b11ec9",
+      "entry_count": 26
     },
     "usageNotes": {
       "path": "data/derived/usage_notes.json",
@@ -572,6 +596,10 @@
       "provinceGeometry",
       "provinceGeometryFull",
       "provinceGeometryGeojsonFallback",
+      "referendum2016",
+      "referendum2016Audit",
+      "referendum2016Crosswalk",
+      "referendumCatalog",
       "researchRecipes",
       "siteGuides",
       "territorialCrosswalk",
